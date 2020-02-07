@@ -23,12 +23,12 @@ public class MysqlConnecteur {
 	 */
 	static {
 		try {
-			Class.forName(Parametres.getProperties("bddDriver"));
+			Class.forName(Parametres.getProperties("bddDriver_mariadb"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		bddUrl = Parametres.getProperties("bddUrl");
+		bddUrl = Parametres.getProperties("bddUrl_mariadb");
 		bddUser = Parametres.getProperties("bddUser");
 		bddPassword = Parametres.getProperties("bddPassword");
 	}

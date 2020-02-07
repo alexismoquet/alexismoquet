@@ -15,7 +15,7 @@ import java.util.Properties;
 public class Parametres {
 
     //Constantes
-    private static final String NOM_FICHIER = "src/com/models/dsi/conf.properties";
+    private static final String NOM_FICHIER = "src/com/dsi/conf.properties";
     private static final String CONFIRMER_SORTIE = "ConfirmerSortie";
 
     //Attributs de la classe
