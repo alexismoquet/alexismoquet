@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe UMdpTest
+ *
+ * @author Christophe Michard
+ * @since Créé le 07/02/2020
+ */
 class UMdpTest {
 
     private String mdpValide = "P@ssw0rd"; //Mot de passe valide pour l'utilisateur admin
