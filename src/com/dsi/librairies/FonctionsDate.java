@@ -8,6 +8,11 @@ package com.dsi.librairies;
  */
 public class FonctionsDate {
 
+    /**
+     * Convertion d'une date format java.sql.Date au format java.util.Date
+     * @param pSqlDate: Date au format java.sql.Date
+     * @return java.util.Date: Date convertie
+     */
     public static java.util.Date sqlDateVersJavaDate(java.sql.Date pSqlDate){
         java.util.Date javaDate = null;
 
