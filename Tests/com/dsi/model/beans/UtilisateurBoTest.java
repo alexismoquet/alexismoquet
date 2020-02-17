@@ -34,5 +34,5 @@ class UtilisateurBoTest {
         ubo.setRole(Roles.ADMIN);
         assertEquals(Roles.ADMIN, ubo.getRole());
     }
-    
+
 }
