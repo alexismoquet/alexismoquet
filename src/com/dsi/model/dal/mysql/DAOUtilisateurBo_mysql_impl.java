@@ -275,6 +275,11 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
         return utilisateur;
     }
 
+    /**
+     * Converti une chaine de caratères de role en enumération Role
+     * @param role
+     * @return
+     */
     private Roles chaineVersRoles(String role){
         Roles r = null;
 

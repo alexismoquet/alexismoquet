@@ -1,0 +1,196 @@
+package com.dsi.model.beans;
+/**
+ * Classe Annonce
+ *
+ * @author Alexis Moquet
+ * @since Créé le 24/02/2020
+ */
+public class Materiel {
+
+    //#################
+    //### Attributs ###
+    //#################
+
+    private int materiel_id;
+    private int materiel_categorie_id;
+    private int materiel_sport_id;
+    private int materiel_adresse_id;
+    private String materiel_nom;
+    private String materiel_description;
+    private double materiel_prix;
+    private boolean materiel_caution;
+    private double materiel_caution_prix;
+
+    //#################
+    //### Constructeurs
+    //#################
+    /**
+     * Constructeur par defaut
+     */
+    public Materiel() {
+    }
+
+    /**
+     * Constructeur
+     * @param materiel_id
+     * @param materiel_categorie_id
+     * @param materiel_sport_id
+     * @param materiel_adresse_id
+     * @param materiel_nom
+     * @param materiel_description
+     * @param materiel_prix
+     * @param materiel_caution
+     * @param materiel_caution_prix
+     */
+    public Materiel(int materiel_id, int materiel_categorie_id, int materiel_sport_id, int materiel_adresse_id, String materiel_nom, String materiel_description, double materiel_prix, boolean materiel_caution, double materiel_caution_prix) {
+        this.materiel_id = materiel_id;
+        this.materiel_categorie_id = materiel_categorie_id;
+        this.materiel_sport_id = materiel_sport_id;
+        this.materiel_adresse_id = materiel_adresse_id;
+        this.materiel_nom = materiel_nom;
+        this.materiel_description = materiel_description;
+        this.materiel_prix = materiel_prix;
+        this.materiel_caution = materiel_caution;
+        this.materiel_caution_prix = materiel_caution_prix;
+    }
+
+    //#######################
+    //### Getters and setters
+    //#######################
+
+    /**
+     * Retourne l'identifiant du materiel
+     * @return int: Identifiant materiel
+     */
+    public int getMateriel_id() {
+        return materiel_id;
+    }
+    /**
+     * Défini l'identifiant du materiel
+     * @param materiel_id
+     */
+    public void setMateriel_id(int materiel_id) {
+        this.materiel_id = materiel_id;
+    }
+
+    /**
+     * Retourne l'identifiant de la catégorie du materiel
+     * @return int: materiel_categorie_id materiel
+     */
+    public int getMateriel_categorie_id() {
+        return materiel_categorie_id;
+    }
+    /**
+     * Défini l'identifiant de la catégorie du materiel
+     * @param materiel_categorie_id
+     */
+    public void setMateriel_categorie_id(int materiel_categorie_id) {
+        this.materiel_categorie_id = materiel_categorie_id;
+    }
+
+    /**
+     * Retourne l'identifiant du sport pour un materiel
+     * @return int: Identifiant sport
+     */
+    public int getMateriel_sport_id() {
+        return materiel_sport_id;
+    }
+    /**
+     * Défini l'identifiant du sport du materiel
+     * @param materiel_sport_id
+     */
+    public void setMateriel_sport_id(int materiel_sport_id) {
+        this.materiel_sport_id = materiel_sport_id;
+    }
+
+    /**
+     * Retourne l'identifiant de l'adresse du materiel
+     * @return int: Identifiant adresse
+     */
+    public int getMateriel_adresse_id() {
+        return materiel_adresse_id;
+    }
+    /**
+     * Défini l'identifiant de l'adresse du materiel
+     * @param materiel_adresse_id
+     */
+    public void setMateriel_adresse_id(int materiel_adresse_id) {
+        this.materiel_adresse_id = materiel_adresse_id;
+    }
+
+    /**
+     * Retourne le nom du materiel
+     * @return string: nom materiel
+     */
+    public String getMateriel_nom() {
+        return materiel_nom;
+    }
+    /**
+     * Défini le nom du materiel
+     * @param materiel_nom
+     */
+    public void setMateriel_nom(String materiel_nom) {
+        this.materiel_nom = materiel_nom;
+    }
+
+    /**
+     * Retourne la description du materiel
+     * @return String: deszcription materiel
+     */
+    public String getMateriel_description() {
+        return materiel_description;
+    }
+    /**
+     * Défini la description du materiel
+     * @param materiel_description
+     */
+    public void setMateriel_description(String materiel_description) {
+        this.materiel_description = materiel_description;
+    }
+
+    /**
+     * Retourne le prix du materiel
+     * @return double : prix materiel
+     */
+    public double getMateriel_prix() {
+        return materiel_prix;
+    }
+    /**
+     * Défini le prix du materiel
+     * @param materiel_prix
+     */
+    public void setMateriel_prix(double materiel_prix) {
+        this.materiel_prix = materiel_prix;
+    }
+
+    /**
+     * Retourne un boolean pour savoir s'il y a une caution pour le materiel
+     * @return boolean: caution materiel
+     */
+    public boolean isMateriel_caution() {
+        return materiel_caution;
+    }
+    /**
+     * Défini s'il y a une caution pour le materiel
+     * @param materiel_caution
+     */
+    public void setMateriel_caution(boolean materiel_caution) {
+        this.materiel_caution = materiel_caution;
+    }
+
+    /**
+     * Retourne le montant de la caution du materiel
+     * @return double: montant caution materiel
+     */
+    public double getMateriel_caution_prix() {
+        return materiel_caution_prix;
+    }
+    /**
+     * Défini le montant d'une caution pour le materiel
+     * @param materiel_caution_prix
+     */
+    public void setMateriel_caution_prix(double materiel_caution_prix) {
+        this.materiel_caution_prix = materiel_caution_prix;
+    }
+
+}//fin class
