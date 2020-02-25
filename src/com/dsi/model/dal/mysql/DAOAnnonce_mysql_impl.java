@@ -45,10 +45,10 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             //Execution de la requête
             pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
             pstmt.setInt(1, pObj.getAnnonce_utilisateur_id());
-            pstmt.setInt(3, pObj.getAnnonce_materiel_id());
-            pstmt.setString(4, pObj.getAnnonce_titre());
-            pstmt.setString(5, pObj.getAnnonce_description());
-            pstmt.setDate(6, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setInt(2, pObj.getAnnonce_materiel_id());
+            pstmt.setString(3, pObj.getAnnonce_titre());
+            pstmt.setString(4, pObj.getAnnonce_description());
+            pstmt.setDate(5, (Date) pObj.getAnnonce_date_parution());
 
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();

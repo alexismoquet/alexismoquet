@@ -55,4 +55,20 @@ public class DAO_Factory {
 
         return daoAdresse;
     }
+
+    public static DAO_Annonce getDAO_Annonce() {
+        DAO_Annonce daoAnnonce = null;
+
+        try {
+            daoAnnonce = (DAO_Annonce) Class.forName("com.dsi.model.dal.mysql.DAOAnnonce_mysql_impl").newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return daoAnnonce;
+    }
 }

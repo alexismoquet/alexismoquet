@@ -1,29 +1,31 @@
 package com.dsi.model.dal.mysql;
 
+import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Categorie;
+import com.dsi.model.beans.Commentaire;
 import com.dsi.model.dal.DALException;
-import com.dsi.model.dal.DAO_Categorie;
+import com.dsi.model.dal.DAO_Commentaire;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe DAOCategorie_mysql_impl
+ * Classe DAOCommentaire_mysql_impl
  *
  * @author Alexis Moquet
  * @since Créé le 25/02/2020
  */
-public class DAOCategorie_mysql_impl implements DAO_Categorie {
+public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
-    private String SQL_SelectAll = "SELECT * FROM categories;";
-    private String SQL_SelectById = "SELECT * FROM categories WHERE categorie_id = ?;";
-    private String SQL_Insert = "INSERT INTO categories(categorie_libelle) VALUES(?);";
-    private String SQL_Update = "UPDATE categories SET categorie_libelle=? WHERE categorie_id=?;";
-    private String SQL_Delete = "DELETE FROM categories WHERE categories_id=?;";
+    private String SQL_SelectAll = "SELECT * FROM commentaires;";
+    private String SQL_SelectById = "SELECT * FROM commentaires WHERE commentaire_id = ?;";
+    private String SQL_Insert = "INSERT INTO commentaires(commentaire_annonce_id, commentaire_note, commentaire_message, commentaire_date_parution) VALUES(?,?,?,?);";
+    private String SQL_Update = "UPDATE commentaires SET commentaire_annonce_id=?, commentaire_note=?, commentaire_message=?, commentaire_date_parution=?  WHERE commentaire_id=?;";
+    private String SQL_Delete = "DELETE FROM commentaires WHERE commentaires_id=?;";
 
-    private Categorie categorie;
-    private List <Categorie> categories;
+    private Commentaire commentaire ;
+    private List <Commentaire> commentaires;
     private PreparedStatement pstmt;
     private Statement stmt;
     private ResultSet rs;
@@ -32,27 +34,31 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     /**
      * Constructeur par defaut
      */
-    public DAOCategorie_mysql_impl() {
+    public DAOCommentaire_mysql_impl() {
     }
 
+
     @Override
-    public void insert(Categorie pObj) throws DALException {
+    public void insert(Commentaire pObj) throws DALException {
         pstmt = null;
 
         try {
             //Execution de la requête
             pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
-            pstmt.setString(1, pObj.getCategorie_libelle());
-
+            pstmt.setInt(1, pObj.getCommentaire_id());
+            pstmt.setInt(2, pObj.getCommentaire_annonce_id());
+            pstmt.setInt(3, pObj.getCommentaire_note());
+            pstmt.setString(4, pObj.getCommentaire_message());
+            pstmt.setDate(5, (Date) pObj.getCommentaire_date_parution());
 
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                pObj.setCategorie_id(rs.getInt(1));
+            if (rs.next()){
+                pObj.setCommentaire_id(rs.getInt(1));
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        } finally {
+        }finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -69,23 +75,25 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-
     }
 
     @Override
-    public void update(Categorie pObj) throws DALException {
+    public void update(Commentaire pObj) throws DALException {
         pstmt = null;
 
         try {
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
-            pstmt.setInt(1, pObj.getCategorie_id());
-            pstmt.setString(2, pObj.getCategorie_libelle());
+            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Update);
+            pstmt.setInt(1, pObj.getCommentaire_id());
+            pstmt.setInt(2, pObj.getCommentaire_annonce_id());
+            pstmt.setInt(3, pObj.getCommentaire_note());
+            pstmt.setString(4, pObj.getCommentaire_message());
+            pstmt.setDate(5, (Date) pObj.getCommentaire_date_parution());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        } finally {
+        }finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -102,22 +110,20 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-
-
     }
 
     @Override
-    public void delete(Categorie pObj) throws DALException {
+    public void delete(Commentaire pObj) throws DALException {
         pstmt = null;
 
         try {
             //Execution de la requête
             pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
-            pstmt.setInt(1, pObj.getCategorie_id());
+            pstmt.setInt(1, pObj.getCommentaire_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        } finally {
+        }finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -134,37 +140,42 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-
     }
 
     @Override
-    public List<Categorie> selectAll() throws DALException {
+    public List<Commentaire> selectAll() throws DALException {
         stmt = null;
         rs = null;
-        categorie = null;
-        categories = new ArrayList<>();
+        commentaire = null;
+        commentaires = new ArrayList<>();
 
         try {
             //Execution de la requête
             stmt = MysqlConnecteur.getConnection().createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
-            //Récupération des enregistrements
             while (rs.next()) {
-                categorie = new Categorie(
-                        rs.getInt("categorie_id"),
-                        rs.getString("categorie_libelle")
+                commentaire = new Commentaire(
+                        rs.getInt("commentaire_id"),
+                        rs.getInt("commentaire_annonce_id"),
+                        rs.getInt("commentaire_note"),
+                        rs.getString("commentaire_message"),
+                        rs.getDate("commentaire_date_parution")
                 );
 
-                categories.add(categorie);
+                commentaires.add(commentaire);
+            }
+
+            if (commentaires.size() == 0) {
+                throw new DALException("Aucune adresse trouvée");
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        } finally {
+        }finally {
             //Fermeture du statement
-            if (stmt != null) {
+            if (pstmt != null) {
                 try {
-                    stmt.close();
+                    pstmt.close();
                 } catch (SQLException e) {
                     throw new DALException("Problème lors de la fermeture du statement !", e);
                 }
@@ -177,14 +188,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-        return categories;
+        return commentaires;
     }
 
     @Override
-    public Categorie selectById(int pId) throws DALException {
+    public Commentaire selectById(int pId) throws DALException {
         pstmt = null;
         rs = null;
-        categorie = null;
+        commentaire = null;
 
         try {
             //Execution de la requête
@@ -193,24 +204,23 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                //Récupération des enregistrements
-                while (rs.next()) {
-                    categorie = new Categorie(
-                            rs.getInt("categorie_id"),
-                            rs.getString("categorie_libelle")
-                    );
-                    categories.add(categorie);
-                }
+                commentaire = new Commentaire(
+                        rs.getInt("commentaire_id"),
+                        rs.getInt("commentaire_annonce_id"),
+                        rs.getInt("commentaire_note"),
+                        rs.getString("commentaire_message"),
+                        rs.getDate("commentaire_date_parution")
+                );
             }else {
-                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+                throw new DALException("Aucune adresse trouvée avec l'identifiant : "+pId);
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        } finally{
+        }finally {
             //Fermeture du statement
-            if (stmt != null) {
+            if (pstmt != null) {
                 try {
-                    stmt.close();
+                    pstmt.close();
                 } catch (SQLException e) {
                     throw new DALException("Problème lors de la fermeture du statement !", e);
                 }
@@ -223,6 +233,8 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-        return categorie;
+
+        return commentaire;
     }
-}
+
+}//fin class
