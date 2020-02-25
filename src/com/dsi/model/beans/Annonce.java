@@ -33,12 +33,12 @@ public class Annonce implements Serializable {
 
     /**
      * Constructeur
-     * @param annonce_id
-     * @param annonce_utilisateur_id
-     * @param annonce_materiel_id
-     * @param annonce_titre
-     * @param annonce_description
-     * @param annonce_date_parution
+     * @param annonce_id - id de l'annonce
+     * @param annonce_utilisateur_id - id de l'utilisateur de l'annonce
+     * @param annonce_materiel_id - id du materiel de l'annonce
+     * @param annonce_titre - titre de l'annonce
+     * @param annonce_description - description de l'annonce
+     * @param annonce_date_parution - date de parution de l'annonce
      */
     public Annonce(int annonce_id, int annonce_utilisateur_id, int annonce_materiel_id, String annonce_titre, String annonce_description, Date annonce_date_parution) {
         this.annonce_id = annonce_id;
@@ -62,7 +62,7 @@ public class Annonce implements Serializable {
     }
     /**
      * Défini l'identifiant de l'annonce
-     * @param annonce_id
+     * @param annonce_id - id de l'annonce
      */
     public void setAnnonce_id(int annonce_id) {
         this.annonce_id = annonce_id;
@@ -77,7 +77,7 @@ public class Annonce implements Serializable {
     }
     /**
      * Défini l'identifiant de l'utilisateur de l'annonce
-     * @param annonce_utilisateur_id
+     * @param annonce_utilisateur_id - id de l'utilisateur de l'annonce
      */
     public void setAnnonce_utilisateur_id(int annonce_utilisateur_id) {
         this.annonce_utilisateur_id = annonce_utilisateur_id;
@@ -92,7 +92,7 @@ public class Annonce implements Serializable {
     }
     /**
      * Défini l'identifiant du materiel de l'annonce
-     * @param annonce_materiel_id
+     * @param annonce_materiel_id - id du materiel de l'annonce
      */
     public void setAnnonce_materiel_id(int annonce_materiel_id) {
         this.annonce_materiel_id = annonce_materiel_id;
@@ -107,7 +107,7 @@ public class Annonce implements Serializable {
     }
     /**
      * Défini le titre de l'annonce
-     * @param annonce_titre
+     * @param annonce_titre - titre de l'annonce
      */
     public void setAnnonce_titre(String annonce_titre) {
         this.annonce_titre = annonce_titre;
@@ -122,7 +122,7 @@ public class Annonce implements Serializable {
     }
     /**
      * Défini la description de l'annonce
-     * @param annonce_description
+     * @param annonce_description - description de l'annonce
      */
     public void setAnnonce_description(String annonce_description) {
         this.annonce_description = annonce_description;
@@ -130,14 +130,14 @@ public class Annonce implements Serializable {
 
     /**
      * Retourne la date de parution de l'annonce
-     * @return String: annonce_date_parution
+     * @return String: date parution annonce
      */
     public Date getAnnonce_date_parution() {
         return annonce_date_parution;
     }
     /**
      * Défini la date de parution de l'annonce
-     * @param annonce_date_parution
+     * @param annonce_date_parution - date de parution de l'annonce
      */
     public void setAnnonce_date_parution(Date annonce_date_parution) {
         this.annonce_date_parution = annonce_date_parution;

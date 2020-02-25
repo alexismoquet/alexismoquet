@@ -14,7 +14,6 @@ package com.dsi.model.beans;
         private int categorie_id;
         private String categorie_libelle;
 
-
         //#################
         //### Constructeurs
         //#################
@@ -23,10 +22,11 @@ package com.dsi.model.beans;
      */
         public Categorie() {
         }
+
     /**
      * Constructeur
-     * @param categorie_id
-     * @param categorie_libelle
+     * @param categorie_id - id de la categorie
+     * @param categorie_libelle - libelle de la categorie
      */
         public Categorie(int categorie_id, String categorie_libelle) {
             this.categorie_id = categorie_id;
@@ -46,7 +46,7 @@ package com.dsi.model.beans;
         }
     /**
      * Défini l'identifiant de la catégorie
-     * @param categorie_id
+     * @param categorie_id - id de la categorie
      */
         public void setCategorie_id(int categorie_id) {
             this.categorie_id = categorie_id;
@@ -54,17 +54,17 @@ package com.dsi.model.beans;
 
     /**
      * Retourne le libellé de la catégorie
-     * @return int: libellé catégorie
+     * @return String: libellé catégorie
      */
         public String getCategorie_libelle() {
             return categorie_libelle;
         }
     /**
      * Défini le libellé de la catégorie
-     * @param categorie_libelle
+     * @param categorie_libelle - libellé de la catégorie
      */
         public void setCategorie_libelle(String categorie_libelle) {
             this.categorie_libelle = categorie_libelle;
         }
 
-    }//fin class
+}//fin class

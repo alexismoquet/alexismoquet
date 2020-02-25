@@ -32,15 +32,15 @@ public class Materiel {
 
     /**
      * Constructeur
-     * @param materiel_id
-     * @param materiel_categorie_id
-     * @param materiel_sport_id
-     * @param materiel_adresse_id
-     * @param materiel_nom
-     * @param materiel_description
-     * @param materiel_prix
-     * @param materiel_caution
-     * @param materiel_caution_prix
+     * @param materiel_id - id du materiel
+     * @param materiel_categorie_id - id de la categorie du materiel
+     * @param materiel_sport_id - id du sport du materiel
+     * @param materiel_adresse_id - id de l'adresse du materiel
+     * @param materiel_nom - nom du materiel
+     * @param materiel_description - description du materiel
+     * @param materiel_prix - prix du materiel
+     * @param materiel_caution - booleen pour savoir s'il y a une caution pour le materiel
+     * @param materiel_caution_prix - montant de la caution du materiel
      */
     public Materiel(int materiel_id, int materiel_categorie_id, int materiel_sport_id, int materiel_adresse_id, String materiel_nom, String materiel_description, double materiel_prix, boolean materiel_caution, double materiel_caution_prix) {
         this.materiel_id = materiel_id;
@@ -67,7 +67,7 @@ public class Materiel {
     }
     /**
      * Défini l'identifiant du materiel
-     * @param materiel_id
+     * @param materiel_id - id du matriel
      */
     public void setMateriel_id(int materiel_id) {
         this.materiel_id = materiel_id;
@@ -82,7 +82,7 @@ public class Materiel {
     }
     /**
      * Défini l'identifiant de la catégorie du materiel
-     * @param materiel_categorie_id
+     * @param materiel_categorie_id - id de la categorie du materiel
      */
     public void setMateriel_categorie_id(int materiel_categorie_id) {
         this.materiel_categorie_id = materiel_categorie_id;
@@ -97,7 +97,7 @@ public class Materiel {
     }
     /**
      * Défini l'identifiant du sport du materiel
-     * @param materiel_sport_id
+     * @param materiel_sport_id - id du sport du materiel
      */
     public void setMateriel_sport_id(int materiel_sport_id) {
         this.materiel_sport_id = materiel_sport_id;
@@ -112,7 +112,7 @@ public class Materiel {
     }
     /**
      * Défini l'identifiant de l'adresse du materiel
-     * @param materiel_adresse_id
+     * @param materiel_adresse_id - id de l'adresse du materiel
      */
     public void setMateriel_adresse_id(int materiel_adresse_id) {
         this.materiel_adresse_id = materiel_adresse_id;
@@ -127,7 +127,7 @@ public class Materiel {
     }
     /**
      * Défini le nom du materiel
-     * @param materiel_nom
+     * @param materiel_nom - nom du materiel
      */
     public void setMateriel_nom(String materiel_nom) {
         this.materiel_nom = materiel_nom;
@@ -142,7 +142,7 @@ public class Materiel {
     }
     /**
      * Défini la description du materiel
-     * @param materiel_description
+     * @param materiel_description - description du materiel
      */
     public void setMateriel_description(String materiel_description) {
         this.materiel_description = materiel_description;
@@ -157,7 +157,7 @@ public class Materiel {
     }
     /**
      * Défini le prix du materiel
-     * @param materiel_prix
+     * @param materiel_prix - prix du materiel
      */
     public void setMateriel_prix(double materiel_prix) {
         this.materiel_prix = materiel_prix;
@@ -172,7 +172,7 @@ public class Materiel {
     }
     /**
      * Défini s'il y a une caution pour le materiel
-     * @param materiel_caution
+     * @param materiel_caution - booleen de caution du materiel
      */
     public void setMateriel_caution(boolean materiel_caution) {
         this.materiel_caution = materiel_caution;
@@ -186,8 +186,8 @@ public class Materiel {
         return materiel_caution_prix;
     }
     /**
-     * Défini le montant d'une caution pour le materiel
-     * @param materiel_caution_prix
+     * Défini le montant de la caution pour le materiel
+     * @param materiel_caution_prix - montant de la caution du materiel
      */
     public void setMateriel_caution_prix(double materiel_caution_prix) {
         this.materiel_caution_prix = materiel_caution_prix;
