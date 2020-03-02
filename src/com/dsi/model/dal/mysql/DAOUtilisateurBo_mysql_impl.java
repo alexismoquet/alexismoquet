@@ -158,7 +158,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
                         rs.getString("utilisateur_bo_mot_de_passe"),
                         chaineVersRoles(rs.getString("utilisateur_bo_role"))
                 );
-            }else {
+            } else {
                 throw new DALException("Aucun utilisateur trouvé avec l'identifiant : "+pId);
             }
         } catch (SQLException e) {
@@ -249,7 +249,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
                         rs.getString("utilisateur_bo_mot_de_passe"),
                         chaineVersRoles(rs.getString("utilisateur_bo_role"))
                 );
-            }else {
+            } else {
                 throw new DALException("Aucun utilisateur trouvé avec le login : "+pLogin);
             }
         } catch (SQLException e) {

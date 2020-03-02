@@ -20,6 +20,7 @@ public class Annonce implements Serializable {
     private String annonce_titre;
     private String annonce_description;
     private Date annonce_date_parution;
+    private boolean annonce_valider;
 
     //#################
     //### Constructeurs
@@ -39,19 +40,36 @@ public class Annonce implements Serializable {
      * @param annonce_titre - titre de l'annonce
      * @param annonce_description - description de l'annonce
      * @param annonce_date_parution - date de parution de l'annonce
+     * @param annonce_valider - validation annonce
      */
-    public Annonce(int annonce_id, int annonce_utilisateur_id, int annonce_materiel_id, String annonce_titre, String annonce_description, Date annonce_date_parution) {
+    public Annonce(int annonce_id, int annonce_utilisateur_id, int annonce_materiel_id, String annonce_titre, String annonce_description, Date annonce_date_parution, boolean annonce_valider) {
         this.annonce_id = annonce_id;
         this.annonce_utilisateur_id = annonce_utilisateur_id;
         this.annonce_materiel_id = annonce_materiel_id;
         this.annonce_titre = annonce_titre;
         this.annonce_description = annonce_description;
         this.annonce_date_parution = annonce_date_parution;
+        this.annonce_valider = annonce_valider;
     }
 
     //#######################
     //### Getters and setters
     //#######################
+
+    /**
+     * Retourne un boolean si l'annonce est validée
+     * @return boolean: validation annonce
+     */
+    public boolean isAnnonce_valider() {
+        return annonce_valider;
+    }
+    /**
+     * Défini un boolean de valaidation de l'annonce
+     * @param annonce_valider - validation de l'annonce
+     */
+    public void setAnnonce_valider(boolean annonce_valider) {
+        this.annonce_valider = annonce_valider;
+    }
 
     /**
      * Retourne l'identifiant de l'annonce

@@ -163,7 +163,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                         rs.getInt("annonce_materiel_id"),
                         rs.getString("annonce_titre"),
                         rs.getString("annonce_description"),
-                        rs.getDate("annonce_date_parution")
+                        rs.getDate("annonce_date_parution"),
+                        rs.getBoolean("annonce_valider")
                 );
 
                 annonces.add(annonce);
@@ -213,7 +214,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                             rs.getInt("annonce_materiel_id"),
                             rs.getString("annonce_titre"),
                             rs.getString("annonce_description"),
-                            rs.getDate("annonce_date_parution")
+                            rs.getDate("annonce_date_parution"),
+                            rs.getBoolean("annonce_valider")
                     );
                     annonces.add(annonce);
                 }
@@ -262,7 +264,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                         rs.getInt("annonce_materiel_id"),
                         rs.getString("annonce_titre"),
                         rs.getString("annonce_description"),
-                        rs.getDate("annonce_date_parution")
+                        rs.getDate("annonce_date_parution"),
+                        rs.getBoolean("annonce_valider")
                 );
 
                 annonces.add(annonce);

@@ -44,7 +44,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenue lors de l'enregistrement de l'adresse", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'adresse", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la modification de l'adresse", e);
+            throw new BLLException("Un problème est survenu lors de la modification de l'adresse", e);
         }
     }
 
@@ -62,7 +62,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la suppression de l'adresse", e);
+            throw new BLLException("Un problème est survenu lors de la suppression de l'adresse", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             adresses = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des adresses", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des adresses", e);
         }
 
         return adresses;
@@ -86,7 +86,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             adresse = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération de l'adresse n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de l'adresse n° : "+pId, e);
         }
 
         return adresse;
@@ -98,7 +98,7 @@ public class AdresseManager implements Manager<Adresse> {
         try {
             adresses = dao.selectByIdUtilisateur(pIdUtilisateur);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des adresses de l'utilisateur n° : "+pIdUtilisateur, e);
+            throw new BLLException("Un problème est survenu lors de la récupération des adresses de l'utilisateur n° : "+pIdUtilisateur, e);
         }
 
         return adresses;

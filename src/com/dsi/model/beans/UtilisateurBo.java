@@ -133,4 +133,5 @@ public class UtilisateurBo implements Serializable {
                 ", role ='" + getRole() + '\'' +
                 '}';
     }
+
 }

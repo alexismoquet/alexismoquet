@@ -10,4 +10,5 @@ import com.dsi.model.beans.Utilisateur;
  */
 public interface DAO_Utilisateur extends DAO<Utilisateur> {
 
+
 }

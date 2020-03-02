@@ -4,8 +4,6 @@ import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_UtilisateurBo;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ import java.util.List;
  * @author Christophe Michard
  * @since Créé le 05/02/2020
  */
-public class UtilisateurBoManager implements Manager<UtilisateurBo> {
+public class UtilisateurBoManager implements Manager <UtilisateurBo> {
 
     private static UtilisateurBoManager instance = null;
 
@@ -25,7 +23,7 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
     /**
      * Constructeur
      */
-    private UtilisateurBoManager() { dao = DAO_Factory.getDAO_UtilisateurBo(); }
+    public UtilisateurBoManager() { dao = DAO_Factory.getDAO_UtilisateurBo(); }
 
     /**
      * Singleton
@@ -35,7 +33,6 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         if (instance == null){
             instance = new UtilisateurBoManager();
         }
-
         return instance;
     }
 
@@ -44,7 +41,7 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenue lors de l'enregistrement de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de l'enregistrement de l'utilisateur", e);
         }
     }
 
@@ -53,7 +50,7 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
         }
     }
 
@@ -62,16 +59,16 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la suppression de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
         }
     }
 
     @Override
-    public List<UtilisateurBo> SelectAll() throws BLLException {
+    public List <UtilisateurBo> SelectAll() throws BLLException {
         try {
             utilisateurs = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des utilisateurs", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
         }
 
         return utilisateurs;
@@ -82,7 +79,7 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         try {
             utilisateur = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération de l'utilisateurs n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de l'utilisateurs n° : "+pId, e);
         }
 
         return utilisateur;
@@ -92,9 +89,10 @@ public class UtilisateurBoManager implements Manager<UtilisateurBo> {
         try {
             utilisateur = dao.selectByLogin(pLogin);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération de l'utilisateurs : "+pLogin, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de l'utilisateurs : "+pLogin, e);
         }
 
         return utilisateur;
     }
-}
+
+}//fin class

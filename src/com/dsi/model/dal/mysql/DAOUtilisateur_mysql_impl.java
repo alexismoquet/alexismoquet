@@ -27,7 +27,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
     private Utilisateur utilisateur;
     private Roles role;
-    private List<Utilisateur> utilisateurs;
+    private List <Utilisateur> utilisateurs;
     private PreparedStatement pstmt;
     private Statement stmt;
     private ResultSet rs;
@@ -221,7 +221,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (stmt != null) {
                 try {

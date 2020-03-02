@@ -45,7 +45,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenue lors de l'enregistrement de l'annonce", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'annonce", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la modification de l'annonce", e);
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
         }
     }
 
@@ -63,7 +63,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la modification de l'annonce", e);
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
         }
     }
 
@@ -74,7 +74,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonces = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des annonces", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des annonces", e);
         }
 
         return annonces;
@@ -87,7 +87,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonce = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
         }
 
         return annonce;
@@ -99,7 +99,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonces = dao.selectByIdUtilisateur(pIdUtilisateur);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des annonces de l'utilisateur n° : "+pIdUtilisateur, e);
+            throw new BLLException("Un problème est survenu lors de la récupération des annonces de l'utilisateur n° : "+pIdUtilisateur, e);
         }
 
         return annonces;

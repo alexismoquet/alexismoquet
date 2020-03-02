@@ -46,7 +46,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenue lors de l'enregistrement de l'utilisateur", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'utilisateur", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
         }
     }
 
@@ -64,7 +64,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la suppression de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         try {
             utilisateurs = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération des utilisateurs", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
         }
 
         return utilisateurs;
@@ -88,7 +88,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         try {
             utilisateur = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenue lors de la récupération de l'utilisateurs n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de l'utilisateurs n° : "+pId, e);
         }
 
         return utilisateur;

@@ -105,7 +105,6 @@ public class DAO_Factory {
     }
 
 
-
     public static DAO_Sortie getDAO_Sortie() {
         DAO_Sortie daoSortie = null;
 
