@@ -1,11 +1,14 @@
 package com.dsi.controller;
 
 import com.dsi.model.bll.BLLException;
+import com.dsi.view.PageConnexionBO;
 
 public class Main {
     public static void main(String[] args) throws BLLException {
-        BOConnexion boc = new BOConnexion();
-        boc.actionIdentification("admin", "P@ssw0rd");
+
+        PageConnexionBO pboc = new PageConnexionBO();
+        pboc.initialiserComposants();
+        pboc.setVisible(true);
 
     }
 }

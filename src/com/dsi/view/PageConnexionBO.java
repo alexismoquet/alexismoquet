@@ -19,16 +19,16 @@ public class PageConnexionBO extends JFrame {
     private JButton bIdentification = new JButton("S'identifier");
     private JTextField texteLogin = new JTextField();
     private JPasswordField texteMotDePasse = new JPasswordField();
+    private BOConnexion ac = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
-
 
     //************************************************************
     // Methode qui va charger les composants de la fenetre
     //************************************************************
     public void initialiserComposants() {
         setTitle("Identification");
-        setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
+        //setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(400, 210);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,9 +53,8 @@ public class PageConnexionBO extends JFrame {
 
 
         bIdentification.addActionListener(e -> {
-            BOConnexion ac = new BOConnexion();
             try {
-                ac.actionIdentification("admin", "P@ssw0rd");
+                actionConnexion();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -73,9 +72,8 @@ public class PageConnexionBO extends JFrame {
                 int key = event.getKeyCode();
 
                 if (key == KeyEvent.VK_ENTER) {
-                    BOConnexion ac = new BOConnexion();
                     try {
-                        ac.actionIdentification("admin", "P@ssw0rd");
+                        actionConnexion();
                     } catch (BLLException e) {
                         e.printStackTrace();
                     }
@@ -87,6 +85,12 @@ public class PageConnexionBO extends JFrame {
 
             }
         });
+        setContentPane(pan);
+    }
+
+    private void actionConnexion() throws BLLException {
+        boolean rep = ac.actionIdentification(texteLogin.getText(), texteMotDePasse.getPassword().toString());
+        System.out.println(rep);
     }
 
 }//fin class
