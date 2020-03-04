@@ -4,7 +4,6 @@ import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurBoManager;
-import com.dsi.view.PageConnexionBO;
 
 
 public class BOConnexion {
@@ -13,7 +12,7 @@ public class BOConnexion {
 
         UtilisateurBoManager ubom =  UtilisateurBoManager.getInstance();
         UtilisateurBo ubo = ubom.selectByLogin("admin");
-
+        System.out.println(texteMotDePasse);
         return UMdp.mdpCompare(texteMotDePasse, ubo.getMdp());
     }
 

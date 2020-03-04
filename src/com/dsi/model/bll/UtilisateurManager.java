@@ -17,7 +17,6 @@ import java.util.List;
 public class UtilisateurManager implements Manager<Utilisateur> {
 
     private static UtilisateurManager instance = null;
-
     private DAO_Utilisateur dao;
     private Utilisateur utilisateur;
     private List<Utilisateur> utilisateurs;
@@ -69,9 +68,8 @@ public class UtilisateurManager implements Manager<Utilisateur> {
     }
 
     @Override
-    public List<Utilisateur> SelectAll() throws BLLException {
+    public List <Utilisateur> SelectAll() throws BLLException {
         utilisateurs = new ArrayList<>();
-
         try {
             utilisateurs = dao.selectAll();
         } catch (DALException e) {

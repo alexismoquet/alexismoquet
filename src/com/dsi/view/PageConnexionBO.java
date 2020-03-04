@@ -16,9 +16,9 @@ public class PageConnexionBO extends JFrame {
     private JPanel panelBouton = new JPanel();
     private JLabel login = new JLabel("Login :");
     private JLabel motDePasse = new JLabel("Mot de passe :");
-    private JButton bIdentification = new JButton("S'identifier");
     private JTextField texteLogin = new JTextField();
     private JPasswordField texteMotDePasse = new JPasswordField();
+    private JButton bIdentification = new JButton("S'identifier");
     private BOConnexion ac = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
@@ -28,7 +28,7 @@ public class PageConnexionBO extends JFrame {
     //************************************************************
     public void initialiserComposants() {
         setTitle("Identification");
-        //setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(400, 210);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +51,10 @@ public class PageConnexionBO extends JFrame {
         panelBouton.setBackground(Color.decode("#11417d"));
         bIdentification.setPreferredSize(new Dimension(100, 25));
 
+
+      //  ######################################################
+       // #################### LISTENNERS ######################
+      //  ######################################################
 
         bIdentification.addActionListener(e -> {
             try {
@@ -82,15 +86,21 @@ public class PageConnexionBO extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-
             }
         });
         setContentPane(pan);
     }
 
-    private void actionConnexion() throws BLLException {
-        boolean rep = ac.actionIdentification(texteLogin.getText(), texteMotDePasse.getPassword().toString());
+        private void actionConnexion() throws BLLException {
+        boolean rep = ac.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
         System.out.println(rep);
+
+        if (rep){
+            PageHubAdmin ha = new PageHubAdmin();
+            ha.setVisible(true);
+        } else {
+            actionConnexion();
+        }
     }
 
 }//fin class
