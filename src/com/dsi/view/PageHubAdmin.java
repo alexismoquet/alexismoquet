@@ -44,7 +44,6 @@ public class PageHubAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PageUtilisateurs pu = new PageUtilisateurs();
-                pu.initialiserComposants();
             }
         });
 

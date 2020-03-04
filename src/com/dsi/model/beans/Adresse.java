@@ -37,6 +37,27 @@ public class Adresse implements Serializable {
 
     /**
      * Constructeur
+     * @param pAdresse
+     * @param pCodePostal
+     * @param pVille
+     * @param pDepartement
+     * @param pPays
+     */
+    public Adresse(
+                   String pAdresse,
+                   String pCodePostal,
+                   String pVille,
+                   String pDepartement,
+                   String pPays) {
+
+        this.setAdresse(pAdresse);
+        this.setCodePostal(pCodePostal);
+        this.setVille(pVille);
+        this.setDepartement(pDepartement);
+        this.setPays(pPays);
+    }
+    /**
+     * Constructeur
      * @param pIdAdresse
      * @param pIdUtilisateur
      * @param pAdresse

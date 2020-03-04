@@ -1,12 +1,14 @@
 package com.dsi.view;
 
+import com.dsi.controller.Adresses;
+import com.dsi.controller.TableModel;
 import com.dsi.controller.Utilisateurs;
+import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.dal.DAO_Utilisateur;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -24,8 +26,10 @@ public class PageUtilisateurs extends JFrame {
     private JButton bSupprimerUtil = new JButton("Supprimer Utilisateur");
     private JButton bAnnuler = new JButton("Annuler");
 
-    private JTable tableauUtilisateur;
-    List <Utilisateur> listUtilisateurs = new ArrayList<>();
+    private JTable tableauUtilisateur = new JTable();
+    List <Utilisateur> utilisateurs = new ArrayList<>();
+    List <Adresse> adresses = new ArrayList<>();
+
 
 
     //************************************************************
@@ -54,45 +58,44 @@ public class PageUtilisateurs extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 70));
+        panHaut.setPreferredSize(new Dimension(900, 50));
 
         //Panel centre
-        panCentre.setPreferredSize(new Dimension(620, 250));
+        panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
         panCentre.add(tableauUtilisateur.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauUtilisateur, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauUtilisateur), BorderLayout.CENTER);
 
-        panBas.setSize(500,20);
+        panBas.setSize(500, 200);
         panBas.add(bModifierUtil);
         panBas.add(bSupprimerUtil);
         panBas.add(bAnnuler);
 
         setContentPane(panPrincipal);
 
-        // Remplissage du JTable
-        Object [][] donnees = {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-        };
-        String[] entetes = {"Nom", "Prénom", "Email", "Mot de passe", "Téléphone fixe", "Téléphone mobile", "Adresse", "Date d'inscription"};
-        // Fin de remplissage du JTable
-        tableauUtilisateur = new JTable (donnees, entetes);  // Création d'un objet de Type JTable avec les parametres que l'on a défini au dessus
+        afficheJtable();
 
-        try {
-            Utilisateurs u = new Utilisateurs();
-            listUtilisateurs = u.remplirTable();
+    } //fin initialiserComposants
 
-            for (Utilisateur utilisateur : listUtilisateurs) {
-            utilisateur.getNom();
+
+        private void afficheJtable() {
+
+            try {
+                Utilisateurs u = new Utilisateurs();
+                utilisateurs = u.remplirTableUtilisateur();
+
+                Adresses a = new Adresses();
+                adresses = a.remplirTableAdresse();
+
+                TableModel model = new TableModel(utilisateurs, adresses);
+                tableauUtilisateur.setModel(model);
+
+            } catch (BLLException ex) {
+                ex.printStackTrace();
             }
-        } catch (BLLException ex) {
-            ex.printStackTrace();
-        }
 
-    }
+        } //fin afficheJTable
 
 }// fin class
 

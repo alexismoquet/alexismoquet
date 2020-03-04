@@ -227,14 +227,15 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         FonctionsDate.sqlDateVersJavaDate(rs.getDate("utilisateur_date_inscription"))
                 );
 
-                DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
 
-                try {
-                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
-                    utilisateur.setAdresses(a);
-                }catch (DALException e){
-                    //On ne fait rien ici
-                }
+             //   DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
+
+//                try {
+////                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
+////                    utilisateur.setAdresses(a);
+////                }catch (DALException e){
+////                    //On ne fait rien ici
+////                }
 
                 utilisateurs.add(utilisateur);
             }

@@ -17,7 +17,6 @@ import java.util.List;
 public class AdresseManager implements Manager<Adresse> {
 
     private static AdresseManager instance = null;
-
     private DAO_Adresse dao = null;
     private Adresse adresse;
     private List<Adresse> adresses;
@@ -69,7 +68,6 @@ public class AdresseManager implements Manager<Adresse> {
     @Override
     public List<Adresse> SelectAll() throws BLLException {
         adresses = new ArrayList<>();
-
         try {
             adresses = dao.selectAll();
         } catch (DALException e) {
