@@ -2,9 +2,12 @@ package com.dsi.model.dal.mysql;
 
 import com.dsi.librairies.FonctionsDate;
 import com.dsi.librairies.Roles;
+import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.dal.DALException;
+import com.dsi.model.dal.DAO_Adresse;
+import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Utilisateur;
 
 import java.sql.*;
@@ -163,6 +166,16 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         rs.getString("utilisateur_mot_de_passe"),
                         FonctionsDate.sqlDateVersJavaDate(rs.getDate("utilisateur_date_inscription"))
                 );
+
+                DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
+
+                try {
+                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
+                    utilisateur.setAdresses(a);
+                }catch (DALException e){
+                    //On ne fait rien ici
+                }
+
             }else {
                 throw new DALException("Aucun utilisateur trouvé avec l'identifiant : "+pId);
             }
@@ -213,6 +226,15 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         rs.getString("utilisateur_mot_de_passe"),
                         FonctionsDate.sqlDateVersJavaDate(rs.getDate("utilisateur_date_inscription"))
                 );
+
+                DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
+
+                try {
+                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
+                    utilisateur.setAdresses(a);
+                }catch (DALException e){
+                    //On ne fait rien ici
+                }
 
                 utilisateurs.add(utilisateur);
             }
