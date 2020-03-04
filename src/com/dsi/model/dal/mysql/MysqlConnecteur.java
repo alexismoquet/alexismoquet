@@ -52,6 +52,7 @@ public class MysqlConnecteur {
 	public static void closeConnexion() throws SQLException {
 		if (cnx != null){
 			cnx.close();
+			cnx = null;
 		}
 	}
 }

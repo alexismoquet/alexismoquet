@@ -233,6 +233,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                 try {
                     List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
                     utilisateur.setAdresses(a);
+                    System.out.println(utilisateur);
                 }catch (DALException e){
                     //On ne fait rien ici
                 }

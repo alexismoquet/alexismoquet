@@ -80,9 +80,8 @@ public class PageUtilisateurs extends JFrame {
         private void afficheJtable() {
 
             try {
-                Utilisateurs u = new Utilisateurs();
-                utilisateurs = u.remplirTableUtilisateur();
-                System.out.println(utilisateurs);
+                utilisateurs = Utilisateurs.remplirTableUtilisateur();
+
                 TableModel model = new TableModel(utilisateurs);
                 tableauUtilisateur.setModel(model);
 
