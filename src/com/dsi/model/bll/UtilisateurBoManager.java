@@ -23,7 +23,7 @@ public class UtilisateurBoManager implements Manager <UtilisateurBo> {
     /**
      * Constructeur
      */
-    public UtilisateurBoManager() { dao = DAO_Factory.getDAO_UtilisateurBo(); }
+    private UtilisateurBoManager() { dao = DAO_Factory.getDAO_UtilisateurBo(); }
 
     /**
      * Singleton

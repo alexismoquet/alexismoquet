@@ -16,12 +16,12 @@ public class PageConnexionBO extends JFrame {
     private JPanel panelBouton = new JPanel();
     private JLabel login = new JLabel("Login :");
     private JLabel motDePasse = new JLabel("Mot de passe :");
-    private JButton bIdentification = new JButton("S'identifier");
     private JTextField texteLogin = new JTextField();
     private JPasswordField texteMotDePasse = new JPasswordField();
+    private JButton bIdentification = new JButton("S'identifier");
+    private BOConnexion ac = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
-
 
     //************************************************************
     // Methode qui va charger les composants de la fenetre
@@ -52,10 +52,13 @@ public class PageConnexionBO extends JFrame {
         bIdentification.setPreferredSize(new Dimension(100, 25));
 
 
+      //  ######################################################
+       // #################### LISTENNERS ######################
+      //  ######################################################
+
         bIdentification.addActionListener(e -> {
-            BOConnexion ac = new BOConnexion();
             try {
-                ac.actionIdentification("admin", "P@ssw0rd");
+                actionConnexion();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -73,9 +76,8 @@ public class PageConnexionBO extends JFrame {
                 int key = event.getKeyCode();
 
                 if (key == KeyEvent.VK_ENTER) {
-                    BOConnexion ac = new BOConnexion();
                     try {
-                        ac.actionIdentification("admin", "P@ssw0rd");
+                        actionConnexion();
                     } catch (BLLException e) {
                         e.printStackTrace();
                     }
@@ -84,9 +86,21 @@ public class PageConnexionBO extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-
             }
         });
+        setContentPane(pan);
+    }
+
+        private void actionConnexion() throws BLLException {
+        boolean rep = ac.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
+        System.out.println(rep);
+
+        if (rep){
+            PageHubAdmin ha = new PageHubAdmin();
+            ha.setVisible(true);
+        } else {
+            actionConnexion();
+        }
     }
 
 }//fin class

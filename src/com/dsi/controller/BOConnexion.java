@@ -8,13 +8,12 @@ import com.dsi.model.bll.UtilisateurBoManager;
 
 public class BOConnexion {
 
-    public void actionIdentification(String texteLogin, String texteMotDePasse) throws BLLException {
-        UtilisateurBoManager ubom = new UtilisateurBoManager();
+    public boolean actionIdentification(String texteLogin, String texteMotDePasse) throws BLLException {
+
+        UtilisateurBoManager ubom =  UtilisateurBoManager.getInstance();
         UtilisateurBo ubo = ubom.selectByLogin("admin");
-
-        if (UMdp.mdpCompare(texteMotDePasse, ubo.getMdp()))
-            System.out.println("Ok");
-
+        System.out.println(texteMotDePasse);
+        return UMdp.mdpCompare(texteMotDePasse, ubo.getMdp());
     }
 
 }//fin class
