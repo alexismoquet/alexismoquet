@@ -6,7 +6,6 @@ import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurBoManager;
 
 
-
 public class BOConnexion {
 
     public void actionIdentification(String texteLogin, String texteMotDePasse) throws BLLException {
