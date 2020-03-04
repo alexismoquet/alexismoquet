@@ -228,14 +228,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                 );
 
 
-             //   DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
+                DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
 
-//                try {
-////                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
-////                    utilisateur.setAdresses(a);
-////                }catch (DALException e){
-////                    //On ne fait rien ici
-////                }
+                try {
+                    List<Adresse> a = dao.selectByIdUtilisateur(rs.getInt("utilisateur_id"));
+                    utilisateur.setAdresses(a);
+                }catch (DALException e){
+                    //On ne fait rien ici
+                }
 
                 utilisateurs.add(utilisateur);
             }

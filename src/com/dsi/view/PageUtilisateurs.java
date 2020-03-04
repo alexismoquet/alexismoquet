@@ -1,6 +1,5 @@
 package com.dsi.view;
 
-import com.dsi.controller.Adresses;
 import com.dsi.controller.TableModel;
 import com.dsi.controller.Utilisateurs;
 import com.dsi.model.beans.Adresse;
@@ -8,7 +7,6 @@ import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -84,11 +82,8 @@ public class PageUtilisateurs extends JFrame {
             try {
                 Utilisateurs u = new Utilisateurs();
                 utilisateurs = u.remplirTableUtilisateur();
-
-                Adresses a = new Adresses();
-                adresses = a.remplirTableAdresse();
-
-                TableModel model = new TableModel(utilisateurs, adresses);
+                System.out.println(utilisateurs);
+                TableModel model = new TableModel(utilisateurs);
                 tableauUtilisateur.setModel(model);
 
             } catch (BLLException ex) {

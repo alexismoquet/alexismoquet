@@ -15,7 +15,6 @@ public class TableModel extends AbstractTableModel {
             , "Téléphone fixe", "Adresse", "Ville", "Code postal","Complément", "Département", "Pays"};
 
     private final List <Utilisateur> utilisateurs;
-    private final List <Adresse> adresses;
 
     public void addUtilisateur(Utilisateur utilisateur) {
         int index = utilisateurs.size();
@@ -29,12 +28,7 @@ public class TableModel extends AbstractTableModel {
         else
             return utilisateurs.get(row);
     }
-    public Adresse getAdresseAt(int row) {
-        if (row >= utilisateurs.size())
-            return null;
-        else
-            return adresses.get(row);
-    }
+
 
     public void deleteUtilisateurAt(int row){
         if (row < utilisateurs.size()){
@@ -43,9 +37,8 @@ public class TableModel extends AbstractTableModel {
         }
     }
 
-    public TableModel(List<Utilisateur> utilisateurs, List<Adresse> adresses) {
+    public TableModel(List<Utilisateur> utilisateurs) {
         this.utilisateurs = utilisateurs;
-        this.adresses = adresses;
     }
 
     @Override
@@ -65,8 +58,8 @@ public class TableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        switch (column) {
 
+        switch (column) {
             case 0:
                 return utilisateurs.get(row).getNom();
             case 1:
@@ -78,17 +71,53 @@ public class TableModel extends AbstractTableModel {
             case 4:
                 return utilisateurs.get(row).getTelFix();
             case 5:
-                return adresses.get(row).getAdresse();
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getAdresse();
+                }else{
+                    return "";
+                }
             case 6:
-                return adresses.get(row).getVille();
+              if (utilisateurs.get(row).getAdresses().size() != 0) {
+                  Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                   return a.getVille();
+                }else{
+                    return "";
+                }
             case 7:
-                return adresses.get(row).getCodePostal();
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getCodePostal();
+                }else{
+                    return "";
+                }
             case 8:
-                return adresses.get(row).getComplement();
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getComplement();
+                }else{
+                    return "";
+                }
             case 9:
-                return adresses.get(row).getDepartement();
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getDepartement();
+                }else{
+                    return "";
+                }
             case 10:
-                return adresses.get(row).getPays();
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getPays();
+                }else{
+                    return "";
+                }
             default:
                 return "";
         }
