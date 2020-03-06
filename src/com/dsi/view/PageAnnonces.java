@@ -1,10 +1,9 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Sport;
+import com.dsi.controller.tableModel.TableModelAnnonce;
+import com.dsi.model.beans.Annonce;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.UtilisateurManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,37 +12,38 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dsi.controller.Sports.remplirJTableWithSports;
+import static com.dsi.controller.Annonces.remplirJTableWithAnnonces;
 
-public class PageSports extends JFrame {
+
+public class PageAnnonces extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
     private JPanel panHaut = new JPanel();
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierSport = new JButton("Modifier Sport");
-    private JButton btnSupprimerSport = new JButton("Supprimer Sport");
+    private JButton btnModifierAnnonce = new JButton("Modifier annonce");
+    private JButton btnSupprimerAnnonce = new JButton("Supprimer annonce");
     private JButton btnAnnuler = new JButton("Annuler");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauSport = new JTable();
-    List<Sport> sports = new ArrayList<>();
-    List <Sport> listRechercheSports = new ArrayList<>();
+    private JTable tableauAnnonce = new JTable();
+    List<Annonce> annonces = new ArrayList<>();
+    List <Annonce> listRechercheAnnonces = new ArrayList<>();
 
 
     /************************************************************/
     /******************** Constructeur par defaut****************/
     /************************************************************/
-    public PageSports() {
+    public PageAnnonces() {
         initialiserComposants();
     }
 
 
     public void initialiserComposants() {
-        setTitle("Sports");
+        setTitle("annonces");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,25 +59,25 @@ public class PageSports extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par sport     ");
+        txtRechercher.setText("     Rechercher par titre de l'annonce     ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
-        panCentre.add(tableauSport.getTableHeader(), BorderLayout.NORTH);
-        panCentre.add(tableauSport, BorderLayout.CENTER);
-        panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
+        panCentre.add(tableauAnnonce.getTableHeader(), BorderLayout.NORTH);
+        panCentre.add(tableauAnnonce, BorderLayout.CENTER);
+        panCentre.add(new JScrollPane(tableauAnnonce), BorderLayout.CENTER);
 
         panBas.setSize(500, 200);
-        panBas.add(btnModifierSport);
-        panBas.add(btnSupprimerSport);
+        panBas.add(btnModifierAnnonce);
+        panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
+
         setContentPane(panPrincipal);
 
-        afficheJTableSports();
-
+        afficheJTableAnnonces();
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -92,52 +92,53 @@ public class PageSports extends JFrame {
         });
 
         btnRechercher.addActionListener(e -> {
-            listRechercheSports = new ArrayList<>();
-            UtilisateurManager um = new UtilisateurManager();
+            listRechercheAnnonces = new ArrayList<>();
+            AnnonceManager um = new AnnonceManager();
             try {
-                um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                um.SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Sport sport : sports) {
-                String sp = sport.getSport_libelle().toLowerCase();
+            for (Annonce annonce : annonces) {
+                String sp = annonce.getAnnonce_titre().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (sp.startsWith(recherche)) {
-                    listRechercheSports.add(sport);
-                    TableModelSport model = new TableModelSport(listRechercheSports);
-                    tableauSport.setModel(model);
+                    listRechercheAnnonces.add(annonce);
+                    TableModelAnnonce model = new TableModelAnnonce(listRechercheAnnonces);
+                    tableauAnnonce.setModel(model);
                 }
             }
-            if (listRechercheSports.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun sport trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+            if (listRechercheAnnonces.size() == 0) {
+                JOptionPane.showMessageDialog(panPrincipal, "Aucune annonce trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
-            afficheJTableSports();
+            txtRechercher.setText("                 ");
+            afficheJTableAnnonces();
+
         });
 
-        btnModifierSport.addActionListener(e -> {
+        btnModifierAnnonce.addActionListener(e -> {
         });
 
-        btnSupprimerSport.addActionListener(e -> {
-            tableauSport.clearSelection();
+        btnSupprimerAnnonce.addActionListener(e -> {
+            tableauAnnonce.clearSelection();
 
         });
     }//fin initialiserComposants
 
 
-    private void afficheJTableSports() {
+    private void afficheJTableAnnonces() {
         try {
-            sports = remplirJTableWithSports();
-            TableModelSport model = new TableModelSport(sports);
-            tableauSport.setModel(model);
+            annonces = remplirJTableWithAnnonces();
+            TableModelAnnonce model = new TableModelAnnonce(annonces);
+            tableauAnnonce.setModel(model);
 
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-    } //fin afficheJTable
 
-}//fin class
+    } //fin afficheJTable
+}

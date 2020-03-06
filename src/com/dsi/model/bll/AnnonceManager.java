@@ -27,7 +27,7 @@ public class AnnonceManager implements Manager<Annonce> {
     /**
      * Constructeur
      */
-    private AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
+    public AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
 
     /**
      * Singleton

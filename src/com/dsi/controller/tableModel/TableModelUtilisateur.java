@@ -1,6 +1,7 @@
-package com.dsi.controller;
+package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Adresse;
+import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
 
 import java.util.List;
@@ -9,12 +10,13 @@ import javax.swing.table.AbstractTableModel;
 
 
 
-public class TableModel extends AbstractTableModel {
+public class TableModelUtilisateur extends AbstractTableModel {
 
     private final String[] titres = {"Noms", "Prénoms", "Email", "Téléphone mobile"
-            , "Téléphone fixe", "Adresse", "Ville", "Code postal","Complément", "Département", "Pays"};
+            , "Téléphone fixe", "Adresse", "Ville", "Code postal","Complément", "Département", "Pays","id"};
 
-    private final List <Utilisateur> utilisateurs;
+    private List <Utilisateur> utilisateurs;
+
 
     public void addUtilisateur(Utilisateur utilisateur) {
         int index = utilisateurs.size();
@@ -29,7 +31,6 @@ public class TableModel extends AbstractTableModel {
             return utilisateurs.get(row);
     }
 
-
     public void deleteUtilisateurAt(int row){
         if (row < utilisateurs.size()){
             utilisateurs.remove(row);
@@ -37,9 +38,15 @@ public class TableModel extends AbstractTableModel {
         }
     }
 
-    public TableModel(List<Utilisateur> utilisateurs) {
+    /**************************Contructeurs***********************/
+
+    public TableModelUtilisateur(List<Utilisateur> utilisateurs) {
         this.utilisateurs = utilisateurs;
     }
+
+    public TableModelUtilisateur() { }
+    /**************************Fin Contructeurs***********************/
+
 
     @Override
     public int getColumnCount() {
@@ -118,6 +125,8 @@ public class TableModel extends AbstractTableModel {
                 }else{
                     return "";
                 }
+            case 11:
+                return utilisateurs.get(row).getIdUtilisateur();
             default:
                 return "";
         }

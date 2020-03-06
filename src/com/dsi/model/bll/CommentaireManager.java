@@ -1,8 +1,11 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Commentaire;
+import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Commentaire;
 import com.dsi.model.dal.DAO_Factory;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +25,7 @@ public class CommentaireManager implements Manager<Commentaire> {
     /**
      * Constructeur
      */
-    private CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
+    public CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
 
     /**
      * Singleton
@@ -53,7 +56,15 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public List<Commentaire> SelectAll() throws BLLException {
-        return null;
+        commentaires = new ArrayList<>();
+
+        try {
+            commentaires = dao.selectAll();
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération des annonces", e);
+        }
+
+        return commentaires;
     }
 
     @Override

@@ -1,15 +1,16 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Sport;
+import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SportManager implements Manager<Sport> {
 
     private static SportManager instance = null;
-
     private DAO_Sport dao = null;
     private Sport sport;
     private List<Sport> sports;
@@ -17,7 +18,7 @@ public class SportManager implements Manager<Sport> {
     /**
      * Constructeur
      */
-    private SportManager() { dao = DAO_Factory.getDAO_Sport(); }
+    public SportManager() { dao = DAO_Factory.getDAO_Sport(); }
 
     /**
      * Singleton
@@ -48,7 +49,14 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public List<Sport> SelectAll() throws BLLException {
-        return null;
+        sports = new ArrayList<>();
+        try {
+            sports = dao.selectAll();
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+        }
+
+        return sports;
     }
 
     @Override

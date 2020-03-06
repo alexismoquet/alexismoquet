@@ -50,31 +50,26 @@ public class PageHubAdmin extends JFrame {
         bCategories.setSize(100,50);
         bCategories.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-            }
+            public void actionPerformed(ActionEvent e) { PageCategories pu = new PageCategories();
+                 }
         });
 
         bSports.setSize(100,50);
         bSports.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                PageSports ps = new PageSports();
-                ps.initialiserComposants();
-            }
+            public void actionPerformed(ActionEvent e) {PageSports ps = new PageSports(); }
         });
 
         bAnnonces.setSize(100,50);
         bAnnonces.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-            }
+            public void actionPerformed(ActionEvent e) {PageAnnonces pa = new PageAnnonces(); }
         });
 
         bCommentaires.setSize(100,50);
         bCommentaires.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-            }
+            public void actionPerformed(ActionEvent e) { PageCommentaires pc = new PageCommentaires(); }
         });
 
         // Panel Principal

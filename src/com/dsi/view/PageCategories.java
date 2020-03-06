@@ -1,10 +1,9 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Sport;
+import com.dsi.controller.tableModel.TableModelCategorie;
+import com.dsi.model.beans.Categorie;
+import com.dsi.model.bll.CategorieManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.UtilisateurManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,37 +12,38 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dsi.controller.Sports.remplirJTableWithSports;
+import static com.dsi.controller.Categories.remplirJTableWithCategories;
 
-public class PageSports extends JFrame {
+
+public class PageCategories extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
     private JPanel panHaut = new JPanel();
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierSport = new JButton("Modifier Sport");
-    private JButton btnSupprimerSport = new JButton("Supprimer Sport");
+    private JButton btnModifierCategorie = new JButton("Modifier categorie");
+    private JButton btnSupprimerCategorie = new JButton("Supprimer categorie");
     private JButton btnAnnuler = new JButton("Annuler");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauSport = new JTable();
-    List<Sport> sports = new ArrayList<>();
-    List <Sport> listRechercheSports = new ArrayList<>();
+    private JTable tableauCategorie = new JTable();
+    List<Categorie> categories = new ArrayList<>();
+    List <Categorie> listRechercheCategories = new ArrayList<>();
 
 
     /************************************************************/
     /******************** Constructeur par defaut****************/
     /************************************************************/
-    public PageSports() {
+    public PageCategories() {
         initialiserComposants();
     }
 
 
     public void initialiserComposants() {
-        setTitle("Sports");
+        setTitle("categories");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,25 +59,25 @@ public class PageSports extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par sport     ");
+        txtRechercher.setText("     Rechercher par titre de catégorie     ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
-        panCentre.add(tableauSport.getTableHeader(), BorderLayout.NORTH);
-        panCentre.add(tableauSport, BorderLayout.CENTER);
-        panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
+        panCentre.add(tableauCategorie.getTableHeader(), BorderLayout.NORTH);
+        panCentre.add(tableauCategorie, BorderLayout.CENTER);
+        panCentre.add(new JScrollPane(tableauCategorie), BorderLayout.CENTER);
 
         panBas.setSize(500, 200);
-        panBas.add(btnModifierSport);
-        panBas.add(btnSupprimerSport);
+        panBas.add(btnModifierCategorie);
+        panBas.add(btnSupprimerCategorie);
         panBas.add(btnAnnuler);
+
         setContentPane(panPrincipal);
 
-        afficheJTableSports();
-
+        afficheJTableCategories();
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -92,52 +92,53 @@ public class PageSports extends JFrame {
         });
 
         btnRechercher.addActionListener(e -> {
-            listRechercheSports = new ArrayList<>();
-            UtilisateurManager um = new UtilisateurManager();
+            listRechercheCategories = new ArrayList<>();
+            CategorieManager um = new CategorieManager();
             try {
-                um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                um.SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Sport sport : sports) {
-                String sp = sport.getSport_libelle().toLowerCase();
+            for (Categorie categorie : categories) {
+                String sp = categorie.getCategorie_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (sp.startsWith(recherche)) {
-                    listRechercheSports.add(sport);
-                    TableModelSport model = new TableModelSport(listRechercheSports);
-                    tableauSport.setModel(model);
+                    listRechercheCategories.add(categorie);
+                    TableModelCategorie model = new TableModelCategorie(listRechercheCategories);
+                    tableauCategorie.setModel(model);
                 }
             }
-            if (listRechercheSports.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun sport trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+            if (listRechercheCategories.size() == 0) {
+                JOptionPane.showMessageDialog(panPrincipal, "Aucune categorie trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
-            afficheJTableSports();
+            txtRechercher.setText("                 ");
+            afficheJTableCategories();
+
         });
 
-        btnModifierSport.addActionListener(e -> {
+        btnModifierCategorie.addActionListener(e -> {
         });
 
-        btnSupprimerSport.addActionListener(e -> {
-            tableauSport.clearSelection();
+        btnSupprimerCategorie.addActionListener(e -> {
+            tableauCategorie.clearSelection();
 
         });
     }//fin initialiserComposants
 
 
-    private void afficheJTableSports() {
+    private void afficheJTableCategories() {
         try {
-            sports = remplirJTableWithSports();
-            TableModelSport model = new TableModelSport(sports);
-            tableauSport.setModel(model);
+            categories = remplirJTableWithCategories();
+            TableModelCategorie model = new TableModelCategorie(categories);
+            tableauCategorie.setModel(model);
 
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-    } //fin afficheJTable
 
-}//fin class
+    } //fin afficheJTable
+}

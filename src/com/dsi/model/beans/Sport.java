@@ -5,7 +5,8 @@ package com.dsi.model.beans;
  * @author Alexis Moquet
  * @since Créé le 24/02/2020
  */
-public class Sport {
+public class Sport extends Utilisateur {
+
     //#################
     //### Attributs ###
     //#################

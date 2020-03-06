@@ -1,10 +1,9 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Sport;
+import com.dsi.controller.tableModel.TableModelCommentaire;
+import com.dsi.model.beans.Commentaire;
+import com.dsi.model.bll.CommentaireManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.UtilisateurManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,37 +12,37 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dsi.controller.Sports.remplirJTableWithSports;
+import static com.dsi.controller.Commentaires.remplirJTableWithCommentaires;
 
-public class PageSports extends JFrame {
+public class PageCommentaires extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
     private JPanel panHaut = new JPanel();
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierSport = new JButton("Modifier Sport");
-    private JButton btnSupprimerSport = new JButton("Supprimer Sport");
+    private JButton btnModifierCommentaire = new JButton("Modifier commentaire");
+    private JButton btnSupprimerCommentaire = new JButton("Supprimer commentaire");
     private JButton btnAnnuler = new JButton("Annuler");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauSport = new JTable();
-    List<Sport> sports = new ArrayList<>();
-    List <Sport> listRechercheSports = new ArrayList<>();
+    private JTable tableauCommentaire = new JTable();
+    List<Commentaire> commentaires = new ArrayList<>();
+    List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
 
     /************************************************************/
     /******************** Constructeur par defaut****************/
     /************************************************************/
-    public PageSports() {
+    public PageCommentaires() {
         initialiserComposants();
     }
 
 
     public void initialiserComposants() {
-        setTitle("Sports");
+        setTitle("commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,25 +58,25 @@ public class PageSports extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par sport     ");
+        txtRechercher.setText("     Rechercher    ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
-        panCentre.add(tableauSport.getTableHeader(), BorderLayout.NORTH);
-        panCentre.add(tableauSport, BorderLayout.CENTER);
-        panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
+        panCentre.add(tableauCommentaire.getTableHeader(), BorderLayout.NORTH);
+        panCentre.add(tableauCommentaire, BorderLayout.CENTER);
+        panCentre.add(new JScrollPane(tableauCommentaire), BorderLayout.CENTER);
 
         panBas.setSize(500, 200);
-        panBas.add(btnModifierSport);
-        panBas.add(btnSupprimerSport);
+        panBas.add(btnModifierCommentaire);
+        panBas.add(btnSupprimerCommentaire);
         panBas.add(btnAnnuler);
+
         setContentPane(panPrincipal);
 
-        afficheJTableSports();
-
+        afficheJTableCommentaires();
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -85,59 +84,60 @@ public class PageSports extends JFrame {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                txtRechercher.removeMouseListener(this);
+                afficheJTableCommentaires();
             }
         });
 
         btnRechercher.addActionListener(e -> {
-            listRechercheSports = new ArrayList<>();
-            UtilisateurManager um = new UtilisateurManager();
+            listRechercheCommentaires = new ArrayList<>();
+            CommentaireManager um = new CommentaireManager();
             try {
-                um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                um.SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Sport sport : sports) {
-                String sp = sport.getSport_libelle().toLowerCase();
+            for (Commentaire commentaire : commentaires) {
+                String cm = commentaire.getCommentaire_message().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.startsWith(recherche)) {
-                    listRechercheSports.add(sport);
-                    TableModelSport model = new TableModelSport(listRechercheSports);
-                    tableauSport.setModel(model);
+                if (cm.contains(recherche)) {
+                    listRechercheCommentaires.add(commentaire);
+                    TableModelCommentaire model = new TableModelCommentaire(listRechercheCommentaires);
+                    tableauCommentaire.setModel(model);
                 }
             }
-            if (listRechercheSports.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun sport trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+            if (listRechercheCommentaires.size() == 0) {
+                JOptionPane.showMessageDialog(panPrincipal, "Aucun commentaire trouvé contenant ce(s) mot(s)", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
-            afficheJTableSports();
+            afficheJTableCommentaires();
+
         });
 
-        btnModifierSport.addActionListener(e -> {
+        btnModifierCommentaire.addActionListener(e -> {
         });
 
-        btnSupprimerSport.addActionListener(e -> {
-            tableauSport.clearSelection();
+        btnSupprimerCommentaire.addActionListener(e -> {
+            tableauCommentaire.clearSelection();
 
         });
     }//fin initialiserComposants
 
 
-    private void afficheJTableSports() {
+    private void afficheJTableCommentaires() {
         try {
-            sports = remplirJTableWithSports();
-            TableModelSport model = new TableModelSport(sports);
-            tableauSport.setModel(model);
+            commentaires = remplirJTableWithCommentaires();
+            TableModelCommentaire model = new TableModelCommentaire(commentaires);
+            tableauCommentaire.setModel(model);
 
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-    } //fin afficheJTable
 
-}//fin class
+    } //fin afficheJTable
+}
+

@@ -1,9 +1,20 @@
 package com.dsi.model.dal.mysql;
 
+import com.dsi.librairies.FonctionsDate;
+import com.dsi.librairies.Roles;
+import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Sport;
+import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.dal.DALException;
+import com.dsi.model.dal.DAO_Adresse;
+import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +24,19 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public class DAOSport_mysql_impl implements DAO_Sport {
+    private String SQL_SelectAll    = "SELECT * FROM sports;";
+    private String SQL_SelectById   = "SELECT * FROM sports WHERE sport_id=?;";
+    private String SQL_Insert       = "INSERT INTO sports(sport_libelle) VALUES(?);";
+    private String SQL_Update       = "UPDATE sports SET sport_libelle=?,WHERE sport_id=?;";
+    private String SQL_Delete       = "DELETE FROM sports WHERE sport_id=?;";
+
+    private Sport sport;
+    private List <Sport> sports;
+    private PreparedStatement pstmt;
+    private Statement stmt;
+    private ResultSet rs;
+
+
     @Override
     public void insert(Sport pObj) throws DALException {
 
@@ -30,7 +54,50 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public List<Sport> selectAll() throws DALException {
-        return null;
+        stmt = null;
+        rs = null;
+        sport = null;
+        sports = new ArrayList<>();
+
+        try {
+            //Execution de la requête
+            stmt = MysqlConnecteur.getConnection().createStatement();
+            rs = stmt.executeQuery(SQL_SelectAll);
+
+            //Récupération des enregistrements
+            while (rs.next()) {
+                sport = new Sport(
+                        rs.getInt("sport_id"),
+                        rs.getString("sport_libelle")
+                );
+
+                sports.add(sport);
+            }
+
+            if (sports.size() == 0) {
+                throw new DALException("Aucun utilisateur trouvé");
+            }
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                MysqlConnecteur.closeConnexion();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return sports;
     }
 
     @Override
