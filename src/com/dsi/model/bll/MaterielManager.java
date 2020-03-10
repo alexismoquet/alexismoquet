@@ -1,6 +1,7 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Materiel;
+import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Materiel;
 
@@ -50,6 +51,16 @@ public class MaterielManager implements  Manager<Materiel> {
     public void delete(Materiel pObj) throws BLLException {
 
     }
+
+
+    @Override
+    public void delete(int pIdMateriel) throws BLLException {
+            try {
+                dao.deleteById(pIdMateriel);
+            } catch (DALException e) {
+                throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
+            }
+        }
 
     @Override
     public List<Materiel> SelectAll() throws BLLException {

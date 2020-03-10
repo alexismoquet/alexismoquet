@@ -1,6 +1,10 @@
 package com.dsi.model.dal;
 
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
+
+import java.util.List;
+
 /**
  * Interface DAO_Materiel
  *
@@ -8,4 +12,6 @@ import com.dsi.model.beans.Materiel;
  * @since Créé le 25/02/2020
  */
 public interface DAO_Materiel extends DAO<Materiel>{
+    boolean deleteById(int pIdMateriel) throws DALException;
+    boolean deleteByIdMateriel(int pIdMateriel) throws DALException;
 }

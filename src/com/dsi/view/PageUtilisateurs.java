@@ -84,6 +84,7 @@ public class PageUtilisateurs extends JFrame {
 
         afficheJTableUtilisateurs();
 
+
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
         /**************************************************************************************************************************************/
@@ -128,6 +129,7 @@ public class PageUtilisateurs extends JFrame {
         btnModifierUtil.addActionListener(e -> {
         });
 
+
         btnSupprimerUtil.addActionListener(e -> {
         UtilisateurManager um = new UtilisateurManager();
             try {
@@ -159,7 +161,6 @@ public class PageUtilisateurs extends JFrame {
                 ex.printStackTrace();
             }
         } //fin afficheJTable
-
 
 }// fin class
 

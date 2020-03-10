@@ -1,10 +1,9 @@
 package com.dsi.model.dal.mysql;
 
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Annonce;
-import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Annonce;
+import com.dsi.model.dal.DAO_Factory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,6 +23,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
     private String SQL_Insert = "INSERT INTO annonces(annonce_utilisateur_id, annonce_materiel_id, annonce_titre, annonce_description, annonce_date_parution) VALUES(?,?,?,?,?);";
     private String SQL_Update = "UPDATE annonces SET annonce_titre=?, annonce_description=?, annonce_date_parution=? WHERE annonce_id=?;";
     private String SQL_Delete = "DELETE FROM annonces WHERE annonce_id=?;";
+    private String SQL_DeleteByIdUtilisateur    = "DELETE FROM annonces WHERE annonce_utilisateur_id=?;";
+
 
     private Annonce annonce;
     private List<Annonce> annonces;
@@ -110,18 +111,36 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-
     }
 
     @Override
     public void delete(Annonce pObj) throws DALException {
         pstmt = null;
+        boolean res = false;
 
         try {
             //Execution de la requête
             pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getAnnonce_id());
+
+            //Initialisation de la transaction
+            MysqlConnecteur.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
+
+
+            //Suppression des materiels
+            DAO_Factory.getDAO_Materiel().deleteByIdMateriel(rs.getInt("annonce_materiel_id"));
+
+            //Suppression des commentaires
+            DAO_Factory.getDAO_Commentaire().deleteByIdAnnonce(rs.getInt("commentaire_annonce_id"));
+
+            //Suppression des annonces
             pstmt.executeUpdate();
+
+            //Tout s'est bien passé, on commit
+            MysqlConnecteur.commit();
+
+            res = true;
+
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
@@ -136,6 +155,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
             //Fermeture de la connexion
             try {
+                MysqlConnecteur.setAutoCommit(true);
                 MysqlConnecteur.closeConnexion();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -288,6 +308,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
             //Fermeture de la connexion
             try {
+                MysqlConnecteur.setAutoCommit(true);
                 MysqlConnecteur.closeConnexion();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -296,6 +317,103 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
         return annonces;
     }
+
+
+
+    @Override
+    public boolean deleteByIdUtilisateur(int pIdUtilisateur) throws DALException {
+        pstmt = null;
+        boolean res = false;
+
+        try {
+            //Execution de la requête
+            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdUtilisateur);
+            pstmt.setInt(1, pIdUtilisateur);
+
+            //Initialisation de la transaction
+            MysqlConnecteur.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
+
+            List <Annonce> annonces = DAO_Factory.getDAO_Annonce().selectByIdUtilisateur(pIdUtilisateur);
+
+            for (Annonce a : annonces){
+                //Suppression des commentaires
+                DAO_Factory.getDAO_Commentaire().deleteByIdAnnonce(a.getAnnonce_id());
+
+                //Suppression des matériels
+                DAO_Factory.getDAO_Materiel().deleteByIdMateriel(a.getAnnonce_materiel_id());
+            }
+
+            //Suppression des annonces
+            pstmt.executeUpdate();
+
+            //Tout s'est bien passé, on commit
+            MysqlConnecteur.commit();
+
+            res = true;
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        }finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                MysqlConnecteur.setAutoCommit(true);
+                MysqlConnecteur.closeConnexion();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+        return res;
+    }
+
+
+    @Override
+    public boolean deleteByIdMateriel(int utilisateur_id) throws DALException {
+        return false;
+    }
+
+
+    public boolean deleteByIdAnnonce (int pIdAnnonce) throws DALException {
+        pstmt = null;
+        boolean res = false;
+
+        try {
+            //Execution de la requête
+            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdUtilisateur);
+            pstmt.setInt(1, pIdAnnonce);
+            pstmt.executeUpdate();
+
+            res = true;
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        }finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                MysqlConnecteur.closeConnexion();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return res;
+    }
+
 
 }//fin class
 

@@ -47,6 +47,11 @@ public class SortieManager implements  Manager<Sortie> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+    @Override
     public List<Sortie> SelectAll() throws BLLException {
         return null;
     }

@@ -43,7 +43,7 @@ public class PageCategories extends JFrame {
 
 
     public void initialiserComposants() {
-        setTitle("categories");
+        setTitle("Categories");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

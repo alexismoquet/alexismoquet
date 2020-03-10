@@ -66,6 +66,11 @@ public class AdresseManager implements Manager<Adresse> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+    @Override
     public List<Adresse> SelectAll() throws BLLException {
         adresses = new ArrayList<>();
         try {

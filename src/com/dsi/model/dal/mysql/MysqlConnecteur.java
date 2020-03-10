@@ -42,8 +42,32 @@ public class MysqlConnecteur {
 		if (cnx == null) {
 			cnx = DriverManager.getConnection(bddUrl, bddUser, bddPassword);
 		}
-
 		return cnx;
+	}
+
+	/**
+	 * Paramètrage du commit
+	 * @param pEtat
+	 * @throws SQLException
+	 */
+	public static void setAutoCommit(boolean pEtat) throws SQLException {
+			cnx.setAutoCommit(pEtat);
+	}
+
+	/**
+	 * Commit
+	 * @throws SQLException
+	 */
+	public static void commit() throws SQLException {
+		cnx.commit();
+	}
+
+	/**
+	 * Rollback
+	 * @throws SQLException
+	 */
+	public static void rollback() throws SQLException {
+		cnx.rollback();
 	}
 
 	/**

@@ -67,6 +67,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         }
     }
 
+    @Override
     public void delete(int pIdUtilisateur) throws BLLException {
         try {
             dao.deleteById(pIdUtilisateur);

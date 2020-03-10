@@ -64,6 +64,11 @@ public class UtilisateurBoManager implements Manager <UtilisateurBo> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+    @Override
     public List <UtilisateurBo> SelectAll() throws BLLException {
         try {
             utilisateurs = dao.selectAll();

@@ -48,6 +48,11 @@ public class SportManager implements Manager<Sport> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+    @Override
     public List<Sport> SelectAll() throws BLLException {
         sports = new ArrayList<>();
         try {

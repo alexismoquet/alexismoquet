@@ -65,6 +65,11 @@ public class CategorieManager implements Manager<Categorie> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+    @Override
     public List<Categorie> SelectAll() throws BLLException {
         try {
             categories = dao.selectAll();

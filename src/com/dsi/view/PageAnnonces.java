@@ -43,7 +43,7 @@ public class PageAnnonces extends JFrame {
 
 
     public void initialiserComposants() {
-        setTitle("annonces");
+        setTitle("Annonces");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +59,7 @@ public class PageAnnonces extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par titre de l'annonce     ");
+        txtRechercher.setText("     Rechercher     ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -103,7 +103,7 @@ public class PageAnnonces extends JFrame {
                 String sp = annonce.getAnnonce_titre().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.startsWith(recherche)) {
+                if (sp.contains(recherche)) {
                     listRechercheAnnonces.add(annonce);
                     TableModelAnnonce model = new TableModelAnnonce(listRechercheAnnonces);
                     tableauAnnonce.setModel(model);

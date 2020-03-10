@@ -55,13 +55,19 @@ public class CommentaireManager implements Manager<Commentaire> {
     }
 
     @Override
+    public void delete(int pIdMateriel) throws BLLException {
+
+    }
+
+
+    @Override
     public List<Commentaire> SelectAll() throws BLLException {
         commentaires = new ArrayList<>();
 
         try {
             commentaires = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des annonces", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des commentaires", e);
         }
 
         return commentaires;
@@ -69,6 +75,20 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public Commentaire SelectById(int pId) throws BLLException {
-        return null;
+        commentaire = null;
+
+        try {
+            commentaire = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+        }
+
+        return commentaire;
     }
-}
+
+
+
+
+
+}//fin class
+
