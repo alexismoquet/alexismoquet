@@ -315,9 +315,6 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                 annonces.add(annonce);
             }
 
-            if (annonces.size() == 0) {
-                throw new DALException("Aucune annonce trouvée pour l'utilisateur n° : "+pAnnonce_utilisateur_id);
-            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {
