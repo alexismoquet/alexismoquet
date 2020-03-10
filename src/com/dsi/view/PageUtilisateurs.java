@@ -35,7 +35,7 @@ public class PageUtilisateurs extends JFrame {
     List<Adresse> adresses = new ArrayList<>();
     List <Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
     int idSelected;
-
+    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
     //************************************************************
     // Constructeur par defaut
@@ -84,7 +84,6 @@ public class PageUtilisateurs extends JFrame {
 
         afficheJTableUtilisateurs();
 
-
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
         /**************************************************************************************************************************************/
@@ -121,26 +120,47 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
+
+        /**
+         * bouton annuler
+         */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             afficheJTableUtilisateurs();
         });
 
+        /**
+         * bouton Modifier
+         */
         btnModifierUtil.addActionListener(e -> {
         });
 
 
+        /**
+         * bouton Supprimer
+         */
         btnSupprimerUtil.addActionListener(e -> {
         UtilisateurManager um = new UtilisateurManager();
-            try {
-                um.delete(idSelected);
-                afficheJTableUtilisateurs();
-            } catch (BLLException ex) {
-                ex.printStackTrace();
+
+            int i= JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
+            if (i==0) //user a dit oui
+            {
+                try {
+                    um.delete(idSelected);
+                    afficheJTableUtilisateurs();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauUtilisateur.clearSelection();
             }
-            tableauUtilisateur.clearSelection();
         });
 
+
+        /**
+         * Mouse listenner sur le tableau utilisateur
+         */
         tableauUtilisateur.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -161,6 +181,7 @@ public class PageUtilisateurs extends JFrame {
                 ex.printStackTrace();
             }
         } //fin afficheJTable
+
 
 }// fin class
 
