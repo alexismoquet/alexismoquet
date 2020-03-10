@@ -6,10 +6,7 @@ import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Visuel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -48,10 +45,14 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
     @Override
     public void delete(Visuel pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt =cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getVisuel_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -68,7 +69,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -79,9 +80,14 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
     public boolean deleteByIdMateriel(int pIdMateriel) throws DALException {
         pstmt = null;
         boolean res = false;
+        Connection cnx = null;
 
-        try {//Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdMateriel);
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_DeleteByIdMateriel);
             pstmt.setInt(1, pIdMateriel);
 
 
@@ -91,7 +97,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
             res = true;
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdMateriel);
+            pstmt = cnx.prepareStatement(SQL_DeleteByIdMateriel);
             pstmt.setInt(1, pIdMateriel);
             pstmt.executeUpdate();
 
@@ -110,7 +116,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

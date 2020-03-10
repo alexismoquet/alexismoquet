@@ -4,10 +4,7 @@ import com.dsi.model.beans.Adresse;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Adresse;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +35,15 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     @Override
     public void insert(Adresse pObj) throws DALException {
         pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setInt(1, pObj.getIdUtilisateur());
             pstmt.setString(2, pObj.getAdresse());
             pstmt.setString(3, pObj.getComplement());
@@ -71,7 +73,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -81,10 +83,15 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     @Override
     public void update(Adresse pObj) throws DALException {
         pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Update);
+            pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getAdresse());
             pstmt.setString(2, pObj.getComplement());
             pstmt.setString(3, pObj.getCodePostal());
@@ -110,7 +117,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -120,10 +127,15 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     @Override
     public void delete(Adresse pObj) throws DALException {
         pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getIdAdresse());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -140,7 +152,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -153,10 +165,15 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
         rs = null;
         adresse = null;
         adresses = new ArrayList<>();
+        pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             while (rs.next()) {
@@ -193,7 +210,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -207,10 +224,14 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
         pstmt = null;
         rs = null;
         adresse = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectById);
+            pstmt = cnx.prepareStatement(SQL_SelectById);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -244,7 +265,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -259,10 +280,14 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
         rs = null;
         adresse = null;
         adresses = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectByIdUtilisateur);
+            pstmt = cnx.prepareStatement(SQL_SelectByIdUtilisateur);
             pstmt.setInt(1, pIdUtilisateur);
             rs = pstmt.executeQuery();
 
@@ -300,7 +325,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -313,10 +338,14 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     public boolean deleteByIdUtilisateur(int pIdUtilisateur) throws DALException {
         pstmt = null;
         boolean res = false;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdUtilisateur);
+            pstmt = cnx.prepareStatement(SQL_DeleteByIdUtilisateur);
             pstmt.setInt(1, pIdUtilisateur);
             pstmt.executeUpdate();
 
@@ -335,7 +364,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

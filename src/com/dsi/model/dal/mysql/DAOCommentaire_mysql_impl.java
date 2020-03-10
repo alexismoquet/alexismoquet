@@ -42,10 +42,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     @Override
     public void insert(Commentaire pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt =cnx.prepareStatement(SQL_Insert);
             pstmt.setInt(1, pObj.getCommentaire_id());
             pstmt.setInt(2, pObj.getCommentaire_annonce_id());
             pstmt.setInt(3, pObj.getCommentaire_note());
@@ -71,7 +75,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -81,10 +85,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     @Override
     public void update(Commentaire pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Update);
+            pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setInt(1, pObj.getCommentaire_id());
             pstmt.setInt(2, pObj.getCommentaire_annonce_id());
             pstmt.setInt(3, pObj.getCommentaire_note());
@@ -106,7 +114,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -116,10 +124,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     @Override
     public void delete(Commentaire pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getCommentaire_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -136,7 +148,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -149,10 +161,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
         rs = null;
         commentaire = null;
         commentaires = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             while (rs.next()) {
@@ -184,7 +200,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -197,10 +213,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
         pstmt = null;
         rs = null;
         commentaire = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectById);
+            pstmt =cnx.prepareStatement(SQL_SelectById);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -229,7 +249,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -252,10 +272,14 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     public boolean deleteByIdAnnonce(int pIdAnnonce) throws DALException {
         pstmt = null;
         boolean res = false;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_DeleteByIdAnnonce);
+            pstmt = cnx.prepareStatement(SQL_DeleteByIdAnnonce);
             pstmt.setInt(1, pIdAnnonce);
 
             pstmt.executeUpdate();
@@ -275,7 +299,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

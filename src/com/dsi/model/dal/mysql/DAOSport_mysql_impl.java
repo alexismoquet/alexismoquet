@@ -10,10 +10,7 @@ import com.dsi.model.dal.DAO_Adresse;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,10 +55,14 @@ public class DAOSport_mysql_impl implements DAO_Sport {
         rs = null;
         sport = null;
         sports = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt =cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             //Récupération des enregistrements
@@ -91,7 +92,7 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

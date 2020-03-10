@@ -39,10 +39,15 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     @Override
     public void insert(Utilisateur pObj) throws DALException {
         pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getNom());
             pstmt.setString(2, pObj.getPrenom());
             pstmt.setString(3, pObj.getTelFix());
@@ -66,7 +71,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -76,10 +81,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     @Override
     public void update(Utilisateur pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Update);
+            pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getNom());
             pstmt.setString(2, pObj.getPrenom());
             pstmt.setString(3, pObj.getTelFix());
@@ -104,7 +113,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+               cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -114,10 +123,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     @Override
     public void delete(Utilisateur pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getIdUtilisateur());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -134,7 +147,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -145,14 +158,18 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     public boolean deleteById(int pIdUtilisateur) throws DALException {
         pstmt = null;
         boolean res = false;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pIdUtilisateur);
 
             //Initialisation de la transaction
-            MysqlConnecteur.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
+            cnx.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
 
             //Suppression des annonces
             DAO_Factory.getDAO_Annonce().deleteByIdUtilisateur(pIdUtilisateur);
@@ -164,12 +181,12 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             pstmt.executeUpdate();
 
             //Tout s'est bien passé, on commit
-            MysqlConnecteur.commit();
+            cnx.commit();
 
             res = true;
         } catch (SQLException e) {
             try {
-                MysqlConnecteur.rollback();
+                cnx.rollback();
             } catch (SQLException ex) {
                 throw new DALException("Un problème est survenu lors de la suppression", e);
             }
@@ -187,8 +204,8 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.setAutoCommit(true);
-                MysqlConnecteur.closeConnexion();
+                cnx.setAutoCommit(true);
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -201,10 +218,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
         pstmt = null;
         rs = null;
         utilisateur = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectById);
+            pstmt = cnx.prepareStatement(SQL_SelectById);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -246,7 +267,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -261,10 +282,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
         rs = null;
         utilisateur = null;
         utilisateurs = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             //Récupération des enregistrements
@@ -311,7 +336,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

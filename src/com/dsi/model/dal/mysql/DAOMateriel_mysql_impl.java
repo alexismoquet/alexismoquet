@@ -7,10 +7,7 @@ import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Materiel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -51,10 +48,14 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     @Override
     public void delete(Materiel pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getMateriel_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -71,7 +72,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -88,14 +89,18 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     public boolean deleteByIdMateriel (int pIdMateriel) throws DALException {
         pstmt = null;
         boolean res = false;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pIdMateriel);
 
             //Initialisation de la transaction
-            MysqlConnecteur.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
+            cnx.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
 
             //Suppression des sorties
             DAO_Factory.getDAO_Sortie().deleteByIdMateriel(pIdMateriel);
@@ -107,12 +112,12 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
             pstmt.executeUpdate();
 
             //Tout s'est bien passé, on commit
-            MysqlConnecteur.commit();
+            cnx.commit();
 
             res = true;
         } catch (SQLException e) {
             try {
-                MysqlConnecteur.rollback();
+                cnx.rollback();
             } catch (SQLException ex) {
                 throw new DALException("Un problème est survenu lors de la suppression", e);
             }
@@ -130,8 +135,8 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.setAutoCommit(true);
-                MysqlConnecteur.closeConnexion();
+                cnx.setAutoCommit(true);
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -147,10 +152,14 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
         rs = null;
         materiel = null;
         materiels = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             while (rs.next()) {
@@ -186,7 +195,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }

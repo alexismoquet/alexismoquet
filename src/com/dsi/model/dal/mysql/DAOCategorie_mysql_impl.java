@@ -38,10 +38,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void insert(Categorie pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt =cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getCategorie_libelle());
 
 
@@ -64,7 +68,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -75,10 +79,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void update(Categorie pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setInt(1, pObj.getCategorie_id());
             pstmt.setString(2, pObj.getCategorie_libelle());
 
@@ -97,7 +105,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -109,10 +117,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void delete(Categorie pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getCategorie_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -129,7 +141,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -143,10 +155,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
         rs = null;
         categorie = null;
         categories = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             //Récupération des enregistrements
@@ -172,7 +188,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -185,10 +201,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
         pstmt = null;
         rs = null;
         categorie = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectById);
+            pstmt = cnx.prepareStatement(SQL_SelectById);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -218,7 +238,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
