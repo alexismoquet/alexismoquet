@@ -13,70 +13,23 @@ import java.sql.SQLException;
  * @since Créé 05/02/2020
  */
 public class MysqlConnecteur {
-	private static String bddUrl;
-	private static String bddUser;
-	private static String bddPassword;
-	private static Connection cnx = null;
+    private String bddUrl;
+    private String bddUser;
+    private String bddPassword;
 
-	/**
-	 * Chargement du driver
-	 */
-	static {
-		try {
-			Class.forName(Parametres.getProperties("bddDriver_mariadb"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		bddUrl = Parametres.getProperties("bddUrl_mariadb");
-		bddUser = Parametres.getProperties("bddUser");
-		bddPassword = Parametres.getProperties("bddPassword");
-	}
+    public MysqlConnecteur() throws SQLException {
+        try {
+            Class.forName(Parametres.getProperties("bddDriver_mariadb"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-	/**
-	 * Obtention de la connexion
-	 * @return
-	 * @throws SQLException
-	 */
-	public static Connection getConnection() throws SQLException{
-		if (cnx == null) {
-			cnx = DriverManager.getConnection(bddUrl, bddUser, bddPassword);
-		}
-		return cnx;
-	}
+        bddUrl = Parametres.getProperties("bddUrl_mariadb");
+        bddUser = Parametres.getProperties("bddUser");
+        bddPassword = Parametres.getProperties("bddPassword");
+    }
 
-	/**
-	 * Paramètrage du commit
-	 * @param pEtat
-	 * @throws SQLException
-	 */
-	public static void setAutoCommit(boolean pEtat) throws SQLException {
-			cnx.setAutoCommit(pEtat);
-	}
-
-	/**
-	 * Commit
-	 * @throws SQLException
-	 */
-	public static void commit() throws SQLException {
-		cnx.commit();
-	}
-
-	/**
-	 * Rollback
-	 * @throws SQLException
-	 */
-	public static void rollback() throws SQLException {
-		cnx.rollback();
-	}
-
-	/**
-	 * Fermeture de la connexion
-	 */
-	public static void closeConnexion() throws SQLException {
-		if (cnx != null){
-			cnx.close();
-			cnx = null;
-		}
+    public Connection getConnexion() throws SQLException {
+		return DriverManager.getConnection(bddUrl, bddUser, bddPassword);
 	}
 }

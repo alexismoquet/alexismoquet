@@ -5,10 +5,7 @@ import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_UtilisateurBo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +17,12 @@ import java.util.List;
  */
 public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
-    private String SQL_SelectAll        = "SELECT * FROM utilisateurs_bo;";
-    private String SQL_SelectById       = "SELECT * FROM utilisateurs_bo WHERE utilisateur_bo_id=?;";
-    private String SQL_Insert           = "INSERT INTO utilisateurs_bo(utilisateur_bo_login, utilisateur_bo_mot_de_passe, utilisateur_bo_role) VALUES(?,?,?);";
-    private String SQL_Update           = "UPDATE utilisateurs_bo SET utilisateur_bo_login=?, utilisateur_bo_mot_de_passe=?, utilisateur_bo_role=? WHERE utilisateur_bo_id=?;";
-    private String SQL_Delete           = "DELETE FROM utilisateurs_bo WHERE utilisateur_bo_id=?;";
-    private String SQL_SelectByLogin    = "SELECT * FROM utilisateurs_bo WHERE utilisateur_bo_login=?;";
+    private String SQL_SelectAll = "SELECT * FROM utilisateurs_bo;";
+    private String SQL_SelectById = "SELECT * FROM utilisateurs_bo WHERE utilisateur_bo_id=?;";
+    private String SQL_Insert = "INSERT INTO utilisateurs_bo(utilisateur_bo_login, utilisateur_bo_mot_de_passe, utilisateur_bo_role) VALUES(?,?,?);";
+    private String SQL_Update = "UPDATE utilisateurs_bo SET utilisateur_bo_login=?, utilisateur_bo_mot_de_passe=?, utilisateur_bo_role=? WHERE utilisateur_bo_id=?;";
+    private String SQL_Delete = "DELETE FROM utilisateurs_bo WHERE utilisateur_bo_id=?;";
+    private String SQL_SelectByLogin = "SELECT * FROM utilisateurs_bo WHERE utilisateur_bo_login=?;";
 
     private UtilisateurBo utilisateur;
     private Roles role;
@@ -34,16 +31,21 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
     private Statement stmt;
     private ResultSet rs;
 
-    public DAOUtilisateurBo_mysql_impl() {}
+    public DAOUtilisateurBo_mysql_impl() {
+    }
 
     @Override
     public void insert(UtilisateurBo pObj) throws DALException {
         pstmt = null;
         rs = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Insert);
+            pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getLogin());
             pstmt.setString(2, pObj.getMdp());
             pstmt.setString(3, pObj.getRole().getLibelle());
@@ -51,12 +53,12 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             pstmt.executeUpdate();
 
             rs = pstmt.getGeneratedKeys();
-            if (rs.next()){
+            if (rs.next()) {
                 pObj.setIdUtilisateur(rs.getInt(1));
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -68,7 +70,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -78,10 +80,14 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
     @Override
     public void update(UtilisateurBo pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Update);
+            pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getLogin());
             pstmt.setString(2, pObj.getMdp());
             pstmt.setString(3, pObj.getRole().getLibelle());
@@ -90,7 +96,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -102,7 +108,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -112,15 +118,19 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
     @Override
     public void delete(UtilisateurBo pObj) throws DALException {
         pstmt = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_Delete);
+            pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getIdUtilisateur());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -132,7 +142,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -144,10 +154,14 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
         pstmt = null;
         rs = null;
         utilisateur = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectById);
+            pstmt = cnx.prepareStatement(SQL_SelectById);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -159,11 +173,11 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
                         chaineVersRoles(rs.getString("utilisateur_bo_role"))
                 );
             } else {
-                throw new DALException("Aucun utilisateur trouvé avec l'identifiant : "+pId);
+                throw new DALException("Aucun utilisateur trouvé avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -175,7 +189,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -190,10 +204,14 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
         rs = null;
         utilisateur = null;
         utilisateurs = new ArrayList<>();
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            stmt = MysqlConnecteur.getConnection().createStatement();
+            stmt = cnx.createStatement();
             rs = stmt.executeQuery(SQL_SelectAll);
 
             //Récupération des enregistrements
@@ -209,7 +227,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (stmt != null) {
                 try {
@@ -221,7 +239,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -235,10 +253,14 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
         pstmt = null;
         rs = null;
         utilisateur = null;
+        Connection cnx = null;
 
         try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
             //Execution de la requête
-            pstmt = MysqlConnecteur.getConnection().prepareStatement(SQL_SelectByLogin);
+            pstmt = cnx.prepareStatement(SQL_SelectByLogin);
             pstmt.setString(1, pLogin);
             rs = pstmt.executeQuery();
 
@@ -250,11 +272,11 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
                         chaineVersRoles(rs.getString("utilisateur_bo_role"))
                 );
             } else {
-                throw new DALException("Aucun utilisateur trouvé avec le login : "+pLogin);
+                throw new DALException("Aucun utilisateur trouvé avec le login : " + pLogin);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {
@@ -266,7 +288,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
-                MysqlConnecteur.closeConnexion();
+                cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
@@ -277,10 +299,11 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
     /**
      * Converti une chaine de caratères de role en enumération Role
+     *
      * @param role
      * @return
      */
-    private Roles chaineVersRoles(String role){
+    private Roles chaineVersRoles(String role) {
         Roles r = null;
 
         if (role.equalsIgnoreCase(Roles.ADMIN.getLibelle())) {
