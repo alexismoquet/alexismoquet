@@ -1,9 +1,11 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Visuel;
+import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Visuel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VisuelManager implements Manager<Visuel> {
@@ -32,26 +34,54 @@ public class VisuelManager implements Manager<Visuel> {
     }
     @Override
     public void insert(Visuel pObj) throws BLLException {
-
+        try {
+            dao.insert(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'annonce", e);
+        }
     }
 
     @Override
     public void update(Visuel pObj) throws BLLException {
-
+        try {
+            dao.update(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+        }
     }
 
     @Override
     public void delete(Visuel pObj) throws BLLException {
-
+        try {
+            dao.delete(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+        }
     }
 
     @Override
     public List<Visuel> SelectAll() throws BLLException {
-        return null;
+        visuels = new ArrayList<>();
+        try {
+            visuels = dao.selectAll();
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+        }
+
+        return visuels;
     }
 
     @Override
     public Visuel SelectById(int pId) throws BLLException {
-        return null;
+        visuel = null;
+
+        try {
+            visuel = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return visuel;
     }
-}
+
+}//fin class

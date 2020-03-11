@@ -36,7 +36,6 @@ public class UtilisateurManager implements Manager<Utilisateur> {
         if (instance == null){
             instance = new UtilisateurManager();
         }
-
         return instance;
     }
 

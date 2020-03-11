@@ -15,6 +15,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bSports = new JButton("Sports");
     private JButton bAnnonces = new JButton("Annonces");
     private JButton bCommentaires = new JButton("Commentaires");
+    private JButton bVisuels = new JButton("Visuels");
 
 
     //************************************************************
@@ -72,6 +73,12 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) { PageCommentaires pc = new PageCommentaires(); }
         });
 
+        bVisuels.setSize(100,50);
+        bVisuels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageVisuels pc = new PageVisuels(); }
+        });
+
         // Panel Principal
         panPrincipal.setLayout(new BorderLayout());
         panSecondaire.setBackground(Color.decode("#11417d"));
@@ -86,6 +93,7 @@ public class PageHubAdmin extends JFrame {
         panSecondaire.add(bSports);
         panSecondaire.add(bAnnonces);
         panSecondaire.add(bCommentaires);
+        panSecondaire.add(bVisuels);
 
         setContentPane(panPrincipal);
     }

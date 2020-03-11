@@ -1,12 +1,14 @@
 package com.dsi.model.dal.mysql;
 
 import com.dsi.model.beans.Materiel;
+import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Visuel;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Visuel;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,11 +78,105 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
     @Override
     public List<Visuel> selectAll() throws DALException {
-        return null;
+
+        stmt = null;
+        rs = null;
+        visuel = null;
+        visuels = new ArrayList<>();
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            stmt =cnx.createStatement();
+            rs = stmt.executeQuery(SQL_SelectAll);
+
+            //Récupération des enregistrements
+            while (rs.next()) {
+                visuel = new Visuel (
+                        rs.getInt("visuel_id"),
+                        rs.getInt("visuel_materiel_id"),
+                        rs.getString("visuel_nom_fichier")
+                );
+
+                visuels.add(visuel);
+            }
+
+            if (visuels.size() == 0) {
+                throw new DALException("Aucun utilisateur trouvé");
+            }
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return visuels;
     }
 
     @Override
     public Visuel selectById(int pId) throws DALException {
-        return null;
+        pstmt = null;
+        rs = null;
+        visuel = null;
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectById);
+            pstmt.setInt(1, pId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                //Récupération des enregistrements
+
+                visuel = new Visuel (
+                        rs.getInt("visuel_id"),
+                        rs.getInt("visuel_materiel_id"),
+                        rs.getString("visuel_nom_fichier")
+                );
+
+            } else {
+                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+            }
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+        return visuel;
     }
 }
