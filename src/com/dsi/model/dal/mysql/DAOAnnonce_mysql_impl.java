@@ -230,42 +230,41 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
             if (rs.next()) {
                 //Récupération des enregistrements
-                while (rs.next()) {
-                    annonce = new Annonce(
-                            rs.getInt("annonce_id"),
-                            rs.getInt("annonce_utilisateur_id"),
-                            rs.getInt("annonce_materiel_id"),
-                            rs.getString("annonce_titre"),
-                            rs.getString("annonce_description"),
-                            rs.getDate("annonce_date_parution"),
-                            rs.getBoolean("annonce_valider")
-                    );
-                    annonces.add(annonce);
-                }
-            }else {
+
+                annonce = new Annonce(
+                        rs.getInt("annonce_id"),
+                        rs.getInt("annonce_utilisateur_id"),
+                        rs.getInt("annonce_materiel_id"),
+                        rs.getString("annonce_titre"),
+                        rs.getString("annonce_description"),
+                        rs.getDate("annonce_date_parution"),
+                        rs.getBoolean("annonce_valider")
+                );
+
+            } else {
                 throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
             }
-            } catch(SQLException e){
-                throw new DALException("Problème lors de la connexion à la base de données !", e);
-            } finally{
-                //Fermeture du statement
-                if (stmt != null) {
-                    try {
-                        stmt.close();
-                    } catch (SQLException e) {
-                        throw new DALException("Problème lors de la fermeture du statement !", e);
-                    }
-                }
-
-                //Fermeture de la connexion
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (stmt != null) {
                 try {
-                    cnx.close();
+                    stmt.close();
                 } catch (SQLException e) {
-                    throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
                 }
             }
-            return annonce;
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
         }
+        return annonce;
+    }
 
     @Override
     public List<Annonce> selectByIdUtilisateur(int pAnnonce_utilisateur_id) throws DALException {
@@ -300,7 +299,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
+        } finally {
             //Fermeture du statement
             if (pstmt != null) {
                 try {

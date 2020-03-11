@@ -61,7 +61,7 @@ public class AnnonceManager implements Manager<Annonce> {
     @Override
     public void delete(Annonce pObj) throws BLLException {
         try {
-            dao.update(pObj);
+            dao.delete(pObj);
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
         }

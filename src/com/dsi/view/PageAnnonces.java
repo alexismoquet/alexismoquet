@@ -4,6 +4,8 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.UtilisateurManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -32,6 +34,8 @@ public class PageAnnonces extends JFrame {
     private JTable tableauAnnonce = new JTable();
     List<Annonce> annonces = new ArrayList<>();
     List <Annonce> listRechercheAnnonces = new ArrayList<>();
+    Annonce annonce;
+    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
     /************************************************************/
@@ -124,8 +128,37 @@ public class PageAnnonces extends JFrame {
         });
 
         btnSupprimerAnnonce.addActionListener(e -> {
-            tableauAnnonce.clearSelection();
+            AnnonceManager am = AnnonceManager.getInstance();
 
+            int i= JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
+            if (i==0) //user a dit oui
+            {
+                try {
+                    am.delete(annonce);
+                    afficheJTableAnnonces();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauAnnonce.clearSelection();
+            }
+
+        });
+
+        /**
+         * Mouse listenner sur le tableau utilisateur
+         */
+        tableauAnnonce.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int id = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
+                try {
+                    annonce = AnnonceManager.getInstance().SelectById(id);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
     }//fin initialiserComposants
 
