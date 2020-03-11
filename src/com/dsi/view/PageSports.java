@@ -93,7 +93,7 @@ public class PageSports extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheSports = new ArrayList<>();
-            UtilisateurManager um = new UtilisateurManager();
+            UtilisateurManager um = UtilisateurManager.getInstance();
             try {
                 um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {

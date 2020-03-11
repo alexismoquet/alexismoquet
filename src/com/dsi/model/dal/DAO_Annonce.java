@@ -12,9 +12,6 @@ import java.util.List;
  */
 public interface DAO_Annonce extends DAO<Annonce> {
 
-    List<Annonce> selectByIdUtilisateur(int pAnnonce_utilisateur_id) throws DALException;
+    List<Annonce> selectByIdUtilisateur(int pIdUtilisateur) throws DALException;
 
-    boolean deleteByIdUtilisateur(int pIdUtilisateur) throws DALException;
-
-    boolean deleteByIdMateriel(int materiel_utilisateur_id) throws DALException;
 }

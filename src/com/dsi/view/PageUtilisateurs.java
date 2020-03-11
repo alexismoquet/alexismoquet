@@ -34,7 +34,7 @@ public class PageUtilisateurs extends JFrame {
     List<Utilisateur> utilisateurs = new ArrayList<>();
     List<Adresse> adresses = new ArrayList<>();
     List <Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
-    int idSelected;
+    Utilisateur utilisateur;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
     //************************************************************
@@ -99,7 +99,7 @@ public class PageUtilisateurs extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheUtilisateurs = new ArrayList<>();
-            UtilisateurManager um = new UtilisateurManager();
+            UtilisateurManager um = UtilisateurManager.getInstance();
             try {
                 um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
@@ -140,7 +140,7 @@ public class PageUtilisateurs extends JFrame {
          * bouton Supprimer
          */
         btnSupprimerUtil.addActionListener(e -> {
-        UtilisateurManager um = new UtilisateurManager();
+        UtilisateurManager um = UtilisateurManager.getInstance();
 
             int i= JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
                     "Veuillez confirmer votre choix",
@@ -148,7 +148,7 @@ public class PageUtilisateurs extends JFrame {
             if (i==0) //user a dit oui
             {
                 try {
-                    um.delete(idSelected);
+                    um.delete(utilisateur);
                     afficheJTableUtilisateurs();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -164,7 +164,13 @@ public class PageUtilisateurs extends JFrame {
         tableauUtilisateur.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                 idSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 11);
+                int id = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 11);
+                try {
+                    utilisateur = UtilisateurManager.getInstance().SelectById(id);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
 

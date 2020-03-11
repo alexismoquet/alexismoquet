@@ -46,11 +46,6 @@ public class VisuelManager implements Manager<Visuel> {
     }
 
     @Override
-    public void delete(int pIdMateriel) throws BLLException {
-
-    }
-
-    @Override
     public List<Visuel> SelectAll() throws BLLException {
         return null;
     }

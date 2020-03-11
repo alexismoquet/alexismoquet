@@ -23,7 +23,6 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     private String SQL_Insert = "INSERT INTO commentaires(commentaire_annonce_id, commentaire_note, commentaire_message, commentaire_date_parution) VALUES(?,?,?,?);";
     private String SQL_Update = "UPDATE commentaires SET commentaire_annonce_id=?, commentaire_note=?, commentaire_message=?, commentaire_date_parution=?  WHERE commentaire_id=?;";
     private String SQL_Delete = "DELETE FROM commentaires WHERE commentaires_id=?;";
-    private String SQL_DeleteByIdAnnonce = "DELETE FROM commentaires WHERE commentaire_annonce_id=?;";
 
     private Commentaire commentaire ;
     private List <Commentaire> commentaires;
@@ -257,55 +256,4 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
         return commentaire;
     }
-
-
-    public List<Commentaire> selectByIdUtilisateur (int commentaire_annonce_id) throws DALException {
-        return null;
-    }
-
-    @Override
-    public List<Commentaire> selectByIdAnnonce(int commentaire_annonce_id) throws DALException {
-        return null;
-    }
-
-    @Override
-    public boolean deleteByIdAnnonce(int pIdAnnonce) throws DALException {
-        pstmt = null;
-        boolean res = false;
-        Connection cnx = null;
-
-        try {
-            //Obtention de la connexion
-            cnx = new MysqlConnecteur().getConnexion();
-
-            //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_DeleteByIdAnnonce);
-            pstmt.setInt(1, pIdAnnonce);
-
-            pstmt.executeUpdate();
-
-            res = true;
-        } catch (SQLException e) {
-            throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
-            //Fermeture du statement
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new DALException("Problème lors de la fermeture du statement !", e);
-                }
-            }
-
-            //Fermeture de la connexion
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
-            }
-        }
-
-        return res;
-    }
-
 }//fin class

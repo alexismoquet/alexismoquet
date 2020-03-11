@@ -10,7 +10,4 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public interface DAO_Commentaire extends DAO<Commentaire> {
-    List<Commentaire> selectByIdAnnonce(int commentaire_annonce_id) throws DALException;
-    boolean deleteByIdAnnonce(int commentaire_annonce_id) throws DALException;
-
 }

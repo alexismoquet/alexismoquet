@@ -12,6 +12,4 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public  interface DAO_Sortie extends DAO<Sortie> {
-    List<Annonce> selectByIdMateriel(int pAnnonce_utilisateur_id) throws DALException;
-    boolean deleteByIdMateriel(int utilisateur_id) throws DALException;
 }

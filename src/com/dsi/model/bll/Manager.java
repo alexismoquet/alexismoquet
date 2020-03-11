@@ -15,8 +15,6 @@ public interface Manager<T> {
     void update(T pObj) throws BLLException;
     void delete(T pObj) throws BLLException;
 
-    void delete(int pIdMateriel) throws BLLException;
-
     List<T> SelectAll() throws BLLException;
     T SelectById(int pId) throws BLLException;
 

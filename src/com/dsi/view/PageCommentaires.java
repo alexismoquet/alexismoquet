@@ -91,7 +91,7 @@ public class PageCommentaires extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheCommentaires = new ArrayList<>();
-            CommentaireManager um = new CommentaireManager();
+            CommentaireManager um = CommentaireManager.getInstance();
             try {
                 um.SelectAll();
             } catch (BLLException ex) {

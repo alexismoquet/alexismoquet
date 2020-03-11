@@ -18,7 +18,7 @@ public class SportManager implements Manager<Sport> {
     /**
      * Constructeur
      */
-    public SportManager() { dao = DAO_Factory.getDAO_Sport(); }
+    private SportManager() { dao = DAO_Factory.getDAO_Sport(); }
 
     /**
      * Singleton
@@ -44,11 +44,6 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public void delete(Sport pObj) throws BLLException {
-
-    }
-
-    @Override
-    public void delete(int pIdMateriel) throws BLLException {
 
     }
 

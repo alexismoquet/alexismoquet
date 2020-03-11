@@ -31,9 +31,6 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
     private Statement stmt;
     private ResultSet rs;
 
-    public DAOUtilisateurBo_mysql_impl() {
-    }
-
     @Override
     public void insert(UtilisateurBo pObj) throws DALException {
         pstmt = null;

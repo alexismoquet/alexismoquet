@@ -49,14 +49,8 @@ public class MaterielManager implements  Manager<Materiel> {
 
     @Override
     public void delete(Materiel pObj) throws BLLException {
-
-    }
-
-
-    @Override
-    public void delete(int pIdMateriel) throws BLLException {
             try {
-                dao.deleteById(pIdMateriel);
+                dao.delete(pObj);
             } catch (DALException e) {
                 throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
             }

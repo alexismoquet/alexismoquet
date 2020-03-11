@@ -12,6 +12,4 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public interface DAO_Materiel extends DAO<Materiel>{
-    boolean deleteById(int pIdMateriel) throws DALException;
-    boolean deleteByIdMateriel(int pIdMateriel) throws DALException;
 }

@@ -48,9 +48,9 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             pstmt =cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getCategorie_libelle());
 
-
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
+
             if (rs.next()) {
                 pObj.setCategorie_id(rs.getInt(1));
             }
@@ -86,10 +86,9 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             cnx = new MysqlConnecteur().getConnexion();
 
             //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_Insert);
-            pstmt.setInt(1, pObj.getCategorie_id());
-            pstmt.setString(2, pObj.getCategorie_libelle());
-
+            pstmt = cnx.prepareStatement(SQL_Update);
+            pstmt.setString(1, pObj.getCategorie_libelle());
+            pstmt.setInt(2, pObj.getCategorie_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -243,6 +242,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
+
         return categorie;
     }
 }

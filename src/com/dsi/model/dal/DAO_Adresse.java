@@ -14,5 +14,5 @@ import java.util.List;
 public interface DAO_Adresse extends DAO<Adresse> {
 
     List<Adresse> selectByIdUtilisateur(int pIdUtilisateur) throws DALException;
-    boolean deleteByIdUtilisateur(int pIdUtilisateur) throws DALException;
+
 }

@@ -24,7 +24,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
     /**
      * Constructeur
      */
-    public UtilisateurManager() {
+    private UtilisateurManager() {
         dao = DAO_Factory.getDAO_Utilisateur();
     }
 
@@ -62,15 +62,6 @@ public class UtilisateurManager implements Manager<Utilisateur> {
     public void delete(Utilisateur pObj) throws BLLException {
         try {
             dao.delete(pObj);
-        } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
-        }
-    }
-
-    @Override
-    public void delete(int pIdUtilisateur) throws BLLException {
-        try {
-            dao.deleteById(pIdUtilisateur);
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
         }

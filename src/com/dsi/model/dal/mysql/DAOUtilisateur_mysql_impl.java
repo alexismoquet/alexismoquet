@@ -155,65 +155,6 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     }
 
     @Override
-    public boolean deleteById(int pIdUtilisateur) throws DALException {
-        pstmt = null;
-        boolean res = false;
-        Connection cnx = null;
-
-        try {
-            //Obtention de la connexion
-            cnx = new MysqlConnecteur().getConnexion();
-
-            //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_Delete);
-            pstmt.setInt(1, pIdUtilisateur);
-
-            //Initialisation de la transaction
-            cnx.setAutoCommit(false); //Désactivation du commit pour la gestion manuelle
-
-            //Suppression des annonces
-            DAO_Factory.getDAO_Annonce().deleteByIdUtilisateur(pIdUtilisateur);
-
-            //Suppression des adresses
-            DAO_Factory.getDAO_Adresse().deleteByIdUtilisateur(pIdUtilisateur);
-
-            //Suppression utilisateur
-            pstmt.executeUpdate();
-
-            //Tout s'est bien passé, on commit
-            cnx.commit();
-
-            res = true;
-        } catch (SQLException e) {
-            try {
-                cnx.rollback();
-            } catch (SQLException ex) {
-                throw new DALException("Un problème est survenu lors de la suppression", e);
-            }
-
-            throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
-            //Fermeture du statement
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new DALException("Problème lors de la fermeture du statement !", e);
-                }
-            }
-
-            //Fermeture de la connexion
-            try {
-                cnx.setAutoCommit(true);
-                cnx.close();
-            } catch (SQLException e) {
-                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
-            }
-         }
-        return res;
-    }
-
-    @Override
     public Utilisateur selectById(int pId) throws DALException {
         pstmt = null;
         rs = null;
@@ -344,5 +285,4 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
         return utilisateurs;
     }
-
 }//fin class

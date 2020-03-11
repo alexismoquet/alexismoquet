@@ -66,11 +66,6 @@ public class AdresseManager implements Manager<Adresse> {
     }
 
     @Override
-    public void delete(int pIdMateriel) throws BLLException {
-
-    }
-
-    @Override
     public List<Adresse> SelectAll() throws BLLException {
         adresses = new ArrayList<>();
         try {
@@ -93,17 +88,5 @@ public class AdresseManager implements Manager<Adresse> {
         }
 
         return adresse;
-    }
-
-    public List<Adresse> SelectByIdUtilisateur(int pIdUtilisateur) throws BLLException {
-        adresses = new ArrayList<>();
-
-        try {
-            adresses = dao.selectByIdUtilisateur(pIdUtilisateur);
-        } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des adresses de l'utilisateur n° : "+pIdUtilisateur, e);
-        }
-
-        return adresses;
     }
 }

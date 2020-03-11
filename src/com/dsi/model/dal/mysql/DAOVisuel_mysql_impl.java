@@ -19,11 +19,9 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
     private String SQL_SelectAll                = "SELECT * FROM visuels;";
     private String SQL_SelectById               = "SELECT * FROM visuels WHERE visuel_id = ?;";
-    private String SQL_SelectByIdMateriel        = "SELECT * FROM visuels WHERE visuel_materiel_id = ?;";
     private String SQL_Insert                   = "INSERT INTO visuels (visuel_materiel_id, visuel_nom_fichier) VALUES (?,?);";
     private String SQL_Update                   = "UPDATE visuels SET visuel_nom_fichier=?,  WHERE visuel_id=?;";
     private String SQL_Delete                   = "DELETE FROM visuels WHERE visuel_id=?;";
-    private String SQL_DeleteByIdMateriel        = "DELETE FROM visuels WHERE visuel_materiel_id = ?;";
 
     private Visuel visuel;
     private List<Visuel> visuels;
@@ -74,55 +72,6 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-    }
-
-    @Override
-    public boolean deleteByIdMateriel(int pIdMateriel) throws DALException {
-        pstmt = null;
-        boolean res = false;
-        Connection cnx = null;
-
-        try {
-            //Obtention de la connexion
-            cnx = new MysqlConnecteur().getConnexion();
-
-            //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_DeleteByIdMateriel);
-            pstmt.setInt(1, pIdMateriel);
-
-
-            //Suppression materiel
-            pstmt.executeUpdate();
-
-
-            res = true;
-            //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_DeleteByIdMateriel);
-            pstmt.setInt(1, pIdMateriel);
-            pstmt.executeUpdate();
-
-            res = true;
-        } catch (SQLException e) {
-            throw new DALException("Problème lors de la connexion à la base de données !", e);
-        }finally {
-            //Fermeture du statement
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    throw new DALException("Problème lors de la fermeture du statement !", e);
-                }
-            }
-
-            //Fermeture de la connexion
-            try {
-               cnx.close();
-            } catch (SQLException e) {
-                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
-            }
-        }
-
-        return res;
     }
 
     @Override

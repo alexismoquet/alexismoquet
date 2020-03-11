@@ -24,7 +24,7 @@ public class CategorieManager implements Manager<Categorie> {
     /**
      * Constructeur
      */
-    public CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
+    private CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
 
     /**
      * Singleton
@@ -62,11 +62,6 @@ public class CategorieManager implements Manager<Categorie> {
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
         }
-    }
-
-    @Override
-    public void delete(int pIdMateriel) throws BLLException {
-
     }
 
     @Override

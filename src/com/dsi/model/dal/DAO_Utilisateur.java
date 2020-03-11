@@ -9,5 +9,4 @@ import com.dsi.model.beans.Utilisateur;
  * @since Créé le 05/02/2020
  */
 public interface DAO_Utilisateur extends DAO<Utilisateur> {
-    boolean deleteById(int pIdUtilisateur) throws DALException;
 }

@@ -27,7 +27,7 @@ public class AnnonceManager implements Manager<Annonce> {
     /**
      * Constructeur
      */
-    public AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
+    private AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
 
     /**
      * Singleton
@@ -68,16 +68,6 @@ public class AnnonceManager implements Manager<Annonce> {
     }
 
     @Override
-    public void delete(int pIdUtilisateur) throws BLLException {
-        try {
-            dao.deleteByIdUtilisateur(pIdUtilisateur);
-        } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
-        }
-    }
-
-
-    @Override
     public List<Annonce> SelectAll() throws BLLException {
         annonces = new ArrayList<>();
 
@@ -101,17 +91,5 @@ public class AnnonceManager implements Manager<Annonce> {
         }
 
         return annonce;
-    }
-
-    public List<Annonce> SelectByIdUtilisateur(int pIdUtilisateur) throws BLLException {
-        annonces = new ArrayList<>();
-
-        try {
-            annonces = dao.selectByIdUtilisateur(pIdUtilisateur);
-        } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des annonces de l'utilisateur n° : "+pIdUtilisateur, e);
-        }
-
-        return annonces;
     }
 }

@@ -93,7 +93,7 @@ public class PageCategories extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheCategories = new ArrayList<>();
-            CategorieManager um = new CategorieManager();
+            CategorieManager um = CategorieManager.getInstance();
             try {
                 um.SelectAll();
             } catch (BLLException ex) {

@@ -25,7 +25,7 @@ public class CommentaireManager implements Manager<Commentaire> {
     /**
      * Constructeur
      */
-    public CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
+    private CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
 
     /**
      * Singleton
@@ -53,12 +53,6 @@ public class CommentaireManager implements Manager<Commentaire> {
     public void delete(Commentaire pObj) throws BLLException {
 
     }
-
-    @Override
-    public void delete(int pIdMateriel) throws BLLException {
-
-    }
-
 
     @Override
     public List<Commentaire> SelectAll() throws BLLException {

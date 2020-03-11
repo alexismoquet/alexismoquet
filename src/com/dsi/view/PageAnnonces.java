@@ -93,7 +93,7 @@ public class PageAnnonces extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheAnnonces = new ArrayList<>();
-            AnnonceManager um = new AnnonceManager();
+            AnnonceManager um = AnnonceManager.getInstance();
             try {
                 um.SelectAll();
             } catch (BLLException ex) {
