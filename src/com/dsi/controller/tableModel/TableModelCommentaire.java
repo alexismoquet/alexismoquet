@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TableModelCommentaire extends AbstractTableModel {
 
-    private final String[] titres = {"Message","Date parution"};
+    private final String[] titres = {"Message","Date parution", "Note", "idCommentaire"};
 
     private List<Commentaire> commentaires;
 
@@ -35,6 +35,10 @@ public class TableModelCommentaire extends AbstractTableModel {
                 return commentaires.get(rowIndex).getCommentaire_message();
             case 1:
                 return commentaires.get(rowIndex).getCommentaire_date_parution();
+            case 2:
+                return commentaires.get(rowIndex).getCommentaire_note();
+            case 3:
+                return commentaires.get(rowIndex).getCommentaire_id();
             default:
                 return "";
         }

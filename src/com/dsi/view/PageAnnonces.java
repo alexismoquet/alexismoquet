@@ -34,6 +34,7 @@ public class PageAnnonces extends JFrame {
     private JTable tableauAnnonce = new JTable();
     List<Annonce> annonces = new ArrayList<>();
     List <Annonce> listRechercheAnnonces = new ArrayList<>();
+
     Annonce annonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 

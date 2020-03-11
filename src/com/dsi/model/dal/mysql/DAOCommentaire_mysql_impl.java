@@ -22,7 +22,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
     private String SQL_SelectById = "SELECT * FROM commentaires WHERE commentaire_id = ?;";
     private String SQL_Insert = "INSERT INTO commentaires(commentaire_annonce_id, commentaire_note, commentaire_message, commentaire_date_parution) VALUES(?,?,?,?);";
     private String SQL_Update = "UPDATE commentaires SET commentaire_annonce_id=?, commentaire_note=?, commentaire_message=?, commentaire_date_parution=?  WHERE commentaire_id=?;";
-    private String SQL_Delete = "DELETE FROM commentaires WHERE commentaires_id=?;";
+    private String SQL_Delete = "DELETE FROM commentaires WHERE commentaire_id=?;";
 
     private Commentaire commentaire ;
     private List <Commentaire> commentaires;
@@ -231,7 +231,8 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
                         rs.getString("commentaire_message"),
                         rs.getDate("commentaire_date_parution")
                 );
-            }else {
+            }
+            else {
                 throw new DALException("Aucune adresse trouvée avec l'identifiant : "+pId);
             }
         } catch (SQLException e) {

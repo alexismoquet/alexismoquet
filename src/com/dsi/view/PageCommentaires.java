@@ -1,7 +1,9 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCommentaire;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Commentaire;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.CommentaireManager;
 import com.dsi.model.bll.BLLException;
 import javax.swing.*;
@@ -31,6 +33,9 @@ public class PageCommentaires extends JFrame {
     private JTable tableauCommentaire = new JTable();
     List<Commentaire> commentaires = new ArrayList<>();
     List <Commentaire> listRechercheCommentaires = new ArrayList<>();
+
+    Commentaire commentaire;
+    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
     /************************************************************/
@@ -121,8 +126,36 @@ public class PageCommentaires extends JFrame {
         });
 
         btnSupprimerCommentaire.addActionListener(e -> {
-            tableauCommentaire.clearSelection();
+            CommentaireManager cm = CommentaireManager.getInstance();
 
+            int i= JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
+            if (i==0) //user a dit oui
+            {
+                try {
+                    cm.delete(commentaire);
+                    afficheJTableCommentaires();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauCommentaire.clearSelection();
+            }
+        });
+
+        /**
+         * Mouse listenner sur le tableau utilisateur
+         */
+        tableauCommentaire.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int id = (int) tableauCommentaire.getValueAt(tableauCommentaire.getSelectedRow(), 3);
+                try {
+                    commentaire = CommentaireManager.getInstance().SelectById(id);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
     }//fin initialiserComposants
 

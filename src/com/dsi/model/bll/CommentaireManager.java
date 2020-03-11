@@ -41,17 +41,29 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public void insert(Commentaire pObj) throws BLLException {
-
+        try {
+            dao.insert(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'utilisateur", e);
+        }
     }
 
     @Override
     public void update(Commentaire pObj) throws BLLException {
-
+        try {
+            dao.update(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+        }
     }
 
     @Override
     public void delete(Commentaire pObj) throws BLLException {
-
+        try {
+            dao.delete(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+        }
     }
 
     @Override
@@ -79,8 +91,6 @@ public class CommentaireManager implements Manager<Commentaire> {
 
         return commentaire;
     }
-
-
 
 
 
