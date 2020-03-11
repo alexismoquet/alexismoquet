@@ -2,8 +2,11 @@ package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
+import com.dsi.model.beans.Sport;
 import com.dsi.model.bll.CategorieManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.SportManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -33,6 +36,9 @@ public class PageCategories extends JFrame {
     List<Categorie> categories = new ArrayList<>();
     List <Categorie> listRechercheCategories = new ArrayList<>();
 
+    Categorie categorie;
+    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+
 
     /************************************************************/
     /******************** Constructeur par defaut****************/
@@ -46,7 +52,6 @@ public class PageCategories extends JFrame {
         setTitle("Categories");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
 
@@ -124,9 +129,38 @@ public class PageCategories extends JFrame {
         });
 
         btnSupprimerCategorie.addActionListener(e -> {
-            tableauCategorie.clearSelection();
+            CategorieManager sm = CategorieManager.getInstance();
 
+            int i= JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
+            if (i==0) //user a dit oui
+            {
+                try {
+                    sm.delete(categorie);
+                    afficheJTableCategories();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauCategorie.clearSelection();
+            }
         });
+
+        /**
+         * Mouse listenner sur le tableau utilisateur
+         */
+        tableauCategorie.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int id = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
+                try {
+                    categorie = CategorieManager.getInstance().SelectById(id);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
     }//fin initialiserComposants
 
 

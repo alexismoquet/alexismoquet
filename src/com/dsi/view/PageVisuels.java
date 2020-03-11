@@ -48,7 +48,6 @@ public class PageVisuels extends JFrame {
             setTitle("Visuels");
             setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
             setSize(900, 500);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
             setResizable(true);
 
@@ -84,6 +83,7 @@ public class PageVisuels extends JFrame {
             /**************************************************************************************************************************************/
             /*************************************************************** Les listenners *******************************************************/
             /**************************************************************************************************************************************/
+
             txtRechercher.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -122,9 +122,16 @@ public class PageVisuels extends JFrame {
 
             });
 
+
+            /**
+             * Bouton Modifier le visuel
+             */
             btnModifierVisuel.addActionListener(e -> {
             });
 
+            /**
+             * Bouton supprimer le visuel
+             */
             btnSupprimerVisuel.addActionListener(e -> {
                 VisuelManager am = VisuelManager.getInstance();
 
@@ -145,7 +152,7 @@ public class PageVisuels extends JFrame {
             });
 
             /**
-             * Mouse listenner sur le tableau utilisateur
+             * Mouse listenner sur le tableau Visuel
              */
             tableauVisuel.addMouseListener(new MouseAdapter() {
                 @Override

@@ -20,7 +20,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     private String SQL_SelectById = "SELECT * FROM categories WHERE categorie_id = ?;";
     private String SQL_Insert = "INSERT INTO categories(categorie_libelle) VALUES(?);";
     private String SQL_Update = "UPDATE categories SET categorie_libelle=? WHERE categorie_id=?;";
-    private String SQL_Delete = "DELETE FROM categories WHERE categories_id=?;";
+    private String SQL_Delete = "DELETE FROM categories WHERE categorie_id=?;";
 
     private Categorie categorie;
     private List <Categorie> categories;
@@ -116,6 +116,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void delete(Categorie pObj) throws DALException {
         pstmt = null;
+        boolean res = false;
         Connection cnx = null;
 
         try {
@@ -125,7 +126,11 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Delete);
             pstmt.setInt(1, pObj.getCategorie_id());
+
+            //Suppression des annonces
             pstmt.executeUpdate();
+
+            res = true;
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
@@ -213,13 +218,13 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             if (rs.next()) {
                 //Récupération des enregistrements
-                while (rs.next()) {
+
                     categorie = new Categorie(
                             rs.getInt("categorie_id"),
                             rs.getString("categorie_libelle")
                     );
                     categories.add(categorie);
-                }
+
             }else {
                 throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
             }

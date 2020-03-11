@@ -51,7 +51,6 @@ public class PageUtilisateurs extends JFrame {
         setTitle("Utilisateurs");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
 

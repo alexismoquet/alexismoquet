@@ -3,7 +3,6 @@ package com.dsi.model.dal.mysql;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Annonce;
-import com.dsi.model.dal.DAO_Factory;
 
 import java.sql.*;
 import java.util.ArrayList;

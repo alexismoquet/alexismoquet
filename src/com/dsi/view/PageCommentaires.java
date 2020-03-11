@@ -45,7 +45,6 @@ public class PageCommentaires extends JFrame {
         setTitle("Commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
 

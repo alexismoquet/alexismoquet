@@ -77,6 +77,14 @@ public class CategorieManager implements Manager<Categorie> {
 
     @Override
     public Categorie SelectById(int pId) throws BLLException {
-        return null;
+        categorie = null;
+
+        try {
+            categorie = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return categorie;
     }
 }
