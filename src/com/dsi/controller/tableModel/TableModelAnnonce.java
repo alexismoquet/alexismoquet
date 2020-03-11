@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelAnnonce extends AbstractTableModel {
 
-    private final String[] titres = {"Titres","Description","IdUtilisateur","id annonce"};
+    private final String[] titres = {"Titres","Description","IdUtilisateur","idAnnonce"};
 
     private List<Annonce> annonces;
 

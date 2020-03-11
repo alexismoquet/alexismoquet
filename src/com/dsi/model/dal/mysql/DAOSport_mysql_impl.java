@@ -3,6 +3,7 @@ package com.dsi.model.dal.mysql;
 import com.dsi.librairies.FonctionsDate;
 import com.dsi.librairies.Roles;
 import com.dsi.model.beans.Adresse;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.dal.DALException;
@@ -46,7 +47,41 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public void delete(Sport pObj) throws DALException {
+        pstmt = null;
+        boolean res = false;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Delete);
+            pstmt.setInt(1, pObj.getSport_id());
+
+            //Suppression des annonces
+            pstmt.executeUpdate();
+
+            res = true;
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override
@@ -103,6 +138,50 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public Sport selectById(int pId) throws DALException {
-        return null;
+        pstmt = null;
+        rs = null;
+        sport = null;
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectById);
+            pstmt.setInt(1, pId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                //Récupération des enregistrements
+
+                sport = new Sport(
+                        rs.getInt("sport_id"),
+                        rs.getString("sport_libelle")
+                );
+
+            } else {
+                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+            }
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+        return sport;
     }
 }

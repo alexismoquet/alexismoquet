@@ -34,17 +34,29 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public void insert(Sport pObj) throws BLLException {
-
+        try {
+            dao.insert(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'annonce", e);
+        }
     }
 
     @Override
     public void update(Sport pObj) throws BLLException {
-
+        try {
+            dao.update(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+        }
     }
 
     @Override
     public void delete(Sport pObj) throws BLLException {
-
+        try {
+            dao.delete(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+        }
     }
 
     @Override
@@ -61,6 +73,14 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public Sport SelectById(int pId) throws BLLException {
-        return null;
+        sport = null;
+
+        try {
+            sport = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return sport;
     }
 }

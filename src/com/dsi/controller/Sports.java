@@ -11,9 +11,8 @@ public class Sports {
 
     public static List<Sport> remplirJTableWithSports() throws BLLException {
             SportManager sm = SportManager.getInstance();
-            List<Sport> s = sm.SelectAll();
 
-        return s;
+        return sm.SelectAll();
     }
 
 }//fin class

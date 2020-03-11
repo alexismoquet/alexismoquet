@@ -9,8 +9,7 @@ import java.util.List;
 public class Categories {
     public static List<Categorie> remplirJTableWithCategories() throws BLLException {
         CategorieManager cm = CategorieManager.getInstance();
-        List<Categorie> c = cm.SelectAll();
 
-        return c;
+        return cm.SelectAll();
     }
 }

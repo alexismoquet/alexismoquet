@@ -1,8 +1,11 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSport;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sport;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.SportManager;
 import com.dsi.model.bll.UtilisateurManager;
 
 import javax.swing.*;
@@ -32,6 +35,9 @@ public class PageSports extends JFrame {
     private JTable tableauSport = new JTable();
     List<Sport> sports = new ArrayList<>();
     List <Sport> listRechercheSports = new ArrayList<>();
+
+    Sport sport;
+    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
     /************************************************************/
@@ -122,9 +128,38 @@ public class PageSports extends JFrame {
         btnModifierSport.addActionListener(e -> {
         });
 
-        btnSupprimerSport.addActionListener(e -> {
-            tableauSport.clearSelection();
 
+        btnSupprimerSport.addActionListener(e -> {
+            SportManager sm = SportManager.getInstance();
+
+            int i= JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
+            if (i==0) //user a dit oui
+            {
+                try {
+                    sm.delete(sport);
+                    afficheJTableSports();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauSport.clearSelection();
+            }
+        });
+
+        /**
+         * Mouse listenner sur le tableau utilisateur
+         */
+        tableauSport.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int id = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
+                try {
+                    sport = SportManager.getInstance().SelectById(id);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
     }//fin initialiserComposants
 
@@ -138,6 +173,7 @@ public class PageSports extends JFrame {
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
+
     } //fin afficheJTable
 
 }//fin class

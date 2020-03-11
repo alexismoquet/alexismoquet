@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TableModelSport extends AbstractTableModel {
 
-    private final String[] titres = {"Sports"};
+    private final String[] titres = {"Sports","id"};
 
     private List<Sport> sports;
 
@@ -33,6 +33,8 @@ public class TableModelSport extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 return sports.get(rowIndex).getSport_libelle();
+            case 1:
+                return sports.get(rowIndex).getSport_id();
             default:
                 return "";
         }

@@ -9,8 +9,7 @@ import java.util.List;
 public class Annonces {
     public static List<Annonce> remplirJTableWithAnnonces() throws BLLException {
         AnnonceManager am = AnnonceManager.getInstance();
-        List<Annonce> a = am.SelectAll();
 
-        return a;
+        return am.SelectAll();
     }
 }

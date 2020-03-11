@@ -12,7 +12,6 @@ public class BOConnexion {
 
         UtilisateurBoManager ubom =  UtilisateurBoManager.getInstance();
         UtilisateurBo ubo = ubom.selectByLogin("admin");
-        System.out.println(texteMotDePasse);
         return UMdp.mdpCompare(texteMotDePasse, ubo.getMdp());
     }
 

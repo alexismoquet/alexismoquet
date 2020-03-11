@@ -9,9 +9,8 @@ public class Utilisateurs {
 
     public static List <Utilisateur> remplirJTableWithAllUtilisateurs() throws BLLException {
         UtilisateurManager um = UtilisateurManager.getInstance();
-        List<Utilisateur> u = um.SelectAll();
 
-        return u;
+        return um.SelectAll();
     }
 
 }//fin class
