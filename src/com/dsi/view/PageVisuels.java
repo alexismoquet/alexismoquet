@@ -1,6 +1,8 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelVisuel;
+import com.dsi.model.beans.Materiel;
+import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.beans.Visuel;
 import com.dsi.model.bll.VisuelManager;
 import com.dsi.model.bll.BLLException;
@@ -12,9 +14,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import static com.dsi.controller.Visuels.remplirJTableWithVisuelsIdMateriel;
 
-import static com.dsi.controller.Visuels.remplirJTableWithVisuels;
 
+
+/**
+ * Classe PageVisuels
+ *
+ * @author Alexis Moquet
+ * @since Créé le 04/02/2020
+ */
 public class PageVisuels extends JFrame {
     
         private JPanel panPrincipal = new JPanel();
@@ -34,12 +43,18 @@ public class PageVisuels extends JFrame {
         List <Visuel> listRechercheVisuels = new ArrayList<>();
         Visuel visuel;
         ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+        Materiel materiel;
 
 
         /************************************************************/
         /******************** Constructeur par defaut****************/
         /************************************************************/
         public PageVisuels() {
+            initialiserComposants();
+        }
+
+        public PageVisuels(Materiel pMateriel) {
+            this.materiel = pMateriel;
             initialiserComposants();
         }
 
@@ -78,7 +93,8 @@ public class PageVisuels extends JFrame {
 
             setContentPane(panPrincipal);
 
-            afficheJTableVisuels();
+            afficheJTableVisuels(materiel.getMateriel_id());
+
 
             /**************************************************************************************************************************************/
             /*************************************************************** Les listenners *******************************************************/
@@ -118,7 +134,7 @@ public class PageVisuels extends JFrame {
 
             btnAnnuler.addActionListener(e -> {
                 txtRechercher.setText("                 ");
-                afficheJTableVisuels();
+                afficheJTableVisuels(materiel.getMateriel_id());
 
             });
 
@@ -142,7 +158,7 @@ public class PageVisuels extends JFrame {
                 {
                     try {
                         am.delete(visuel);
-                        afficheJTableVisuels();
+                        afficheJTableVisuels(materiel.getMateriel_id());
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
@@ -168,9 +184,9 @@ public class PageVisuels extends JFrame {
         }//fin initialiserComposants
 
 
-        private void afficheJTableVisuels() {
+        private void afficheJTableVisuels(int pIdMateriel) {
             try {
-                visuels = remplirJTableWithVisuels();
+                visuels = remplirJTableWithVisuelsIdMateriel(materiel.getMateriel_id());
                 TableModelVisuel model = new TableModelVisuel(visuels);
                 tableauVisuel.setModel(model);
 
@@ -179,5 +195,17 @@ public class PageVisuels extends JFrame {
             }
 
         } //fin afficheJTable
+
+
+//    public void afficheVisuel () throws BLLException {
+//        String adresseVisuel = "C:\\wamp64\\www\\handispap\\img\\mat";
+//
+//        for (int i=0; i<10; i++){
+//            String fichierVisuel = visuels.get(i).getVisuel_nom_fichier() + adresseVisuel;
+//            ImageIcon icone1 = new ImageIcon("C:\\wamp64\\www\\handispap\\img\\mat\\"+fichierVisuel);
+//            tableauVisuel.getValueAt(i, 0);
+//        }
+
+ //   }
 
     }//fin class

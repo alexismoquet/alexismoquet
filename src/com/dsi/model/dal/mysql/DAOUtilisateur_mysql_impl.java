@@ -246,6 +246,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         FonctionsDate.sqlDateVersJavaDate(rs.getDate("utilisateur_date_inscription"))
                 );
 
+                System.out.println(rs.getString("utilisateur_id"));
 
                 DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
 
@@ -276,13 +277,14 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             }
 
             //Fermeture de la connexion
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            if (cnx != null) {
+                try {
+                    cnx.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+                }
             }
         }
-
         return utilisateurs;
     }
 }//fin class

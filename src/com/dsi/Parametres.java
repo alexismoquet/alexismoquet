@@ -25,13 +25,13 @@ public class Parametres {
     public static boolean confirmerQuitter = true;
 
     /**
-     * Charge les paramètres contenu dans le fichier "conf.properties" au cahrgement de la classe
+     * Charge les paramètres contenu dans le fichier "conf.properties" au chargement de la classe
      */
     static {
         try (FileInputStream fis = new FileInputStream(NOM_FICHIER)){
             props.load(fis);
 
-            confirmerQuitter = Boolean.valueOf(props.getProperty(CONFIRMER_SORTIE,"true"));
+            confirmerQuitter = Boolean.parseBoolean(props.getProperty(CONFIRMER_SORTIE,"true"));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

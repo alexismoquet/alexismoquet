@@ -6,16 +6,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Classe HubAdmin
+ *
+ * @author Alexis Moquet
+ * @since Créé le 04/02/2020
+ */
 public class PageHubAdmin extends JFrame {
     private JPanel panPrincipal = new JPanel();
     private JPanel panSecondaire = new JPanel();
+
     private JButton bUtilisateurs = new JButton("Utilisateurs");
     private JButton bCategories = new JButton("Catégories");
     private JButton bSports = new JButton("Sports");
-    private JButton bAnnonces = new JButton("Annonces");
     private JButton bCommentaires = new JButton("Commentaires");
-    private JButton bVisuels = new JButton("Visuels");
+
 
 
     //************************************************************
@@ -32,7 +37,7 @@ public class PageHubAdmin extends JFrame {
 
         setTitle("HUB Admin");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(300, 170);
+        setSize(300, 150);
         setLocation(100, 100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
@@ -61,23 +66,13 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) {PageSports ps = new PageSports(); }
         });
 
-        bAnnonces.setSize(100,50);
-        bAnnonces.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {PageAnnonces pa = new PageAnnonces(); }
-        });
-
         bCommentaires.setSize(100,50);
         bCommentaires.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { PageCommentaires pc = new PageCommentaires(); }
         });
 
-        bVisuels.setSize(100,50);
-        bVisuels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { PageVisuels pc = new PageVisuels(); }
-        });
+
 
         // Panel Principal
         panPrincipal.setLayout(new BorderLayout());
@@ -91,9 +86,7 @@ public class PageHubAdmin extends JFrame {
         panSecondaire.add(bUtilisateurs);
         panSecondaire.add(bCategories);
         panSecondaire.add(bSports);
-        panSecondaire.add(bAnnonces);
-        panSecondaire.add(bCommentaires);
-        panSecondaire.add(bVisuels);
+
 
         setContentPane(panPrincipal);
     }

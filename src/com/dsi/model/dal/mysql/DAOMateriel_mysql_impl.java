@@ -1,10 +1,8 @@
 package com.dsi.model.dal.mysql;
 
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.dal.DALException;
-import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Materiel;
 
 import java.sql.*;
@@ -20,6 +18,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
     private String SQL_SelectAll                = "SELECT * FROM materiels;";
     private String SQL_SelectById               = "SELECT * FROM materiels WHERE materiel_id = ?;";
+    private String SQL_SelectByIdAdresse        = "SELECT * FROM materiels WHERE materiel_adresse_id = ?;";
     private String SQL_Insert                   = "INSERT INTO materiels (materiel_categorie_id, materiel_sport_id, materiel_materiel_id, materiel_nom, materiel_description, materiel_prix, materiel_caution, materiel_caution_prix) VALUES (?,?,?,?,?,?,?,?,?);";
     private String SQL_Update                   = "UPDATE materiels SET materiel_nom=?, materiel_description=?, materiel_prix=?, materiel_caution=?, materiel_caution_prix=? WHERE materiel_id=?;";
     private String SQL_Delete                   = "DELETE FROM materiels WHERE materiel_id=?;";
@@ -135,8 +134,64 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     }
 
     @Override
-    public Materiel selectById(int pIdMateriel) throws DALException {
+    public Materiel selectById(int pId) throws DALException {
         return null;
+    }
+
+    @Override
+    public List<Materiel> selectByIdAdresse(int pMateriel_adresse_id) throws DALException { pstmt = null;
+        rs = null;
+        materiel = null;
+        materiels = new ArrayList<>();
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectByIdAdresse);
+            pstmt.setInt(1, pMateriel_adresse_id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                materiel = new Materiel(
+                        rs.getInt("materiel_id"),
+                        rs.getInt("materiel_categorie_id"),
+                        rs.getInt("materiel_sport_id"),
+                        rs.getInt("materiel_adresse_id"),
+                        rs.getString("materiel_nom"),
+                        rs.getString("materiel_description"),
+                        rs.getFloat("materiel_prix"),
+                        rs.getBoolean("materiel_caution"),
+                        rs.getFloat("materiel_caution_prix")
+                );
+
+                materiels.add(materiel);
+            }
+
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.setAutoCommit(true);
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return materiels;
     }
 
 }

@@ -63,7 +63,15 @@ public class MaterielManager implements  Manager<Materiel> {
 
     @Override
     public Materiel SelectById(int pId) throws BLLException {
-        return null;
+        materiel = null;
+
+        try {
+            materiel = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return materiel;
     }
 
 }//fin class

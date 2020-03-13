@@ -92,4 +92,17 @@ public class AnnonceManager implements Manager<Annonce> {
 
         return annonce;
     }
-}
+
+    public List<Annonce> SelectByIdUtilisateur(int pId) throws BLLException {
+        annonces = null;
+
+        try {
+            annonces = dao.selectByIdUtilisateur(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return annonces;
+    }
+
+}//fin class

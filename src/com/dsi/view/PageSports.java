@@ -17,7 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dsi.controller.Sports.remplirJTableWithSports;
-
+/**
+ * Classe PageSports
+ *
+ * @author Alexis Moquet
+ * @since Créé le 04/02/2020
+ */
 public class PageSports extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
@@ -91,7 +96,7 @@ public class PageSports extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
-                txtRechercher.setText("");
+                txtRechercher.setText(" ");
                 txtRechercher.removeMouseListener(this);
             }
         });
@@ -104,6 +109,7 @@ public class PageSports extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
+            /** ON PARCOURS LA LISTE DES SPORTS **/
             for (Sport sport : sports) {
                 String sp = sport.getSport_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();

@@ -126,6 +126,7 @@ public class DAOSport_mysql_impl implements DAO_Sport {
             }
 
             //Fermeture de la connexion
+
             try {
                cnx.close();
             } catch (SQLException e) {
