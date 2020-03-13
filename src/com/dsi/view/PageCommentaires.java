@@ -40,6 +40,7 @@ public class PageCommentaires extends JFrame {
     List<Commentaire> commentaires = new ArrayList<>();
     List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
+    Annonce annonce;
     Commentaire commentaire;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -51,7 +52,10 @@ public class PageCommentaires extends JFrame {
         initialiserComposants();
     }
 
-
+    public PageCommentaires(Annonce annonce) {
+        this.annonce = annonce;
+        initialiserComposants();
+    }
     public void initialiserComposants() {
         setTitle("Commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -128,6 +132,7 @@ public class PageCommentaires extends JFrame {
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
+            commentaire = null;
             afficheJTableCommentaires();
 
         });

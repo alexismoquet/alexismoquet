@@ -133,9 +133,9 @@ public class PageVisuels extends JFrame {
             });
 
             btnAnnuler.addActionListener(e -> {
-                txtRechercher.setText("                 ");
+                txtRechercher.setText("");
+                materiel = null;
                 afficheJTableVisuels(materiel.getMateriel_id());
-
             });
 
 

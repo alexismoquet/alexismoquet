@@ -127,6 +127,7 @@ public class PageSports extends JFrame {
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
+            sport = null;
             afficheJTableSports();
         });
 

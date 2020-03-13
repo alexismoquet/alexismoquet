@@ -139,6 +139,7 @@ public class PageUtilisateurs extends JFrame {
          */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
+            utilisateur = null;
             afficheJTableUtilisateurs();
         });
 

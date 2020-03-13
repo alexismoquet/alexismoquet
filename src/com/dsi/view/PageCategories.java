@@ -125,7 +125,8 @@ public class PageCategories extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("                 ");
+            txtRechercher.setText("");
+            categorie = null;
             afficheJTableCategories();
 
         });

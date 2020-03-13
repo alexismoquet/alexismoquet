@@ -107,7 +107,7 @@ public class PageAnnonces extends JFrame {
         afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
 
 /**************************************************************************************************************************************/
-/*************************************************************** Les listenners *******************************************************/
+/*************************************************************** Les listenners des boutons *******************************************************/
 /**************************************************************************************************************************************/
 
         txtRechercher.addMouseListener(new MouseAdapter() {
@@ -146,7 +146,7 @@ public class PageAnnonces extends JFrame {
             listRechercheVisuels = new ArrayList<>();
             VisuelManager vm = VisuelManager.getInstance();
             try {
-                vm.SelectAll();
+                visuels = vm.SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -162,7 +162,8 @@ public class PageAnnonces extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("                 ");
+            txtRechercher.setText("");
+            annonce = null;
             afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
 
         });
@@ -227,7 +228,7 @@ public class PageAnnonces extends JFrame {
         bCommentaires.setSize(100,50);
         bCommentaires.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {PageCommentaires pc = new PageCommentaires(); }
+            public void actionPerformed(ActionEvent e) {PageCommentaires pc = new PageCommentaires(annonce); }
         });
 
     }//fin initialiserComposants

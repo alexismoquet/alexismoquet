@@ -136,7 +136,8 @@ public class PageMateriels extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("                 ");
+            txtRechercher.setText("");
+            materiel = null;
             afficheJTableMateriels();
 
         });
