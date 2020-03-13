@@ -1,5 +1,6 @@
 package com.dsi.model.bll;
 
+import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Visuel;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
@@ -82,6 +83,18 @@ public class VisuelManager implements Manager<Visuel> {
         }
 
         return visuel;
+    }
+
+    public List<Visuel> SelectByIdMateriel(int pId) throws BLLException {
+        visuels = null;
+
+        try {
+            visuels = dao.selectByIdMateriel(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return visuels;
     }
 
 }//fin class

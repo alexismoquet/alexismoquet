@@ -1,6 +1,7 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Annonce;
+import com.dsi.model.beans.Utilisateur;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;

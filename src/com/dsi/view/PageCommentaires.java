@@ -16,6 +16,12 @@ import java.util.List;
 
 import static com.dsi.controller.Commentaires.remplirJTableWithCommentaires;
 
+/**
+ * Classe PageCommentaires
+ *
+ * @author Alexis Moquet
+ * @since Créé le 04/02/2020
+ */
 public class PageCommentaires extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
@@ -34,6 +40,7 @@ public class PageCommentaires extends JFrame {
     List<Commentaire> commentaires = new ArrayList<>();
     List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
+    Annonce annonce;
     Commentaire commentaire;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -45,7 +52,10 @@ public class PageCommentaires extends JFrame {
         initialiserComposants();
     }
 
-
+    public PageCommentaires(Annonce annonce) {
+        this.annonce = annonce;
+        initialiserComposants();
+    }
     public void initialiserComposants() {
         setTitle("Commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -53,30 +63,33 @@ public class PageCommentaires extends JFrame {
         setVisible(true);
         setResizable(true);
 
+        /*********************Panel Principal******************************************/
         panPrincipal.setLayout(new BorderLayout());
         panPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
         panPrincipal.setBackground(Color.decode("#11417d"));
-
         panPrincipal.add(panHaut, BorderLayout.NORTH);
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
+        /*********************Panel haut******************************************/
         panHaut.setPreferredSize(new Dimension(900, 100));
         txtRechercher.setText("     Rechercher    ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
-        //Panel centre
+        /*********************Panel centre******************************************/
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
         panCentre.add(tableauCommentaire.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauCommentaire, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauCommentaire), BorderLayout.CENTER);
 
+        /*********************Panel Bas******************************************/
         panBas.setSize(500, 200);
         panBas.add(btnModifierCommentaire);
         panBas.add(btnSupprimerCommentaire);
         panBas.add(btnAnnuler);
+
 
         setContentPane(panPrincipal);
 
@@ -85,6 +98,7 @@ public class PageCommentaires extends JFrame {
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
         /**************************************************************************************************************************************/
+
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,6 +132,7 @@ public class PageCommentaires extends JFrame {
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
+            commentaire = null;
             afficheJTableCommentaires();
 
         });
@@ -171,5 +186,6 @@ public class PageCommentaires extends JFrame {
         }
 
     } //fin afficheJTable
-}
+
+}//fin class
 

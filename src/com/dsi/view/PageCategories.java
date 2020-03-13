@@ -17,7 +17,12 @@ import java.util.List;
 
 import static com.dsi.controller.Categories.remplirJTableWithCategories;
 
-
+/**
+ * Classe PageCategorie
+ *
+ * @author Alexis Moquet
+ * @since Créé le 04/02/2020
+ */
 public class PageCategories extends JFrame {
 
     private JPanel panPrincipal = new JPanel();
@@ -120,7 +125,8 @@ public class PageCategories extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("                 ");
+            txtRechercher.setText("");
+            categorie = null;
             afficheJTableCategories();
 
         });

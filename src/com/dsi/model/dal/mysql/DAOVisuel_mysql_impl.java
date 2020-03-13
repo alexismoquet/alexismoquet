@@ -1,5 +1,6 @@
 package com.dsi.model.dal.mysql;
 
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Visuel;
@@ -21,6 +22,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
     private String SQL_SelectAll                = "SELECT * FROM visuels;";
     private String SQL_SelectById               = "SELECT * FROM visuels WHERE visuel_id = ?;";
+    private String SQL_SelectByIdMateriel       = "SELECT * FROM visuels WHERE visuel_materiel_id = ?;";
     private String SQL_Insert                   = "INSERT INTO visuels (visuel_materiel_id, visuel_nom_fichier) VALUES (?,?);";
     private String SQL_Update                   = "UPDATE visuels SET visuel_nom_fichier=?,  WHERE visuel_id=?;";
     private String SQL_Delete                   = "DELETE FROM visuels WHERE visuel_id=?;";
@@ -178,5 +180,57 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
             }
         }
         return visuel;
+    }
+
+    @Override
+    public List<Visuel> selectByIdMateriel( int pVisuel_materiel_id) throws DALException {
+        pstmt = null;
+        rs = null;
+        visuel = null;
+        visuels = new ArrayList<>();
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectByIdMateriel);
+            pstmt.setInt(1, pVisuel_materiel_id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                visuel = new Visuel(
+                        rs.getInt("visuel_id"),
+                        rs.getInt("visuel_materiel_id"),
+                        rs.getString("visuel_nom_de_fichier")
+
+                );
+
+                visuels.add(visuel);
+            }
+
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.setAutoCommit(true);
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return visuels;
     }
 }

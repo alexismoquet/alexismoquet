@@ -12,4 +12,5 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public interface DAO_Visuel extends DAO<Visuel> {
+    List<Visuel> selectByIdMateriel(int pIdMateriel) throws DALException;
 }
