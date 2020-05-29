@@ -47,7 +47,10 @@ public class TableModelUtilisateur extends AbstractTableModel {
     public TableModelUtilisateur() { }
     /**************************Fin Contructeurs***********************/
 
-
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
+    }
     @Override
     public int getColumnCount() {
         return titres.length;
@@ -90,6 +93,75 @@ public class TableModelUtilisateur extends AbstractTableModel {
                   Adresse a = utilisateurs.get(row).getAdresses().get(0);
 
                    return a.getVille();
+                }else{
+                    return "";
+                }
+            case 7:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getCodePostal();
+                }else{
+                    return "";
+                }
+            case 8:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getComplement();
+                }else{
+                    return "";
+                }
+            case 9:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getDepartement();
+                }else{
+                    return "";
+                }
+            case 10:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getPays();
+                }else{
+                    return "";
+                }
+            case 11:
+                return utilisateurs.get(row).getIdUtilisateur();
+            default:
+                return "";
+        }
+    }
+
+
+    public Object setValueAt(int row, int column) {
+
+        switch (column) {
+            case 0:
+                return utilisateurs.get(row).getNom();
+            case 1:
+                return utilisateurs.get(row).getPrenom();
+            case 2:
+                return utilisateurs.get(row).getEmail();
+            case 3:
+                return utilisateurs.get(row).getTelMob();
+            case 4:
+                return utilisateurs.get(row).getTelFix();
+            case 5:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getAdresse();
+                }else{
+                    return "";
+                }
+            case 6:
+                if (utilisateurs.get(row).getAdresses().size() != 0) {
+                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
+
+                    return a.getVille();
                 }else{
                     return "";
                 }

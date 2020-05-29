@@ -23,6 +23,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
     private String SQL_Update = "UPDATE annonces SET annonce_titre=?, annonce_description=?, annonce_date_parution=? WHERE annonce_id=?;";
     private String SQL_Delete = "DELETE FROM annonces WHERE annonce_id=?;";
 
+
     private Annonce annonce;
     private List<Annonce> annonces;
     private PreparedStatement pstmt;
@@ -88,13 +89,11 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             cnx = new MysqlConnecteur().getConnexion();
 
             //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_Insert);
+            pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setInt(1, pObj.getAnnonce_id());
-            pstmt.setInt(2, pObj.getAnnonce_utilisateur_id());
-            pstmt.setInt(3, pObj.getAnnonce_materiel_id());
-            pstmt.setString(4, pObj.getAnnonce_titre());
-            pstmt.setString(5, pObj.getAnnonce_description());
-            pstmt.setDate(6, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setString(2, pObj.getAnnonce_titre());
+            pstmt.setString(3, pObj.getAnnonce_description());
+            pstmt.setDate(4, (Date) pObj.getAnnonce_date_parution());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -319,5 +318,62 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
         return annonces;
     }
+
+    @Override
+    public List<Annonce> selectByidMateriel(int pIdMateriel) throws DALException {
+        pstmt = null;
+        rs = null;
+        annonce = null;
+        annonces = new ArrayList<>();
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectByIdUtilisateur);
+            pstmt.setInt(1, pIdMateriel);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                annonce = new Annonce(
+                        rs.getInt("annonce_id"),
+                        rs.getInt("annonce_utilisateur_id"),
+                        rs.getInt("annonce_materiel_id"),
+                        rs.getString("annonce_titre"),
+                        rs.getString("annonce_description"),
+                        rs.getDate("annonce_date_parution"),
+                        rs.getBoolean("annonce_valider")
+                );
+
+                annonces.add(annonce);
+            }
+
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.setAutoCommit(true);
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return annonces;
+    }
+
+
 }//fin class
 

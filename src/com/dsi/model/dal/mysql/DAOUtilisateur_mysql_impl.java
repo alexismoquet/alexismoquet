@@ -3,6 +3,7 @@ package com.dsi.model.dal.mysql;
 import com.dsi.librairies.FonctionsDate;
 import com.dsi.librairies.Roles;
 import com.dsi.model.beans.Adresse;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Adresse;

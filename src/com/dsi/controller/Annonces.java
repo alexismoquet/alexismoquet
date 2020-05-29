@@ -14,4 +14,14 @@ public class Annonces {
         AnnonceManager am = AnnonceManager.getInstance();
         return am.SelectByIdUtilisateur(idUtilisateur);
     }
+
+    public static List<Annonce> remplirJTableWithAnnoncesIdMateriel(int idMateriel) throws BLLException {
+        AnnonceManager am = AnnonceManager.getInstance();
+        return am.SelectByidMateriel(idMateriel);
+    }
+
+    public static List<Annonce> remplirJTableWithIdAnnonces(int idAnnonce) throws BLLException {
+        AnnonceManager am = AnnonceManager.getInstance();
+        return Collections.singletonList(am.SelectById(idAnnonce));
+    }
 }

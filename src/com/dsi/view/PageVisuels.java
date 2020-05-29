@@ -173,9 +173,11 @@ public class PageVisuels extends JFrame {
             tableauVisuel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int id = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1);
+                    int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1);
+                    JOptionPane.showMessageDialog( btnRechercher, "Le visuel " + idVisuelSelected + " est sélectionné");
                     try {
-                        visuel = VisuelManager.getInstance().SelectById(id);
+                        visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
+
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
@@ -197,15 +199,15 @@ public class PageVisuels extends JFrame {
         } //fin afficheJTable
 
 
-//    public void afficheVisuel () throws BLLException {
-//        String adresseVisuel = "C:\\wamp64\\www\\handispap\\img\\mat";
-//
-//        for (int i=0; i<10; i++){
-//            String fichierVisuel = visuels.get(i).getVisuel_nom_fichier() + adresseVisuel;
-//            ImageIcon icone1 = new ImageIcon("C:\\wamp64\\www\\handispap\\img\\mat\\"+fichierVisuel);
-//            tableauVisuel.getValueAt(i, 0);
-//        }
+    public void afficheLeVisuel () throws BLLException {
+        String adresseVisuel = "C:\\wamp64\\www\\handispap\\img\\mat";
 
- //   }
+        for (int i=0; i<visuels.size(); i++){
+            String fichierVisuel = visuels.get(i).getVisuel_nom_fichier() + adresseVisuel;
+            ImageIcon icone1 = new ImageIcon("C:\\wamp64\\www\\handispap\\img\\mat\\"+fichierVisuel);
+            tableauVisuel.getValueAt(i, 0);
+        }
+
+    }
 
     }//fin class

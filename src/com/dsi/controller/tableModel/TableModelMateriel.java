@@ -1,20 +1,19 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Materiel;
-
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import java.util.List;
+
 
 public class TableModelMateriel extends AbstractTableModel {
 
-    private final String[] titres = {"Nom","Description","IdSport","idMateriel"};
+    private final String[] titres = {"Nom","Description","idAdresse","idMateriel"};
 
     private List<Materiel> materiels;
 
     public TableModelMateriel (List<Materiel> materiels) {
         this.materiels = materiels;
+
     }
 
     public int getRowCount() {
@@ -30,11 +29,6 @@ public class TableModelMateriel extends AbstractTableModel {
     }
 
     @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return null;
-    }
-
-    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
@@ -46,11 +40,12 @@ public class TableModelMateriel extends AbstractTableModel {
             case 1:
                 return materiels.get(rowIndex).getMateriel_description();
             case 2:
-                return materiels.get(rowIndex).getMateriel_sport_id();
+                return materiels.get(rowIndex).getMateriel_adresse_id();
             case 3:
                 return materiels.get(rowIndex).getMateriel_id();
             default:
                 return "";
         }
     }
+
 }//fin class

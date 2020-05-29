@@ -183,7 +183,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
     }
 
     @Override
-    public List<Visuel> selectByIdMateriel( int pVisuel_materiel_id) throws DALException {
+    public List<Visuel> selectByIdMateriel( int pId) throws DALException {
         pstmt = null;
         rs = null;
         visuel = null;
@@ -196,14 +196,14 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_SelectByIdMateriel);
-            pstmt.setInt(1, pVisuel_materiel_id);
+            pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 visuel = new Visuel(
                         rs.getInt("visuel_id"),
                         rs.getInt("visuel_materiel_id"),
-                        rs.getString("visuel_nom_de_fichier")
+                        rs.getString("visuel_nom_fichier")
 
                 );
 

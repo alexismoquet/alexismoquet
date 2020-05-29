@@ -4,6 +4,7 @@ import com.dsi.controller.tableModel.TableModelUtilisateur;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Utilisateur;
+import com.dsi.model.bll.AdresseManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurManager;
 
@@ -33,6 +34,7 @@ public class PageUtilisateurs extends JFrame {
     private JButton btnSupprimerUtil = new JButton("Supprimer Utilisateur");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton bAnnonces = new JButton("Annonces");
+    private JButton bMateriel = new JButton("Materiels");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -90,8 +92,10 @@ public class PageUtilisateurs extends JFrame {
         panBas.add(btnSupprimerUtil);
         panBas.add(btnAnnuler);
         panBas.add(bAnnonces);
+        panBas.add(bMateriel);
 
         bAnnonces.setVisible(true);
+        bMateriel.setVisible(true);
 
         setContentPane(panPrincipal);
 
@@ -147,6 +151,24 @@ public class PageUtilisateurs extends JFrame {
          * Listener bouton Modifier
          */
         btnModifierUtil.addActionListener(e -> {
+            if (utilisateur == null){
+                JOptionPane.showMessageDialog( btnModifierUtil, "veuillez sélectionner un utilisateur");
+            } else {
+                UtilisateurManager um = UtilisateurManager.getInstance();
+
+                int i = JOptionPane.showConfirmDialog(btnModifierUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        "Veuillez confirmer votre choix",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+
+                if (i == 0)  /**user a dit oui*/ {
+                    try {
+                        um.update(utilisateur);
+                        afficheJTableUtilisateurs();
+                    } catch (BLLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
         });
 
 
@@ -154,20 +176,24 @@ public class PageUtilisateurs extends JFrame {
          *Listener bouton Supprimer
          */
         btnSupprimerUtil.addActionListener(e -> {
-            UtilisateurManager um = UtilisateurManager.getInstance();
+            if (utilisateur == null){
+                JOptionPane.showMessageDialog( bAnnonces, "veuillez sélectionner un utilisateur");
+            } else {
+                UtilisateurManager um = UtilisateurManager.getInstance();
 
-            int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        "Veuillez confirmer votre choix",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-            if (i == 0)  /**user a dit oui*/ {
-                try {
-                    um.delete(utilisateur);
-                    afficheJTableUtilisateurs();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
+                if (i == 0)  /**user a dit oui*/ {
+                    try {
+                        um.delete(utilisateur);
+                        afficheJTableUtilisateurs();
+                    } catch (BLLException ex) {
+                        ex.printStackTrace();
+                    }
+                    tableauUtilisateur.clearSelection();
                 }
-                tableauUtilisateur.clearSelection();
             }
         });
 
@@ -179,7 +205,6 @@ public class PageUtilisateurs extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 11);
 
-                JOptionPane.showMessageDialog(bAnnonces, "L'utilisateur " + idUserSelected + " est sélectionné");
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById(idUserSelected);
                 } catch (BLLException ex) {
@@ -200,6 +225,21 @@ public class PageUtilisateurs extends JFrame {
                     JOptionPane.showMessageDialog( bAnnonces, "veuillez sélectionner un utilisateur");
                 } else {
                     new PageAnnonces(utilisateur);
+                }
+            }
+        });
+
+        /**
+         * listenner sur le bouton materiel
+         */
+        bMateriel.setSize(100,50);
+        bMateriel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (utilisateur == null){
+                    JOptionPane.showMessageDialog( bMateriel, "veuillez sélectionner un utilisateur");
+                } else {
+                    new PageMateriels(utilisateur);
                 }
             }
         });
