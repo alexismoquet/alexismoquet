@@ -36,20 +36,17 @@ public class PageAnnonces extends JFrame {
     private JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton bCommentaires = new JButton("Commentaires");
-    private JButton btnVisuels = new JButton("visuels");
 
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
-    private JButton bMateriels = new JButton("Materiels");
 
     private JTable tableauAnnonce = new JTable();
     List<Annonce> annonces = new ArrayList<>();
-    List<Visuel> visuels = new ArrayList<>();
+
     List <Annonce> listRechercheAnnonces = new ArrayList<>();
-    List <Visuel> listRechercheVisuels = new ArrayList<>();
+
     Annonce annonce;
-    Adresse adresse;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
@@ -62,6 +59,11 @@ public class PageAnnonces extends JFrame {
 
     public PageAnnonces(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
+
+    public PageAnnonces(Annonce pAnnonce) {
+        this.annonce = pAnnonce;
         initialiserComposants();
     }
     /************************************************************/
@@ -82,7 +84,7 @@ public class PageAnnonces extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher     ");
+        txtRechercher.setText("     Rechercher par mot(s)    ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -98,18 +100,19 @@ public class PageAnnonces extends JFrame {
         panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
         panBas.add(bCommentaires);
-        panBas.add(bMateriels);
-        panBas.add(btnVisuels);
-        bMateriels.setVisible(true);
-
+        
         setContentPane(panPrincipal);
 
-        afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
+       afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
+
+
 
 /**************************************************************************************************************************************/
 /*************************************************************** Les listenners des boutons *******************************************************/
 /**************************************************************************************************************************************/
 
+
+/****Mouse listenner du champ de recherche  ***********************/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -142,24 +145,30 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-        btnVisuels.addActionListener(e -> {
-            listRechercheVisuels = new ArrayList<>();
-            VisuelManager vm = VisuelManager.getInstance();
-            try {
-                visuels = vm.SelectAll();
-            } catch (BLLException ex) {
-                ex.printStackTrace();
-            }
-            for (Visuel visuel : visuels) {
-                    listRechercheVisuels.add(visuel);
-                    TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
-                    tableauAnnonce.setModel(model);
-                }
 
-            if (listRechercheVisuels.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+        /**
+         * Mouse listenner sur le tableau annonce
+         */
+        tableauAnnonce.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
+
+                JOptionPane.showMessageDialog( bCommentaires, "L'annonce " + idAnnonceSelected + " est sélectionnée");
+                try {
+                    annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
+
+
+
+
+        /*************************************************************************************************/
+        /***************************  ACTION LISTENNERS DES BOUTONS DU PANEL BAS  *****************************************/
+        /************************************************************************************************/
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
@@ -190,60 +199,32 @@ public class PageAnnonces extends JFrame {
         });
 
         /**
-         * Mouse listenner sur le tableau annonce
-         */
-        tableauAnnonce.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
-
-                JOptionPane.showMessageDialog( bMateriels, "L'annonce " + idAnnonceSelected + " est sélectionnée");
-                try {
-                    annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        /**
-         * Action listenner sur le bouton materiel
-         */
-        bMateriels.setSize(100,50);
-        bMateriels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (annonce == null){
-                    JOptionPane.showMessageDialog( bMateriels, "veuillez sélectionner une annonce");
-                } else {
-                    PageMateriels pm = new PageMateriels(annonce);
-                }
-            }
-        });
-
-
-        /**
          * Action listenner sur le bouton commentaire
          */
         bCommentaires.setSize(100,50);
         bCommentaires.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {PageCommentaires pc = new PageCommentaires(annonce); }
+            public void actionPerformed(ActionEvent e) {
+                if (annonce == null) {
+                    JOptionPane.showMessageDialog(bCommentaires, "veuillez sélectionner une annonce");
+                } else {
+                    new PageCommentaires(annonce);
+                }
+            }
         });
 
     }//fin initialiserComposants
 
 
    private void afficheJTableAnnoncesIdUtilisateur(int pIdUtilisateur) {
-            try {
-                annonces = remplirJTableWithAnnoncesIdUser(utilisateur.getIdUtilisateur());
-                TableModelAnnonce model = new TableModelAnnonce(annonces);
-                tableauAnnonce.setModel(model);
+       try {
+           annonces = remplirJTableWithAnnoncesIdUser(utilisateur.getIdUtilisateur());
+           TableModelAnnonce model = new TableModelAnnonce(annonces);
+           tableauAnnonce.setModel(model);
 
-            } catch (BLLException ex) {
-                ex.printStackTrace();
-            }
-
+       } catch (BLLException ex) {
+           ex.printStackTrace();
+       }
     }//fin afficheJTable
 
 }//fin class

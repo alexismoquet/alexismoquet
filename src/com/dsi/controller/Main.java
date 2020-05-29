@@ -3,6 +3,7 @@ package com.dsi.controller;
 import com.dsi.model.bll.BLLException;
 import com.dsi.view.PageHubAdmin;
 import com.dsi.view.PageConnexionBO;
+import com.dsi.view.PageMateriels;
 import com.dsi.view.PageUtilisateurs;
 
 public class Main {
@@ -17,6 +18,10 @@ public class Main {
 
 //        PageUtilisateurs pu = new PageUtilisateurs();
 //        pu.setVisible(true);
+
+
+//        PageMateriels pm = new PageMateriels();
+//        pm.setVisible(true);
 
     }
 }

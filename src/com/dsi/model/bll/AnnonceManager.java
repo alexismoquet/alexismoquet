@@ -27,7 +27,7 @@ public class AnnonceManager implements Manager<Annonce> {
     /**
      * Constructeur
      */
-    private AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
+    public AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
 
     /**
      * Singleton
@@ -100,6 +100,18 @@ public class AnnonceManager implements Manager<Annonce> {
             annonces = dao.selectByIdUtilisateur(pId);
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return annonces;
+    }
+
+    public List<Annonce> SelectByidMateriel(int pIdMateriel) throws BLLException {
+        annonces = null;
+
+        try {
+            annonces = dao.selectByidMateriel(pIdMateriel);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pIdMateriel, e);
         }
 
         return annonces;

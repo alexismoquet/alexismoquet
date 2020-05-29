@@ -1,10 +1,12 @@
 package com.dsi.model.bll;
 
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Materiel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +19,8 @@ public class MaterielManager implements  Manager<Materiel> {
 
     private static MaterielManager instance = null;
 
-    private DAO_Materiel dao = null;
-    private Materiel materiel;
+    private DAO_Materiel dao;
+    private List<Materiel> materiel;
     private List<Materiel> materiels;
 
     /**
@@ -58,7 +60,14 @@ public class MaterielManager implements  Manager<Materiel> {
 
     @Override
     public List<Materiel> SelectAll() throws BLLException {
-        return null;
+        materiels = new ArrayList<>();
+        try {
+            materiels = dao.selectAll();
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+        }
+
+        return materiels;
     }
 
     @Override
@@ -71,7 +80,30 @@ public class MaterielManager implements  Manager<Materiel> {
             throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
         }
 
+        return (Materiel) materiel;
+    }
+
+    public List<Materiel> SelectByIdSport(int pId) throws BLLException {
+        materiel = null;
+
+        try {
+            materiel = dao.selectById(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
         return materiel;
     }
 
+    public List<Materiel> SelectByIdAdresse(int pId) throws BLLException {
+        materiel = null;
+
+        try {
+            materiel = dao.selectByIdAdresse(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+        }
+
+        return materiel;
+    }
 }//fin class

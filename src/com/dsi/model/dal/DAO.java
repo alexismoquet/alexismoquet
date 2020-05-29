@@ -1,5 +1,7 @@
 package com.dsi.model.dal;
 
+import com.dsi.model.beans.Annonce;
+
 import java.util.List;
 
 /**

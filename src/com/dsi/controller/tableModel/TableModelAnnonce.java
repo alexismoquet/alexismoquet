@@ -1,8 +1,6 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Annonce;
-import com.dsi.model.beans.Utilisateur;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
@@ -25,6 +23,7 @@ public class TableModelAnnonce extends AbstractTableModel {
     public int getColumnCount() {
         return titres.length;
     }
+
     @Override
     public String getColumnName(int column) {
         return titres[column];
@@ -32,6 +31,7 @@ public class TableModelAnnonce extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        fireTableCellUpdated(rowIndex, columnIndex);
         switch (columnIndex) {
             case 0:
                 return annonces.get(rowIndex).getAnnonce_titre();
@@ -44,6 +44,24 @@ public class TableModelAnnonce extends AbstractTableModel {
             default:
                 return "";
         }
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
+    }
+
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        fireTableCellUpdated(rowIndex, columnIndex);
+
+        switch (columnIndex) {
+            case 0:
+                annonces.get(rowIndex).setAnnonce_titre(value.toString());
+            case 1:
+                annonces.get(rowIndex).setAnnonce_description(value.toString());
+        }
+
     }
 
 }//fin class

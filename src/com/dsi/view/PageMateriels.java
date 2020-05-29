@@ -1,24 +1,33 @@
 package com.dsi.view;
 
+import com.dsi.controller.Materiels;
 import com.dsi.controller.tableModel.TableModelMateriel;
+import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static com.dsi.controller.Materiels.remplirJTableWithMateriels;
+import static com.dsi.controller.Materiels.remplirJTableWithMaterielsIdAdresse;
+import static com.dsi.controller.Materiels.remplirJTableWithMaterielsIdSport;
+
 
 public class PageMateriels extends JFrame {
+
 
     private JPanel panPrincipal = new JPanel();
     private JPanel panHaut = new JPanel();
@@ -28,20 +37,22 @@ public class PageMateriels extends JFrame {
     private JButton btnModifierMateriel = new JButton("Modifier materiel");
     private JButton btnSupprimerMateriel = new JButton("Supprimer materiel");
     private JButton btnAnnuler = new JButton("Annuler");
-
+    private JButton btnVisuels = new JButton("visuels");
+    private JButton btnRechercher = new JButton("Rechercher");
 
     private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
-    private JButton bVisuels = new JButton("Visuels");
-
     private JTable tableauMateriel = new JTable();
     List<Materiel> materiels = new ArrayList<>();
     List <Materiel> listRechercheMateriels = new ArrayList<>();
+    List <Visuel> listRechercheVisuels = new ArrayList<>();
+    List<Visuel> visuels = new ArrayList<>();
 
-    Materiel materiel;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Adresse adresse;
+    Sport sport;
     Annonce annonce;
+    Utilisateur utilisateur;
+    Materiel materiel;
 
 
     /************************************************************/
@@ -51,17 +62,12 @@ public class PageMateriels extends JFrame {
         initialiserComposants();
     }
 
-    public PageMateriels(Adresse padresse) {
-        this.adresse = padresse;
+    public PageMateriels(Utilisateur pUtilisateur) {
+        this.utilisateur = pUtilisateur;
         initialiserComposants();
     }
 
-    public PageMateriels(Annonce pAnnonce) {
-        this.annonce = pAnnonce;
-        initialiserComposants();
-    }
-
-    /****************************************************************************************/
+    /*************************************************************/
 
 
     public void initialiserComposants() {
@@ -80,7 +86,7 @@ public class PageMateriels extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher     ");
+        txtRechercher.setText("  Rechercher par mots      ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -95,20 +101,23 @@ public class PageMateriels extends JFrame {
         panBas.add(btnModifierMateriel);
         panBas.add(btnSupprimerMateriel);
         panBas.add(btnAnnuler);
+        panBas.add(btnVisuels);
 
         setContentPane(panPrincipal);
 
-        afficheJTableMateriels();
+        afficheJTableMaterielsWithIdAdresse();
+
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
         /**************************************************************************************************************************************/
+
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                txtRechercher.removeMouseListener(this);
+                //txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -138,7 +147,7 @@ public class PageMateriels extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             materiel = null;
-            afficheJTableMateriels();
+            afficheJTableMaterielsWithIdAdresse();
 
         });
 
@@ -155,7 +164,7 @@ public class PageMateriels extends JFrame {
             {
                 try {
                     am.delete(materiel);
-                    afficheJTableMateriels();
+                    afficheJTableMaterielsWithIdAdresse();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
@@ -172,26 +181,28 @@ public class PageMateriels extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 3);
 
-                JOptionPane.showMessageDialog( bVisuels, "Le materiel " + idMaterielSelected + " est sélectionnée");
+                JOptionPane.showMessageDialog( btnVisuels, "Le materiel " + idMaterielSelected + " est sélectionnée");
                 try {
-                    materiel = MaterielManager.getInstance().SelectById(materiel.getMateriel_id());
+
+                    materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
             }
         });
 
+
         /**
-         * Mouse listenner sur le tableau visuel
+         * listenner sur le bouton Visuel
          */
-        bVisuels.setSize(100,50);
-        bVisuels.addActionListener(new ActionListener() {
+        btnVisuels.setSize(100,50);
+        btnVisuels.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (materiel == null){
-                    JOptionPane.showMessageDialog( bVisuels, "veuillez sélectionner un materiel");
+                    JOptionPane.showMessageDialog( btnVisuels, "veuillez sélectionner un materiel");
                 } else {
-                    PageVisuels pc = new PageVisuels(materiel);
+                    new PageVisuels(materiel);
                 }
             }
         });
@@ -199,9 +210,10 @@ public class PageMateriels extends JFrame {
     }//fin initialiserComposants
 
 
-    private void afficheJTableMateriels() {
+
+    private void afficheJTableMaterielsWithIdSport(int pIdSport) {
         try {
-            materiels = remplirJTableWithMateriels(materiel.getMateriel_id());
+            materiels = remplirJTableWithMaterielsIdSport(sport.getSport_id());
             TableModelMateriel model = new TableModelMateriel(materiels);
             tableauMateriel.setModel(model);
 
@@ -209,6 +221,21 @@ public class PageMateriels extends JFrame {
             ex.printStackTrace();
         }
     } //fin afficheJTable
+
+
+    private void afficheJTableMaterielsWithIdAdresse() {
+
+        try {
+            materiels = remplirJTableWithMaterielsIdAdresse(utilisateur.getAdresses().get(0).getIdAdresse());
+            TableModelMateriel model = new TableModelMateriel(materiels);
+            tableauMateriel.setModel(model);
+
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+    } //fin afficheJTable
+
+
 
 
 }//fin class
