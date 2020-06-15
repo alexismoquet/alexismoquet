@@ -170,9 +170,7 @@ public class PageHubAdmin extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(panPrincipal, "Pas de modification de l'Annonce " + tableauAnomalies.getValueAt(i,3), "warning", JOptionPane.INFORMATION_MESSAGE);
-                    }
+                    } 
                 }//fin boucle for
 
             }//fin actionPerformed
