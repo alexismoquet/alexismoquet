@@ -139,12 +139,18 @@ public class PageHubAdmin extends JFrame {
                 /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
                 for (int i = 0; i <tableauAnomalies.getRowCount(); i++) {
 
+                    try {
+                        annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnomalies.getValueAt(i, 3));
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
+                    }
                     String titreAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 0));
                     String descriptionAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 1));
 
                     //    tableauAnomalies.changeSelection(tableauAnomalies.getSelectedRow(), 0, false, false);
                     tableauAnomalies.setValueAt(descriptionAnnonceModifiee, i, 1);
                     tableauAnomalies.setValueAt(titreAnnonceModifiee, i, 0);
+
 
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!annonce.getAnnonce_titre().equals(titreAnnonceModifiee) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifiee)) {

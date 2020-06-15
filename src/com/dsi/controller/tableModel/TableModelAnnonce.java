@@ -55,11 +55,10 @@ public class TableModelAnnonce extends AbstractTableModel {
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
 
-        switch (columnIndex) {
-            case 0:
-                annonces.get(rowIndex).setAnnonce_titre(value.toString());
-            case 1:
-                annonces.get(rowIndex).setAnnonce_description(value.toString());
+        if(columnIndex == 0) {
+            annonces.get(rowIndex).setAnnonce_titre(value.toString());
+        } else if (columnIndex == 1){
+            annonces.get(rowIndex).setAnnonce_description(value.toString());
         }
 
     }

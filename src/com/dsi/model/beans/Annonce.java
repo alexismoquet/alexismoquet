@@ -164,5 +164,4 @@ public class Annonce implements Serializable {
         this.annonce_date_parution = annonce_date_parution;
     }
 
-
 }//fin class
