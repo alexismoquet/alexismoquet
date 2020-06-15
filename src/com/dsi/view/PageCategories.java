@@ -144,6 +144,7 @@ public class PageCategories extends JFrame {
             {
                 try {
                     sm.delete(categorie);
+                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Catégorie "+ categorie.getCategorie_id()+ " supprimée");
                     afficheJTableCategories();
                 } catch (BLLException ex) {
                     ex.printStackTrace();

@@ -135,6 +135,7 @@ public class PageHubAdmin extends JFrame {
         bEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                AnnonceManager am = AnnonceManager.getInstance();
 
                 /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
                 for (int i = 0; i <tableauAnomalies.getRowCount(); i++) {
@@ -163,7 +164,7 @@ public class PageHubAdmin extends JFrame {
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                             if (j == 0)  /**user a dit oui*/ {
-                                AnnonceManager.getInstance().update(annonce);
+                                am.update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i,3) + " modifiée");
                             }
                         } catch (BLLException bllException) {

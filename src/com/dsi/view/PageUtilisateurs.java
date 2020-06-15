@@ -188,6 +188,7 @@ public class PageUtilisateurs extends JFrame {
                 if (i == 0)  /**user a dit oui*/ {
                     try {
                         um.delete(utilisateur);
+                        JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur "+ utilisateur.getIdUtilisateur()+ " supprimé");
                         afficheJTableUtilisateurs();
                     } catch (BLLException ex) {
                         ex.printStackTrace();
