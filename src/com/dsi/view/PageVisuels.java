@@ -158,6 +158,7 @@ public class PageVisuels extends JFrame {
                 {
                     try {
                         am.delete(visuel);
+                        JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel "+ visuel.getVisuel_id()+ " supprimé");
                         afficheJTableVisuels(materiel.getMateriel_id());
                     } catch (BLLException ex) {
                         ex.printStackTrace();

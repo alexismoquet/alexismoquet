@@ -145,6 +145,7 @@ public class PageSports extends JFrame {
             {
                 try {
                     sm.delete(sport);
+                    JOptionPane.showMessageDialog(btnSupprimerSport, "Sport "+ sport.getSport_id()+ " supprimé");
                     afficheJTableSports();
                 } catch (BLLException ex) {
                     ex.printStackTrace();

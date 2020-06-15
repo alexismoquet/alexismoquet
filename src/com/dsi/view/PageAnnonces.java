@@ -190,6 +190,7 @@ public class PageAnnonces extends JFrame {
             {
                 try {
                     am.delete(annonce);
+                    JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce "+ annonce.getAnnonce_id()+ " supprimée");
                     afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
                 } catch (BLLException ex) {
                     ex.printStackTrace();

@@ -164,6 +164,7 @@ public class PageMateriels extends JFrame {
             {
                 try {
                     am.delete(materiel);
+                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel "+ materiel.getMateriel_id()+ " supprimé");
                     afficheJTableMaterielsWithIdAdresse();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
