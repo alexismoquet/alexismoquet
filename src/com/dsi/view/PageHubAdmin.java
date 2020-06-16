@@ -148,7 +148,6 @@ public class PageHubAdmin extends JFrame {
                     String titreAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 0));
                     String descriptionAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 1));
 
-                    //    tableauAnomalies.changeSelection(tableauAnomalies.getSelectedRow(), 0, false, false);
                     tableauAnomalies.setValueAt(descriptionAnnonceModifiee, i, 1);
                     tableauAnomalies.setValueAt(titreAnnonceModifiee, i, 0);
 
@@ -170,7 +169,7 @@ public class PageHubAdmin extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                    } 
+                    }
                 }//fin boucle for
 
             }//fin actionPerformed
@@ -178,22 +177,22 @@ public class PageHubAdmin extends JFrame {
         });
 
 
-        /**
-         * Mouse listenner sur le tableau anomalie
-         */
-        tableauAnomalies.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int idAnnonceAnomalieSelected = (int) tableauAnomalies.getValueAt(tableauAnomalies.getSelectedRow(), 3);
-
-                try {
-                    annonce = AnnonceManager.getInstance().SelectById(idAnnonceAnomalieSelected);
-
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+//        /**
+//         * Mouse listenner sur le tableau anomalie
+//         */
+//        tableauAnomalies.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                int idAnnonceAnomalieSelected = (int) tableauAnomalies.getValueAt(tableauAnomalies.getSelectedRow(), 3);
+//
+//                try {
+//                    annonce = AnnonceManager.getInstance().SelectById(idAnnonceAnomalieSelected);
+//
+//                } catch (BLLException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        });
 
         remplirJTableWithAnomalies();
 
