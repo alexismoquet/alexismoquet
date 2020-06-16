@@ -175,7 +175,7 @@ public class PageVisuels extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1);
-                    JOptionPane.showMessageDialog( btnRechercher, "Le visuel " + idVisuelSelected + " est sélectionné");
+                  //  JOptionPane.showMessageDialog( btnRechercher, "Le visuel " + idVisuelSelected + " est sélectionné");
                     try {
                         visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
 

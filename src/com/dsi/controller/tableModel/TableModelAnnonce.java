@@ -60,7 +60,6 @@ public class TableModelAnnonce extends AbstractTableModel {
         } else if (columnIndex == 1){
             annonces.get(rowIndex).setAnnonce_description(value.toString());
         }
-
     }
 
 }//fin class
