@@ -51,6 +51,7 @@ public class TableModelUtilisateur extends AbstractTableModel {
     public boolean isCellEditable(int row, int column) {
         return true;
     }
+
     @Override
     public int getColumnCount() {
         return titres.length;
@@ -136,71 +137,58 @@ public class TableModelUtilisateur extends AbstractTableModel {
     }
 
 
-    public Object setValueAt(int row, int column) {
-
-        switch (column) {
-            case 0:
-                return utilisateurs.get(row).getNom();
-            case 1:
-                return utilisateurs.get(row).getPrenom();
-            case 2:
-                return utilisateurs.get(row).getEmail();
-            case 3:
-                return utilisateurs.get(row).getTelMob();
-            case 4:
-                return utilisateurs.get(row).getTelFix();
-            case 5:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getAdresse();
-                }else{
-                    return "";
-                }
-            case 6:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getVille();
-                }else{
-                    return "";
-                }
-            case 7:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getCodePostal();
-                }else{
-                    return "";
-                }
-            case 8:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getComplement();
-                }else{
-                    return "";
-                }
-            case 9:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getDepartement();
-                }else{
-                    return "";
-                }
-            case 10:
-                if (utilisateurs.get(row).getAdresses().size() != 0) {
-                    Adresse a = utilisateurs.get(row).getAdresses().get(0);
-
-                    return a.getPays();
-                }else{
-                    return "";
-                }
-            case 11:
-                return utilisateurs.get(row).getIdUtilisateur();
-            default:
-                return "";
+    public void setValueAt(Object value, int row, int column) {
+        fireTableCellUpdated(row, column);
+        if (column == 0) {
+            utilisateurs.get(row).setNom((String) value);
+        }
+        else if (column == 1) {
+            utilisateurs.get(row).setPrenom((String) value);
+        }
+        else if (column == 2) {
+            utilisateurs.get(row).setEmail((String) value);
+        }
+        else if (column == 3) {
+          utilisateurs.get(row).setTelMob((String) value);
+        }
+        else if (column == 4) {
+            utilisateurs.get(row).setTelFix((String) value);
+        }
+        else if (column == 5) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setAdresse((String) value);
+            }
+        }
+        else if (column == 6) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setVille((String) value);
+            }
+        }
+        else if (column == 7) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setCodePostal((String) value);
+            }
+        }
+        else if (column == 8) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setComplement((String) value);
+            }
+        }
+        else if (column == 9) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setDepartement((String) value);
+            }
+        }
+        else if (column == 10) {
+            if (utilisateurs.get(row).getAdresses().size() != 0) {
+                Adresse a = utilisateurs.get(row).getAdresses().get(0);
+                a.setPays((String) value);
+            }
         }
     }
 

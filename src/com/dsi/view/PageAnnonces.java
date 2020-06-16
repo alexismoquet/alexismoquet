@@ -154,7 +154,7 @@ public class PageAnnonces extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
 
-                JOptionPane.showMessageDialog( bCommentaires, "L'annonce " + idAnnonceSelected + " est sélectionnée");
+              //  JOptionPane.showMessageDialog( bCommentaires, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
                 } catch (BLLException ex) {
@@ -167,8 +167,8 @@ public class PageAnnonces extends JFrame {
 
 
         /*************************************************************************************************/
-        /***************************  ACTION LISTENNERS DES BOUTONS DU PANEL BAS  *****************************************/
-        /************************************************************************************************/
+        /***************************  ACTION LISTENNERS DES BOUTONS DU PANEL BAS  ************************/
+        /*************************************************************************************************/
 
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");

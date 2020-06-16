@@ -90,10 +90,10 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
-            pstmt.setInt(1, pObj.getAnnonce_id());
-            pstmt.setString(2, pObj.getAnnonce_titre());
-            pstmt.setString(3, pObj.getAnnonce_description());
-            pstmt.setDate(4, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setString(1, pObj.getAnnonce_titre());
+            pstmt.setString(2, pObj.getAnnonce_description());
+            pstmt.setDate(3, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setInt(4, pObj.getAnnonce_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
