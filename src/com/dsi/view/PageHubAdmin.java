@@ -33,6 +33,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bSports = new JButton("Sports");
     private JButton bCommentaires = new JButton("Commentaires");
     private JButton bEnregistrer = new JButton("Enregistrer");
+    private JButton bAnnonces = new JButton("Annonces");
 
     private JTable tableauAnomalies = new JTable();
 
@@ -81,7 +82,9 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bUtilisateurs);
         panBtn.add(bCategories);
         panBtn.add(bSports);
+        panBtn.add(bAnnonces);
         panBtn.add(bEnregistrer);
+
 
         /***** Panel des anomalies*/
         anomaliesASurveiller.setSize(200, 70);
@@ -130,11 +133,17 @@ public class PageHubAdmin extends JFrame {
                 PageCommentaires pc = new PageCommentaires();
             }
         });
+        bAnnonces.setSize(100, 50);
+        bAnnonces.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageAnnonces pa = new PageAnnonces(); }
+        });
 
         bEnregistrer.setSize(100, 50);
         bEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 AnnonceManager am = AnnonceManager.getInstance();
 
                 /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
