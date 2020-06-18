@@ -96,9 +96,8 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             pstmt.setString(4, pObj.getTelMob());
             pstmt.setString(5, pObj.getEmail());
             pstmt.setString(6, pObj.getMotDePasse());
-            pstmt.setDate(7, (Date) pObj.getDateInscription()); //parser en date sql -> new java.sql.Date(pObj.getDateInscription().getTime()));
+            pstmt.setDate(7,  pObj.getDateInscription());  //parser en date sql -> pstmt.setDate(7, new java.sql.Date(pObj.getDateInscription().getTime()));
             pstmt.setInt(8, pObj.getIdUtilisateur());
-
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);

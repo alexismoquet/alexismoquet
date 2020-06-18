@@ -161,8 +161,9 @@ public class Utilisateur implements Serializable {
      * Retourne la date d'inscription
      * @return Date: date d'inscription
      */
-    public Date getDateInscription() {
-        return dateInscription;
+    public java.sql.Date getDateInscription() {
+        dateInscription = new java.sql.Date(dateInscription.getTime());
+        return (java.sql.Date) dateInscription;
     }
 
     /**

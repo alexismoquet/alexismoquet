@@ -167,7 +167,7 @@ public class PageUtilisateurs extends JFrame {
                     }
                     String nomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 0));
                     String prenomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 1));
-                    String mailUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 2));
+                    String emailUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 2));
                     String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
                     String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
                     String adresseUtilisateurModifiee = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
@@ -179,7 +179,7 @@ public class PageUtilisateurs extends JFrame {
 
                     tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
                     tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-                    tableauUtilisateur.setValueAt(mailUtilisateurModifie, i, 2);
+                    tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
                     tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
                     tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
                     tableauUtilisateur.setValueAt(adresseUtilisateurModifiee, i, 5);
@@ -195,14 +195,15 @@ public class PageUtilisateurs extends JFrame {
                         /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                         if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
                                 !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
-                                !utilisateur.getEmail().equalsIgnoreCase(mailUtilisateurModifie) ||
+                                !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                                 !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
                         ) {
-
                             utilisateur.setNom(nomUtilisateurModifie);
                             utilisateur.setPrenom(prenomUtilisateurModifie);
-                            utilisateur.setEmail(mailUtilisateurModifie);
+                            utilisateur.setEmail(emailUtilisateurModifie);
+                            utilisateur.setTelMob(telMobUtilisateurModifie);
+                            utilisateur.setTelFix(telFixUtilisateurModifie);
 
                             int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                     "Veuillez confirmer votre choix",
