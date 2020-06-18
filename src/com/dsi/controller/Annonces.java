@@ -24,4 +24,10 @@ public class Annonces {
         AnnonceManager am = AnnonceManager.getInstance();
         return Collections.singletonList(am.SelectById(idAnnonce));
     }
+    public static List<Annonce> remplirJTableWithAllAnnonces() throws BLLException {
+        AnnonceManager am = AnnonceManager.getInstance();
+        return am.SelectAll();
+    }
+
+
 }

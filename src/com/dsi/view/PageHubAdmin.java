@@ -180,6 +180,8 @@ public class PageHubAdmin extends JFrame {
                         }
                     }
                 }//fin boucle for
+                
+                tableauAnomalies.clearSelection();
 
             }//fin actionPerformed
 

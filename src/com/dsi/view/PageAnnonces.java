@@ -108,10 +108,9 @@ public class PageAnnonces extends JFrame {
 
         if (utilisateur == null) {
             afficheJTableWithAllAnnonces();
-        }else {
+        } else {
             afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
         }
-
 
 
 /**************************************************************************************************************************************/
@@ -179,7 +178,6 @@ public class PageAnnonces extends JFrame {
             txtRechercher.setText("");
             annonce = null;
             afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
-
         });
 
         btnModifierAnnonce.addActionListener(e -> {
@@ -199,7 +197,7 @@ public class PageAnnonces extends JFrame {
                     if (utilisateur == null) {
                         afficheJTableWithAllAnnonces();
                         tableauAnnonce.clearSelection();
-                    }else {
+                    } else {
                         afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
                         tableauAnnonce.clearSelection();
                     }
@@ -223,7 +221,6 @@ public class PageAnnonces extends JFrame {
                 }
             }
         });
-
     }//fin initialiserComposants
 
 
@@ -232,21 +229,19 @@ public class PageAnnonces extends JFrame {
             annonces = remplirJTableWithAnnoncesIdUser(utilisateur.getIdUtilisateur());
             TableModelAnnonce model = new TableModelAnnonce(annonces);
             tableauAnnonce.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-    }//fin afficheJTable
+    }
 
     private void afficheJTableWithAllAnnonces() {
         try {
-            annonces = AnnonceManager.getInstance().SelectAll();
+            annonces = remplirJTableWithAllAnnonces();
             TableModelAnnonce model = new TableModelAnnonce(annonces);
             tableauAnnonce.setModel(model);
         } catch (BLLException e) {
             e.printStackTrace();
         }
-
     }
 
 }//fin class
