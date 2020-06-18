@@ -174,6 +174,8 @@ public class PageHubAdmin extends JFrame {
                             if (j == 0)  /**user a dit oui*/ {
                                 am.update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i,3) + " modifiée");
+                                remplirJTableWithAnomalies();
+                                tableauAnomalies.clearSelection();
                             }
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();

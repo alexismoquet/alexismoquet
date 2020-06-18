@@ -196,7 +196,7 @@ public class PageAnnonces extends JFrame {
                     JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
                     if (utilisateur == null) {
                         afficheJTableWithAllAnnonces();
-                        tableauAnnonce.clearSelection();
+                    //    tableauAnnonce.clearSelection();
                     } else {
                         afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
                         tableauAnnonce.clearSelection();
