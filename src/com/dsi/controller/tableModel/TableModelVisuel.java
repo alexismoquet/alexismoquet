@@ -31,10 +31,10 @@ public class TableModelVisuel extends AbstractTableModel {
         return titres[column];
     }
 
-//    @Override
-//    public Class getColumnClass(int column) {
-//        return getValueAt(0, column).getClass();
-//    }
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
