@@ -44,8 +44,8 @@ public class PageMateriels extends JFrame {
     private JTextField txtRechercher = new JTextField();
     private JTable tableauMateriel = new JTable();
     List<Materiel> materiels = new ArrayList<>();
-    List <Materiel> listRechercheMateriels = new ArrayList<>();
-    List <Visuel> listRechercheVisuels = new ArrayList<>();
+    List<Materiel> listRechercheMateriels = new ArrayList<>();
+    List<Visuel> listRechercheVisuels = new ArrayList<>();
     List<Visuel> visuels = new ArrayList<>();
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
@@ -106,7 +106,7 @@ public class PageMateriels extends JFrame {
 
         setContentPane(panPrincipal);
 
-        if (utilisateur == null){
+        if (utilisateur == null) {
             afficheJTableMateriels();
         } else {
             afficheJTableMaterielsWithIdAdresse();
@@ -152,10 +152,10 @@ public class PageMateriels extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             materiel = null;
-            if(adresse == null){
+            if (utilisateur == null) {
                 afficheJTableMateriels();
             } else {
-                afficheJTableMateriels();
+                afficheJTableMaterielsWithIdAdresse();
             }
         });
 
@@ -165,19 +165,19 @@ public class PageMateriels extends JFrame {
         btnSupprimerMateriel.addActionListener(e -> {
             MaterielManager am = MaterielManager.getInstance();
 
-            int i= JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
                     "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
-            if (i==0) //user a dit oui
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+            if (i == 0) //user a dit oui
             {
                 try {
                     am.delete(materiel);
-                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel "+ materiel.getMateriel_id()+ " supprimé");
+                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel " + materiel.getMateriel_id() + " supprimé");
 
-                    if (utilisateur == null){
+                    if (utilisateur == null) {
                         afficheJTableMateriels();
-                    }else{
-                    afficheJTableMaterielsWithIdAdresse();
+                    } else {
+                        afficheJTableMaterielsWithIdAdresse();
                         tableauMateriel.clearSelection();
                     }
                 } catch (BLLException ex) {
@@ -196,7 +196,7 @@ public class PageMateriels extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 3);
 
-            //    JOptionPane.showMessageDialog( btnVisuels, "Le materiel " + idMaterielSelected + " est sélectionnée");
+                //    JOptionPane.showMessageDialog( btnVisuels, "Le materiel " + idMaterielSelected + " est sélectionnée");
                 try {
 
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);
@@ -210,12 +210,12 @@ public class PageMateriels extends JFrame {
         /**
          * listenner sur le bouton Visuel
          */
-        btnVisuels.setSize(100,50);
+        btnVisuels.setSize(100, 50);
         btnVisuels.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (materiel == null){
-                    JOptionPane.showMessageDialog( btnVisuels, "veuillez sélectionner un materiel");
+                if (materiel == null) {
+                    JOptionPane.showMessageDialog(btnVisuels, "veuillez sélectionner un materiel");
                 } else {
                     new PageVisuels(materiel);
                 }
@@ -223,7 +223,6 @@ public class PageMateriels extends JFrame {
         });
 
     }//fin initialiserComposants
-
 
 
     private void afficheJTableMaterielsWithIdSport(int pIdSport) {
