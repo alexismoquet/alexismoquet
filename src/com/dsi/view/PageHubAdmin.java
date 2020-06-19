@@ -183,7 +183,6 @@ public class PageHubAdmin extends JFrame {
                                 am.update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i,3) + " modifiée");
                                 remplirJTableWithAnomalies();
-                                tableauAnomalies.clearSelection();
                             }
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();

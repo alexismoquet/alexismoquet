@@ -93,8 +93,11 @@ public class PageAnnonces extends JFrame {
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
         panCentre.add(tableauAnnonce.getTableHeader(), BorderLayout.NORTH);
+
+        //ScrollPane
         JScrollPane scrollPane = new JScrollPane(tableauAnnonce);
         panCentre.add(scrollPane, BorderLayout.CENTER);
+
         panCentre.add(tableauAnnonce, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauAnnonce), BorderLayout.CENTER);
 

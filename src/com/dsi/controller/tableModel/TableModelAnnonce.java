@@ -14,6 +14,7 @@ public class TableModelAnnonce extends AbstractTableModel {
         this.annonces = annonces;
     }
 
+
     @Override
     public int getRowCount() {
         return annonces.size();
@@ -30,6 +31,11 @@ public class TableModelAnnonce extends AbstractTableModel {
     }
 
     @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
+    }
+    
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
         switch (columnIndex) {
@@ -44,11 +50,6 @@ public class TableModelAnnonce extends AbstractTableModel {
             default:
                 return "";
         }
-    }
-
-    @Override
-    public boolean isCellEditable(int row, int column) {
-        return true;
     }
 
     @Override

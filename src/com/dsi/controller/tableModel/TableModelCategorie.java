@@ -23,9 +23,15 @@ public class TableModelCategorie extends AbstractTableModel {
     public int getColumnCount() {
         return titres.length;
     }
+
     @Override
     public String getColumnName(int column) {
         return titres[column];
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
     }
 
     @Override
