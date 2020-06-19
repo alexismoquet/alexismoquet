@@ -9,7 +9,6 @@ import java.util.List;
 public class Commentaires {
     public static List<Commentaire> remplirJTableWithCommentaires() throws BLLException {
         CommentaireManager cm = CommentaireManager.getInstance();
-
         return cm.SelectAll();
     }
 }

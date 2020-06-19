@@ -34,6 +34,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bCommentaires = new JButton("Commentaires");
     private JButton bEnregistrer = new JButton("Enregistrer");
     private JButton bAnnonces = new JButton("Annonces");
+    private JButton bMateriels = new JButton("Materiels");
 
     private JTable tableauAnomalies = new JTable();
 
@@ -83,6 +84,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bCategories);
         panBtn.add(bSports);
         panBtn.add(bAnnonces);
+        panBtn.add(bMateriels);
         panBtn.add(bEnregistrer);
 
 
@@ -137,6 +139,12 @@ public class PageHubAdmin extends JFrame {
         bAnnonces.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { PageAnnonces pa = new PageAnnonces(); }
+        });
+
+        bMateriels.setSize(100, 50);
+        bMateriels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageMateriels pm = new PageMateriels(); }
         });
 
         bEnregistrer.setSize(100, 50);
