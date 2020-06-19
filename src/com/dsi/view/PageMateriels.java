@@ -1,6 +1,7 @@
 package com.dsi.view;
 
 import com.dsi.controller.Materiels;
+import com.dsi.controller.tableModel.TableModelCommentaire;
 import com.dsi.controller.tableModel.TableModelMateriel;
 import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
@@ -22,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.dsi.controller.Materiels.remplirJTableWithMaterielsIdAdresse;
-import static com.dsi.controller.Materiels.remplirJTableWithMaterielsIdSport;
+import static com.dsi.controller.Commentaires.remplirJTableWithCommentaires;
+import static com.dsi.controller.Materiels.*;
 
 
 public class PageMateriels extends JFrame {
@@ -105,7 +106,11 @@ public class PageMateriels extends JFrame {
 
         setContentPane(panPrincipal);
 
-        afficheJTableMaterielsWithIdAdresse();
+        if (utilisateur == null){
+            afficheJTableMateriels();
+        } else {
+            afficheJTableMaterielsWithIdAdresse();
+        }
 
 
         /**************************************************************************************************************************************/
@@ -147,8 +152,11 @@ public class PageMateriels extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             materiel = null;
-            afficheJTableMaterielsWithIdAdresse();
-
+            if(adresse == null){
+                afficheJTableMateriels();
+            } else {
+                afficheJTableMateriels();
+            }
         });
 
         btnModifierMateriel.addActionListener(e -> {
@@ -165,11 +173,17 @@ public class PageMateriels extends JFrame {
                 try {
                     am.delete(materiel);
                     JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel "+ materiel.getMateriel_id()+ " supprimé");
+
+                    if (utilisateur == null){
+                        afficheJTableMateriels();
+                    }else{
                     afficheJTableMaterielsWithIdAdresse();
+                        tableauMateriel.clearSelection();
+                    }
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
-                tableauMateriel.clearSelection();
+
             }
         });
 
@@ -236,7 +250,17 @@ public class PageMateriels extends JFrame {
         }
     } //fin afficheJTable
 
+    private void afficheJTableMateriels() {
+        try {
+            materiels = remplirJTableWithMateriels();
+            TableModelMateriel model = new TableModelMateriel(materiels);
+            tableauMateriel.setModel(model);
 
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+
+    } //fin afficheJTable
 
 
 }//fin class
