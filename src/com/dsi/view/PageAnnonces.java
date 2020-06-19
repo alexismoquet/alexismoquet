@@ -180,13 +180,23 @@ public class PageAnnonces extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             annonce = null;
-            afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
+            if (utilisateur == null){
+                afficheJTableWithAllAnnonces();
+            } else {
+                afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
+            }
         });
 
         btnModifierAnnonce.addActionListener(e -> {
         });
 
         btnSupprimerAnnonce.addActionListener(e -> {
+
+            if (annonce == null){
+            JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
+            return;
+            }
+
             AnnonceManager am = AnnonceManager.getInstance();
 
             int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
@@ -218,7 +228,7 @@ public class PageAnnonces extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (annonce == null) {
-                    JOptionPane.showMessageDialog(bCommentaires, "veuillez sélectionner une annonce");
+                    JOptionPane.showMessageDialog(bCommentaires, "Veuillez sélectionner une annonce");
                 } else {
                     new PageCommentaires(annonce);
                 }

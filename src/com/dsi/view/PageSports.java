@@ -96,8 +96,8 @@ public class PageSports extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
-                txtRechercher.setText(" ");
-                txtRechercher.removeMouseListener(this);
+                txtRechercher.setText("");
+         //       txtRechercher.removeMouseListener(this);
             }
         });
 

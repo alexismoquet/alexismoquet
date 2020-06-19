@@ -138,13 +138,17 @@ public class PageHubAdmin extends JFrame {
         bAnnonces.setSize(100, 50);
         bAnnonces.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { PageAnnonces pa = new PageAnnonces(); }
+            public void actionPerformed(ActionEvent e) {
+                PageAnnonces pa = new PageAnnonces();
+            }
         });
 
         bMateriels.setSize(100, 50);
         bMateriels.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { PageMateriels pm = new PageMateriels(); }
+            public void actionPerformed(ActionEvent e) {
+                PageMateriels pm = new PageMateriels();
+            }
         });
 
         bEnregistrer.setSize(100, 50);
@@ -155,7 +159,7 @@ public class PageHubAdmin extends JFrame {
                 AnnonceManager am = AnnonceManager.getInstance();
 
                 /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
-                for (int i = 0; i <tableauAnomalies.getRowCount(); i++) {
+                for (int i = 0; i < tableauAnomalies.getRowCount(); i++) {
 
                     try {
                         annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnomalies.getValueAt(i, 3));
@@ -181,15 +185,14 @@ public class PageHubAdmin extends JFrame {
 
                             if (j == 0)  /**user a dit oui*/ {
                                 am.update(annonce);
-                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i,3) + " modifiée");
-                                remplirJTableWithAnomalies();
+                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " modifiée");
                             }
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
                     }
                 }//fin boucle for
-                
+
                 tableauAnomalies.clearSelection();
 
             }//fin actionPerformed
@@ -230,7 +233,7 @@ public class PageHubAdmin extends JFrame {
             String titreAnnonceSelect = annonces.get(i).getAnnonce_titre().toLowerCase();
             String descriptionAnnonceSelect = annonces.get(i).getAnnonce_description().toLowerCase();
 
-            if (titreAnnonceSelect.contains("sexe") || descriptionAnnonceSelect.contains("sexe")) {
+            if (titreAnnonceSelect.contains("sex") || descriptionAnnonceSelect.contains("sex")) {
                 listAnomalies.add(annonceSelect);
             }
         }
