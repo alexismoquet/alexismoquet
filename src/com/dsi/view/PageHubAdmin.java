@@ -4,6 +4,7 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import org.mariadb.jdbc.internal.com.read.resultset.SelectResultSet;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -186,6 +187,7 @@ public class PageHubAdmin extends JFrame {
                             if (j == 0)  /**user a dit oui*/ {
                                 am.update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " modifiée");
+                                remplirJTableWithAnomalies();
                             }
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
@@ -225,6 +227,7 @@ public class PageHubAdmin extends JFrame {
 
 
     private void remplirJTableWithAnomalies() throws BLLException {
+        listAnomalies = new ArrayList<>();
         AnnonceManager am = new AnnonceManager();
         annonces = am.SelectAll();
 
