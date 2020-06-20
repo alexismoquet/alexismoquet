@@ -257,6 +257,7 @@ public class PageUtilisateurs extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 11);
+                JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
 
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById(idUserSelected);

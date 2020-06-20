@@ -56,6 +56,7 @@ public class PageCommentaires extends JFrame {
         this.annonce = annonce;
         initialiserComposants();
     }
+
     public void initialiserComposants() {
         setTitle("Commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));

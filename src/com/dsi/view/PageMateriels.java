@@ -73,6 +73,11 @@ public class PageMateriels extends JFrame {
         initialiserComposants();
     }
 
+    public PageMateriels(Sport pSport) {
+        this.sport = pSport;
+        initialiserComposants();
+    }
+
     /*************************************************************/
 
 
@@ -111,12 +116,15 @@ public class PageMateriels extends JFrame {
 
         setContentPane(panPrincipal);
 
-        if (utilisateur == null  && categorie == null) {
+        /** affichage da la pageMateriel selon la page de provenance */
+        if (utilisateur == null && categorie == null && sport == null) {
             afficheJTableMateriels();
-        } else if (utilisateur == null) {
+        } else if (utilisateur == null && sport == null) {
             afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
-        } else {
+        } else if (categorie == null && sport == null){
             afficheJTableMaterielsWithIdAdresse();
+        }else if (utilisateur == null && categorie == null){
+            afficheJTableMaterielsWithIdSport(sport.getSport_id());
         }
 
 
@@ -176,16 +184,21 @@ public class PageMateriels extends JFrame {
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
+
             {
                 try {
                     am.delete(materiel);
                     JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel " + materiel.getMateriel_id() + " supprimé");
 
-                    if (utilisateur == null) {
+                    if (utilisateur == null && categorie == null && sport == null) {
                         afficheJTableMateriels();
-                    } else {
+                    } else if (categorie == null && sport == null) {
                         afficheJTableMaterielsWithIdAdresse();
                         tableauMateriel.clearSelection();
+                    } else if (categorie == null && utilisateur == null){
+                        afficheJTableMaterielsWithIdSport(sport.getSport_id());
+                    }else {
+                        afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
                     }
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -201,9 +214,8 @@ public class PageMateriels extends JFrame {
         tableauMateriel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 3);
-
-                //    JOptionPane.showMessageDialog( btnVisuels, "Le materiel " + idMaterielSelected + " est sélectionnée");
+                int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 4);
+                JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
                 try {
 
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);

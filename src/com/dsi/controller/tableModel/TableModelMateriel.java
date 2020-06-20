@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelMateriel extends AbstractTableModel {
 
-    private final String[] titres = {"Nom","Description","idAdresse","idCategorie","idMateriel"};
+    private final String[] titres = {"Nom","Description","idAdresse","idCategorie","idMateriel", "idSport"};
 
     private List<Materiel> materiels;
 
@@ -45,6 +45,8 @@ public class TableModelMateriel extends AbstractTableModel {
                 return materiels.get(rowIndex).getMateriel_categorie_id();
             case 4:
                 return materiels.get(rowIndex).getMateriel_id();
+            case 5 :
+                return materiels.get(rowIndex).getMateriel_sport_id();
             default:
                 return "";
         }
