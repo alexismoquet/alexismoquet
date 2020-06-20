@@ -45,7 +45,7 @@ public class PageAnnonces extends JFrame {
     List<Annonce> annonces = new ArrayList<>();
 
     List<Annonce> listRechercheAnnonces = new ArrayList<>();
-
+    Categorie categorie;
     Annonce annonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
@@ -59,11 +59,6 @@ public class PageAnnonces extends JFrame {
 
     public PageAnnonces(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
-        initialiserComposants();
-    }
-
-    public PageAnnonces(Annonce pAnnonce) {
-        this.annonce = pAnnonce;
         initialiserComposants();
     }
 

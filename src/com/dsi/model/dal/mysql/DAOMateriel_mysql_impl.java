@@ -19,6 +19,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     private String SQL_SelectAll                = "SELECT * FROM materiels;";
     private String SQL_SelectById               = "SELECT * FROM materiels WHERE materiel_id = ?;";
     private String SQL_SelectByIdAdresse        = "SELECT * FROM materiels WHERE materiel_adresse_id = ?;";
+    private String SQL_SelectByIdCategorie        = "SELECT * FROM materiels WHERE materiel_categorie_id = ?;";
     private String SQL_Insert                   = "INSERT INTO materiels (materiel_categorie_id, materiel_sport_id, materiel_materiel_id, materiel_nom, materiel_description, materiel_prix, materiel_caution, materiel_caution_prix) VALUES (?,?,?,?,?,?,?,?,?);";
     private String SQL_Update                   = "UPDATE materiels SET materiel_nom=?, materiel_description=?, materiel_prix=?, materiel_caution=?, materiel_caution_prix=? WHERE materiel_id=?;";
     private String SQL_Delete                   = "DELETE FROM materiels WHERE materiel_id=?;";
@@ -184,6 +185,62 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
         }
 
         return materiel;
+    }
+
+    @Override
+    public List<Materiel> selectByIdCategorie(int pIdCategorie) throws DALException {
+        rs = null;
+        materiel = null;
+        materiels = new ArrayList<>();
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_SelectByIdCategorie);
+            pstmt.setInt(1, pIdCategorie);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                materiel = new Materiel(
+                        rs.getInt("materiel_id"),
+                        rs.getInt("materiel_categorie_id"),
+                        rs.getInt("materiel_sport_id"),
+                        rs.getInt("materiel_adresse_id"),
+                        rs.getString("materiel_nom"),
+                        rs.getString("materiel_description"),
+                        rs.getFloat("materiel_prix"),
+                        rs.getBoolean("materiel_caution"),
+                        rs.getFloat("materiel_caution_prix")
+                );
+
+                materiels.add(materiel);
+            }
+
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.setAutoCommit(true);
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
+
+        return materiels;
     }
 
     @Override

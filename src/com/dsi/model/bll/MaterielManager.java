@@ -84,24 +84,35 @@ public class MaterielManager implements  Manager<Materiel> {
     }
 
     public List<Materiel> SelectByIdSport(int pId) throws BLLException {
-        materiel = null;
-
+        materiels = new ArrayList<>();
         try {
             materiel = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du materiel : "+pId, e);
+        }
+
+        return materiels;
+    }
+
+    public List<Materiel> SelectByIdAdresse(int pId) throws BLLException {
+        materiels = new ArrayList<>();
+
+        try {
+            materiel = dao.selectByIdAdresse(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération du materiel : "+pId, e);
         }
 
         return materiel;
     }
 
-    public List<Materiel> SelectByIdAdresse(int pId) throws BLLException {
+    public List<Materiel> SelectByIdCategorie(int pId) throws BLLException {
         materiel = null;
 
         try {
-            materiel = dao.selectByIdAdresse(pId);
+            materiel = dao.selectByIdCategorie(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du materiel : "+pId, e);
         }
 
         return materiel;

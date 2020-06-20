@@ -15,4 +15,8 @@ public interface DAO_Materiel extends DAO<Materiel> {
     List<Materiel> selectByIdAdresse(int pIdAdresse) throws DALException;
 
     Materiel selectById(int pId) throws DALException;
+
+    List<Materiel> selectByIdCategorie(int pIdCategorie) throws DALException;
+
+
 }
