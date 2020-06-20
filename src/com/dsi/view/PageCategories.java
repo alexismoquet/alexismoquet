@@ -1,6 +1,7 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCategorie;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.bll.CategorieManager;
@@ -10,6 +11,8 @@ import com.dsi.model.bll.SportManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class PageCategories extends JFrame {
     private JButton btnModifierCategorie = new JButton("Modifier categorie");
     private JButton btnSupprimerCategorie = new JButton("Supprimer categorie");
     private JButton btnAnnuler = new JButton("Annuler");
+    private JButton btnMateriels = new JButton("Matériels");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -40,8 +44,8 @@ public class PageCategories extends JFrame {
     private JTable tableauCategorie = new JTable();
     List<Categorie> categories = new ArrayList<>();
     List <Categorie> listRechercheCategories = new ArrayList<>();
-
     Categorie categorie;
+
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
@@ -84,6 +88,7 @@ public class PageCategories extends JFrame {
         panBas.add(btnModifierCategorie);
         panBas.add(btnSupprimerCategorie);
         panBas.add(btnAnnuler);
+        panBas.add(btnMateriels);
 
         setContentPane(panPrincipal);
 
@@ -154,6 +159,21 @@ public class PageCategories extends JFrame {
         });
 
         /**
+         * listenner sur le bouton annonce
+         */
+        btnMateriels.setSize(100, 50);
+        btnMateriels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( categorie == null) {
+                    JOptionPane.showMessageDialog(btnMateriels, "veuillez sélectionner une catégorie");
+                } else {
+                    new PageMateriels(categorie);
+                }
+            }
+        });
+
+        /**
          * Mouse listenner sur le tableau utilisateur
          */
         tableauCategorie.addMouseListener(new MouseAdapter() {
@@ -167,6 +187,8 @@ public class PageCategories extends JFrame {
                 }
             }
         });
+
+
 
     }//fin initialiserComposants
 

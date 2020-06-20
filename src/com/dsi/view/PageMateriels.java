@@ -49,9 +49,9 @@ public class PageMateriels extends JFrame {
     List<Visuel> visuels = new ArrayList<>();
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-    Adresse adresse;
+    Categorie categorie;
     Sport sport;
-    Annonce annonce;
+
     Utilisateur utilisateur;
     Materiel materiel;
 
@@ -65,6 +65,11 @@ public class PageMateriels extends JFrame {
 
     public PageMateriels(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
+
+    public PageMateriels(Categorie pCategorie) {
+        this.categorie = pCategorie;
         initialiserComposants();
     }
 
@@ -106,8 +111,10 @@ public class PageMateriels extends JFrame {
 
         setContentPane(panPrincipal);
 
-        if (utilisateur == null) {
+        if (utilisateur == null  && categorie == null) {
             afficheJTableMateriels();
+        } else if (utilisateur == null) {
+            afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
         } else {
             afficheJTableMaterielsWithIdAdresse();
         }
@@ -236,6 +243,17 @@ public class PageMateriels extends JFrame {
         }
     } //fin afficheJTable
 
+    private void afficheJTableMaterielsWithIdCategorie(int idCategorie) {
+
+        try {
+            materiels = remplirJTableWithMaterielsIdCategorie(categorie.getCategorie_id());
+            TableModelMateriel model = new TableModelMateriel(materiels);
+            tableauMateriel.setModel(model);
+
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+    } //fin afficheJTable
 
     private void afficheJTableMaterielsWithIdAdresse() {
 
