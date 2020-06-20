@@ -135,10 +135,11 @@ public class PageAnnonces extends JFrame {
                 ex.printStackTrace();
             }
             for (Annonce annonce : annonces) {
-                String sp = annonce.getAnnonce_titre().toLowerCase();
+                String titreAnnonce = annonce.getAnnonce_titre().toLowerCase();
+                String descriptionAnnonce = annonce.getAnnonce_description().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.contains(recherche)) {
+                if (titreAnnonce.contains(recherche) || descriptionAnnonce.contains(recherche)) {
                     listRechercheAnnonces.add(annonce);
                     TableModelAnnonce model = new TableModelAnnonce(listRechercheAnnonces);
                     tableauAnnonce.setModel(model);
@@ -157,8 +158,7 @@ public class PageAnnonces extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
-
-                //  JOptionPane.showMessageDialog( bCommentaires, "L'annonce " + idAnnonceSelected + " est sélectionnée");
+                JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
                 } catch (BLLException ex) {
@@ -175,7 +175,7 @@ public class PageAnnonces extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             annonce = null;
-            if (utilisateur == null){
+            if (utilisateur == null) {
                 afficheJTableWithAllAnnonces();
             } else {
                 afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
@@ -187,9 +187,9 @@ public class PageAnnonces extends JFrame {
 
         btnSupprimerAnnonce.addActionListener(e -> {
 
-            if (annonce == null){
-            JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
-            return;
+            if (annonce == null) {
+                JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
+                return;
             }
             AnnonceManager am = AnnonceManager.getInstance();
 
@@ -203,7 +203,7 @@ public class PageAnnonces extends JFrame {
                     JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
                     if (utilisateur == null) {
                         afficheJTableWithAllAnnonces();
-                    //    tableauAnnonce.clearSelection();
+                        //    tableauAnnonce.clearSelection();
                     } else {
                         afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
                         tableauAnnonce.clearSelection();

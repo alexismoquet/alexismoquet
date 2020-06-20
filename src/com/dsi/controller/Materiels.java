@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Materiels {
     public static List<Materiel> remplirJTableWithMaterielsIdSport(int idSport) throws BLLException {
-        MaterielManager vm = MaterielManager.getInstance();
-        return vm.SelectByIdSport(idSport);
+        MaterielManager mm = MaterielManager.getInstance();
+        return mm.SelectByIdSport(idSport);
     }
 
     public static List<Materiel> remplirJTableWithMaterielsIdAdresse(int idAdresse) throws BLLException {

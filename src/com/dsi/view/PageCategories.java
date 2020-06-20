@@ -159,13 +159,13 @@ public class PageCategories extends JFrame {
         });
 
         /**
-         * listenner sur le bouton annonce
+         * listenner sur le bouton materiel
          */
         btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if ( categorie == null) {
+                if (categorie == null) {
                     JOptionPane.showMessageDialog(btnMateriels, "veuillez sélectionner une catégorie");
                 } else {
                     new PageMateriels(categorie);
@@ -174,14 +174,16 @@ public class PageCategories extends JFrame {
         });
 
         /**
-         * Mouse listenner sur le tableau utilisateur
+         * Mouse listenner sur le tableau catégorie
          */
         tableauCategorie.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int id = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
+                int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
+                JOptionPane.showMessageDialog( null, "La catégorie " + idCategorie + " est sélectionnée");
+
                 try {
-                    categorie = CategorieManager.getInstance().SelectById(id);
+                    categorie = CategorieManager.getInstance().SelectById(idCategorie);
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }

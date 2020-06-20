@@ -11,6 +11,8 @@ import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class PageSports extends JFrame {
     private JButton btnModifierSport = new JButton("Modifier Sport");
     private JButton btnSupprimerSport = new JButton("Supprimer Sport");
     private JButton btnAnnuler = new JButton("Annuler");
+    private JButton btnMateriels = new JButton("Matériels");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -51,6 +54,7 @@ public class PageSports extends JFrame {
     public PageSports() {
         initialiserComposants();
     }
+
 
 
     public void initialiserComposants() {
@@ -84,6 +88,8 @@ public class PageSports extends JFrame {
         panBas.add(btnModifierSport);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
+        panBas.add(btnMateriels);
+
         setContentPane(panPrincipal);
 
         afficheJTableSports();
@@ -155,14 +161,31 @@ public class PageSports extends JFrame {
         });
 
         /**
+         * listenner sur le bouton materiel
+         */
+        btnMateriels.setSize(100, 50);
+        btnMateriels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( sport == null) {
+                    JOptionPane.showMessageDialog(btnMateriels, "veuillez sélectionner un sport");
+                } else {
+                    new PageMateriels(sport);
+                }
+            }
+        });
+
+        /**
          * Mouse listenner sur le tableau utilisateur
          */
         tableauSport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int id = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
+                int idSport = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
+                JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
+
                 try {
-                    sport = SportManager.getInstance().SelectById(id);
+                    sport = SportManager.getInstance().SelectById(idSport);
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }

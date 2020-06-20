@@ -84,14 +84,14 @@ public class MaterielManager implements  Manager<Materiel> {
     }
 
     public List<Materiel> SelectByIdSport(int pId) throws BLLException {
-        materiels = new ArrayList<>();
+        materiel =  null;
         try {
-            materiel = dao.selectById(pId);
+            materiel = dao.selectByIdSport(pId);
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la récupération du materiel : "+pId, e);
         }
 
-        return materiels;
+        return materiel;
     }
 
     public List<Materiel> SelectByIdAdresse(int pId) throws BLLException {
