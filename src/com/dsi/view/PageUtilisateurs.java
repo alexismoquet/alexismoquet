@@ -34,8 +34,9 @@ public class PageUtilisateurs extends JFrame {
     private JButton btnEnrModifUtil = new JButton("Enregistrer");
     private JButton btnSupprimerUtil = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
-    private JButton bAnnonces = new JButton("Annonces");
-    private JButton bMateriel = new JButton("Materiels");
+    private JButton btnAnnonce = new JButton("Annonces");
+    private JButton btnMateriel = new JButton("Materiels");
+    private JButton btnCommentaire = new JButton("Commentaires");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -92,11 +93,12 @@ public class PageUtilisateurs extends JFrame {
         panBas.add(btnEnrModifUtil);
         panBas.add(btnSupprimerUtil);
         panBas.add(btnAnnuler);
-        panBas.add(bAnnonces);
-        panBas.add(bMateriel);
+        panBas.add(btnAnnonce);
+        panBas.add(btnMateriel);
+        panBas.add(btnCommentaire);
 
-        bAnnonces.setVisible(true);
-        bMateriel.setVisible(true);
+        btnAnnonce.setVisible(true);
+        btnMateriel.setVisible(true);
 
         setContentPane(panPrincipal);
 
@@ -229,7 +231,7 @@ public class PageUtilisateurs extends JFrame {
          */
         btnSupprimerUtil.addActionListener(e -> {
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(bAnnonces, "veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(btnAnnonce, "veuillez sélectionner un utilisateur");
             } else {
                 UtilisateurManager um = UtilisateurManager.getInstance();
 
@@ -271,12 +273,12 @@ public class PageUtilisateurs extends JFrame {
         /**
          * listenner sur le bouton annonce
          */
-        bAnnonces.setSize(100, 50);
-        bAnnonces.addActionListener(new ActionListener() {
+        btnAnnonce.setSize(100, 50);
+        btnAnnonce.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(bAnnonces, "veuillez sélectionner un utilisateur");
+                    JOptionPane.showMessageDialog(btnAnnonce, "veuillez sélectionner un utilisateur");
                 } else {
                     new PageAnnonces(utilisateur);
                 }
@@ -286,14 +288,29 @@ public class PageUtilisateurs extends JFrame {
         /**
          * listenner sur le bouton materiel
          */
-        bMateriel.setSize(100, 50);
-        bMateriel.addActionListener(new ActionListener() {
+        btnMateriel.setSize(100, 50);
+        btnMateriel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(bMateriel, "veuillez sélectionner un utilisateur");
+                    JOptionPane.showMessageDialog(btnMateriel, "veuillez sélectionner un utilisateur");
                 } else {
                     new PageMateriels(utilisateur);
+                }
+            }
+        });
+
+        /**
+         * listenner sur le bouton commentaire
+         */
+        btnCommentaire.setSize(100, 50);
+        btnCommentaire.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (utilisateur == null) {
+                    JOptionPane.showMessageDialog(btnMateriel, "veuillez sélectionner un utilisateur");
+                } else {
+                    new PageCommentaires(utilisateur);
                 }
             }
         });
