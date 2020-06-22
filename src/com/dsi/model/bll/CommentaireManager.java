@@ -6,6 +6,7 @@ import com.dsi.model.dal.DAO_Commentaire;
 import com.dsi.model.dal.DAO_Factory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -90,6 +91,31 @@ public class CommentaireManager implements Manager<Commentaire> {
         }
 
         return commentaire;
+    }
+
+
+    public List <Commentaire> SelectByIdAnnonce(int pId) throws BLLException {
+        commentaires = null;
+
+        try {
+            commentaires = dao.selectByIdAnnonce(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+        }
+
+        return commentaires;
+    }
+
+    public List <Commentaire> SelectByIdUtilisateur(int pId) throws BLLException {
+        commentaires = null;
+
+        try {
+            commentaires = dao.selectByIdUtilisateur(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+        }
+
+        return commentaires;
     }
 
 

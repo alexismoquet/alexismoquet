@@ -3,6 +3,7 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelCommentaire;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Commentaire;
+import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.CommentaireManager;
 import com.dsi.model.bll.BLLException;
@@ -14,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dsi.controller.Commentaires.remplirJTableWithCommentaires;
+import static com.dsi.controller.Commentaires.*;
 
 /**
  * Classe PageCommentaires
@@ -41,6 +42,7 @@ public class PageCommentaires extends JFrame {
     List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
     Annonce annonce;
+    Utilisateur utilisateur;
     Commentaire commentaire;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -54,6 +56,11 @@ public class PageCommentaires extends JFrame {
 
     public PageCommentaires(Annonce annonce) {
         this.annonce = annonce;
+        initialiserComposants();
+    }
+
+    public PageCommentaires(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
         initialiserComposants();
     }
 
@@ -94,7 +101,15 @@ public class PageCommentaires extends JFrame {
 
         setContentPane(panPrincipal);
 
-        afficheJTableCommentaires();
+        if (annonce ==  null && utilisateur == null){
+            afficheJTableCommentaires();
+        } else if (utilisateur == null){
+            afficheJTableCommentairesWithIdAnnonce();
+        } else if (annonce == null){
+            afficheJTableCommentairesWithIdUtilisateur();
+        }
+
+
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -142,6 +157,10 @@ public class PageCommentaires extends JFrame {
         });
 
         btnSupprimerCommentaire.addActionListener(e -> {
+            if (commentaire == null) {
+                JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner une annonce");
+                return;
+            }
             CommentaireManager cm = CommentaireManager.getInstance();
 
             int i= JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
@@ -160,12 +179,14 @@ public class PageCommentaires extends JFrame {
         });
 
         /**
-         * Mouse listenner sur le tableau utilisateur
+         * Mouse listenner sur le tableau commentaire
          */
         tableauCommentaire.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int id = (int) tableauCommentaire.getValueAt(tableauCommentaire.getSelectedRow(), 3);
+                JOptionPane.showMessageDialog(null, "Le commentaire " + id + " est sélectionné");
+
                 try {
                     commentaire = CommentaireManager.getInstance().SelectById(id);
                 } catch (BLLException ex) {
@@ -179,6 +200,30 @@ public class PageCommentaires extends JFrame {
     private void afficheJTableCommentaires() {
         try {
             commentaires = remplirJTableWithCommentaires();
+            TableModelCommentaire model = new TableModelCommentaire(commentaires);
+            tableauCommentaire.setModel(model);
+
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+
+    } //fin afficheJTable
+
+    private void afficheJTableCommentairesWithIdAnnonce() {
+        try {
+            commentaires = remplirJTableWithCommentairesIdAnnonce(annonce.getAnnonce_id());
+            TableModelCommentaire model = new TableModelCommentaire(commentaires);
+            tableauCommentaire.setModel(model);
+
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+
+    } //fin afficheJTable
+
+    private void afficheJTableCommentairesWithIdUtilisateur() {
+        try {
+            commentaires = remplirJTableWithCommentairesIdUtilisateur(utilisateur.getIdUtilisateur());
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             tableauCommentaire.setModel(model);
 

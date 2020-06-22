@@ -11,4 +11,14 @@ public class Commentaires {
         CommentaireManager cm = CommentaireManager.getInstance();
         return cm.SelectAll();
     }
+
+    public static List<Commentaire> remplirJTableWithCommentairesIdAnnonce(int idAnnonce) throws BLLException {
+        CommentaireManager cm = CommentaireManager.getInstance();
+        return cm.SelectByIdAnnonce(idAnnonce);
+    }
+
+    public static List<Commentaire> remplirJTableWithCommentairesIdUtilisateur(int idUtilisateur) throws BLLException {
+        CommentaireManager cm = CommentaireManager.getInstance();
+        return cm.SelectByIdUtilisateur(idUtilisateur);
+    }
 }
