@@ -1,5 +1,6 @@
 package com.dsi.controller.tableModel;
 
+import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Visuel;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -7,11 +8,10 @@ import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
 
-    private final String[] titres = {"Visuels", "id"};
-
+    private final String[] titres = {"Visuels", "id visuel", "id matériel"};
     private List<Visuel> visuels;
 
-
+    
     public TableModelVisuel(List<Visuel> visuels) {
         this.visuels = visuels;
     }
@@ -46,6 +46,8 @@ public class TableModelVisuel extends AbstractTableModel {
                 return new ImageIcon(cheminVisuel + visuels.get(rowIndex).getVisuel_nom_fichier());
             case 1:
                 return visuels.get(rowIndex).getVisuel_id();
+            case 2:
+                return visuels.get(rowIndex).getVisuel_materiel_id();
             default:
                 return "";
         }

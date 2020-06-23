@@ -61,7 +61,7 @@ public class PageHubAdmin extends JFrame {
     //************************************************************
     public void initialiserComposants() throws BLLException {
 
-        setTitle("HUB Admin");
+        setTitle("HANDISPAP");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(900, 500);
         setLocation(200, 200);

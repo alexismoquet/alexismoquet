@@ -35,8 +35,8 @@ public class PageMateriels extends JFrame {
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierMateriel = new JButton("Modifier materiel");
-    private JButton btnSupprimerMateriel = new JButton("Supprimer materiel");
+    private JButton btnModifierMateriel = new JButton("Enregistrer");
+    private JButton btnSupprimerMateriel = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnVisuels = new JButton("visuels");
     private JButton btnRechercher = new JButton("Rechercher");
@@ -97,7 +97,7 @@ public class PageMateriels extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("  Rechercher par mots      ");
+        txtRechercher.setText("  Rechercher par mots    ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -150,10 +150,11 @@ public class PageMateriels extends JFrame {
                 ex.printStackTrace();
             }
             for (Materiel materiel : materiels) {
-                String sp = materiel.getMateriel_nom().toLowerCase();
+                String nomMateriel = materiel.getMateriel_nom().toLowerCase();
+                String descriptionMateriel = materiel.getMateriel_description().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.contains(recherche)) {
+                if (nomMateriel.contains(recherche) || descriptionMateriel.contains(recherche)) {
                     listRechercheMateriels.add(materiel);
                     TableModelMateriel model = new TableModelMateriel(listRechercheMateriels);
                     tableauMateriel.setModel(model);
@@ -167,10 +168,12 @@ public class PageMateriels extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             materiel = null;
-            if (utilisateur == null) {
+            if (utilisateur == null && sport == null) {
                 afficheJTableMateriels();
-            } else {
+            } else if (sport == null){
                 afficheJTableMaterielsWithIdAdresse();
+            } else if (utilisateur == null){
+                afficheJTableMaterielsWithIdSport(sport.getSport_id());
             }
         });
 
@@ -178,14 +181,17 @@ public class PageMateriels extends JFrame {
         });
 
         btnSupprimerMateriel.addActionListener(e -> {
+            if (materiel == null){
+                JOptionPane.showMessageDialog(btnSupprimerMateriel, "Merci de sélectionner un matériel");
+                return;
+            }
             MaterielManager am = MaterielManager.getInstance();
 
-            int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel "+materiel.getMateriel_id()+" ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
-
-            {
+                 {
                 try {
                     am.delete(materiel);
                     JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel " + materiel.getMateriel_id() + " supprimé");
@@ -198,7 +204,7 @@ public class PageMateriels extends JFrame {
                     } else if (categorie == null && utilisateur == null){
                         afficheJTableMaterielsWithIdSport(sport.getSport_id());
                     }else {
-                        afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
+                        afficheJTableMaterielsWithIdCategorie(materiel.getMateriel_categorie_id());
                     }
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -234,7 +240,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnVisuels, "veuillez sélectionner un materiel");
+                    JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un materiel");
                 } else {
                     new PageVisuels(materiel);
                 }

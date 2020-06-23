@@ -140,9 +140,13 @@ public class PageCategories extends JFrame {
         });
 
         btnSupprimerCategorie.addActionListener(e -> {
+            if (categorie == null){
+                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner une catégorie");
+                return;
+            }
             CategorieManager sm = CategorieManager.getInstance();
 
-            int i= JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i= JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la catégorie "+categorie.getCategorie_id()+" ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
             if (i==0) //user a dit oui
@@ -166,7 +170,7 @@ public class PageCategories extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "veuillez sélectionner une catégorie");
+                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une catégorie");
                 } else {
                     new PageMateriels(categorie);
                 }
