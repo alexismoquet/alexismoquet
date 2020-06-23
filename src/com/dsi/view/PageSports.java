@@ -142,9 +142,14 @@ public class PageSports extends JFrame {
 
 
         btnSupprimerSport.addActionListener(e -> {
+            if(sport == null){
+                JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
+                return;
+            }
+
             SportManager sm = SportManager.getInstance();
 
-            int i= JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i= JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. ÊÊtes-vous sûr de vouloir supprimer le sport "+sport.getSport_id()+" ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
             if (i==0) //user a dit oui
@@ -168,7 +173,7 @@ public class PageSports extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if ( sport == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "veuillez sélectionner un sport");
+                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sport");
                 } else {
                     new PageMateriels(sport);
                 }

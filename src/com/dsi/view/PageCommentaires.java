@@ -163,7 +163,7 @@ public class PageCommentaires extends JFrame {
             }
             CommentaireManager cm = CommentaireManager.getInstance();
 
-            int i= JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i= JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le commentaire "+commentaire.getCommentaire_id()+" ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
             if (i==0) //user a dit oui

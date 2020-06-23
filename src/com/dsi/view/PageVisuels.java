@@ -35,12 +35,12 @@ public class PageVisuels extends JFrame {
         private JButton btnSupprimerVisuel = new JButton("Supprimer visuel");
         private JButton btnAnnuler = new JButton("Annuler");
 
-        private JTextField txtRechercher = new JTextField();
-        private JButton btnRechercher = new JButton("Rechercher");
+   //     private JTextField txtRechercher = new JTextField();
+   //     private JButton btnRechercher = new JButton("Rechercher");
 
         private JTable tableauVisuel = new JTable();
         List<Visuel> visuels = new ArrayList<>();
-        List <Visuel> listRechercheVisuels = new ArrayList<>();
+      //  List <Visuel> listRechercheVisuels = new ArrayList<>();
         Visuel visuel;
         ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
         Materiel materiel;
@@ -75,9 +75,9 @@ public class PageVisuels extends JFrame {
             panPrincipal.add(panBas, BorderLayout.SOUTH);
 
             panHaut.setPreferredSize(new Dimension(900, 100));
-            txtRechercher.setText("     Rechercher     ");
-            panHaut.add(txtRechercher);
-            panHaut.add(btnRechercher);
+          //  txtRechercher.setText("     Rechercher par id visuel   ");
+          //  panHaut.add(txtRechercher);
+           // panHaut.add(btnRechercher);
 
             //Panel centre
             panCentre.setPreferredSize(new Dimension(900, 250));
@@ -100,41 +100,41 @@ public class PageVisuels extends JFrame {
             /*************************************************************** Les listenners *******************************************************/
             /**************************************************************************************************************************************/
 
-            txtRechercher.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    JTextField txtRechercher = ((JTextField) e.getSource());
-                    txtRechercher.setText("");
-                    txtRechercher.removeMouseListener(this);
-                }
-            });
+//            txtRechercher.addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mouseClicked(MouseEvent e) {
+//                    JTextField txtRechercher = ((JTextField) e.getSource());
+//                    txtRechercher.setText("");
+//                    txtRechercher.removeMouseListener(this);
+//                }
+//            });
 
-            btnRechercher.addActionListener(e -> {
-                listRechercheVisuels = new ArrayList<>();
-                VisuelManager um = VisuelManager.getInstance();
-                try {
-                    um.SelectAll();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                for (Visuel visuel : visuels) {
-                    String sp = visuel.getVisuel_nom_fichier().toLowerCase();
-                    String recherche = txtRechercher.getText().toLowerCase();
-
-                    if (sp.contains(recherche)) {
-                        listRechercheVisuels.add(visuel);
-                        TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
-                        tableauVisuel.setModel(model);
-                    }
-                }
-                if (listRechercheVisuels.size() == 0) {
-                    JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
-                }
-            });
+//            btnRechercher.addActionListener(e -> {
+//                listRechercheVisuels = new ArrayList<>();
+//                VisuelManager um = VisuelManager.getInstance();
+//                try {
+//                    um.SelectAll();
+//                } catch (BLLException ex) {
+//                    ex.printStackTrace();
+//                }
+//                for (Visuel visuel : visuels) {
+//                    String sp = String.valueOf(visuel.getVisuel_id());
+//                    String recherche = txtRechercher.getText().toLowerCase();
+//
+//                    if (sp.equals(recherche)) {
+//                        listRechercheVisuels.add(visuel);
+//                        TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
+//                        tableauVisuel.setModel(model);
+//                    }
+//                }
+//                if (listRechercheVisuels.size() == 0) {
+//                    JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+//                }
+//            });
 
             btnAnnuler.addActionListener(e -> {
-                txtRechercher.setText("");
-                materiel = null;
+          //      txtRechercher.setText("");
+                visuel = null;
                 afficheJTableVisuels(materiel.getMateriel_id());
             });
 
@@ -149,9 +149,13 @@ public class PageVisuels extends JFrame {
              * Bouton supprimer le visuel
              */
             btnSupprimerVisuel.addActionListener(e -> {
+                if(visuel == null){
+                    JOptionPane.showMessageDialog(btnSupprimerVisuel, "Merci de sélectionner un visuel");
+                    return;
+                }
                 VisuelManager am = VisuelManager.getInstance();
 
-                int i= JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                int i= JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel "+visuel.getVisuel_id()+" ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
                 if (i==0) //user a dit oui
@@ -175,7 +179,7 @@ public class PageVisuels extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1);
-                  //  JOptionPane.showMessageDialog( btnRechercher, "Le visuel " + idVisuelSelected + " est sélectionné");
+                   JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
                     try {
                         visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
 

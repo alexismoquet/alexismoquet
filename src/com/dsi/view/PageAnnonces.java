@@ -186,14 +186,13 @@ public class PageAnnonces extends JFrame {
         });
 
         btnSupprimerAnnonce.addActionListener(e -> {
-
             if (annonce == null) {
                 JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
                 return;
             }
             AnnonceManager am = AnnonceManager.getInstance();
 
-            int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir continuer ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce "+annonce.getAnnonce_id()+" ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
