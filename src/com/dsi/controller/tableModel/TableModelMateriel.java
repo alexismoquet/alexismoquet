@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelMateriel extends AbstractTableModel {
 
-    private final String[] titres = {"Nom","Description","idAdresse","idCategorie","idMateriel", "idSport"};
+    private final String[] titres = {"Nom","Description","idAdresse","idCategorie", "idSport", "idMateriel"};
 
     private List<Materiel> materiels;
 
@@ -29,8 +29,8 @@ public class TableModelMateriel extends AbstractTableModel {
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+    public boolean isCellEditable(int row, int column) {
+        return true;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -44,11 +44,21 @@ public class TableModelMateriel extends AbstractTableModel {
             case 3:
                 return materiels.get(rowIndex).getMateriel_categorie_id();
             case 4:
-                return materiels.get(rowIndex).getMateriel_id();
-            case 5 :
                 return materiels.get(rowIndex).getMateriel_sport_id();
+            case 5 :
+                return materiels.get(rowIndex).getMateriel_id();
             default:
                 return "";
+        }
+    }
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        fireTableCellUpdated(rowIndex, columnIndex);
+
+        if(columnIndex == 0) {
+            materiels.get(rowIndex).setMateriel_nom(value.toString());
+        } else if (columnIndex == 1){
+            materiels.get(rowIndex).setMateriel_description(value.toString());
         }
     }
 

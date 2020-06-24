@@ -22,7 +22,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     private String SQL_SelectByIdCategorie      = "SELECT * FROM materiels WHERE materiel_categorie_id = ?;";
     private String SQL_SelectByIdSport          = "SELECT * FROM materiels WHERE materiel_sport_id = ?;";
     private String SQL_Insert                   = "INSERT INTO materiels (materiel_categorie_id, materiel_sport_id, materiel_materiel_id, materiel_nom, materiel_description, materiel_prix, materiel_caution, materiel_caution_prix) VALUES (?,?,?,?,?,?,?,?,?);";
-    private String SQL_Update                   = "UPDATE materiels SET materiel_nom=?, materiel_description=?, materiel_prix=?, materiel_caution=?, materiel_caution_prix=? WHERE materiel_id=?;";
+    private String SQL_Update                   = "UPDATE materiels SET materiel_nom=?, materiel_description=?, materiel_prix=?, materiel_caution_prix=? WHERE materiel_id=?;";
     private String SQL_Delete                   = "DELETE FROM materiels WHERE materiel_id=?;";
     private Materiel materiel;
     private Annonce annonce;
@@ -40,6 +40,41 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
     @Override
     public void update(Materiel pObj) throws DALException {
+        pstmt = null;
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Update);
+            pstmt.setString(1, pObj.getMateriel_nom());
+            pstmt.setString(2, pObj.getMateriel_description());
+            pstmt.setDouble(3, pObj.getMateriel_prix());
+            pstmt.setDouble(4, pObj.getMateriel_caution_prix());
+            pstmt.setInt(5, pObj.getMateriel_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
 
     }
 

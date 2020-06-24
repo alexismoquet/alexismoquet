@@ -6,6 +6,7 @@ import com.dsi.controller.tableModel.TableModelMateriel;
 import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.beans.Materiel;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.VisuelManager;
@@ -178,6 +179,45 @@ public class PageMateriels extends JFrame {
         });
 
         btnModifierMateriel.addActionListener(e -> {
+            MaterielManager mm = MaterielManager.getInstance();
+
+            /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            for (int i = 0; i < tableauMateriel.getRowCount(); i++) {
+
+                try {
+                    materiel = MaterielManager.getInstance().SelectById((Integer) tableauMateriel.getValueAt(i, 5));
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                String nomMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 0));
+                String descriptionMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 1));
+
+                tableauMateriel.setValueAt(descriptionMaterielModifie, i, 1);
+                tableauMateriel.setValueAt(nomMaterielModifie, i, 0);
+
+
+                /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie)) {
+                    try {
+                        materiel.setMateriel_description(descriptionMaterielModifie);
+                        materiel.setMateriel_nom(nomMaterielModifie);
+
+                        int j = JOptionPane.showConfirmDialog(btnModifierMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+
+                        if (j == 0)  /**user a dit oui*/ {
+                            mm.update(materiel);
+                            JOptionPane.showMessageDialog(null, "Matériel " + tableauMateriel.getValueAt(i, 5) + " modifié");
+                            afficheJTableMateriels();
+                        }
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
+                    }
+                }
+            }//fin boucle for
+            tableauMateriel.clearSelection();
+
         });
 
         btnSupprimerMateriel.addActionListener(e -> {
