@@ -36,6 +36,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bEnregistrer = new JButton("Enregistrer");
     private JButton bAnnonces = new JButton("Annonces");
     private JButton bMateriels = new JButton("Materiels");
+    private JButton bVisuels = new JButton("Visuels");
 
     private JTable tableauAnomalies = new JTable();
 
@@ -86,6 +87,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bSports);
         panBtn.add(bAnnonces);
         panBtn.add(bMateriels);
+        panBtn.add(bVisuels);
         panBtn.add(bEnregistrer);
 
 
@@ -150,6 +152,12 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 PageMateriels pm = new PageMateriels();
             }
+        });
+
+        bVisuels.setSize(100, 50);
+        bVisuels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageVisuels pv = new PageVisuels(); }
         });
 
         bEnregistrer.setSize(100, 50);
@@ -229,6 +237,7 @@ public class PageHubAdmin extends JFrame {
     private void remplirJTableWithAnomalies() throws BLLException {
         listAnomalies = new ArrayList<>();
         AnnonceManager am = new AnnonceManager();
+        
         annonces = am.SelectAll();
 
         for (int i = 0; i < annonces.size(); i++) {

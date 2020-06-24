@@ -7,6 +7,11 @@ import java.util.List;
 
 public class Visuels {
 
+    public static List<Visuel> remplirJTableWithAllVisuels() throws BLLException {
+        VisuelManager vm = VisuelManager.getInstance();
+
+        return vm.SelectAll();
+    }
 
     public static List<Visuel> remplirJTableWithVisuelsIdMateriel(int idMateriel) throws BLLException {
         VisuelManager vm = VisuelManager.getInstance();
