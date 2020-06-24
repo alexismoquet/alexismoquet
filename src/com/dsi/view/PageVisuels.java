@@ -14,6 +14,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dsi.controller.Visuels.remplirJTableWithAllVisuels;
 import static com.dsi.controller.Visuels.remplirJTableWithVisuelsIdMateriel;
 
 
@@ -93,7 +95,11 @@ public class PageVisuels extends JFrame {
 
             setContentPane(panPrincipal);
 
-            afficheJTableVisuels(materiel.getMateriel_id());
+            if (materiel == null){
+                afficheJTableWithAllVisuels();
+            }else {
+                afficheJTableVisuels(materiel.getMateriel_id());
+            }
 
 
             /**************************************************************************************************************************************/
@@ -135,7 +141,11 @@ public class PageVisuels extends JFrame {
             btnAnnuler.addActionListener(e -> {
           //      txtRechercher.setText("");
                 visuel = null;
-                afficheJTableVisuels(materiel.getMateriel_id());
+                if (materiel == null){
+                    afficheJTableWithAllVisuels();
+                } else {
+                    afficheJTableVisuels(materiel.getMateriel_id());
+                }
             });
 
 
@@ -163,7 +173,11 @@ public class PageVisuels extends JFrame {
                     try {
                         am.delete(visuel);
                         JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel "+ visuel.getVisuel_id()+ " supprimé");
-                        afficheJTableVisuels(materiel.getMateriel_id());
+                        if (materiel == null){
+                            afficheJTableWithAllVisuels();
+                        } else {
+                            afficheJTableVisuels(materiel.getMateriel_id());
+                        }
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
@@ -194,6 +208,18 @@ public class PageVisuels extends JFrame {
         private void afficheJTableVisuels(int pIdMateriel) {
             try {
                 visuels = remplirJTableWithVisuelsIdMateriel(materiel.getMateriel_id());
+                TableModelVisuel model = new TableModelVisuel(visuels);
+                tableauVisuel.setModel(model);
+
+            } catch (BLLException ex) {
+                ex.printStackTrace();
+            }
+
+        } //fin afficheJTable
+
+        private void afficheJTableWithAllVisuels() {
+            try {
+                visuels = remplirJTableWithAllVisuels();
                 TableModelVisuel model = new TableModelVisuel(visuels);
                 tableauVisuel.setModel(model);
 
