@@ -46,7 +46,11 @@ public class MaterielManager implements  Manager<Materiel> {
 
     @Override
     public void update(Materiel pObj) throws BLLException {
-
+        try {
+            dao.update(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la mise à jour de l'utilisateur", e);
+        }
     }
 
     @Override
