@@ -10,6 +10,7 @@ import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.VisuelManager;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -191,16 +192,19 @@ public class PageMateriels extends JFrame {
                 }
                 String nomMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 0));
                 String descriptionMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 1));
+                double prixMaterielModifie = (double) tableauMateriel.getValueAt(i, 6);
 
                 tableauMateriel.setValueAt(descriptionMaterielModifie, i, 1);
                 tableauMateriel.setValueAt(nomMaterielModifie, i, 0);
+                tableauMateriel.setValueAt(prixMaterielModifie, i, 6);
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie)) {
+                if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || !(materiel.getMateriel_prix() == prixMaterielModifie)) {
                     try {
                         materiel.setMateriel_description(descriptionMaterielModifie);
                         materiel.setMateriel_nom(nomMaterielModifie);
+                        materiel.setMateriel_prix(prixMaterielModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnModifierMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
@@ -260,7 +264,7 @@ public class PageMateriels extends JFrame {
         tableauMateriel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 4);
+                int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 5);
                 JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
                 try {
 
@@ -286,6 +290,16 @@ public class PageMateriels extends JFrame {
                 }
             }
         });
+
+
+
+
+     /**   ##ODO METTRE BOUTON ANNONCES####*/
+
+
+
+     
+
 
     }//fin initialiserComposants
 
