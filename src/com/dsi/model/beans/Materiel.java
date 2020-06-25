@@ -1,5 +1,7 @@
 package com.dsi.model.beans;
 
+import com.sun.org.apache.xpath.internal.objects.XObject;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -313,4 +315,5 @@ public class Materiel implements List<Materiel> {
     public List<Materiel> subList(int fromIndex, int toIndex) {
         return null;
     }
+
 }//fin class
