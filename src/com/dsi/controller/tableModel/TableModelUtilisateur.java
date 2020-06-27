@@ -1,7 +1,6 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Adresse;
-import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
 
 import java.util.List;

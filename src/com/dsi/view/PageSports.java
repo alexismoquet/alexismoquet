@@ -33,11 +33,11 @@ public class PageSports extends JFrame {
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierSport = new JButton("Modifier Sport");
-    private JButton btnSupprimerSport = new JButton("Supprimer Sport");
+    private JButton btnSupprimerSport = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterSport = new JButton("Ajouter Sport");
+    private JButton btnAjouterSport = new JButton("Ajouter");
+    private JButton btnEnregistrer = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -86,8 +86,8 @@ public class PageSports extends JFrame {
         panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
 
         panBas.setSize(600, 250);
-        panBas.add(btnModifierSport);
         panBas.add(btnAjouterSport);
+        panBas.add(btnEnregistrer);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
@@ -138,24 +138,40 @@ public class PageSports extends JFrame {
             afficheJTableSports();
         });
 
-        btnModifierSport.addActionListener(e -> {
+        /**
+         * listenner sur le bouton ajouterSport pour ajouter une ligne sport vierge
+         */
+        btnAjouterSport.setSize(140, 50);
+        btnAjouterSport.addActionListener(e -> {
+            blankSport = new Sport();
+            blankSport.setSport_id(sports.size() + 1);  //on set l'id à 1 de plus que le dernier
+            sports.add(blankSport);
+            TableModelSport model = new TableModelSport(sports);
+            //model.addSport(blankSport);
+            tableauSport.setModel(model);
         });
 
-            /**
-             * listenner sur le bouton ajouterSport pour ajouter une ligne sport vierge
-             */
-            btnAjouterSport.setSize(140, 50);
-            btnAjouterSport.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    blankSport = new Sport();
-                    blankSport.setSport_id(sports.size() + 1);
-                    sports.add(blankSport);
-                    TableModelSport model = new TableModelSport(sports);
-                    //model.addSport(blankSport);
-                    tableauSport.setModel(model);
-                }
-            });
+        /** listenner sur le bouton enregistrer = ajouter dans la base
+         */
+        btnEnregistrer.setSize(100, 50);
+        btnEnregistrer.addActionListener(e -> {
+            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
+            String libelleSportAjoute = (String) tableauSport.getValueAt(sports.size() - 1, 0);
+            int idSportAjoute = (int) tableauSport.getValueAt(sports.size() - 1, 1);
+
+            blankSport.setSport_libelle(libelleSportAjoute);
+            blankSport.setSport_id(idSportAjoute);
+
+            SportManager am = SportManager.getInstance();
+            try {
+                am.insert(blankSport);
+                afficheJTableSports();
+                JOptionPane.showMessageDialog(btnEnregistrer, "Sport "+blankSport.getSport_libelle()+" ajouté");
+
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+        });
 
 
         btnSupprimerSport.addActionListener(e -> {
@@ -165,7 +181,6 @@ public class PageSports extends JFrame {
             }
 
             SportManager sm = SportManager.getInstance();
-
             int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. ÊÊtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
@@ -197,14 +212,16 @@ public class PageSports extends JFrame {
             }
         });
 
+
         /**
+         *
          * Mouse listenner sur le tableau utilisateur
          */
         tableauSport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSport = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
-                JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
+                //      JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
 
                 try {
                     sport = SportManager.getInstance().SelectById(idSport);

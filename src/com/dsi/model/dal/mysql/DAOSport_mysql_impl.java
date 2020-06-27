@@ -37,7 +37,38 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public void insert(Sport pObj) throws DALException {
+        pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Insert);
+            pstmt.setString(1, pObj.getSport_libelle());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        }finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override
