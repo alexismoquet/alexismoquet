@@ -5,6 +5,7 @@ import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
@@ -183,6 +184,44 @@ public class PageAnnonces extends JFrame {
         });
 
         btnModifierAnnonce.addActionListener(e -> {
+            AnnonceManager am = AnnonceManager.getInstance();
+            /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            for (int i = 0; i < tableauAnnonce.getRowCount(); i++) {
+
+                try {
+                    annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnnonce.getValueAt(i, 3));
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
+                String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
+
+
+                tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
+                tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
+
+
+                /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)) {
+                    try {
+                        annonce.setAnnonce_description(descriptionAnnonceModifie);
+                        annonce.setAnnonce_titre(titreAnnonceModifie);
+
+                        int j = JOptionPane.showConfirmDialog(btnModifierAnnonce, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+
+                        if (j == 0)  /**user a dit oui*/ {
+                            am.update(annonce);
+                            JOptionPane.showMessageDialog(null, "Matériel " + tableauAnnonce.getValueAt(i, 3) + " modifié");
+                            afficheJTableWithAllAnnonces();
+                        }
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
+                    }
+                }
+            }//fin boucle for
+            tableauAnnonce.clearSelection();
         });
 
         btnSupprimerAnnonce.addActionListener(e -> {
