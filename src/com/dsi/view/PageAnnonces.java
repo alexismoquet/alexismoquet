@@ -33,7 +33,7 @@ public class PageAnnonces extends JFrame {
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierAnnonce = new JButton("Modifier");
+    private JButton btnModifierAnnonce = new JButton("Enregistrer les Modifications");
     private JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton bCommentaires = new JButton("Commentaires");
@@ -159,12 +159,13 @@ public class PageAnnonces extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
-                JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
+
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
+            //Gêne pour modifier une ligne du tableauAnnonce//  JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
             }
         });
 
@@ -213,7 +214,7 @@ public class PageAnnonces extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             am.update(annonce);
-                            JOptionPane.showMessageDialog(null, "Matériel " + tableauAnnonce.getValueAt(i, 3) + " modifié");
+                            JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
                             afficheJTableWithAllAnnonces();
                         }
                     } catch (BLLException bllException) {
