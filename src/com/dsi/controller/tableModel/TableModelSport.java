@@ -1,6 +1,8 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Sport;
+import com.dsi.model.beans.Utilisateur;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
@@ -44,6 +46,19 @@ public class TableModelSport extends AbstractTableModel {
             default:
                 return "";
         }
+    }
+
+    public void setValueAt(Object value, int row, int column) {
+        fireTableCellUpdated(row, column);
+        if (column == 0) {
+            sports.get(row).setSport_libelle((String) value);
+        }
+    }
+
+    public void addSport (Sport sport) {
+        int index = sports.size();
+        sports.add(sport);
+        fireTableRowsInserted(index, index);
     }
 
 }//fin class

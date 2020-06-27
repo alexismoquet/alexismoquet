@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dsi.controller.Sports.remplirJTableWithSports;
+
 /**
  * Classe PageSports
  *
@@ -36,15 +37,16 @@ public class PageSports extends JFrame {
     private JButton btnSupprimerSport = new JButton("Supprimer Sport");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
+    private JButton btnAjouterSport = new JButton("Ajouter Sport");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
 
     private JTable tableauSport = new JTable();
     List<Sport> sports = new ArrayList<>();
-    List <Sport> listRechercheSports = new ArrayList<>();
+    List<Sport> listRechercheSports = new ArrayList<>();
 
-    Sport sport;
+    Sport sport, blankSport;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
@@ -54,7 +56,6 @@ public class PageSports extends JFrame {
     public PageSports() {
         initialiserComposants();
     }
-
 
 
     public void initialiserComposants() {
@@ -84,8 +85,9 @@ public class PageSports extends JFrame {
         panCentre.add(tableauSport, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
 
-        panBas.setSize(500, 200);
+        panBas.setSize(600, 250);
         panBas.add(btnModifierSport);
+        panBas.add(btnAjouterSport);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
@@ -93,7 +95,6 @@ public class PageSports extends JFrame {
         setContentPane(panPrincipal);
 
         afficheJTableSports();
-
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -103,7 +104,7 @@ public class PageSports extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-         //       txtRechercher.removeMouseListener(this);
+                //       txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -140,23 +141,39 @@ public class PageSports extends JFrame {
         btnModifierSport.addActionListener(e -> {
         });
 
+            /**
+             * listenner sur le bouton ajouterSport pour ajouter une ligne sport vierge
+             */
+            btnAjouterSport.setSize(140, 50);
+            btnAjouterSport.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    blankSport = new Sport();
+                    blankSport.setSport_id(sports.size() + 1);
+                    sports.add(blankSport);
+                    TableModelSport model = new TableModelSport(sports);
+                    //model.addSport(blankSport);
+                    tableauSport.setModel(model);
+                }
+            });
+
 
         btnSupprimerSport.addActionListener(e -> {
-            if(sport == null){
+            if (sport == null) {
                 JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
                 return;
             }
 
             SportManager sm = SportManager.getInstance();
 
-            int i= JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. ÊÊtes-vous sûr de vouloir supprimer le sport "+sport.getSport_id()+" ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. ÊÊtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                     "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
-            if (i==0) //user a dit oui
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+            if (i == 0) //user a dit oui
             {
                 try {
                     sm.delete(sport);
-                    JOptionPane.showMessageDialog(btnSupprimerSport, "Sport "+ sport.getSport_id()+ " supprimé");
+                    JOptionPane.showMessageDialog(btnSupprimerSport, "Sport " + sport.getSport_id() + " supprimé");
                     afficheJTableSports();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -172,7 +189,7 @@ public class PageSports extends JFrame {
         btnMateriels.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if ( sport == null) {
+                if (sport == null) {
                     JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sport");
                 } else {
                     new PageMateriels(sport);
