@@ -7,6 +7,7 @@ import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.SportManager;
 import com.dsi.model.bll.UtilisateurManager;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -36,8 +37,8 @@ public class PageSports extends JFrame {
     private JButton btnSupprimerSport = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterSport = new JButton("Ajouter");
-    private JButton btnEnregistrer = new JButton("Enregistrer");
+    private JButton btnAjouterSport = new JButton("Creer une ligne");
+    private JButton btnEnrModifs = new JButton("Enregistrer les modifications");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -87,7 +88,7 @@ public class PageSports extends JFrame {
 
         panBas.setSize(600, 250);
         panBas.add(btnAjouterSport);
-        panBas.add(btnEnregistrer);
+        panBas.add(btnEnrModifs);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
@@ -139,38 +140,90 @@ public class PageSports extends JFrame {
         });
 
         /**
-         * listenner sur le bouton ajouterSport pour ajouter une ligne sport vierge
+         * listenner sur le btnajouterSport pour ajouter une ligne vierge
          */
         btnAjouterSport.setSize(140, 50);
         btnAjouterSport.addActionListener(e -> {
+
             blankSport = new Sport();
-            blankSport.setSport_id(sports.size() + 1);  //on set l'id à 1 de plus que le dernier
             sports.add(blankSport);
+            blankSport.setSport_id(sports.size());
+         //   sports.add(blankSport);
             TableModelSport model = new TableModelSport(sports);
             //model.addSport(blankSport);
             tableauSport.setModel(model);
         });
 
-        /** listenner sur le bouton enregistrer = ajouter dans la base
+//        /** listenner sur le bouton enregistrer = ajouter dans la base
+//         */
+//        btnEnregistrer.setSize(100, 50);
+//        btnEnregistrer.addActionListener(e -> {
+//
+//            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
+//            String libelleSportAjoute = (String) tableauSport.getValueAt(sports.size() - 1, 0);
+//            int idSportAjoute = (int) tableauSport.getValueAt(sports.size() - 1, 1);
+//
+//            blankSport.setSport_libelle(libelleSportAjoute);
+//            blankSport.setSport_id(idSportAjoute);
+//
+//            SportManager am = SportManager.getInstance();
+//            try {
+//                am.insert(blankSport);
+//                JOptionPane.showMessageDialog(btnEnregistrer, "Sport " +blankSport.getSport_id()+" ajouté");
+//                afficheJTableSports();
+//            } catch (BLLException bllException) {
+//                bllException.printStackTrace();
+//            }
+//        });
+
+
+        /**
+         * listenner sur le bouton Enregistrer les modifications
          */
-        btnEnregistrer.setSize(100, 50);
-        btnEnregistrer.addActionListener(e -> {
-            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
-            String libelleSportAjoute = (String) tableauSport.getValueAt(sports.size() - 1, 0);
-            int idSportAjoute = (int) tableauSport.getValueAt(sports.size() - 1, 1);
+        btnEnrModifs.setSize(140, 50);
+        btnEnrModifs.addActionListener(e -> {
+            SportManager um = SportManager.getInstance();
 
-            blankSport.setSport_libelle(libelleSportAjoute);
-            blankSport.setSport_id(idSportAjoute);
+            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            for (int i = 0; i < tableauSport.getRowCount(); i++) {
 
-            SportManager am = SportManager.getInstance();
-            try {
-                am.insert(blankSport);
-                afficheJTableSports();
-                JOptionPane.showMessageDialog(btnEnregistrer, "Sport "+blankSport.getSport_libelle()+" ajouté");
+                try {
+                    sport = SportManager.getInstance().SelectById((Integer) tableauSport.getValueAt(i, 1));
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                String libelleSportModifie = String.valueOf(tableauSport.getValueAt(i, 0));
 
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
+                tableauSport.setValueAt(libelleSportModifie, i, 0);
+
+
+                if (sport == null) {
+                    JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
+                } else {
+                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) ) {
+                        sport.setSport_libelle(libelleSportModifie);
+
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+
+                        if (j == 0)  /**user a dit oui*/ {
+                            try {
+                                um.update(sport);
+                                if (sport.getSport_id() == sports.size()-1){
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " ajouté");
+                                } else {
+                                JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
+                                }
+                                afficheJTableSports();
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }//fin for
         });
 
 
@@ -181,7 +234,7 @@ public class PageSports extends JFrame {
             }
 
             SportManager sm = SportManager.getInstance();
-            int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. ÊÊtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
@@ -222,7 +275,6 @@ public class PageSports extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int idSport = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
                 //      JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
-
                 try {
                     sport = SportManager.getInstance().SelectById(idSport);
                 } catch (BLLException ex) {

@@ -36,15 +36,16 @@ public class TableModelSport extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex) {
-            case 0:
+
+            if (columnIndex == 0) {
                 return sports.get(rowIndex).getSport_libelle();
-            case 1:
+            } else if (columnIndex == 1) {
                 return sports.get(rowIndex).getSport_id();
-            default:
+            } else {
                 return "";
+            }
         }
-    }
+
 
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);

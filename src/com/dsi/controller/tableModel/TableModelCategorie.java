@@ -1,16 +1,17 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Categorie;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class TableModelCategorie extends AbstractTableModel {
 
-    private final String[] titres = {"Libellé","IdCategorie"};
+    private final String[] titres = {"Libellé", "IdCategorie"};
 
     private List<Categorie> categories;
 
-    public TableModelCategorie (List<Categorie> categories) {
+    public TableModelCategorie(List<Categorie> categories) {
         this.categories = categories;
     }
 
@@ -36,13 +37,19 @@ public class TableModelCategorie extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return categories.get(rowIndex).getCategorie_libelle();
-            case 1:
-                return categories.get(rowIndex).getCategorie_id();
-            default:
-                return "";
+
+        if (columnIndex == 0) {
+            return categories.get(rowIndex).getCategorie_libelle();
+        } else if (columnIndex == 1) {
+            return categories.get(rowIndex).getCategorie_id();
+        } else { return ""; }
+    }
+
+
+    public void setValueAt(Object value, int row, int column) {
+        fireTableCellUpdated(row, column);
+        if (column == 0) {
+            categories.get(row).setCategorie_libelle((String) value);
         }
     }
 }
