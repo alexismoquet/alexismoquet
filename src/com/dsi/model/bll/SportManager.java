@@ -37,7 +37,7 @@ public class SportManager implements Manager<Sport> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'annonce", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement du sport", e);
         }
     }
 
@@ -46,7 +46,7 @@ public class SportManager implements Manager<Sport> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+            throw new BLLException("Un problème est survenu lors de la modification du sport", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class SportManager implements Manager<Sport> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+            throw new BLLException("Un problème est survenu lors de la modification du sport", e);
         }
     }
 

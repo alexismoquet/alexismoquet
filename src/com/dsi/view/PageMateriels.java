@@ -265,7 +265,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 5);
-                JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
+        //        JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
                 try {
 
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);

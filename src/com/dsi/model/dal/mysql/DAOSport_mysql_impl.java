@@ -24,8 +24,8 @@ import java.util.List;
 public class DAOSport_mysql_impl implements DAO_Sport {
     private String SQL_SelectAll    = "SELECT * FROM sports;";
     private String SQL_SelectById   = "SELECT * FROM sports WHERE sport_id=?;";
-    private String SQL_Insert       = "INSERT INTO sports(sport_libelle) VALUES(?);";
-    private String SQL_Update       = "UPDATE sports SET sport_libelle=?,WHERE sport_id=?;";
+    private String SQL_Insert       = "INSERT INTO sports(sport_libelle, sport_id) VALUES(?,?);";
+    private String SQL_Update       = "UPDATE sports SET sport_libelle=?  WHERE sport_id=?;";
     private String SQL_Delete       = "DELETE FROM sports WHERE sport_id=?;";
 
     private Sport sport;
@@ -48,6 +48,7 @@ public class DAOSport_mysql_impl implements DAO_Sport {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getSport_libelle());
+            pstmt.setInt(2, pObj.getSport_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -73,7 +74,38 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public void update(Sport pObj) throws DALException {
+        pstmt = null;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Update);
+            pstmt.setString(1, pObj.getSport_libelle());
+            pstmt.setInt(2, pObj.getSport_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override
