@@ -47,9 +47,8 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
             //Execution de la requête
             pstmt =cnx.prepareStatement(SQL_Insert);
-
             pstmt.setString(1, pObj.getCategorie_libelle());
-            pstmt.setInt(2, pObj.getCategorie_id());
+
             pstmt.executeUpdate();
            // rs = pstmt.getGeneratedKeys();>
 
