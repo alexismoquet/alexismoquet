@@ -37,7 +37,6 @@ public class PageCategories extends JFrame {
 
     private JButton btnSupprimerCategorie = new JButton("Supprimer");
     private JButton btnAjouterCategorie = new JButton("Créer une ligne");
-    private JButton btnEnregistrer = new JButton("Ajouter à la base");
     private JButton btnEnregistrerModifs = new JButton("Enregistrer les mofifications");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
@@ -92,7 +91,6 @@ public class PageCategories extends JFrame {
         panBas.add(btnSupprimerCategorie);
         panBas.add(btnAjouterCategorie);
         panBas.add(btnEnregistrerModifs);
-        panBas.add(btnEnregistrer);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
 
@@ -142,7 +140,6 @@ public class PageCategories extends JFrame {
 
         });
 
-
         btnSupprimerCategorie.addActionListener(e -> {
             if (categorie == null) {
                 JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner une catégorie");
@@ -174,34 +171,34 @@ public class PageCategories extends JFrame {
             blankCategorie = new Categorie();
             categories.add(blankCategorie);
             blankCategorie.setCategorie_id(categories.size());
-          //  categories.add(blankCategorie);
+
             TableModelCategorie model = new TableModelCategorie(categories);
             //model.addSport(blankSport);
             tableauCategorie.setModel(model);
         });
 
-        /** listenner sur le bouton enregistrer = ajouter dans la base
-         */
-        btnEnregistrer.setSize(100, 50);
-        btnEnregistrer.addActionListener(e -> {
-
-            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
-            String libelleCategorieAjoute = (String) tableauCategorie.getValueAt(categories.size()-1, 0);
-            int idCategorieAjoute = (int) tableauCategorie.getValueAt(categories.size()-1, 1);
-
-            blankCategorie.setCategorie_libelle(libelleCategorieAjoute);
-            blankCategorie.setCategorie_id(idCategorieAjoute);
-
-            CategorieManager cm = CategorieManager.getInstance();
-            try {
-                cm.insert(blankCategorie);
-                afficheJTableCategories();
-                JOptionPane.showMessageDialog(btnEnregistrer, "Catégorie " + blankCategorie.getCategorie_libelle() + " ajoutée");
-
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
-        });
+//        /** listenner sur le bouton enregistrer = ajouter dans la base
+//         */
+//        btnEnregistrer.setSize(100, 50);
+//        btnEnregistrer.addActionListener(e -> {
+//
+//            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
+//            String libelleCategorieAjoute = (String) tableauCategorie.getValueAt(categories.size()-1, 0);
+//            int idCategorieAjoute = (int) tableauCategorie.getValueAt(categories.size()-1, 1);
+//
+//            blankCategorie.setCategorie_libelle(libelleCategorieAjoute);
+//            blankCategorie.setCategorie_id(idCategorieAjoute);
+//
+//            CategorieManager cm = CategorieManager.getInstance();
+//            try {
+//                cm.insert(blankCategorie);
+//                afficheJTableCategories();
+//                JOptionPane.showMessageDialog(btnEnregistrer, "Catégorie " + blankCategorie.getCategorie_libelle() + " ajoutée");
+//
+//            } catch (BLLException bllException) {
+//                bllException.printStackTrace();
+//            }
+//        });
 
 
         /**
@@ -222,21 +219,25 @@ public class PageCategories extends JFrame {
          //       tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
 
                 if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnEnregistrer, "Veuillez sélectionner une catégorie");
+                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Veuillez sélectionner une catégorie");
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie) ) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnregistrerModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                um.update(categorie);
-                                JOptionPane.showMessageDialog(btnEnregistrer, "Catégorie " + categorie.getCategorie_id() + " modifié");
-                                tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
+                                if (blankCategorie != null && categorie.getCategorie_id()== ((blankCategorie.getCategorie_id())-1)){
+                                    um.insert(categorie);
+                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + blankCategorie.getCategorie_id() + " ajoutée");}
+                                else {
+                                    um.update(categorie);
+                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + categorie.getCategorie_id() + " modifiée");
+                                }
                                 afficheJTableCategories();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
@@ -246,7 +247,6 @@ public class PageCategories extends JFrame {
                 }
             }//fin for
         });
-
 
 
         /**

@@ -144,13 +144,28 @@ public class PageSports extends JFrame {
          */
         btnAjouterSport.setSize(140, 50);
         btnAjouterSport.addActionListener(e -> {
-
             blankSport = new Sport();
             sports.add(blankSport);
-            blankSport.setSport_id(sports.size());
-         //   sports.add(blankSport);
+
+     //////  On récupére la plus haute id pour assigner l'id de blankSport à 1 au dessus
+            int idMax  = sports.get(0).getSport_id();
+
+            for (int i =0; i<sports.size(); i++){
+               int sportId = sports.get(i).getSport_id();
+               if (sportId > idMax){
+                   idMax = sportId;
+               }
+            }
+            blankSport.setSport_id(idMax+1);
+            blankSport.setSport_libelle("");
+
+
+            ////////////////////////////////////////////////////////////////////
+
             TableModelSport model = new TableModelSport(sports);
             //model.addSport(blankSport);
+            model.fireTableDataChanged() ;
+            tableauSport.revalidate();
             tableauSport.setModel(model);
         });
 
@@ -178,7 +193,7 @@ public class PageSports extends JFrame {
 
 
         /**
-         * listenner sur le bouton Enregistrer les modifications
+         * listenner sur le bouton Enregistrer les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
@@ -193,16 +208,15 @@ public class PageSports extends JFrame {
                     bllException.printStackTrace();
                 }
                 String libelleSportModifie = String.valueOf(tableauSport.getValueAt(i, 0));
-
-                tableauSport.setValueAt(libelleSportModifie, i, 0);
-
-
+                int idSportModifie = (int) tableauSport.getValueAt(i, 1);
+                
                 if (sport == null) {
                     JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) ) {
+                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) ||!(sport.getSport_id() == idSportModifie )) {
                         sport.setSport_libelle(libelleSportModifie);
+                        sport.setSport_id(idSportModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
@@ -210,13 +224,17 @@ public class PageSports extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                um.update(sport);
-                                if (sport.getSport_id() == sports.size()-1){
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " ajouté");
+                                if (blankSport != null ){
+                                um.insert(blankSport);
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + blankSport.getSport_id() + " ajouté");
+                                    blankSport = null;
+                                break;
                                 } else {
+                                    um.update(sport);
                                 JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
+                                 //   afficheJTableSports();
+                                    break;
                                 }
-                                afficheJTableSports();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }

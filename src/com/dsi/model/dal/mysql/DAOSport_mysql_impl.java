@@ -24,7 +24,7 @@ import java.util.List;
 public class DAOSport_mysql_impl implements DAO_Sport {
     private String SQL_SelectAll    = "SELECT * FROM sports;";
     private String SQL_SelectById   = "SELECT * FROM sports WHERE sport_id=?;";
-    private String SQL_Insert       = "INSERT INTO sports(sport_libelle, sport_id) VALUES(?,?);";
+    private String SQL_Insert       = "INSERT INTO sports(sport_libelle) VALUES(?);";
     private String SQL_Update       = "UPDATE sports SET sport_libelle=?  WHERE sport_id=?;";
     private String SQL_Delete       = "DELETE FROM sports WHERE sport_id=?;";
 
@@ -48,7 +48,6 @@ public class DAOSport_mysql_impl implements DAO_Sport {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getSport_libelle());
-            pstmt.setInt(2, pObj.getSport_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -62,7 +61,6 @@ public class DAOSport_mysql_impl implements DAO_Sport {
                     throw new DALException("Problème lors de la fermeture du statement !", e);
                 }
             }
-
             //Fermeture de la connexion
             try {
                 cnx.close();
@@ -225,7 +223,7 @@ public class DAOSport_mysql_impl implements DAO_Sport {
                 );
 
             } else {
-                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+                throw new DALException("Aucune sport trouvé avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
