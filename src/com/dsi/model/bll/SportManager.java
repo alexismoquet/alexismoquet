@@ -65,7 +65,7 @@ public class SportManager implements Manager<Sport> {
         try {
             sports = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des sports", e);
         }
 
         return sports;
@@ -78,7 +78,7 @@ public class SportManager implements Manager<Sport> {
         try {
             sport = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du sport n° : "+pId, e);
         }
 
         return sport;

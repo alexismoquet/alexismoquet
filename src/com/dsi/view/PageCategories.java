@@ -98,9 +98,10 @@ public class PageCategories extends JFrame {
 
         afficheJTableCategories();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
+/**************************************************************************************************************************************/
+/*************************************************************** Les listenners *******************************************************/
+/**************************************************************************************************************************************/
+
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -162,43 +163,34 @@ public class PageCategories extends JFrame {
                 tableauCategorie.clearSelection();
             }
         });
+
+
         /**
-         * listenner sur le bouton ajouterCategorie pour ajouter une ligne categorie vierge
+         * listenner sur le bouton ajouterCategorie pour ajouter une ligne  vierge
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
 
             blankCategorie = new Categorie();
             categories.add(blankCategorie);
-            blankCategorie.setCategorie_id(categories.size());
+
+            //////  On récupére la plus haute id pour assigner l'id de blankSport à 1 au dessus
+            int idMax = categories.get(0).getCategorie_id();
+
+            for (int i = 0; i < categories.size(); i++) {
+                int sportId = categories.get(i).getCategorie_id();
+                if (sportId > idMax) {
+                    idMax = sportId;
+                }
+            }
+            blankCategorie.setCategorie_id(idMax + 1);
+            blankCategorie.setCategorie_libelle("");
 
             TableModelCategorie model = new TableModelCategorie(categories);
-            //model.addSport(blankSport);
+            model.fireTableDataChanged();
+            tableauCategorie.revalidate();
             tableauCategorie.setModel(model);
         });
-
-//        /** listenner sur le bouton enregistrer = ajouter dans la base
-//         */
-//        btnEnregistrer.setSize(100, 50);
-//        btnEnregistrer.addActionListener(e -> {
-//
-//            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
-//            String libelleCategorieAjoute = (String) tableauCategorie.getValueAt(categories.size()-1, 0);
-//            int idCategorieAjoute = (int) tableauCategorie.getValueAt(categories.size()-1, 1);
-//
-//            blankCategorie.setCategorie_libelle(libelleCategorieAjoute);
-//            blankCategorie.setCategorie_id(idCategorieAjoute);
-//
-//            CategorieManager cm = CategorieManager.getInstance();
-//            try {
-//                cm.insert(blankCategorie);
-//                afficheJTableCategories();
-//                JOptionPane.showMessageDialog(btnEnregistrer, "Catégorie " + blankCategorie.getCategorie_libelle() + " ajoutée");
-//
-//            } catch (BLLException bllException) {
-//                bllException.printStackTrace();
-//            }
-//        });
 
 
         /**
@@ -206,9 +198,9 @@ public class PageCategories extends JFrame {
          */
         btnEnregistrerModifs.setSize(140, 50);
         btnEnregistrerModifs.addActionListener(e -> {
-            CategorieManager um = CategorieManager.getInstance();
+            CategorieManager cm = CategorieManager.getInstance();
 
-            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            /** Récupérer les valeurs du tableauCatégorie, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCategorie.getRowCount(); i++) {
                 try {
                     categorie = CategorieManager.getInstance().SelectById((Integer) tableauCategorie.getValueAt(i, 1));
@@ -216,14 +208,15 @@ public class PageCategories extends JFrame {
                     bllException.printStackTrace();
                 }
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
-         //       tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
+                int idSportModifie = (int) tableauCategorie.getValueAt(i, 1);
 
                 if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Veuillez sélectionner une catégorie");
+                    return;
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie) ) {
+                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
+                        categorie.setCategorie_id(idSportModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnEnregistrerModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
@@ -231,14 +224,17 @@ public class PageCategories extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankCategorie != null && categorie.getCategorie_id()== ((blankCategorie.getCategorie_id())-1)){
-                                    um.insert(categorie);
-                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + blankCategorie.getCategorie_id() + " ajoutée");}
-                                else {
-                                    um.update(categorie);
+                                if (blankCategorie != null) {
+                                    cm.insert(categorie);
+                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + blankCategorie.getCategorie_id() + " ajoutée");
+                                    blankCategorie = null;
+                                    break;
+                                } else {
+                                    cm.update(categorie);
                                     JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + categorie.getCategorie_id() + " modifiée");
+                                    break;
                                 }
-                                afficheJTableCategories();
+                                //   afficheJTableCategories();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -271,7 +267,7 @@ public class PageCategories extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
-           //     JOptionPane.showMessageDialog(null, "La catégorie " + idCategorie + " est sélectionnée");
+                //     JOptionPane.showMessageDialog(null, "La catégorie " + idCategorie + " est sélectionnée");
 
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
@@ -280,8 +276,6 @@ public class PageCategories extends JFrame {
                 }
             }
         });
-
-
     }//fin initialiserComposants
 
 
@@ -290,10 +284,9 @@ public class PageCategories extends JFrame {
             categories = remplirJTableWithCategories();
             TableModelCategorie model = new TableModelCategorie(categories);
             tableauCategorie.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-
     } //fin afficheJTable
-}
+
+}//fin class

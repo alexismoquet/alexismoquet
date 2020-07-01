@@ -147,49 +147,24 @@ public class PageSports extends JFrame {
             blankSport = new Sport();
             sports.add(blankSport);
 
-     //////  On récupére la plus haute id pour assigner l'id de blankSport à 1 au dessus
-            int idMax  = sports.get(0).getSport_id();
+            //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
+            int idMax = sports.get(0).getSport_id();
 
-            for (int i =0; i<sports.size(); i++){
-               int sportId = sports.get(i).getSport_id();
-               if (sportId > idMax){
-                   idMax = sportId;
-               }
+            for (int i = 0; i < sports.size(); i++) {
+                int sportId = sports.get(i).getSport_id();
+                if (sportId > idMax) {
+                    idMax = sportId;
+                }
             }
-            blankSport.setSport_id(idMax+1);
+            blankSport.setSport_id(idMax + 1);
             blankSport.setSport_libelle("");
-
-
-            ////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelSport model = new TableModelSport(sports);
-            //model.addSport(blankSport);
-            model.fireTableDataChanged() ;
+            model.fireTableDataChanged();
             tableauSport.revalidate();
             tableauSport.setModel(model);
         });
-
-//        /** listenner sur le bouton enregistrer = ajouter dans la base
-//         */
-//        btnEnregistrer.setSize(100, 50);
-//        btnEnregistrer.addActionListener(e -> {
-//
-//            //Récupérer les valeurs du sport ajouté ds le tableauSport*/
-//            String libelleSportAjoute = (String) tableauSport.getValueAt(sports.size() - 1, 0);
-//            int idSportAjoute = (int) tableauSport.getValueAt(sports.size() - 1, 1);
-//
-//            blankSport.setSport_libelle(libelleSportAjoute);
-//            blankSport.setSport_id(idSportAjoute);
-//
-//            SportManager am = SportManager.getInstance();
-//            try {
-//                am.insert(blankSport);
-//                JOptionPane.showMessageDialog(btnEnregistrer, "Sport " +blankSport.getSport_id()+" ajouté");
-//                afficheJTableSports();
-//            } catch (BLLException bllException) {
-//                bllException.printStackTrace();
-//            }
-//        });
 
 
         /**
@@ -198,10 +173,8 @@ public class PageSports extends JFrame {
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
             SportManager um = SportManager.getInstance();
-
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSport.getRowCount(); i++) {
-
                 try {
                     sport = SportManager.getInstance().SelectById((Integer) tableauSport.getValueAt(i, 1));
                 } catch (BLLException bllException) {
@@ -209,12 +182,13 @@ public class PageSports extends JFrame {
                 }
                 String libelleSportModifie = String.valueOf(tableauSport.getValueAt(i, 0));
                 int idSportModifie = (int) tableauSport.getValueAt(i, 1);
-                
+
                 if (sport == null) {
-                    JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
+                    return;
+                    //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) ||!(sport.getSport_id() == idSportModifie )) {
+                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) || !(sport.getSport_id() == idSportModifie)) {
                         sport.setSport_libelle(libelleSportModifie);
                         sport.setSport_id(idSportModifie);
 
@@ -224,17 +198,17 @@ public class PageSports extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankSport != null ){
-                                um.insert(blankSport);
+                                if (blankSport != null) {
+                                    um.insert(blankSport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + blankSport.getSport_id() + " ajouté");
                                     blankSport = null;
-                                break;
+                                    break;
                                 } else {
                                     um.update(sport);
-                                JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
-                                 //   afficheJTableSports();
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
                                     break;
                                 }
+                                //   afficheJTableSports();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -286,7 +260,7 @@ public class PageSports extends JFrame {
 
         /**
          *
-         * Mouse listenner sur le tableau utilisateur
+         * Mouse listenner sur le tableau sport
          */
         tableauSport.addMouseListener(new MouseAdapter() {
             @Override
@@ -308,11 +282,10 @@ public class PageSports extends JFrame {
             sports = remplirJTableWithSports();
             TableModelSport model = new TableModelSport(sports);
             tableauSport.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-
     } //fin afficheJTable
+
 
 }//fin class

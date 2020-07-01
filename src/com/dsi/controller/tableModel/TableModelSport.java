@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TableModelSport extends AbstractTableModel {
 
-    private final String[] titres = {"Sports","id"};
+    private final String[] titres = {"Libellé sport","idSport"};
 
     private List<Sport> sports;
 
@@ -45,7 +45,6 @@ public class TableModelSport extends AbstractTableModel {
                 return "";
             }
         }
-
 
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
