@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelCategorie extends AbstractTableModel {
 
-    private final String[] titres = {"Libellé", "IdCategorie"};
+    private final String[] titres = {"Libellé catégorie", "IdCatégorie"};
 
     private List<Categorie> categories;
 
@@ -31,9 +31,7 @@ public class TableModelCategorie extends AbstractTableModel {
     }
 
     @Override
-    public boolean isCellEditable(int row, int column) {
-        return true;
-    }
+    public boolean isCellEditable(int row, int column) { return true; }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -45,9 +43,8 @@ public class TableModelCategorie extends AbstractTableModel {
         } else { return ""; }
     }
 
-
     public void setValueAt(Object value, int row, int column) {
-        fireTableCellUpdated(row, column);
+       fireTableCellUpdated(row, column);
         if (column == 0) {
             categories.get(row).setCategorie_libelle((String) value);
         }
