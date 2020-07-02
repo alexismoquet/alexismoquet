@@ -1,17 +1,16 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Categorie;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class TableModelCategorie extends AbstractTableModel {
 
-    private final String[] titres = {"Libellé catégorie", "IdCatégorie"};
+    private final String[] titres = {"Libellé categorie","idCatégorie"};
 
-    private List<Categorie> categories;
+    private  List <Categorie> categories;
 
-    public TableModelCategorie(List<Categorie> categories) {
+    public TableModelCategorie (List<Categorie> categories) {
         this.categories = categories;
     }
 
@@ -40,13 +39,22 @@ public class TableModelCategorie extends AbstractTableModel {
             return categories.get(rowIndex).getCategorie_libelle();
         } else if (columnIndex == 1) {
             return categories.get(rowIndex).getCategorie_id();
-        } else { return ""; }
+        } else {
+            return "";
+        }
     }
 
     public void setValueAt(Object value, int row, int column) {
-       fireTableCellUpdated(row, column);
+        fireTableCellUpdated(row, column);
         if (column == 0) {
             categories.get(row).setCategorie_libelle((String) value);
         }
     }
-}
+
+    public void addCategorie (Categorie categorie) {
+        int index = categories.size();
+        categories.add(categorie);
+     //   fireTableRowsInserted(index, index);
+    }
+
+}//fin class

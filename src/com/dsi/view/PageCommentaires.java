@@ -149,8 +149,13 @@ public class PageCommentaires extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             commentaire = null;
-            afficheJTableCommentaires();
-
+            if (utilisateur == null && annonce == null) {
+                afficheJTableCommentaires();
+            } else if (annonce == null){
+                afficheJTableCommentairesWithIdUtilisateur();
+            } else if (utilisateur == null){
+                afficheJTableCommentairesWithIdAnnonce();
+            }
         });
 
         btnModifierCommentaire.addActionListener(e -> {

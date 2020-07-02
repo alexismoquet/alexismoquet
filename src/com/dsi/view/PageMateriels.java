@@ -126,7 +126,7 @@ public class PageMateriels extends JFrame {
         } else if (categorie == null && sport == null){
             afficheJTableMaterielsWithIdAdresse();
         }else if (utilisateur == null && categorie == null){
-            afficheJTableMaterielsWithIdSport(sport.getSport_id());
+            afficheJTableMaterielsWithIdSport();
         }
 
 
@@ -175,7 +175,7 @@ public class PageMateriels extends JFrame {
             } else if (sport == null){
                 afficheJTableMaterielsWithIdAdresse();
             } else if (utilisateur == null){
-                afficheJTableMaterielsWithIdSport(sport.getSport_id());
+                afficheJTableMaterielsWithIdSport();
             }
         });
 
@@ -246,14 +246,13 @@ public class PageMateriels extends JFrame {
                         afficheJTableMaterielsWithIdAdresse();
                         tableauMateriel.clearSelection();
                     } else if (categorie == null && utilisateur == null){
-                        afficheJTableMaterielsWithIdSport(sport.getSport_id());
+                        afficheJTableMaterielsWithIdSport();
                     }else {
                         afficheJTableMaterielsWithIdCategorie(materiel.getMateriel_categorie_id());
                     }
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
-
             }
         });
 
@@ -304,24 +303,21 @@ public class PageMateriels extends JFrame {
     }//fin initialiserComposants
 
 
-    private void afficheJTableMaterielsWithIdSport(int pIdSport) {
+    private void afficheJTableMaterielsWithIdSport() {
         try {
             materiels = remplirJTableWithMaterielsIdSport(sport.getSport_id());
             TableModelMateriel model = new TableModelMateriel(materiels);
             tableauMateriel.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
     } //fin afficheJTable
 
     private void afficheJTableMaterielsWithIdCategorie(int idCategorie) {
-
         try {
             materiels = remplirJTableWithMaterielsIdCategorie(categorie.getCategorie_id());
             TableModelMateriel model = new TableModelMateriel(materiels);
             tableauMateriel.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
