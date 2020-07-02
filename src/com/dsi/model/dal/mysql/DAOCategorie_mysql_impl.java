@@ -18,7 +18,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
     private String SQL_SelectAll = "SELECT * FROM categories;";
     private String SQL_SelectById = "SELECT * FROM categories WHERE categorie_id = ?;";
-    private String SQL_Insert = "INSERT INTO categories(categorie_libelle) VALUES(?);";
+    private String SQL_Insert = "INSERT INTO categories(categorie_libelle, categorie_id) VALUES(?, ?);";
     private String SQL_Update = "UPDATE categories SET categorie_libelle=? WHERE categorie_id=?;";
     private String SQL_Delete = "DELETE FROM categories WHERE categorie_id=?;";
 
@@ -48,10 +48,11 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             //Execution de la requête
             pstmt =cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getCategorie_libelle());
+            pstmt.setInt(2, pObj.getCategorie_id());
 
             pstmt.executeUpdate();
-           // rs = pstmt.getGeneratedKeys();>
-
+//            rs = pstmt.getGeneratedKeys();
+//
 //            if (rs.next()) {
 //                pObj.setCategorie_id(rs.getInt(1));
 //            }

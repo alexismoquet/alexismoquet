@@ -1,15 +1,10 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCategorie;
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Categorie;
-import com.dsi.model.beans.Sport;
-import com.dsi.model.bll.CategorieManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.SportManager;
-import jdk.nashorn.internal.scripts.JO;
-
+import com.dsi.model.bll.CategorieManager;
+import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -19,11 +14,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.dsi.controller.Categories.remplirJTableWithCategories;
+import static com.dsi.controller.Categories.remplirJTableWithAllCategories;
 
 /**
- * Classe PageCategorie
+ * Classe PageCategories
  *
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
@@ -36,10 +30,10 @@ public class PageCategories extends JFrame {
     private JPanel panBas = new JPanel();
 
     private JButton btnSupprimerCategorie = new JButton("Supprimer");
-    private JButton btnAjouterCategorie = new JButton("Créer une ligne");
-    private JButton btnEnregistrerModifs = new JButton("Enregistrer les mofifications");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
+    private JButton btnAjouterCategorie = new JButton("Creer une ligne");
+    private JButton btnEnrModifs = new JButton("Enregistrer les modifications");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -47,8 +41,8 @@ public class PageCategories extends JFrame {
     private JTable tableauCategorie = new JTable();
     List<Categorie> categories = new ArrayList<>();
     List<Categorie> listRechercheCategories = new ArrayList<>();
-    Categorie categorie, blankCategorie;
 
+    Categorie categorie, blankCategorie;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
@@ -76,7 +70,7 @@ public class PageCategories extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par titre de catégorie     ");
+        txtRechercher.setText("     Rechercher par categorie     ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -87,10 +81,10 @@ public class PageCategories extends JFrame {
         panCentre.add(tableauCategorie, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauCategorie), BorderLayout.CENTER);
 
-        panBas.setSize(500, 200);
-        panBas.add(btnSupprimerCategorie);
+        panBas.setSize(600, 250);
         panBas.add(btnAjouterCategorie);
-        panBas.add(btnEnregistrerModifs);
+        panBas.add(btnEnrModifs);
+        panBas.add(btnSupprimerCategorie);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
 
@@ -98,27 +92,27 @@ public class PageCategories extends JFrame {
 
         afficheJTableCategories();
 
-/**************************************************************************************************************************************/
-/*************************************************************** Les listenners *******************************************************/
-/**************************************************************************************************************************************/
-
+        /**************************************************************************************************************************************/
+        /*************************************************************** Les listenners *******************************************************/
+        /**************************************************************************************************************************************/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                txtRechercher.removeMouseListener(this);
+                //       txtRechercher.removeMouseListener(this);
             }
         });
 
         btnRechercher.addActionListener(e -> {
             listRechercheCategories = new ArrayList<>();
-            CategorieManager um = CategorieManager.getInstance();
+            CategorieManager sm = CategorieManager.getInstance();
             try {
-                um.SelectAll();
+                sm.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
+            /** ON PARCOURS LA LISTE DES SPORTS **/
             for (Categorie categorie : categories) {
                 String sp = categorie.getCategorie_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
@@ -130,7 +124,7 @@ public class PageCategories extends JFrame {
                 }
             }
             if (listRechercheCategories.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucune categorie trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panPrincipal, "Aucun categorie trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -138,53 +132,28 @@ public class PageCategories extends JFrame {
             txtRechercher.setText("");
             categorie = null;
             afficheJTableCategories();
-
         });
-
-        btnSupprimerCategorie.addActionListener(e -> {
-            if (categorie == null) {
-                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner une catégorie");
-                return;
-            }
-            CategorieManager sm = CategorieManager.getInstance();
-
-            int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la catégorie " + categorie.getCategorie_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    sm.delete(categorie);
-                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Catégorie " + categorie.getCategorie_id() + " supprimée");
-                    afficheJTableCategories();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                tableauCategorie.clearSelection();
-            }
-        });
-
 
         /**
-         * listenner sur le bouton ajouterCategorie pour ajouter une ligne  vierge
+         * listenner sur le btnajouterCategorie pour ajouter une ligne vierge
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
-
             blankCategorie = new Categorie();
             categories.add(blankCategorie);
 
-            //////  On récupére la plus haute id pour assigner l'id de blankSport à 1 au dessus
+            //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
             int idMax = categories.get(0).getCategorie_id();
 
             for (int i = 0; i < categories.size(); i++) {
-                int sportId = categories.get(i).getCategorie_id();
-                if (sportId > idMax) {
-                    idMax = sportId;
+                int categorieId = categories.get(i).getCategorie_id();
+                if (categorieId > idMax) {
+                    idMax = categorieId;
                 }
             }
             blankCategorie.setCategorie_id(idMax + 1);
             blankCategorie.setCategorie_libelle("");
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelCategorie model = new TableModelCategorie(categories);
             model.fireTableDataChanged();
@@ -194,13 +163,13 @@ public class PageCategories extends JFrame {
 
 
         /**
-         * listenner sur le bouton Enregistrer les modifications
+         * listenner sur le bouton Enregistrer les modifications dans la base
          */
-        btnEnregistrerModifs.setSize(140, 50);
-        btnEnregistrerModifs.addActionListener(e -> {
-            CategorieManager cm = CategorieManager.getInstance();
+        btnEnrModifs.setSize(140, 50);
+        btnEnrModifs.addActionListener(e -> {
+            CategorieManager sm = CategorieManager.getInstance();
 
-            /** Récupérer les valeurs du tableauCatégorie, on boucle pour chaque ligne */
+            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCategorie.getRowCount(); i++) {
                 try {
                     categorie = CategorieManager.getInstance().SelectById((Integer) tableauCategorie.getValueAt(i, 1));
@@ -208,30 +177,31 @@ public class PageCategories extends JFrame {
                     bllException.printStackTrace();
                 }
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
-                int idSportModifie = (int) tableauCategorie.getValueAt(i, 1);
+                int idCategorieModifie = (int) tableauCategorie.getValueAt(i, 1);
 
                 if (categorie == null) {
                     return;
+                    //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un categorie");
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie)) {
+                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie) || !(categorie.getCategorie_id() == idCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
-                        categorie.setCategorie_id(idSportModifie);
+                        categorie.setCategorie_id(idCategorieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnregistrerModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                 if (blankCategorie != null) {
-                                    cm.insert(categorie);
-                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + blankCategorie.getCategorie_id() + " ajoutée");
+                                    sm.insert(blankCategorie);
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + blankCategorie.getCategorie_id() + " ajouté");
                                     blankCategorie = null;
                                     break;
                                 } else {
-                                    cm.update(categorie);
-                                    JOptionPane.showMessageDialog(btnEnregistrerModifs, "Catégorie " + categorie.getCategorie_id() + " modifiée");
+                                    sm.update(categorie);
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + categorie.getCategorie_id() + " modifié");
                                     break;
                                 }
                                 //   afficheJTableCategories();
@@ -245,6 +215,29 @@ public class PageCategories extends JFrame {
         });
 
 
+        btnSupprimerCategorie.addActionListener(e -> {
+            if (categorie == null) {
+                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");
+                return;
+            }
+
+            CategorieManager sm = CategorieManager.getInstance();
+            int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le categorie " + categorie.getCategorie_id() + " ?",
+                    "Veuillez confirmer votre choix",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+            if (i == 0) //user a dit oui
+            {
+                try {
+                    sm.delete(categorie);
+                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimé");
+                    afficheJTableCategories();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                tableauCategorie.clearSelection();
+            }
+        });
+
         /**
          * listenner sur le bouton materiel
          */
@@ -253,22 +246,23 @@ public class PageCategories extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une catégorie");
+                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une categorie");
                 } else {
                     new PageMateriels(categorie);
                 }
             }
         });
 
+
         /**
-         * Mouse listenner sur le tableau catégorie
+         *
+         * Mouse listenner sur le tableau categorie
          */
         tableauCategorie.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
-                //     JOptionPane.showMessageDialog(null, "La catégorie " + idCategorie + " est sélectionnée");
-
+                //      JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionné");
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
                 } catch (BLLException ex) {
@@ -276,17 +270,18 @@ public class PageCategories extends JFrame {
                 }
             }
         });
-    }//fin initialiserComposants
 
+    }//fin initialiserComposants
 
     private void afficheJTableCategories() {
         try {
-            categories = remplirJTableWithCategories();
+            categories = remplirJTableWithAllCategories();
             TableModelCategorie model = new TableModelCategorie(categories);
             tableauCategorie.setModel(model);
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
     } //fin afficheJTable
+
 
 }//fin class

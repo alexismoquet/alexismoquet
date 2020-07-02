@@ -1,14 +1,10 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sport;
-import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.SportManager;
 import com.dsi.model.bll.UtilisateurManager;
-import com.sun.xml.internal.bind.v2.TODO;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -18,8 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.dsi.controller.Sports.remplirJTableWithSports;
+import static com.dsi.controller.Sports.remplirJTableWithAllSports;
 
 /**
  * Classe PageSports
@@ -111,9 +106,9 @@ public class PageSports extends JFrame {
 
         btnRechercher.addActionListener(e -> {
             listRechercheSports = new ArrayList<>();
-            UtilisateurManager um = UtilisateurManager.getInstance();
+            SportManager sm = SportManager.getInstance();
             try {
-                um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                sm.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -172,7 +167,8 @@ public class PageSports extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            SportManager um = SportManager.getInstance();
+            SportManager sm = SportManager.getInstance();
+
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSport.getRowCount(); i++) {
                 try {
@@ -199,12 +195,12 @@ public class PageSports extends JFrame {
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                 if (blankSport != null) {
-                                    um.insert(blankSport);
+                                    sm.insert(blankSport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + blankSport.getSport_id() + " ajouté");
                                     blankSport = null;
                                     break;
                                 } else {
-                                    um.update(sport);
+                                    sm.update(sport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
                                     break;
                                 }
@@ -274,12 +270,12 @@ public class PageSports extends JFrame {
                 }
             }
         });
-    }//fin initialiserComposants
 
+    }//fin initialiserComposants
 
     private void afficheJTableSports() {
         try {
-            sports = remplirJTableWithSports();
+            sports = remplirJTableWithAllSports();
             TableModelSport model = new TableModelSport(sports);
             tableauSport.setModel(model);
         } catch (BLLException ex) {

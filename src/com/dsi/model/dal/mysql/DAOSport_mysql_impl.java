@@ -1,16 +1,8 @@
 package com.dsi.model.dal.mysql;
 
-import com.dsi.librairies.FonctionsDate;
-import com.dsi.librairies.Roles;
-import com.dsi.model.beans.Adresse;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sport;
-import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.dal.DALException;
-import com.dsi.model.dal.DAO_Adresse;
-import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +16,7 @@ import java.util.List;
 public class DAOSport_mysql_impl implements DAO_Sport {
     private String SQL_SelectAll    = "SELECT * FROM sports;";
     private String SQL_SelectById   = "SELECT * FROM sports WHERE sport_id=?;";
-    private String SQL_Insert       = "INSERT INTO sports(sport_libelle) VALUES(?);";
+    private String SQL_Insert       = "INSERT INTO sports(sport_libelle, sport_id) VALUES(?, ?);";
     private String SQL_Update       = "UPDATE sports SET sport_libelle=?  WHERE sport_id=?;";
     private String SQL_Delete       = "DELETE FROM sports WHERE sport_id=?;";
 
@@ -48,6 +40,7 @@ public class DAOSport_mysql_impl implements DAO_Sport {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getSport_libelle());
+            pstmt.setInt(2, pObj.getSport_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

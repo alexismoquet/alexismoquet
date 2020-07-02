@@ -315,6 +315,7 @@ public class PageUtilisateurs extends JFrame {
                 }
             }
         });
+
     } //fin initialiserComposants
 
 
