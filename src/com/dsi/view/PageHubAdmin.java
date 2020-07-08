@@ -32,6 +32,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bUtilisateurs = new JButton("Utilisateurs");
     private JButton bCategories = new JButton("Catégories");
     private JButton bSports = new JButton("Sports");
+    private JButton bAdresses = new JButton("Adresses");
     private JButton bCommentaires = new JButton("Commentaires");
     private JButton bEnregistrer = new JButton("Enregistrer");
     private JButton bAnnonces = new JButton("Annonces");
@@ -86,6 +87,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bCategories);
         panBtn.add(bSports);
         panBtn.add(bAnnonces);
+        panBtn.add(bAdresses);
         panBtn.add(bMateriels);
         panBtn.add(bVisuels);
         panBtn.add(bEnregistrer);
@@ -159,6 +161,12 @@ public class PageHubAdmin extends JFrame {
         bVisuels.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { PageVisuels pv = new PageVisuels(); }
+        });
+
+        bAdresses.setSize(100, 50);
+        bAdresses.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageAdresses pa = new PageAdresses(); }
         });
 
         bEnregistrer.setSize(100, 50);
