@@ -4,7 +4,6 @@ import com.dsi.controller.tableModel.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
-import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -32,8 +31,8 @@ public class PageCategories extends JFrame {
     private JButton btnSupprimerCategorie = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterCategorie = new JButton("Creer une ligne");
-    private JButton btnEnrModifs = new JButton("Enregistrer les modifications");
+    private JButton btnAjouterCategorie = new JButton("Ajouter une ligne");
+    private JButton btnEnrModifs = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -57,7 +56,7 @@ public class PageCategories extends JFrame {
     public void initialiserComposants() {
         setTitle("Categories");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -69,8 +68,8 @@ public class PageCategories extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par categorie     ");
+        panHaut.setPreferredSize(new Dimension(900, 40));
+        txtRechercher.setText(" Rechercher par nom");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -80,10 +79,11 @@ public class PageCategories extends JFrame {
         panCentre.add(tableauCategorie.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauCategorie, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauCategorie), BorderLayout.CENTER);
+        tableauCategorie.setRowHeight(30);  //hauteur cellule ds JTable
 
         panBas.setSize(600, 250);
-        panBas.add(btnAjouterCategorie);
         panBas.add(btnEnrModifs);
+        panBas.add(btnAjouterCategorie);
         panBas.add(btnSupprimerCategorie);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
@@ -124,12 +124,12 @@ public class PageCategories extends JFrame {
                 }
             }
             if (listRechercheCategories.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun categorie trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panPrincipal, "Aucune categorie trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
+            txtRechercher.setText(" Rechercher par nom");
             categorie = null;
             afficheJTableCategories();
         });
@@ -139,8 +139,10 @@ public class PageCategories extends JFrame {
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
+            categorie = null;
             blankCategorie = new Categorie();
-            categories.add(blankCategorie);
+
+        //    categories.add(blankCategorie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
             int idMax = categories.get(0).getCategorie_id();
@@ -156,8 +158,9 @@ public class PageCategories extends JFrame {
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelCategorie model = new TableModelCategorie(categories);
-            model.fireTableDataChanged();
-            tableauCategorie.revalidate();
+            model.addCategorie(blankCategorie);
+//            model.fireTableDataChanged();
+//            tableauCategorie.revalidate();
             tableauCategorie.setModel(model);
         });
 
@@ -196,12 +199,12 @@ public class PageCategories extends JFrame {
                             try {
                                 if (blankCategorie != null) {
                                     sm.insert(blankCategorie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + blankCategorie.getCategorie_id() + " ajouté");
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + blankCategorie.getCategorie_id() + " ajoutée");
                                     blankCategorie = null;
                                     break;
                                 } else {
                                     sm.update(categorie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + categorie.getCategorie_id() + " modifié");
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + categorie.getCategorie_id() + " modifiée");
                                     break;
                                 }
                                 //   afficheJTableCategories();
@@ -212,6 +215,7 @@ public class PageCategories extends JFrame {
                     }
                 }
             }//fin for
+            afficheJTableCategories();
         });
 
 
@@ -222,14 +226,14 @@ public class PageCategories extends JFrame {
             }
 
             CategorieManager sm = CategorieManager.getInstance();
-            int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le categorie " + categorie.getCategorie_id() + " ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
                     sm.delete(categorie);
-                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimé");
+                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimée");
                     afficheJTableCategories();
                 } catch (BLLException ex) {
                     ex.printStackTrace();

@@ -32,8 +32,8 @@ public class PageSports extends JFrame {
     private JButton btnSupprimerSport = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterSport = new JButton("Creer une ligne");
-    private JButton btnEnrModifs = new JButton("Enregistrer les modifications");
+    private JButton btnAjouterSport = new JButton("Ajouter une ligne");
+    private JButton btnEnrModifs = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -57,7 +57,7 @@ public class PageSports extends JFrame {
     public void initialiserComposants() {
         setTitle("Sports");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -70,7 +70,7 @@ public class PageSports extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par sport     ");
+        txtRechercher.setText(" Rechercher par nom ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -80,10 +80,11 @@ public class PageSports extends JFrame {
         panCentre.add(tableauSport.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauSport, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauSport), BorderLayout.CENTER);
+        tableauSport.setRowHeight(30);
 
         panBas.setSize(600, 250);
-        panBas.add(btnAjouterSport);
         panBas.add(btnEnrModifs);
+        panBas.add(btnAjouterSport);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
@@ -129,7 +130,7 @@ public class PageSports extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
+            txtRechercher.setText(" Rechercher par nom ");
             sport = null;
             afficheJTableSports();
         });

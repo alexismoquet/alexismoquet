@@ -67,7 +67,7 @@ public class PageCommentaires extends JFrame {
     public void initialiserComposants() {
         setTitle("Commentaires");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -91,6 +91,7 @@ public class PageCommentaires extends JFrame {
         panCentre.add(tableauCommentaire.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauCommentaire, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauCommentaire), BorderLayout.CENTER);
+        tableauCommentaire.setRowHeight(30);
 
         /*********************Panel Bas******************************************/
         panBas.setSize(500, 200);
