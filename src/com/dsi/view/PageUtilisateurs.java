@@ -1,18 +1,22 @@
 package com.dsi.view;
 
+import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.controller.tableModel.TableModelUtilisateur;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Materiel;
+import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.AdresseManager;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurManager;
+import org.mariadb.jdbc.internal.util.SqlStates;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLData;
 import java.util.*;
 import java.util.List;
 
@@ -31,10 +35,12 @@ public class PageUtilisateurs extends JFrame {
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
+    private JButton btnAjouterUtilisateur = new JButton("Ajouter une ligne");
     private JButton btnEnrModifUtil = new JButton("Enregistrer");
     private JButton btnSupprimerUtil = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnAnnonce = new JButton("Annonces");
+    private JButton btnAdresse = new JButton("Adresses");
     private JButton btnMateriel = new JButton("Materiels");
     private JButton btnCommentaire = new JButton("Commentaires");
 
@@ -47,7 +53,7 @@ public class PageUtilisateurs extends JFrame {
     List<Adresse> adresses = new ArrayList<>();
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
 
-    Utilisateur utilisateur;
+    Utilisateur utilisateur, blankUtilisateur;
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -65,7 +71,7 @@ public class PageUtilisateurs extends JFrame {
     public void initialiserComposants() {
         setTitle("Utilisateurs");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -78,7 +84,7 @@ public class PageUtilisateurs extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("Rechercher par Nom");
+        txtRechercher.setText(" Rechercher par Nom ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -88,14 +94,17 @@ public class PageUtilisateurs extends JFrame {
         panCentre.add(tableauUtilisateur.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauUtilisateur, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauUtilisateur), BorderLayout.CENTER);
+        tableauUtilisateur.setRowHeight(30);
 
         panBas.setSize(900, 100);
         panBas.add(btnEnrModifUtil);
+        panBas.add(btnAjouterUtilisateur);
         panBas.add(btnSupprimerUtil);
         panBas.add(btnAnnuler);
         panBas.add(btnAnnonce);
         panBas.add(btnMateriel);
         panBas.add(btnCommentaire);
+        panBas.add(btnAdresse);
 
         btnAnnonce.setVisible(true);
         btnMateriel.setVisible(true);
@@ -145,11 +154,42 @@ public class PageUtilisateurs extends JFrame {
          * Listener bouton annuler
          */
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
+            txtRechercher.setText(" Rechercher par Nom ");
             utilisateur = null;
             afficheJTableUtilisateurs();
         });
+        /**
+         * listenner sur le btnajouterSport pour ajouter une ligne vierge
+         */
+        btnAjouterUtilisateur.setSize(140, 50);
+        btnAjouterUtilisateur.addActionListener(e -> {
+            blankUtilisateur = new Utilisateur();
+            utilisateurs.add(blankUtilisateur);
 
+            //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
+            int idMax = utilisateurs.get(0).getIdUtilisateur();
+
+            for (Utilisateur value : utilisateurs) {
+                int utilisateurId = value.getIdUtilisateur();
+                if (utilisateurId > idMax) {
+                    idMax = utilisateurId;
+                }
+            }
+            blankUtilisateur.setIdUtilisateur(idMax + 1);
+            blankUtilisateur.setNom("");
+            blankUtilisateur.setPrenom("");
+            blankUtilisateur.setEmail("");
+            blankUtilisateur.setTelMob("");
+            blankUtilisateur.setTelFix("");
+            blankUtilisateur.setDateInscription(new Date());
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
+            model.fireTableDataChanged();
+            tableauUtilisateur.revalidate();
+            tableauUtilisateur.setModel(model);
+        });
 
         /**
          * Listener bouton Modifier
@@ -158,6 +198,7 @@ public class PageUtilisateurs extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UtilisateurManager um = UtilisateurManager.getInstance();
+                AdresseManager am = AdresseManager.getInstance();
 
                 /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
                 for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
@@ -179,17 +220,17 @@ public class PageUtilisateurs extends JFrame {
                     String departementUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 9));
                     String paysUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 10));
 
-                    tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
-                    tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-                    tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
-                    tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
-                    tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
-                    tableauUtilisateur.setValueAt(adresseUtilisateurModifiee, i, 5);
-                    tableauUtilisateur.setValueAt(villeUtilisateurModifiee, i, 6);
-                    tableauUtilisateur.setValueAt(cpUtilisateurModifie, i, 7);
-                    tableauUtilisateur.setValueAt(complementUtilisateurModifie, i, 8);
-                    tableauUtilisateur.setValueAt(departementUtilisateurModifie, i, 9);
-                    tableauUtilisateur.setValueAt(paysUtilisateurModifie, i, 10);
+//                    tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
+//                    tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
+//                    tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
+//                    tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
+//                    tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
+//                    tableauUtilisateur.setValueAt(adresseUtilisateurModifiee, i, 5);
+//                    tableauUtilisateur.setValueAt(villeUtilisateurModifiee, i, 6);
+//                    tableauUtilisateur.setValueAt(cpUtilisateurModifie, i, 7);
+//                    tableauUtilisateur.setValueAt(complementUtilisateurModifie, i, 8);
+//                    tableauUtilisateur.setValueAt(departementUtilisateurModifie, i, 9);
+//                    tableauUtilisateur.setValueAt(paysUtilisateurModifie, i, 10);
 
                     if (utilisateur == null) {
                         JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
@@ -200,12 +241,25 @@ public class PageUtilisateurs extends JFrame {
                                 !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                                 !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
+//                                !utilisateur.getAdresses().get(0).getAdresse().equals(adresseUtilisateurModifiee) ||
+//                                !utilisateur.getAdresses().get(0).getVille().equals(villeUtilisateurModifiee) ||
+//                                !utilisateur.getAdresses().get(0).getCodePostal().equals(cpUtilisateurModifie) ||
+//                                !utilisateur.getAdresses().get(0).getComplement().equals(complementUtilisateurModifie) ||
+//                                !utilisateur.getAdresses().get(0).getDepartement().equals(departementUtilisateurModifie) ||
+//                                !utilisateur.getAdresses().get(0).getPays().equals(paysUtilisateurModifie)
                         ) {
                             utilisateur.setNom(nomUtilisateurModifie);
                             utilisateur.setPrenom(prenomUtilisateurModifie);
                             utilisateur.setEmail(emailUtilisateurModifie);
                             utilisateur.setTelMob(telMobUtilisateurModifie);
                             utilisateur.setTelFix(telFixUtilisateurModifie);
+//                            utilisateur.getAdresses().get(0).setAdresse(adresseUtilisateurModifiee);
+//                            utilisateur.getAdresses().get(0).setVille(villeUtilisateurModifiee);
+//                            utilisateur.getAdresses().get(0).setCodePostal(cpUtilisateurModifie);
+//                            utilisateur.getAdresses().get(0).setComplement(complementUtilisateurModifie);
+//                            utilisateur.getAdresses().get(0).setDepartement(departementUtilisateurModifie);
+//                            utilisateur.getAdresses().get(0).setPays(paysUtilisateurModifie);
+
 
                             int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                     "Veuillez confirmer votre choix",
@@ -213,11 +267,21 @@ public class PageUtilisateurs extends JFrame {
 
                             if (j == 0)  /**user a dit oui*/ {
                                 try {
-                                    um.update(utilisateur);
-                                    afficheJTableUtilisateurs();
-                                } catch (BLLException ex) {
-                                    ex.printStackTrace();
+                                    if (blankUtilisateur != null) {
+                                        um.insert(blankUtilisateur);
+                                        JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
+                                        blankUtilisateur = null;
+                                        break;
+                                    } else {
+                               //         am.update(utilisateur.getAdresses().get(0));
+                                        um.update(utilisateur);
+
+                                        afficheJTableUtilisateurs();
+                                    }
                                 }
+                                catch(BLLException ex){
+                                        ex.printStackTrace();
+                                    }
                             }
                         }
                     }
@@ -282,6 +346,21 @@ public class PageUtilisateurs extends JFrame {
                     JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
                 } else {
                     new PageAnnonces(utilisateur);
+                }
+            }
+        });
+
+        /**
+         * listenner sur le bouton annonce
+         */
+        btnAdresse.setSize(100, 50);
+        btnAdresse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (utilisateur == null) {
+                    JOptionPane.showMessageDialog(btnAdresse, "Veuillez sélectionner un utilisateur");
+                } else {
+                    new PageAdresses(utilisateur);
                 }
             }
         });

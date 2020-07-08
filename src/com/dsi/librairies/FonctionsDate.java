@@ -22,4 +22,21 @@ public class FonctionsDate {
 
         return javaDate;
     }
+
+    /**
+     * Convertion d'une date format java.util.Date au format java.sql.Date
+     * @param pUtilDate: Date au format java.util.Date
+     * @return java.sql.Date: Date convertie
+     */
+    public static java.sql.Date utilDateVersSqlDate(java.util.Date pUtilDate){
+        java.sql.Date javaDate = null;
+
+        if (pUtilDate != null){
+            javaDate = new java.sql.Date(pUtilDate.getTime());
+        }
+
+        return javaDate;
+    }
+
+
 }

@@ -269,4 +269,5 @@ public class Utilisateur implements Serializable {
                 ", adresses=" + getAdresses() +
                 '}';
     }
+
 }

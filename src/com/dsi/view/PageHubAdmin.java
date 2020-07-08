@@ -64,7 +64,7 @@ public class PageHubAdmin extends JFrame {
 
         setTitle("HANDISPAP");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1000, 600);
         setLocation(200, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
@@ -74,14 +74,14 @@ public class PageHubAdmin extends JFrame {
         /***** Panel principal  *****/
         panPrincipal.setBackground(Color.decode("#11417d"));
         panPrincipal.setLayout(new BorderLayout());
-        panPrincipal.add(panBtn, BorderLayout.CENTER);
-        panPrincipal.add(panAnomalies, BorderLayout.SOUTH);
+        panPrincipal.add(panBtn, BorderLayout.NORTH);
+        panPrincipal.add(panAnomalies, BorderLayout.CENTER);
 
 
         /***** Panel des boutons*/
         panBtn.setBackground(Color.decode("#11417d")); //bleu
-        panBtn.setPreferredSize(new Dimension(900, 150));
-        panBtn.setBorder(new EmptyBorder(10, 10, 5, 10));
+        panBtn.setPreferredSize(new Dimension(900, 70));
+        panBtn.setBorder(new EmptyBorder(10, 10, 0, 10));
         panBtn.add(bUtilisateurs);
         panBtn.add(bCategories);
         panBtn.add(bSports);
@@ -92,7 +92,7 @@ public class PageHubAdmin extends JFrame {
 
 
         /***** Panel des anomalies*/
-        anomaliesASurveiller.setSize(200, 70);
+        anomaliesASurveiller.setSize(200, 100);
         anomaliesASurveiller.setBackground(Color.white);
         anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte à surveiller :</body></html>");
         anomaliesASurveiller.setToolTipText(anomaliesASurveiller.getText());
@@ -103,8 +103,9 @@ public class PageHubAdmin extends JFrame {
         panAnomalies.setLayout(new BorderLayout());
         panAnomalies.add(anomaliesASurveiller, BorderLayout.NORTH);
         panAnomalies.add(new JScrollPane(tableauAnomalies), BorderLayout.CENTER);
-        panAnomalies.setPreferredSize(new Dimension(900, 400));
-        panAnomalies.setBorder(new EmptyBorder(20, 40, 20, 40));
+        panAnomalies.setPreferredSize(new Dimension(900, 700));
+        panAnomalies.setBorder(new EmptyBorder(5, 20, 20, 20));
+        tableauAnomalies.setRowHeight(20);
 
 
         bUtilisateurs.setSize(100, 50);

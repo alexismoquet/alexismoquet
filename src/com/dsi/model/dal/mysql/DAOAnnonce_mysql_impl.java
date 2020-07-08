@@ -1,5 +1,6 @@
 package com.dsi.model.dal.mysql;
 
+import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Annonce;
@@ -51,7 +52,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             pstmt.setInt(2, pObj.getAnnonce_materiel_id());
             pstmt.setString(3, pObj.getAnnonce_titre());
             pstmt.setString(4, pObj.getAnnonce_description());
-            pstmt.setDate(5, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setDate(5, FonctionsDate.utilDateVersSqlDate(pObj.getAnnonce_date_parution()));
 
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
@@ -92,7 +93,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getAnnonce_titre());
             pstmt.setString(2, pObj.getAnnonce_description());
-            pstmt.setDate(3, (Date) pObj.getAnnonce_date_parution());
+            pstmt.setDate(3, FonctionsDate.utilDateVersSqlDate(pObj.getAnnonce_date_parution()));
             pstmt.setInt(4, pObj.getAnnonce_id());
 
             pstmt.executeUpdate();

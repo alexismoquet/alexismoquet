@@ -86,7 +86,7 @@ public class PageMateriels extends JFrame {
     public void initialiserComposants() {
         setTitle("Materiels");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -99,7 +99,7 @@ public class PageMateriels extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("  Rechercher par mots    ");
+        txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -109,6 +109,7 @@ public class PageMateriels extends JFrame {
         panCentre.add(tableauMateriel.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauMateriel, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauMateriel), BorderLayout.CENTER);
+        tableauMateriel.setRowHeight(30);
 
         panBas.setSize(500, 200);
         panBas.add(btnModifierMateriel);
@@ -118,17 +119,7 @@ public class PageMateriels extends JFrame {
 
         setContentPane(panPrincipal);
 
-        /** affichage da la pageMateriel selon la page de provenance */
-        if (utilisateur == null && categorie == null && sport == null) {
-            afficheJTableMateriels();
-        } else if (utilisateur == null && sport == null) {
-            afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
-        } else if (categorie == null && sport == null){
-            afficheJTableMaterielsWithIdAdresse();
-        }else if (utilisateur == null && categorie == null){
-            afficheJTableMaterielsWithIdSport();
-        }
-
+        displayRightTable();
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -168,15 +159,9 @@ public class PageMateriels extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
+            txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             materiel = null;
-            if (utilisateur == null && sport == null) {
-                afficheJTableMateriels();
-            } else if (sport == null){
-                afficheJTableMaterielsWithIdAdresse();
-            } else if (utilisateur == null){
-                afficheJTableMaterielsWithIdSport();
-            }
+            displayRightTable();
         });
 
         btnModifierMateriel.addActionListener(e -> {
@@ -213,7 +198,7 @@ public class PageMateriels extends JFrame {
                         if (j == 0)  /**user a dit oui*/ {
                             mm.update(materiel);
                             JOptionPane.showMessageDialog(null, "Matériel " + tableauMateriel.getValueAt(i, 5) + " modifié");
-                            afficheJTableMateriels();
+                            displayRightTable();
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
@@ -244,7 +229,7 @@ public class PageMateriels extends JFrame {
                         afficheJTableMateriels();
                     } else if (categorie == null && sport == null) {
                         afficheJTableMaterielsWithIdAdresse();
-                        tableauMateriel.clearSelection();
+                   //     tableauMateriel.clearSelection();
                     } else if (categorie == null && utilisateur == null){
                         afficheJTableMaterielsWithIdSport();
                     }else {
@@ -346,6 +331,19 @@ public class PageMateriels extends JFrame {
         }
 
     } //fin afficheJTable
+
+    public void displayRightTable(){
+        /** affichage da la pageMateriel selon la page de provenance */
+        if (utilisateur == null && categorie == null && sport == null) {
+            afficheJTableMateriels();
+        } else if (utilisateur == null && sport == null) {
+            afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
+        } else if (categorie == null && sport == null){
+            afficheJTableMaterielsWithIdAdresse();
+        }else if (utilisateur == null && categorie == null){
+            afficheJTableMaterielsWithIdSport();
+        }
+    }
 
 
 }//fin class

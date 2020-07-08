@@ -64,7 +64,7 @@ public class PageVisuels extends JFrame {
         public void initialiserComposants() {
             setTitle("Visuels");
             setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-            setSize(900, 500);
+            setSize(1100, 700);
             setVisible(true);
             setResizable(true);
 
@@ -87,6 +87,7 @@ public class PageVisuels extends JFrame {
             panCentre.add(tableauVisuel.getTableHeader(), BorderLayout.NORTH);
             panCentre.add(tableauVisuel, BorderLayout.CENTER);
             panCentre.add(new JScrollPane(tableauVisuel), BorderLayout.CENTER);
+            tableauVisuel.setRowHeight(30);
 
             panBas.setSize(500, 200);
             panBas.add(btnModifierVisuel);

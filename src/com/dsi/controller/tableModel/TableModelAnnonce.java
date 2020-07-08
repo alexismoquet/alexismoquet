@@ -2,18 +2,18 @@ package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Annonce;
 import javax.swing.table.AbstractTableModel;
+import java.util.Date;
 import java.util.List;
 
 public class TableModelAnnonce extends AbstractTableModel {
 
-    private final String[] titres = {"Titres","Description","IdUtilisateur","idAnnonce"};
+    private final String[] titres = {"Titres","Description","IdUtilisateur","IdAnnonce", "IdMateriel", "Date de parution"};
 
     private List<Annonce> annonces;
 
     public TableModelAnnonce (List<Annonce> annonces) {
         this.annonces = annonces;
     }
-
 
     @Override
     public int getRowCount() {
@@ -47,6 +47,10 @@ public class TableModelAnnonce extends AbstractTableModel {
                 return annonces.get(rowIndex).getAnnonce_utilisateur_id();
             case 3:
                 return annonces.get(rowIndex).getAnnonce_id();
+                case 4:
+                return annonces.get(rowIndex).getAnnonce_materiel_id();
+            case 5:
+                return annonces.get(rowIndex).getAnnonce_date_parution();
             default:
                 return "";
         }
@@ -60,6 +64,8 @@ public class TableModelAnnonce extends AbstractTableModel {
             annonces.get(rowIndex).setAnnonce_titre(value.toString());
         } else if (columnIndex == 1){
             annonces.get(rowIndex).setAnnonce_description(value.toString());
+        } else if (columnIndex ==5){
+            annonces.get(rowIndex).setAnnonce_date_parution(new Date());
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelAnnonce;
+import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
@@ -16,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.dsi.controller.Annonces.*;
@@ -33,7 +35,8 @@ public class PageAnnonces extends JFrame {
     private JPanel panCentre = new JPanel();
     private JPanel panBas = new JPanel();
 
-    private JButton btnModifierAnnonce = new JButton("Enregistrer les Modifications");
+    private JButton btnModifierAnnonce = new JButton("Enregistrer");
+    private JButton btnAjouterLigne = new JButton("Ajouter une ligne");
     private JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton bCommentaires = new JButton("Commentaires");
@@ -47,7 +50,7 @@ public class PageAnnonces extends JFrame {
 
     List<Annonce> listRechercheAnnonces = new ArrayList<>();
     Categorie categorie;
-    Annonce annonce;
+    Annonce annonce, blankAnnonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
@@ -68,7 +71,7 @@ public class PageAnnonces extends JFrame {
     public void initialiserComposants() {
         setTitle("Annonces");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
-        setSize(900, 500);
+        setSize(1100, 700);
         setVisible(true);
         setResizable(true);
 
@@ -81,7 +84,7 @@ public class PageAnnonces extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText("     Rechercher par mot(s)    ");
+        txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -89,6 +92,7 @@ public class PageAnnonces extends JFrame {
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
         panCentre.add(tableauAnnonce.getTableHeader(), BorderLayout.NORTH);
+        tableauAnnonce.setRowHeight(30);
 
         //ScrollPane
         JScrollPane scrollPane = new JScrollPane(tableauAnnonce);
@@ -99,6 +103,7 @@ public class PageAnnonces extends JFrame {
 
         panBas.setSize(500, 200);
         panBas.add(btnModifierAnnonce);
+        panBas.add(btnAjouterLigne);
         panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
         panBas.add(bCommentaires);
@@ -117,13 +122,12 @@ public class PageAnnonces extends JFrame {
 /**************************************************************************************************************************************/
 
 
-/****Mouse listenner du champ de recherche  ***********************/
+          /****Mouse listenner du champ de recherche  ***********************/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -175,7 +179,7 @@ public class PageAnnonces extends JFrame {
         /*************************************************************************************************/
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText("");
+            txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             annonce = null;
             if (utilisateur == null) {
                 afficheJTableWithAllAnnonces();
@@ -184,6 +188,38 @@ public class PageAnnonces extends JFrame {
             }
         });
 
+        /**
+         * listenner sur le btnajouterAnnonce pour ajouter une ligne vierge
+         */
+        btnAjouterLigne.setSize(140, 50);
+        btnAjouterLigne.addActionListener(e -> {
+            blankAnnonce = new Annonce();
+            annonces.add(blankAnnonce);
+
+            //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
+            int idMax = annonces.get(0).getAnnonce_id();
+
+            for (int i = 0; i < annonces.size(); i++) {
+                int annonceId = annonces.get(i).getAnnonce_id();
+                if (annonceId > idMax) {
+                    idMax = annonceId;
+                }
+            }
+            blankAnnonce.setAnnonce_id(idMax + 1);
+            blankAnnonce.setAnnonce_titre("");
+            blankAnnonce.setAnnonce_date_parution(new Date());
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            TableModelAnnonce model = new TableModelAnnonce(annonces);
+            model.fireTableDataChanged();
+            tableauAnnonce.revalidate();
+            tableauAnnonce.setModel(model);
+        });
+
+
+        /**
+         * listenner sur le btnModifierAnnonce pour enregistrer modifications
+         */
         btnModifierAnnonce.addActionListener(e -> {
             AnnonceManager am = AnnonceManager.getInstance();
             /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
@@ -196,7 +232,6 @@ public class PageAnnonces extends JFrame {
                 }
                 String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
                 String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
-
 
                 tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
                 tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
@@ -213,10 +248,17 @@ public class PageAnnonces extends JFrame {
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
+                            if (blankAnnonce != null) {
+                                am.insert(blankAnnonce);
+                                JOptionPane.showMessageDialog(btnModifierAnnonce, "Annonce " + blankAnnonce.getAnnonce_id() + " ajoutée");
+                                blankAnnonce = null;
+                                break;
+                            } else {
                             am.update(annonce);
                             JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
                             afficheJTableWithAllAnnonces();
-                        }
+                             }
+                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
@@ -225,6 +267,10 @@ public class PageAnnonces extends JFrame {
             tableauAnnonce.clearSelection();
         });
 
+
+        /**
+         * listenner sur le btnSupprimerAnnonce pour supprimer une annonce
+         */
         btnSupprimerAnnonce.addActionListener(e -> {
             if (annonce == null) {
                 JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
@@ -252,6 +298,7 @@ public class PageAnnonces extends JFrame {
                 }
             }
         });
+
 
         /**
          * Action listenner sur le bouton commentaire
