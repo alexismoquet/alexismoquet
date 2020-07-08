@@ -181,6 +181,7 @@ public class PageUtilisateurs extends JFrame {
             blankUtilisateur.setEmail("");
             blankUtilisateur.setTelMob("");
             blankUtilisateur.setTelFix("");
+            blankUtilisateur.setMotDePasse("");
             blankUtilisateur.setDateInscription(new Date());
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +205,7 @@ public class PageUtilisateurs extends JFrame {
                 for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
 
                     try {
-                        utilisateur = UtilisateurManager.getInstance().SelectById((Integer) tableauUtilisateur.getValueAt(i, 11));
+                        utilisateur = UtilisateurManager.getInstance().SelectById((Integer) tableauUtilisateur.getValueAt(i, 7));
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
@@ -213,12 +214,9 @@ public class PageUtilisateurs extends JFrame {
                     String emailUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 2));
                     String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
                     String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
-                    String adresseUtilisateurModifiee = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
-                    String villeUtilisateurModifiee = String.valueOf(tableauUtilisateur.getValueAt(i, 6));
-                    String cpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 7));
-                    String complementUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 8));
-                    String departementUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 9));
-                    String paysUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 10));
+                    String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
+                    String dateInscUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 6));
+
 
 //                    tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
 //                    tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
@@ -241,8 +239,7 @@ public class PageUtilisateurs extends JFrame {
                                 !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                                 !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
-//                                !utilisateur.getAdresses().get(0).getAdresse().equals(adresseUtilisateurModifiee) ||
-//                                !utilisateur.getAdresses().get(0).getVille().equals(villeUtilisateurModifiee) ||
+
 //                                !utilisateur.getAdresses().get(0).getCodePostal().equals(cpUtilisateurModifie) ||
 //                                !utilisateur.getAdresses().get(0).getComplement().equals(complementUtilisateurModifie) ||
 //                                !utilisateur.getAdresses().get(0).getDepartement().equals(departementUtilisateurModifie) ||
@@ -323,9 +320,8 @@ public class PageUtilisateurs extends JFrame {
         tableauUtilisateur.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 11);
+                int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 7);
                 JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
-
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById(idUserSelected);
                 } catch (BLLException ex) {

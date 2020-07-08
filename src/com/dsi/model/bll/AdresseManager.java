@@ -1,6 +1,7 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Adresse;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Adresse;
 import com.dsi.model.dal.DAO_Factory;
@@ -88,5 +89,17 @@ public class AdresseManager implements Manager<Adresse> {
         }
 
         return adresse;
+    }
+
+    public List<Adresse> SelectByIdUtilisateur(int pId) throws BLLException {
+        adresses = null;
+
+        try {
+            adresses = dao.selectByIdUtilisateur(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'adresse n° : "+pId, e);
+        }
+
+        return adresses;
     }
 }
