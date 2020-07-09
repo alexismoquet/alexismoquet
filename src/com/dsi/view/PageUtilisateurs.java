@@ -270,9 +270,7 @@ public class PageUtilisateurs extends JFrame {
                                         blankUtilisateur = null;
                                         break;
                                     } else {
-                               //         am.update(utilisateur.getAdresses().get(0));
                                         um.update(utilisateur);
-
                                         afficheJTableUtilisateurs();
                                     }
                                 }
