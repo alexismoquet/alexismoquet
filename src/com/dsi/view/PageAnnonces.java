@@ -232,9 +232,11 @@ public class PageAnnonces extends JFrame {
                 }
                 String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
                 String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
+                int idUtilisateur = (int) tableauAnnonce.getValueAt(i, 2);
 
                 tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
                 tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
+                tableauAnnonce.setValueAt(idUtilisateur, i, 2);
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/

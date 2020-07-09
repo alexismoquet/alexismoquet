@@ -25,9 +25,13 @@ public class Materiels {
         return mm.SelectByIdCategorie(idCategorie);
     }
 
-    public static List<Materiel> remplirJTableWithMateriels() throws BLLException {
+    public static List<Materiel> remplirJTableWithAllMateriels() throws BLLException {
         MaterielManager mm = MaterielManager.getInstance();
         return mm.SelectAll();
+    }
+    public static List<Materiel> remplirJTableWithIdMateriels(int idMateriel) throws BLLException {
+        MaterielManager mm = MaterielManager.getInstance();
+        return mm.SelectById(idMateriel);
     }
 
 

@@ -38,6 +38,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bAnnonces = new JButton("Annonces");
     private JButton bMateriels = new JButton("Materiels");
     private JButton bVisuels = new JButton("Visuels");
+    private JButton bSorties = new JButton("Sorties");
 
     private JTable tableauAnomalies = new JTable();
 
@@ -90,6 +91,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bAdresses);
         panBtn.add(bMateriels);
         panBtn.add(bVisuels);
+        panBtn.add(bSorties);
         panBtn.add(bEnregistrer);
 
 
@@ -169,6 +171,12 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) { PageAdresses pa = new PageAdresses(); }
         });
 
+        bSorties.setSize(100, 50);
+        bSorties.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageSorties ps = new PageSorties(); }
+        });
+
         bEnregistrer.setSize(100, 50);
         bEnregistrer.addActionListener(new ActionListener() {
             @Override
@@ -217,24 +225,6 @@ public class PageHubAdmin extends JFrame {
             }//fin actionPerformed
 
         });
-
-
-//        /**
-//         * Mouse listenner sur le tableau anomalie
-//         */
-//        tableauAnomalies.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                int idAnnonceAnomalieSelected = (int) tableauAnomalies.getValueAt(tableauAnomalies.getSelectedRow(), 3);
-//
-//                try {
-//                    annonce = AnnonceManager.getInstance().SelectById(idAnnonceAnomalieSelected);
-//
-//                } catch (BLLException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        });
 
         remplirJTableWithAnomalies();
 

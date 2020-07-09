@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class Sortie {
 
+
     //#################
     //### Attributs ###
     //#################
@@ -18,6 +19,7 @@ public class Sortie {
     private String sortie_etat;
     private Date sortie_date_sortie;
     private Date sortie_date_retour;
+    private Integer sortie_client_id;
 
 
     //#################
@@ -27,6 +29,32 @@ public class Sortie {
      * Constructeur par defaut
      */
     public Sortie() {
+    }
+
+    public Integer getSortie_client_id() {
+        return sortie_client_id;
+    }
+
+    public void setSortie_client_id(Integer sortie_client_id) {
+        this.sortie_client_id = sortie_client_id;
+    }
+
+    /**
+     * Constructeur
+     * @param sortie_id
+     * @param sortie_materiel_id
+     * @param sortie_etat
+     * @param sortie_date_sortie
+     * @param sortie_date_retour
+     * @param sortie_client_id
+     */
+    public Sortie(int sortie_id, int sortie_materiel_id, String sortie_etat, Date sortie_date_sortie, Date sortie_date_retour, Integer sortie_client_id) {
+        this.sortie_id = sortie_id;
+        this.sortie_materiel_id = sortie_materiel_id;
+        this.sortie_etat = sortie_etat;
+        this.sortie_date_sortie = sortie_date_sortie;
+        this.sortie_date_retour = sortie_date_retour;
+        this.sortie_client_id = sortie_client_id;
     }
 
     /**
