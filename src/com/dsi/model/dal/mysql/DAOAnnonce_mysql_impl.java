@@ -20,6 +20,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
     private String SQL_SelectAll = "SELECT * FROM annonces;";
     private String SQL_SelectById = "SELECT * FROM annonces WHERE annonce_id = ?;";
     private String SQL_SelectByIdUtilisateur = "SELECT * FROM annonces WHERE annonce_utilisateur_id = ?;";
+    private String SQL_SelectByIdMateriel = "SELECT * FROM annonces WHERE annonce_materiel_id = ?;";
     private String SQL_Insert = "INSERT INTO annonces(annonce_utilisateur_id, annonce_materiel_id, annonce_titre, annonce_description, annonce_date_parution) VALUES(?,?,?,?,?);";
     private String SQL_Update = "UPDATE annonces SET annonce_titre=?, annonce_description=?, annonce_date_parution=? WHERE annonce_id=?;";
     private String SQL_Delete = "DELETE FROM annonces WHERE annonce_id=?;";
@@ -320,8 +321,10 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
         return annonces;
     }
 
+
+
     @Override
-    public List<Annonce> selectByidMateriel(int pIdMateriel) throws DALException {
+    public List<Annonce> selectByIdMateriel(int pIdMateriel) throws DALException {
         pstmt = null;
         rs = null;
         annonce = null;
@@ -333,7 +336,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             cnx = new MysqlConnecteur().getConnexion();
 
             //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_SelectByIdUtilisateur);
+            pstmt = cnx.prepareStatement(SQL_SelectByIdMateriel);
             pstmt.setInt(1, pIdMateriel);
             rs = pstmt.executeQuery();
 
@@ -347,7 +350,6 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                         rs.getDate("annonce_date_parution"),
                         rs.getBoolean("annonce_valider")
                 );
-
                 annonces.add(annonce);
             }
 

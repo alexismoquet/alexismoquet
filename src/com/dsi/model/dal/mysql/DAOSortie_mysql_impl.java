@@ -19,8 +19,9 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
 
     private String SQL_SelectAll = "SELECT * FROM sorties;";
     private String SQL_SelectById = "SELECT * FROM sorties WHERE sortie_id=?;";
-    private String SQL_Insert = "INSERT INTO sorties(sortie_materiel_id, sortie_etat, sortie_date_sortie, sortie_date_retour) VALUES(?,?,?,?);";
-    private String SQL_Update = "UPDATE sorties SET sortie_materiel_id=?, sortie_etat=?, sortie_date_sortie=?, sortie_date_retour=? WHERE materiel_id=?;";
+    private String SQL_SelectByIdMateriel = "SELECT * FROM sorties WHERE sortie_materiel_id=?;";
+    private String SQL_Insert = "INSERT INTO sorties (sortie_materiel_id, sortie_etat, sortie_date_sortie, sortie_date_retour) VALUES(?,?,?,?);";
+    private String SQL_Update = "UPDATE sorties SET sortie_materiel_id=?, sortie_etat=?, sortie_date_sortie=?, sortie_date_retour=? WHERE sortie_id=?;";
     private String SQL_Delete = "DELETE FROM sorties WHERE sortie_id=?;";
 
     private Sortie sortie;
@@ -83,6 +84,7 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
             pstmt.setString(2, (pObj.getSortie_etat()));
             pstmt.setDate(3, FonctionsDate.utilDateVersSqlDate(pObj.getSortie_date_sortie()));
             pstmt.setDate(4, FonctionsDate.utilDateVersSqlDate(pObj.getSortie_date_retour()));
+            pstmt.setInt(5, pObj.getSortie_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -226,7 +228,7 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
                 );
 
             } else {
-                throw new DALException("Aucune sport trouvé avec l'identifiant : " + pId);
+                throw new DALException("Aucune sortie trouvée avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -251,11 +253,12 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
     }
 
     @Override
-    public Sortie selectByIdMateriel(int pId) throws DALException {
+    public List<Sortie> selectByIdMateriel(int pId) throws DALException {
 
         pstmt = null;
         rs = null;
         sortie = null;
+        sorties = new ArrayList<>();
         Connection cnx = null;
 
         try {
@@ -263,7 +266,7 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
             cnx = new MysqlConnecteur().getConnexion();
 
             //Execution de la requête
-            pstmt = cnx.prepareStatement(SQL_SelectById);
+            pstmt = cnx.prepareStatement(SQL_SelectByIdMateriel);
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
@@ -273,13 +276,14 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
                 sortie = new Sortie(
                         rs.getInt("sortie_id"),
                         rs.getInt("sortie_materiel_id"),
-                        rs.getString("sortie-etat"),
+                        rs.getString("sortie_etat"),
                         rs.getDate("sortie_date_sortie"),
                         rs.getDate("sortie_date_retour")
                 );
+                sorties.add(sortie);
 
             } else {
-                throw new DALException("Aucune sport trouvé avec l'identifiant : " + pId);
+                throw new DALException("Aucune sortie trouvée avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -300,7 +304,7 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-        return sortie;
+        return sorties;
     }
 
 

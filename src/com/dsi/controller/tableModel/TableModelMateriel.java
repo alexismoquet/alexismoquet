@@ -13,8 +13,8 @@ public class TableModelMateriel extends AbstractTableModel {
 
     public TableModelMateriel (List<Materiel> materiels) {
         this.materiels = materiels;
-
     }
+
 
     public int getRowCount() {
         return materiels.size();
@@ -56,7 +56,6 @@ public class TableModelMateriel extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
-
         if(columnIndex == 0) {
             materiels.get(rowIndex).setMateriel_nom(value.toString());
         } else if (columnIndex == 1){

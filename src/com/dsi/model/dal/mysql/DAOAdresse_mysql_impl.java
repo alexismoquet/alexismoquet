@@ -23,6 +23,9 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     private String SQL_Update                   = "UPDATE adresses SET adresse_adresse=?, adresse_complement=?, adresse_code_postal=?, adresse_ville=?, adresse_departement=?, adresse_pays=?, adresse_longitude=?, adresse_latitude=? WHERE adresse_id=?;";
     private String SQL_Delete                   = "DELETE FROM adresses WHERE adresse_id=?;";
 
+    private String SQL_AlterUtilisateur = "ALTER Utilisateurs ADD CONSTRAINT Adresses_Utilisateurs_FK FOREIGN KEY (adresse_utilisateur_id) REFERENCES adresses(adresse_utilisateur_id) ON UPDATE CASCADE; ";
+
+
     private Adresse adresse;
     private List<Adresse> adresses;
     private PreparedStatement pstmt;
@@ -54,10 +57,10 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
             pstmt.setFloat(9, pObj.getLatitude());
 
             pstmt.executeUpdate();
-//            rs = pstmt.getGeneratedKeys();
-//            if (rs.next()){
-//                pObj.setIdAdresse(rs.getInt(1));
-//            }
+            rs = pstmt.getGeneratedKeys();
+            if (rs.next()){
+                pObj.setIdAdresse(rs.getInt(1));
+            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {
@@ -188,7 +191,6 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
                         rs.getFloat("adresse_longitude"),
                         rs.getFloat("adresse_latitude")
                 );
-
                 adresses.add(adresse);
             }
 

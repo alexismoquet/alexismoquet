@@ -31,14 +31,6 @@ public class Sortie {
     public Sortie() {
     }
 
-    public Integer getSortie_client_id() {
-        return sortie_client_id;
-    }
-
-    public void setSortie_client_id(Integer sortie_client_id) {
-        this.sortie_client_id = sortie_client_id;
-    }
-
     /**
      * Constructeur
      * @param sortie_id

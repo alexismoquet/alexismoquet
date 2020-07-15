@@ -1,6 +1,5 @@
 package com.dsi.model.bll;
 
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
@@ -49,7 +48,7 @@ public class MaterielManager implements  Manager<Materiel> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la mise à jour de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la mise à jour du materiel", e);
         }
     }
 
@@ -58,7 +57,7 @@ public class MaterielManager implements  Manager<Materiel> {
             try {
                 dao.delete(pObj);
             } catch (DALException e) {
-                throw new BLLException("Un problème est survenu lors de la suppression de l'utilisateur", e);
+                throw new BLLException("Un problème est survenu lors de la suppression du materiel", e);
             }
         }
 
@@ -68,7 +67,7 @@ public class MaterielManager implements  Manager<Materiel> {
         try {
             materiels = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des materiels", e);
         }
 
         return materiels;
@@ -81,9 +80,8 @@ public class MaterielManager implements  Manager<Materiel> {
         try {
             materiel = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du materiel n° : "+pId, e);
         }
-
         return (Materiel) materiel;
     }
 
@@ -99,7 +97,7 @@ public class MaterielManager implements  Manager<Materiel> {
     }
 
     public List<Materiel> SelectByIdAdresse(int pId) throws BLLException {
-        materiels = new ArrayList<>();
+        materiel = null;
 
         try {
             materiel = dao.selectByIdAdresse(pId);

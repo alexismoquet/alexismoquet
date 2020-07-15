@@ -1,21 +1,21 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSortie;
+import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.SortieManager;
-import com.dsi.model.bll.UtilisateurManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.dsi.controller.Sorties.remplirJTableSortiesWithIdMateriel;
 import static com.dsi.controller.Sorties.remplirJTableWithAllSorties;
 
 /**
@@ -33,7 +33,6 @@ public class PageSorties extends JFrame {
 
     private JButton btnSupprimerSortie = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnMateriels = new JButton("Matériels");
     private JButton btnAjouterSortie = new JButton("Ajouter une ligne");
     private JButton btnEnrModifs = new JButton("Enregistrer");
 
@@ -45,6 +44,7 @@ public class PageSorties extends JFrame {
     List<Sortie> listRechercheSorties = new ArrayList<>();
 
     Sortie sortie, blankSortie;
+    Materiel materiel;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
@@ -55,6 +55,10 @@ public class PageSorties extends JFrame {
         initialiserComposants();
     }
 
+    public PageSorties(Materiel pMateriel) {
+        this.materiel = pMateriel;
+        initialiserComposants();
+    }
 
     public void initialiserComposants() {
         setTitle("Sorties");
@@ -89,11 +93,10 @@ public class PageSorties extends JFrame {
         panBas.add(btnAjouterSortie);
         panBas.add(btnSupprimerSortie);
         panBas.add(btnAnnuler);
-        panBas.add(btnMateriels);
 
         setContentPane(panPrincipal);
 
-        afficheJTableSorties();
+        displayRightTable();
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -127,14 +130,14 @@ public class PageSorties extends JFrame {
                 }
             }
             if (listRechercheSorties.size() == 0) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun sortie trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panPrincipal, "Aucune sortie trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText(" Rechercher par nom ");
+            txtRechercher.setText(" Rechercher par date YYYY-MM-dd");
             sortie = null;
-            afficheJTableSorties();
+            displayRightTable();
         });
 
         /**
@@ -185,7 +188,7 @@ public class PageSorties extends JFrame {
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
-                String etatSortieModifie = String.valueOf(tableauSortie.getValueAt(i, 0));
+                String etatSortieModifie = String.valueOf(tableauSortie.getValueAt(i, 2));
                 int idSortieModifie = (int) tableauSortie.getValueAt(i, 4);
 
                 if (sortie == null) {
@@ -211,13 +214,14 @@ public class PageSorties extends JFrame {
                                 } else {
                                     sm.update(sortie);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sortie " + sortie.getSortie_id() + " modifiée");
+                                    displayRightTable();
                                     break;
                                 }
                                 //   afficheJTableSorties();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        }
+                        } else {break;}
                     }
                 }
             }//fin for
@@ -238,8 +242,8 @@ public class PageSorties extends JFrame {
             {
                 try {
                     sm.delete(sortie);
-                    JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimé");
-                    afficheJTableSorties();
+                    JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimée");
+                    displayRightTable();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
@@ -247,20 +251,6 @@ public class PageSorties extends JFrame {
             }
         });
 
-//        /**
-//         * listenner sur le bouton materiel
-//         */
-//        btnMateriels.setSize(100, 50);
-//        btnMateriels.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (sortie == null) {
-//                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sortie");
-//                } else {
-//                    new PageMateriels(sortie);
-//                }
-//            }
-//        });
 
 
         /**
@@ -271,7 +261,7 @@ public class PageSorties extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSortie = (int) tableauSortie.getValueAt(tableauSortie.getSelectedRow(), 4);
-                //      JOptionPane.showMessageDialog(null, "Le sortie " + idSortie + " est sélectionné");
+                //      JOptionPane.showMessageDialog(null, "Le sortie " + idSortie + " est sélectionnée");
                 try {
                     sortie = SortieManager.getInstance().SelectById(idSortie);
                 } catch (BLLException ex) {
@@ -292,5 +282,24 @@ public class PageSorties extends JFrame {
         }
     } //fin afficheJTable
 
+
+    private void afficheJTableSortiesWithIdMateriel() {
+        try {
+            sorties = remplirJTableSortiesWithIdMateriel(materiel.getMateriel_id());
+            TableModelSortie model = new TableModelSortie(sorties);
+            tableauSortie.setModel(model);
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+    } //fin afficheJTable
+
+
+    private void displayRightTable(){
+        if (materiel == null){
+            afficheJTableSorties();
+        } else {
+            afficheJTableSortiesWithIdMateriel();
+        }
+    }
 
 }//fin class

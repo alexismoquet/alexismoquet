@@ -212,7 +212,7 @@ public class PageAdresses extends JFrame {
             blankAdresse.setComplement("");
             blankAdresse.setDepartement("");
             blankAdresse.setPays("");
-            blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
+      //      blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelAdresse model = new TableModelAdresse(adresses);
@@ -243,6 +243,12 @@ public class PageAdresses extends JFrame {
                 String departementModifie = String.valueOf(tableauAdresse.getValueAt(i, 4));
                 String paysModifie = String.valueOf(tableauAdresse.getValueAt(i, 5));
 
+                tableauAdresse.setValueAt(adresseModifiee, i, 0);
+                tableauAdresse.setValueAt(villeModifiee, i, 1);
+                tableauAdresse.setValueAt(cpModifie, i, 2);
+                tableauAdresse.setValueAt(complementModifie, i, 3);
+                tableauAdresse.setValueAt(departementModifie, i, 4);
+                tableauAdresse.setValueAt(paysModifie, i,5 );
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
@@ -313,21 +319,6 @@ public class PageAdresses extends JFrame {
             }
         });
 
-
-        /**
-         * Action listenner sur le bouton commentaire
-         */
-        bCommentaires.setSize(100, 50);
-        bCommentaires.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (adresse == null) {
-                    JOptionPane.showMessageDialog(bCommentaires, "Veuillez sélectionner une adresse");
-                } else {
-                    new PageCommentaires();
-                }
-            }
-        });
     }//fin initialiserComposants
 
 

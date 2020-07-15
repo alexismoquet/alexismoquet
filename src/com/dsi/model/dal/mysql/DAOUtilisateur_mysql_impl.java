@@ -25,7 +25,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
     private String SQL_SelectAll    = "SELECT * FROM utilisateurs;";
     private String SQL_SelectById   = "SELECT * FROM utilisateurs WHERE utilisateur_id=?;";
-    private String SQL_Insert       = "INSERT INTO utilisateurs(utilisateur_nom, utilisateur_prenom, utilisateur_tel_fix, utilisateur_tel_mob, utilisateur_email, utilisateur_mot_de_passe, utilisateur_date_inscription) VALUES(?,?,?,?,?,?,?);";
+    private String SQL_Insert       = "INSERT INTO utilisateurs(utilisateur_nom, utilisateur_prenom, utilisateur_tel_fix, utilisateur_tel_mob, utilisateur_email, utilisateur_mot_de_passe, utilisateur_date_inscription, utilisateur_id) VALUES(?,?,?,?,?,?,?,?);";
     private String SQL_Update       = "UPDATE utlisateurs SET utilisateur_nom=?, utilisateur_prenom=?, utilisateur_tel_fix=?, utilisateur_tel_mob=?, utilisateur_email=?, utilisateur_mot_de_passe=?, utilisateur_date_inscription=? WHERE utilisateur_id=?;";
     private String SQL_Delete       = "DELETE FROM utilisateurs WHERE utilisateur_id=?;";
 

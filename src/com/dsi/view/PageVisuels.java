@@ -150,11 +150,11 @@ public class PageVisuels extends JFrame {
             });
 
 
-            /**
-             * Bouton Modifier le visuel
-             */
-            btnModifierVisuel.addActionListener(e -> {
-            });
+//            /**
+//             * Bouton Modifier le visuel
+//             */
+//            btnModifierVisuel.addActionListener(e -> {
+//            });
 
             /**
              * Bouton supprimer le visuel

@@ -217,8 +217,7 @@ public class PageCategories extends JFrame {
             }//fin for
             afficheJTableCategories();
         });
-
-
+        
         btnSupprimerCategorie.addActionListener(e -> {
             if (categorie == null) {
                 JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");

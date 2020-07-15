@@ -149,7 +149,6 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-
         /**
          * Listener bouton annuler
          */
@@ -199,7 +198,6 @@ public class PageUtilisateurs extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UtilisateurManager um = UtilisateurManager.getInstance();
-                AdresseManager am = AdresseManager.getInstance();
 
                 /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
                 for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
@@ -215,20 +213,9 @@ public class PageUtilisateurs extends JFrame {
                     String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
                     String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
                     String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
-                    String dateInscUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 6));
+                  //  Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
 
-//                    tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
-//                    tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-//                    tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
-//                    tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
-//                    tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
-//                    tableauUtilisateur.setValueAt(adresseUtilisateurModifiee, i, 5);
-//                    tableauUtilisateur.setValueAt(villeUtilisateurModifiee, i, 6);
-//                    tableauUtilisateur.setValueAt(cpUtilisateurModifie, i, 7);
-//                    tableauUtilisateur.setValueAt(complementUtilisateurModifie, i, 8);
-//                    tableauUtilisateur.setValueAt(departementUtilisateurModifie, i, 9);
-//                    tableauUtilisateur.setValueAt(paysUtilisateurModifie, i, 10);
 
                     if (utilisateur == null) {
                         JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
@@ -240,23 +227,14 @@ public class PageUtilisateurs extends JFrame {
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                                 !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
 
-//                                !utilisateur.getAdresses().get(0).getCodePostal().equals(cpUtilisateurModifie) ||
-//                                !utilisateur.getAdresses().get(0).getComplement().equals(complementUtilisateurModifie) ||
-//                                !utilisateur.getAdresses().get(0).getDepartement().equals(departementUtilisateurModifie) ||
-//                                !utilisateur.getAdresses().get(0).getPays().equals(paysUtilisateurModifie)
                         ) {
                             utilisateur.setNom(nomUtilisateurModifie);
                             utilisateur.setPrenom(prenomUtilisateurModifie);
                             utilisateur.setEmail(emailUtilisateurModifie);
                             utilisateur.setTelMob(telMobUtilisateurModifie);
                             utilisateur.setTelFix(telFixUtilisateurModifie);
-//                            utilisateur.getAdresses().get(0).setAdresse(adresseUtilisateurModifiee);
-//                            utilisateur.getAdresses().get(0).setVille(villeUtilisateurModifiee);
-//                            utilisateur.getAdresses().get(0).setCodePostal(cpUtilisateurModifie);
-//                            utilisateur.getAdresses().get(0).setComplement(complementUtilisateurModifie);
-//                            utilisateur.getAdresses().get(0).setDepartement(departementUtilisateurModifie);
-//                            utilisateur.getAdresses().get(0).setPays(paysUtilisateurModifie);
-
+                   //         utilisateur.setDateInscription( dateInscUtilisateurModifie);
+//
 
                             int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                     "Veuillez confirmer votre choix",
@@ -345,7 +323,7 @@ public class PageUtilisateurs extends JFrame {
         });
 
         /**
-         * listenner sur le bouton annonce
+         * listenner sur le bouton adresse
          */
         btnAdresse.setSize(100, 50);
         btnAdresse.addActionListener(new ActionListener() {

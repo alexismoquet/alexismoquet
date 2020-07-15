@@ -1,13 +1,9 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelAnnonce;
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.MaterielManager;
-import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -51,6 +47,7 @@ public class PageAnnonces extends JFrame {
     List<Annonce> listRechercheAnnonces = new ArrayList<>();
     Categorie categorie;
     Annonce annonce, blankAnnonce;
+    Materiel materiel;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
@@ -63,6 +60,11 @@ public class PageAnnonces extends JFrame {
 
     public PageAnnonces(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
+
+    public PageAnnonces(Materiel pMateriel) {
+        this.materiel = pMateriel;
         initialiserComposants();
     }
 
@@ -110,19 +112,14 @@ public class PageAnnonces extends JFrame {
 
         setContentPane(panPrincipal);
 
-        if (utilisateur == null) {
-            afficheJTableWithAllAnnonces();
-        } else {
-            afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
-        }
-
+        diplayRightTable();
 
 /**************************************************************************************************************************************/
 /*************************************************************** Les listenners des boutons *******************************************************/
 /**************************************************************************************************************************************/
 
 
-          /****Mouse listenner du champ de recherche  ***********************/
+        /****Mouse listenner du champ de recherche  ***********************/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -169,7 +166,7 @@ public class PageAnnonces extends JFrame {
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
-            //Gêne pour modifier une ligne du tableauAnnonce//  JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
+                //Gêne pour modifier une ligne du tableauAnnonce//  JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
             }
         });
 
@@ -181,11 +178,7 @@ public class PageAnnonces extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             annonce = null;
-            if (utilisateur == null) {
-                afficheJTableWithAllAnnonces();
-            } else {
-                afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
-            }
+           diplayRightTable();
         });
 
         /**
@@ -210,6 +203,13 @@ public class PageAnnonces extends JFrame {
             blankAnnonce.setAnnonce_date_parution(new Date());
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            if (utilisateur != null){
+              blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
+            }
+            if (materiel != null){
+                blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
+            }
+
             TableModelAnnonce model = new TableModelAnnonce(annonces);
             model.fireTableDataChanged();
             tableauAnnonce.revalidate();
@@ -218,7 +218,7 @@ public class PageAnnonces extends JFrame {
 
 
         /**
-         * listenner sur le btnModifierAnnonce pour enregistrer modifications
+         * listenner sur le btnModifierAnnonce pour enregistrer les modifications
          */
         btnModifierAnnonce.addActionListener(e -> {
             AnnonceManager am = AnnonceManager.getInstance();
@@ -256,11 +256,11 @@ public class PageAnnonces extends JFrame {
                                 blankAnnonce = null;
                                 break;
                             } else {
-                            am.update(annonce);
-                            JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
-                            afficheJTableWithAllAnnonces();
-                             }
-                         }
+                                am.update(annonce);
+                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
+                                diplayRightTable();
+                            }
+                        }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
@@ -280,7 +280,7 @@ public class PageAnnonces extends JFrame {
             }
             AnnonceManager am = AnnonceManager.getInstance();
 
-            int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce "+annonce.getAnnonce_id()+" ?",
+            int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
@@ -288,13 +288,7 @@ public class PageAnnonces extends JFrame {
                 try {
                     am.delete(annonce);
                     JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
-                    if (utilisateur == null) {
-                        afficheJTableWithAllAnnonces();
-                        //    tableauAnnonce.clearSelection();
-                    } else {
-                        afficheJTableAnnoncesIdUtilisateur(utilisateur.getIdUtilisateur());
-                        tableauAnnonce.clearSelection();
-                    }
+                   diplayRightTable();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
@@ -319,16 +313,6 @@ public class PageAnnonces extends JFrame {
     }//fin initialiserComposants
 
 
-    private void afficheJTableAnnoncesIdUtilisateur(int pIdUtilisateur) {
-        try {
-            annonces = remplirJTableWithAnnoncesIdUser(utilisateur.getIdUtilisateur());
-            TableModelAnnonce model = new TableModelAnnonce(annonces);
-            tableauAnnonce.setModel(model);
-        } catch (BLLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     private void afficheJTableWithAllAnnonces() {
         try {
             annonces = remplirJTableWithAllAnnonces();
@@ -338,5 +322,37 @@ public class PageAnnonces extends JFrame {
             e.printStackTrace();
         }
     }
+
+
+    private void afficheJTableAnnoncesIdUtilisateur() {
+        try {
+            annonces = remplirJTableWithAnnoncesIdUser(utilisateur.getIdUtilisateur());
+            TableModelAnnonce model = new TableModelAnnonce(annonces);
+            tableauAnnonce.setModel(model);
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void afficheJTableAnnoncesIdMateriel() {
+        try {
+            annonces = remplirJTableWithAnnoncesIdMateriel(materiel.getMateriel_id());
+            TableModelAnnonce model = new TableModelAnnonce(annonces);
+            tableauAnnonce.setModel(model);
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void diplayRightTable() {
+        if (utilisateur == null && materiel == null) {
+            afficheJTableWithAllAnnonces();
+        } else if (materiel == null){
+            afficheJTableAnnoncesIdUtilisateur();
+        } else if (utilisateur == null){
+            afficheJTableAnnoncesIdMateriel();
+        }
+    }
+
 
 }//fin class

@@ -17,13 +17,9 @@ public class Annonces {
 
     public static List<Annonce> remplirJTableWithAnnoncesIdMateriel(int idMateriel) throws BLLException {
         AnnonceManager am = AnnonceManager.getInstance();
-        return am.SelectByidMateriel(idMateriel);
+        return am.SelectByIdMateriel(idMateriel);
     }
 
-    public static List<Annonce> remplirJTableWithIdAnnonces(int idAnnonce) throws BLLException {
-        AnnonceManager am = AnnonceManager.getInstance();
-        return Collections.singletonList(am.SelectById(idAnnonce));
-    }
     public static List<Annonce> remplirJTableWithAllAnnonces() throws BLLException {
         AnnonceManager am = AnnonceManager.getInstance();
         return am.SelectAll();
