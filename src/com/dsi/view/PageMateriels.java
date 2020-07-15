@@ -42,6 +42,8 @@ public class PageMateriels extends JFrame {
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnVisuels = new JButton("visuels");
     private JButton btnRechercher = new JButton("Rechercher");
+    private JButton btnSorties = new JButton("Sortie");
+    private JButton btnAnnonces = new JButton("Annonce(s)");
 
     private JTextField txtRechercher = new JTextField();
     private JTable tableauMateriel = new JTable();
@@ -119,6 +121,8 @@ public class PageMateriels extends JFrame {
         panBas.add(btnSupprimerMateriel);
         panBas.add(btnAnnuler);
         panBas.add(btnVisuels);
+        panBas.add(btnSorties);
+        panBas.add(btnAnnonces);
 
         setContentPane(panPrincipal);
 
@@ -226,7 +230,7 @@ public class PageMateriels extends JFrame {
                  {
                 try {
                     am.delete(materiel);
-                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Materiel " + materiel.getMateriel_id() + " supprimé");
+                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Matériel " + materiel.getMateriel_id() + " supprimé");
 
                     if (utilisateur == null && categorie == null && sport == null) {
                         afficheJTableMateriels();
@@ -252,7 +256,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 5);
-        //        JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
+                JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
                 try {
 
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);
@@ -264,7 +268,7 @@ public class PageMateriels extends JFrame {
 
 
         /**
-         * listenner sur le bouton Visuel
+         * listenner sur le bouton Visuels
          */
         btnVisuels.setSize(100, 50);
         btnVisuels.addActionListener(new ActionListener() {
@@ -278,12 +282,36 @@ public class PageMateriels extends JFrame {
             }
         });
 
+        /**
+         * listenner sur le bouton Sorties
+         */
+        btnSorties.setSize(100, 50);
+        btnSorties.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (materiel == null) {
+                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un materiel");
+                } else {
+                    new PageSorties(materiel);
+                }
+            }
+        });
 
 
-
-     /**   ##ODO METTRE BOUTON ANNONCES####*/
-
-
+        /**
+         * listenner sur le bouton Annonces
+         */
+        btnAnnonces.setSize(100, 50);
+        btnAnnonces.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (materiel == null) {
+                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un materiel");
+                } else {
+                    new PageAnnonces(materiel);
+                }
+            }
+        });
 
     }//fin initialiserComposants
 

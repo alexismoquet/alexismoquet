@@ -106,11 +106,11 @@ public class AnnonceManager implements Manager<Annonce> {
         return annonces;
     }
 
-    public List<Annonce> SelectByidMateriel(int pIdMateriel) throws BLLException {
+    public List<Annonce> SelectByIdMateriel(int pIdMateriel) throws BLLException {
         annonces = null;
 
         try {
-            annonces = dao.selectByidMateriel(pIdMateriel);
+            annonces = dao.selectByIdMateriel(pIdMateriel);
         } catch (DALException e) {
             throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pIdMateriel, e);
         }

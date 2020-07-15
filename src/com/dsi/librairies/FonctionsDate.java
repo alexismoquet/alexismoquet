@@ -1,5 +1,7 @@
 package com.dsi.librairies;
 
+import java.util.Date;
+
 /**
  * Classe FonctionsDate
  *
@@ -38,5 +40,4 @@ public class FonctionsDate {
         return javaDate;
     }
 
-
-}
+}//fin class

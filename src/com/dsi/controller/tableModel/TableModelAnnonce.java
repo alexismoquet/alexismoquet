@@ -47,7 +47,7 @@ public class TableModelAnnonce extends AbstractTableModel {
                 return annonces.get(rowIndex).getAnnonce_utilisateur_id();
             case 3:
                 return annonces.get(rowIndex).getAnnonce_id();
-                case 4:
+            case 4:
                 return annonces.get(rowIndex).getAnnonce_materiel_id();
             case 5:
                 return annonces.get(rowIndex).getAnnonce_date_parution();
@@ -64,8 +64,6 @@ public class TableModelAnnonce extends AbstractTableModel {
             annonces.get(rowIndex).setAnnonce_titre(value.toString());
         } else if (columnIndex == 1){
             annonces.get(rowIndex).setAnnonce_description(value.toString());
-        } else if (columnIndex ==5){
-            annonces.get(rowIndex).setAnnonce_date_parution(new Date());
         }
     }
 

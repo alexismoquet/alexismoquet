@@ -88,5 +88,18 @@ public class SortieManager implements  Manager<Sortie> {
         return sortie;
     }
 
+
+    public List<Sortie> SelectByIdMateriel(int pId) throws BLLException {
+        sorties =null;
+
+        try {
+            sorties = dao.selectByIdMateriel(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de la sortie n° : "+pId, e);
+        }
+
+        return sorties;
+    }
+
 }//fin class
 

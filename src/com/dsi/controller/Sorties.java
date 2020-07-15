@@ -12,4 +12,9 @@ public class Sorties {
         SortieManager sm = SortieManager.getInstance();
         return sm.SelectAll();
     }
+
+    public static List<Sortie> remplirJTableSortiesWithIdMateriel( int idMateriel)  throws BLLException {
+        SortieManager sm = SortieManager.getInstance();
+        return sm.SelectByIdMateriel(idMateriel);
+    }
 }

@@ -1,5 +1,6 @@
 package com.dsi.controller.tableModel;
 
+import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 
@@ -9,11 +10,6 @@ import java.util.List;
 
 
 public class TableModelSortie extends AbstractTableModel {
-    private int sortie_id;
-    private int sortie_materiel_id;
-    private String sortie_etat;
-    private Date sortie_date_sortie;
-    private Date sortie_date_retour;
 
     private final String[] titres = {"sortie_date_retour","sortie_date_sortie", "sortie_etat", "sortie_materiel_id", "sortie_id"};
 
@@ -63,12 +59,13 @@ public class TableModelSortie extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
 
         if(columnIndex == 0) {
-            sorties.get(rowIndex).setSortie_date_retour(new Date (String.valueOf(value)));
+            sorties.get(rowIndex).setSortie_date_retour((Date) value);
         } else if (columnIndex == 1){
-            sorties.get(rowIndex).setSortie_date_sortie(new Date (String.valueOf(value)));
-        } else if (columnIndex == 6){
+            sorties.get(rowIndex).setSortie_date_sortie((Date) value);
+        } else if (columnIndex == 2){
             sorties.get(rowIndex).setSortie_etat((String) value);
         }
     }
+
 
 }//fin class
