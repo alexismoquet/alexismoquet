@@ -263,7 +263,7 @@ public class PageSports extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSport = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
-                //      JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
+                JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
                 try {
                     sport = SportManager.getInstance().SelectById(idSport);
                 } catch (BLLException ex) {

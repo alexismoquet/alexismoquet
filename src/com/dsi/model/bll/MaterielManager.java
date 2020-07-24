@@ -25,7 +25,7 @@ public class MaterielManager implements  Manager<Materiel> {
     /**
      * Constructeur
      */
-    private MaterielManager() { dao = DAO_Factory.getDAO_Materiel(); }
+    public MaterielManager() { dao = DAO_Factory.getDAO_Materiel(); }
 
     /**
      * Singleton

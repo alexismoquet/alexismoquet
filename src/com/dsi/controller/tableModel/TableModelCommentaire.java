@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TableModelCommentaire extends AbstractTableModel {
 
-    private final String[] titres = {"Message","Date parution", "Note", "idCommentaire","idUtilisateur"};
+    private final String[] titres = {"Message","Date parution", "Note", "IdCommentaire","IdUtilisateur"};
 
     private List<Commentaire> commentaires;
 

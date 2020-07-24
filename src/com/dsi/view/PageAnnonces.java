@@ -7,6 +7,8 @@ import com.dsi.model.bll.BLLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.dsi.controller.Annonces.*;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
 
 /**
  * Classe PageAnnonces
@@ -36,6 +39,7 @@ public class PageAnnonces extends JFrame {
     private JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton bCommentaires = new JButton("Commentaires");
+    private JButton bMateriels = new JButton("Materiels");
 
 
     private JTextField txtRechercher = new JTextField();
@@ -48,7 +52,7 @@ public class PageAnnonces extends JFrame {
     Categorie categorie;
     Annonce annonce, blankAnnonce;
     Materiel materiel;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
     /************************************************************/
@@ -109,10 +113,11 @@ public class PageAnnonces extends JFrame {
         panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
         panBas.add(bCommentaires);
-
-        setContentPane(panPrincipal);
+        panBas.add(bMateriels);
 
         diplayRightTable();
+
+        setContentPane(panPrincipal);
 
 /**************************************************************************************************************************************/
 /*************************************************************** Les listenners des boutons *******************************************************/
@@ -160,6 +165,7 @@ public class PageAnnonces extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
+                JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
 
@@ -207,6 +213,11 @@ public class PageAnnonces extends JFrame {
               blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
             }
             if (materiel != null){
+                blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
+            }
+
+            if (materiel != null && utilisateur != null){
+                blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
             }
 
@@ -310,6 +321,25 @@ public class PageAnnonces extends JFrame {
                 }
             }
         });
+
+        /**
+         * Action listenner sur le bouton materiel
+         */
+        bMateriels.setSize(100, 50);
+        bMateriels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (annonce == null) {
+                    JOptionPane.showMessageDialog(bMateriels, "Veuillez sélectionner une annonce");
+                } else {
+                    try {
+                        new PageMateriels(annonce.getAnnonce_materiel_id());
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
+                    }
+                }
+            }
+        });
     }//fin initialiserComposants
 
 
@@ -318,6 +348,7 @@ public class PageAnnonces extends JFrame {
             annonces = remplirJTableWithAllAnnonces();
             TableModelAnnonce model = new TableModelAnnonce(annonces);
             tableauAnnonce.setModel(model);
+
         } catch (BLLException e) {
             e.printStackTrace();
         }
@@ -353,6 +384,5 @@ public class PageAnnonces extends JFrame {
             afficheJTableAnnoncesIdMateriel();
         }
     }
-
 
 }//fin class

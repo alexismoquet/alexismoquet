@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
 
-    private final String[] titres = {"Visuels", "id visuel", "id matériel"};
+    private final String[] titres = {"Visuels", "IdVisuel", "IdMatériel"};
     private List<Visuel> visuels;
 
     

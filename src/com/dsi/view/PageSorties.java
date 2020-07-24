@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,11 +161,13 @@ public class PageSorties extends JFrame {
                 }
             }
             blankSortie.setSortie_id(idMax + 1);
-            blankSortie.setSortie_etat("?");
+            blankSortie.setSortie_etat("");
             blankSortie.setSortie_date_sortie(new Date());
             blankSortie.setSortie_date_retour(new Date());
-           blankSortie.setSortie_materiel_id(0);
 
+            if (materiel != null){
+                blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
+            }
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -252,7 +256,6 @@ public class PageSorties extends JFrame {
         });
 
 
-
         /**
          *
          * Mouse listenner sur le tableau sortie
@@ -261,7 +264,7 @@ public class PageSorties extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSortie = (int) tableauSortie.getValueAt(tableauSortie.getSelectedRow(), 4);
-                //      JOptionPane.showMessageDialog(null, "Le sortie " + idSortie + " est sélectionnée");
+                JOptionPane.showMessageDialog(tableauSortie, "Le sortie " + idSortie + " est sélectionnée");
                 try {
                     sortie = SortieManager.getInstance().SelectById(idSortie);
                 } catch (BLLException ex) {

@@ -3,6 +3,7 @@ package com.dsi.controller.tableModel;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -12,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelUtilisateur extends AbstractTableModel {
 
     private final String[] titres = {"Noms", "Prénoms", "Email", "Téléphone mobile"
-            , "Téléphone fixe", "Mot de passe", "Date inscription", "id"};
+            , "Téléphone fixe", "Mot de passe", "Date inscription", "Id"};
 
     private List <Utilisateur> utilisateurs;
 
@@ -109,12 +110,12 @@ public class TableModelUtilisateur extends AbstractTableModel {
         else if (column == 4) {
             utilisateurs.get(row).setTelFix((String) value);
         }
-//        else if (column == 5) {
-//            utilisateurs.get(row).getMotDePasse();
-//            }
-//        else if (column == 6) {
-//            utilisateurs.get(row).getDateInscription();
-//            }
+        else if (column == 5) {
+            utilisateurs.get(row).setMotDePasse((String) value);
+            }
+        else if (column == 6) {
+            utilisateurs.get(row).setDateInscription((Date) value);
+            }
         } //fin setValue
 
 

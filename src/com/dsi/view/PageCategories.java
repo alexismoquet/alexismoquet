@@ -128,6 +128,9 @@ public class PageCategories extends JFrame {
             }
         });
 
+        /**
+         * listenner sur le btnajouterAnnuler
+         */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par nom");
             categorie = null;
@@ -136,6 +139,7 @@ public class PageCategories extends JFrame {
 
         /**
          * listenner sur le btnajouterCategorie pour ajouter une ligne vierge
+         * paramètre: blankcategorie
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
@@ -166,7 +170,7 @@ public class PageCategories extends JFrame {
 
 
         /**
-         * listenner sur le bouton Enregistrer les modifications dans la base
+         * listenner sur le bouton Enregistrer - les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
@@ -186,7 +190,7 @@ public class PageCategories extends JFrame {
                     return;
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un categorie");
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /*** ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
                     if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie) || !(categorie.getCategorie_id() == idCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
                         categorie.setCategorie_id(idCategorieModifie);
@@ -217,7 +221,11 @@ public class PageCategories extends JFrame {
             }//fin for
             afficheJTableCategories();
         });
-        
+
+        /**
+         * Listenner sur le bouton supprimer
+         * paramètres : categorie
+         */
         btnSupprimerCategorie.addActionListener(e -> {
             if (categorie == null) {
                 JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");
@@ -240,6 +248,7 @@ public class PageCategories extends JFrame {
                 tableauCategorie.clearSelection();
             }
         });
+
 
         /**
          * listenner sur le bouton materiel
@@ -265,7 +274,7 @@ public class PageCategories extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
-                //      JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionné");
+                      JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionné");
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
                 } catch (BLLException ex) {

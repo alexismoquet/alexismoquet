@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TableModelSortie extends AbstractTableModel {
 
-    private final String[] titres = {"sortie_date_retour","sortie_date_sortie", "sortie_etat", "sortie_materiel_id", "sortie_id"};
+    private final String[] titres = {"Date retour","Date sortie", "sortie état", "IdMateriel", "IdSortie"};
 
     private List<Sortie> sorties;
 

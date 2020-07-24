@@ -33,7 +33,7 @@ public class PageVisuels extends JFrame {
         private JPanel panCentre = new JPanel();
         private JPanel panBas = new JPanel();
 
-        private JButton btnModifierVisuel = new JButton("Modifier visuel");
+    //    private JButton btnModifierVisuel = new JButton("Modifier visuel");
         private JButton btnSupprimerVisuel = new JButton("Supprimer visuel");
         private JButton btnAnnuler = new JButton("Annuler");
 
@@ -90,7 +90,7 @@ public class PageVisuels extends JFrame {
             tableauVisuel.setRowHeight(30);
 
             panBas.setSize(500, 200);
-            panBas.add(btnModifierVisuel);
+         //   panBas.add(btnModifierVisuel);
             panBas.add(btnSupprimerVisuel);
             panBas.add(btnAnnuler);
 

@@ -39,7 +39,6 @@ public class PageAdresses extends JFrame {
     private JButton btnAjouterLigne = new JButton("Ajouter une ligne");
     private JButton btnSupprimerAdresse = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
-    private JButton bCommentaires = new JButton("Commentaires");
 
 
     private JTextField txtRechercher = new JTextField();
@@ -106,7 +105,6 @@ public class PageAdresses extends JFrame {
         panBas.add(btnAjouterLigne);
         panBas.add(btnSupprimerAdresse);
         panBas.add(btnAnnuler);
-        panBas.add(bCommentaires);
 
         setContentPane(panPrincipal);
 
@@ -212,8 +210,11 @@ public class PageAdresses extends JFrame {
             blankAdresse.setComplement("");
             blankAdresse.setDepartement("");
             blankAdresse.setPays("");
-      //      blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
+
             //////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (utilisateur != null){
+                blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
+            }
 
             TableModelAdresse model = new TableModelAdresse(adresses);
             model.fireTableDataChanged();
@@ -289,7 +290,8 @@ public class PageAdresses extends JFrame {
 
 
         /**
-         * listenner sur le btnSupprimerAdresse pour supprimer une adresse
+         * listenner sur le btnSupprimerAdresse
+         * @param adresse
          */
         btnSupprimerAdresse.addActionListener(e -> {
             if (adresse == null) {

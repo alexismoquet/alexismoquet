@@ -82,7 +82,7 @@ public class SortieManager implements  Manager<Sortie> {
         try {
             sortie = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération du sport n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de la sortie n° : "+pId, e);
         }
 
         return sortie;
