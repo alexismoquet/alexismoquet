@@ -57,10 +57,10 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
             pstmt.setFloat(9, pObj.getLatitude());
 
             pstmt.executeUpdate();
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()){
-                pObj.setIdAdresse(rs.getInt(1));
-            }
+//            rs = pstmt.getGeneratedKeys();
+//            if (rs.next()){
+//                pObj.setIdAdresse(rs.getInt(1));
+//            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {

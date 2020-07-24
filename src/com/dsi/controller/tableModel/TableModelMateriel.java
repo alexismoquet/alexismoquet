@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelMateriel extends AbstractTableModel {
 
-    private final String[] titres = {"Nom","Description","idAdresse","idCategorie", "idSport", "idMateriel", "Prix"};
+    private final String[] titres = {"Nom","Description","IdAdresse","IdCategorie", "IdSport", "IdMateriel", "Prix"};
 
     private List<Materiel> materiels;
 

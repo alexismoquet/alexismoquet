@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TableModelSport extends AbstractTableModel {
 
-    private final String[] titres = {"Libellé sport","idSport"};
+    private final String[] titres = {"Libellé sport","IdSport"};
 
     private List<Sport> sports;
 

@@ -71,13 +71,11 @@ public class PageHubAdmin extends JFrame {
         setResizable(true);
         setVisible(true);
 
-
         /***** Panel principal  */
         panPrincipal.setBackground(Color.decode("#11417d"));
         panPrincipal.setLayout(new BorderLayout());
         panPrincipal.add(panBtn, BorderLayout.NORTH);
         panPrincipal.add(panAnomalies, BorderLayout.CENTER);
-
 
         /***** Panel des boutons*/
         panBtn.setBackground(Color.decode("#11417d")); //bleu
@@ -92,11 +90,10 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bSorties);
         panBtn.add(bEnregistrer);
 
-
         /***** Panel des anomalies*/
         anomaliesASurveiller.setSize(200, 100);
         anomaliesASurveiller.setBackground(Color.white);
-        anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte à surveiller :</body></html>");
+        anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte  dans les annonces à surveiller :</body></html>");
         anomaliesASurveiller.setToolTipText(anomaliesASurveiller.getText());
 
         panAnomalies.setBackground(Color.decode("#11417d")); //rouge = #7d1111
@@ -108,7 +105,6 @@ public class PageHubAdmin extends JFrame {
         panAnomalies.setPreferredSize(new Dimension(900, 700));
         panAnomalies.setBorder(new EmptyBorder(5, 20, 20, 20));
         tableauAnomalies.setRowHeight(20);
-
 
         bUtilisateurs.setSize(100, 50);
         bUtilisateurs.addActionListener(new ActionListener() {
@@ -169,6 +165,9 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) { PageSorties ps = new PageSorties(); }
         });
 
+        /**
+         * Listener btnEnregistrer - enregistrer les modifs du tableau anomalies (annonces)
+         */
         bEnregistrer.setSize(100, 50);
         bEnregistrer.addActionListener(new ActionListener() {
             @Override

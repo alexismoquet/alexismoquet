@@ -164,7 +164,7 @@ public class PageCommentaires extends JFrame {
 
         btnSupprimerCommentaire.addActionListener(e -> {
             if (commentaire == null) {
-                JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner une annonce");
+                JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner un commentaire");
                 return;
             }
             CommentaireManager cm = CommentaireManager.getInstance();
@@ -226,6 +226,7 @@ public class PageCommentaires extends JFrame {
         }
 
     } //fin afficheJTable
+
 
     private void afficheJTableCommentairesWithIdUtilisateur() {
         try {

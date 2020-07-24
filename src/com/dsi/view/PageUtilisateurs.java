@@ -2,6 +2,7 @@ package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.controller.tableModel.TableModelUtilisateur;
+import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sport;
@@ -158,7 +159,7 @@ public class PageUtilisateurs extends JFrame {
             afficheJTableUtilisateurs();
         });
         /**
-         * listenner sur le btnajouterSport pour ajouter une ligne vierge
+         * listenner sur le btnajouterUtilisateur pour ajouter une ligne vierge
          */
         btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
@@ -213,28 +214,26 @@ public class PageUtilisateurs extends JFrame {
                     String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
                     String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
                     String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
-                  //  Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
-
-
+                    Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
                     if (utilisateur == null) {
                         JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
                     } else {
                         /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                        if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
+                        if (    !utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
                                 !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
                                 !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                                 !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
-
                         ) {
                             utilisateur.setNom(nomUtilisateurModifie);
                             utilisateur.setPrenom(prenomUtilisateurModifie);
                             utilisateur.setEmail(emailUtilisateurModifie);
                             utilisateur.setTelMob(telMobUtilisateurModifie);
                             utilisateur.setTelFix(telFixUtilisateurModifie);
-                   //         utilisateur.setDateInscription( dateInscUtilisateurModifie);
-//
+                            utilisateur.setMotDePasse(mdpUtilisateurModifie);
+                            utilisateur.setDateInscription(dateInscUtilisateurModifie);
+
 
                             int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                     "Veuillez confirmer votre choix",
@@ -246,6 +245,7 @@ public class PageUtilisateurs extends JFrame {
                                         um.insert(blankUtilisateur);
                                         JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
                                         blankUtilisateur = null;
+                                        afficheJTableUtilisateurs();
                                         break;
                                     } else {
                                         um.update(utilisateur);

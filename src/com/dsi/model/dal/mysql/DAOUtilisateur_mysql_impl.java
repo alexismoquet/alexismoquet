@@ -2,6 +2,7 @@ package com.dsi.model.dal.mysql;
 
 import com.dsi.librairies.FonctionsDate;
 import com.dsi.librairies.Roles;
+import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Utilisateur;
@@ -50,15 +51,18 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
+
             pstmt.setString(1, pObj.getNom());
             pstmt.setString(2, pObj.getPrenom());
             pstmt.setString(3, pObj.getTelFix());
             pstmt.setString(4, pObj.getTelMob());
             pstmt.setString(5, pObj.getEmail());
-            pstmt.setString(6, pObj.getMotDePasse());
+            pstmt.setString(6, UMdp.mdpCrypte(pObj.getMotDePasse()));
             pstmt.setDate(7, FonctionsDate.utilDateVersSqlDate(pObj.getDateInscription()));
             pstmt.setInt(8, pObj.getIdUtilisateur());
+
             pstmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {
@@ -101,6 +105,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             pstmt.setInt(8, pObj.getIdUtilisateur());
 
             pstmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {
