@@ -5,10 +5,13 @@ import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.dal.DAO_Annonce;
 
+import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
 
 public class Annonces {
+
+    private Annonce annonce;
 
     public static List<Annonce> remplirJTableWithAnnoncesIdUser(int idUtilisateur) throws BLLException {
         AnnonceManager am = AnnonceManager.getInstance();
@@ -24,6 +27,4 @@ public class Annonces {
         AnnonceManager am = AnnonceManager.getInstance();
         return am.SelectAll();
     }
-
-
 }

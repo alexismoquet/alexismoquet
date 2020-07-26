@@ -1,23 +1,22 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.controller.tableModel.TableModelUtilisateur;
-import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.Adresse;
-import com.dsi.model.beans.Materiel;
-import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
-import com.dsi.model.bll.AdresseManager;
-import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurManager;
-import org.mariadb.jdbc.internal.util.SqlStates;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLData;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
@@ -156,6 +155,7 @@ public class PageUtilisateurs extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par Nom ");
             utilisateur = null;
+            blankUtilisateur = null;
             afficheJTableUtilisateurs();
         });
         /**
@@ -224,7 +224,8 @@ public class PageUtilisateurs extends JFrame {
                                 !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
                                 !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                                 !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
-                                !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
+                                !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie) ||
+                                !(utilisateur.getDateInscription() == dateInscUtilisateurModifie)
                         ) {
                             utilisateur.setNom(nomUtilisateurModifie);
                             utilisateur.setPrenom(prenomUtilisateurModifie);
@@ -243,7 +244,7 @@ public class PageUtilisateurs extends JFrame {
                                 try {
                                     if (blankUtilisateur != null) {
                                         um.insert(blankUtilisateur);
-                                        JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
+                                        JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté. Retenez bien votre mot de passe, nous allons le crypter");
                                         blankUtilisateur = null;
                                         afficheJTableUtilisateurs();
                                         break;
@@ -265,6 +266,7 @@ public class PageUtilisateurs extends JFrame {
 
         /**
          *Listener bouton Supprimer
+         * @param utilisateur
          */
         btnSupprimerUtil.addActionListener(e -> {
             if (utilisateur == null) {
@@ -277,11 +279,29 @@ public class PageUtilisateurs extends JFrame {
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
+                ///////Jouer un son qd suppression/////////////
+//                InputStream in = null;
+//                try {
+//                    in = new FileInputStream("0200.mp3");
+//                } catch (FileNotFoundException fileNotFoundException) {
+//                    fileNotFoundException.printStackTrace();
+//                }
+////                AudioStream as = null;
+////                try {
+////                    as = new AudioStream(in);
+////                } catch (IOException ioException) {
+////                    ioException.printStackTrace();
+////                }
+//                AudioPlayer.player.start(in);
+//                AudioPlayer.player.stop(in);
+                ////////////////////////////////
+
                 if (i == 0)  /**user a dit oui*/ {
                     try {
                         um.delete(utilisateur);
                         JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
                         afficheJTableUtilisateurs();
+
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
@@ -297,7 +317,7 @@ public class PageUtilisateurs extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 7);
-                JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
+             //   JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById(idUserSelected);
                 } catch (BLLException ex) {
@@ -309,6 +329,7 @@ public class PageUtilisateurs extends JFrame {
 
         /**
          * listenner sur le bouton annonce
+         * @param utilisateur
          */
         btnAnnonce.setSize(100, 50);
         btnAnnonce.addActionListener(new ActionListener() {
@@ -324,6 +345,7 @@ public class PageUtilisateurs extends JFrame {
 
         /**
          * listenner sur le bouton adresse
+         * @param utilisateur
          */
         btnAdresse.setSize(100, 50);
         btnAdresse.addActionListener(new ActionListener() {
@@ -339,6 +361,7 @@ public class PageUtilisateurs extends JFrame {
 
         /**
          * listenner sur le bouton materiel
+         * @param utilisateur
          */
         btnMateriel.setSize(100, 50);
         btnMateriel.addActionListener(new ActionListener() {
@@ -354,6 +377,7 @@ public class PageUtilisateurs extends JFrame {
 
         /**
          * listenner sur le bouton commentaire
+         * @param utilisateur
          */
         btnCommentaire.setSize(100, 50);
         btnCommentaire.addActionListener(new ActionListener() {

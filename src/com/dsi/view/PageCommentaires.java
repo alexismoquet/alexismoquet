@@ -150,6 +150,7 @@ public class PageCommentaires extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText("");
             commentaire = null;
+
             if (utilisateur == null && annonce == null) {
                 afficheJTableCommentaires();
             } else if (annonce == null){
@@ -191,7 +192,7 @@ public class PageCommentaires extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int id = (int) tableauCommentaire.getValueAt(tableauCommentaire.getSelectedRow(), 3);
-                JOptionPane.showMessageDialog(null, "Le commentaire " + id + " est sélectionné");
+            //    JOptionPane.showMessageDialog(null, "Le commentaire " + id + " est sélectionné");
 
                 try {
                     commentaire = CommentaireManager.getInstance().SelectById(id);

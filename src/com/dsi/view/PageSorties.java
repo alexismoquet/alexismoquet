@@ -139,6 +139,7 @@ public class PageSorties extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par date YYYY-MM-dd");
             sortie = null;
+            blankSortie = null;
             displayRightTable();
         });
 
@@ -264,7 +265,7 @@ public class PageSorties extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSortie = (int) tableauSortie.getValueAt(tableauSortie.getSelectedRow(), 4);
-                JOptionPane.showMessageDialog(tableauSortie, "Le sortie " + idSortie + " est sélectionnée");
+         //       JOptionPane.showMessageDialog(tableauSortie, "Le sortie " + idSortie + " est sélectionnée");
                 try {
                     sortie = SortieManager.getInstance().SelectById(idSortie);
                 } catch (BLLException ex) {
