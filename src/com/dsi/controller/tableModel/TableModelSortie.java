@@ -66,6 +66,4 @@ public class TableModelSortie extends AbstractTableModel {
             sorties.get(rowIndex).setSortie_etat((String) value);
         }
     }
-
-
 }//fin class

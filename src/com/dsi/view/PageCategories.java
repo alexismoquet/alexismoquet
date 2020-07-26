@@ -16,7 +16,7 @@ import java.util.List;
 import static com.dsi.controller.Categories.remplirJTableWithAllCategories;
 
 /**
- * Classe PageCategories
+ * Class PageCategories
  *
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
@@ -100,7 +100,6 @@ public class PageCategories extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                //       txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -134,6 +133,7 @@ public class PageCategories extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par nom");
             categorie = null;
+            blankCategorie = null;
             afficheJTableCategories();
         });
 
@@ -143,6 +143,7 @@ public class PageCategories extends JFrame {
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
+            afficheJTableCategories();
             categorie = null;
             blankCategorie = new Categorie();
 
@@ -163,7 +164,7 @@ public class PageCategories extends JFrame {
 
             TableModelCategorie model = new TableModelCategorie(categories);
             model.addCategorie(blankCategorie);
-//            model.fireTableDataChanged();
+            model.fireTableDataChanged();
 //            tableauCategorie.revalidate();
             tableauCategorie.setModel(model);
         });
@@ -274,9 +275,9 @@ public class PageCategories extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
-                      JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionné");
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
+              //gene pour double-clics sur cellule du tableauCategorie   //   JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionnée");
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }

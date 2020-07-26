@@ -7,8 +7,6 @@ import com.dsi.model.bll.BLLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.dsi.controller.Annonces.*;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
 
 /**
  * Classe PageAnnonces
@@ -41,7 +38,6 @@ public class PageAnnonces extends JFrame {
     private JButton bCommentaires = new JButton("Commentaires");
     private JButton bMateriels = new JButton("Materiels");
 
-
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
 
@@ -54,6 +50,8 @@ public class PageAnnonces extends JFrame {
     Materiel materiel;
     ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
     Utilisateur utilisateur;
+
+    List<Integer>annonceIdsMateriel;
 
     /************************************************************/
     /******************** Constructeurs**************************/
@@ -165,16 +163,16 @@ public class PageAnnonces extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
-                JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
+          //      JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
-
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
                 //Gêne pour modifier une ligne du tableauAnnonce//  JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
             }
         });
+
 
 
         /*************************************************************************************************/
@@ -184,11 +182,13 @@ public class PageAnnonces extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             annonce = null;
+            blankAnnonce = null;
            diplayRightTable();
         });
 
         /**
-         * listenner sur le btnajouterAnnonce pour ajouter une ligne vierge
+         * listenner sur le btnAjouterAnnonce pour ajouter une ligne vierge
+         * @param blankAnnonce
          */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
@@ -207,6 +207,7 @@ public class PageAnnonces extends JFrame {
             blankAnnonce.setAnnonce_id(idMax + 1);
             blankAnnonce.setAnnonce_titre("");
             blankAnnonce.setAnnonce_date_parution(new Date());
+            blankAnnonce.setAnnonce_materiel_id((annonces.get(annonces.size()-2).getAnnonce_materiel_id())+1);
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             if (utilisateur != null){
@@ -215,7 +216,6 @@ public class PageAnnonces extends JFrame {
             if (materiel != null){
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
             }
-
             if (materiel != null && utilisateur != null){
                 blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
@@ -232,7 +232,7 @@ public class PageAnnonces extends JFrame {
          * listenner sur le btnModifierAnnonce pour enregistrer les modifications
          */
         btnModifierAnnonce.addActionListener(e -> {
-            AnnonceManager am = AnnonceManager.getInstance();
+
             /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauAnnonce.getRowCount(); i++) {
 
@@ -262,12 +262,12 @@ public class PageAnnonces extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             if (blankAnnonce != null) {
-                                am.insert(blankAnnonce);
+                                AnnonceManager.getInstance().insert(blankAnnonce);
                                 JOptionPane.showMessageDialog(btnModifierAnnonce, "Annonce " + blankAnnonce.getAnnonce_id() + " ajoutée");
                                 blankAnnonce = null;
                                 break;
                             } else {
-                                am.update(annonce);
+                                AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
                                 diplayRightTable();
                             }
@@ -315,7 +315,7 @@ public class PageAnnonces extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (annonce == null) {
-                    JOptionPane.showMessageDialog(bCommentaires, "Veuillez sélectionner une annonce");
+               //     JOptionPane.showMessageDialog(bCommentaires, "Veuillez sélectionner une annonce");
                 } else {
                     new PageCommentaires(annonce);
                 }

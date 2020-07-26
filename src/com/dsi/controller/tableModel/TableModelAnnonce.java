@@ -2,7 +2,6 @@ package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Annonce;
 import javax.swing.table.AbstractTableModel;
-import java.util.Date;
 import java.util.List;
 
 public class TableModelAnnonce extends AbstractTableModel {
@@ -34,7 +33,7 @@ public class TableModelAnnonce extends AbstractTableModel {
     public boolean isCellEditable(int row, int column) {
         return true;
     }
-    
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);

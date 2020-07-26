@@ -80,7 +80,7 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
-            pstmt.setString(1, String.valueOf(pObj.getSortie_materiel_id()));
+            pstmt.setInt(1,Integer.parseInt(String.valueOf(pObj.getSortie_materiel_id())));
             pstmt.setString(2, (pObj.getSortie_etat()));
             pstmt.setDate(3, FonctionsDate.utilDateVersSqlDate(pObj.getSortie_date_sortie()));
             pstmt.setDate(4, FonctionsDate.utilDateVersSqlDate(pObj.getSortie_date_retour()));

@@ -179,6 +179,7 @@ public class PageAdresses extends JFrame {
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             adresse = null;
+            blankAdresse = null;
             if (utilisateur == null) {
                 afficheJTableWithAllAdresses();
             } else {
