@@ -49,7 +49,6 @@ public class TableModelSortie extends AbstractTableModel {
                 return sorties.get(rowIndex).getSortie_materiel_id();
             case 4:
                 return sorties.get(rowIndex).getSortie_id();
-
             default:
                 return "";
         }
@@ -64,6 +63,8 @@ public class TableModelSortie extends AbstractTableModel {
             sorties.get(rowIndex).setSortie_date_sortie((Date) value);
         } else if (columnIndex == 2){
             sorties.get(rowIndex).setSortie_etat((String) value);
+        } else if (columnIndex == 3){
+            sorties.get(rowIndex).setSortie_materiel_id(Integer.parseInt(value.toString()));
         }
     }
 }//fin class

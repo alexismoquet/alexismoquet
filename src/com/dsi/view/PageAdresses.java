@@ -4,10 +4,7 @@ import com.dsi.controller.tableModel.TableModelAdresse;
 import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
-import com.dsi.model.bll.AdresseManager;
-import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.MaterielManager;
-import com.dsi.model.bll.VisuelManager;
+import com.dsi.model.bll.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -216,6 +213,11 @@ public class PageAdresses extends JFrame {
             if (utilisateur != null){
                 blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
             }
+            try {
+                AdresseManager.getInstance().insert(blankAdresse);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
 
             TableModelAdresse model = new TableModelAdresse(adresses);
             model.fireTableDataChanged();
@@ -271,7 +273,7 @@ public class PageAdresses extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             if (blankAdresse != null) {
-                                am.insert(blankAdresse);
+                                AdresseManager.getInstance().update(adresse);
                                 JOptionPane.showMessageDialog(btnModifierAdresse, "Adresse " + blankAdresse.getIdAdresse() + " ajoutée");
                                 blankAdresse = null;
                                 break;

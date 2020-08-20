@@ -45,7 +45,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'utilisateur", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement du commentaire", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification du commentaire", e);
         }
     }
 
@@ -63,7 +63,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification du commentaire", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             commentaire = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
         }
 
         return commentaire;
@@ -100,7 +100,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             commentaires = dao.selectByIdAnnonce(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
         }
 
         return commentaires;
@@ -112,7 +112,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             commentaires = dao.selectByIdUtilisateur(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
         }
 
         return commentaires;

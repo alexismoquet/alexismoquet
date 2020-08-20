@@ -95,7 +95,6 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
-
             pstmt.setString(1, pObj.getNom());
             pstmt.setString(2, pObj.getPrenom());
             pstmt.setString(3, pObj.getTelFix());

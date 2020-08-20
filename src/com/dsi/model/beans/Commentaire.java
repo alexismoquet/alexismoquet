@@ -60,6 +60,10 @@ public class Commentaire {
         this.commentaire_date_parution = commentaire_date_parution;
     }
 
+    public Commentaire() {
+
+    }
+
     //#######################
     //### Getters and setters
     //#######################

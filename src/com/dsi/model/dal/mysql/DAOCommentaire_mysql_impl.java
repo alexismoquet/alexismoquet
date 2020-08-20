@@ -1,5 +1,6 @@
 package com.dsi.model.dal.mysql;
 
+import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Categorie;
@@ -52,18 +53,18 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Execution de la requête
             pstmt =cnx.prepareStatement(SQL_Insert);
-            pstmt.setInt(1, pObj.getCommentaire_id());
-            pstmt.setInt(2, pObj.getCommentaire_annonce_id());
-            pstmt.setInt(3, pObj.getCommentaire_utilisateur_id());
-            pstmt.setInt(4, pObj.getCommentaire_note());
-            pstmt.setString(5, pObj.getCommentaire_message());
-            pstmt.setDate(6, (Date) pObj.getCommentaire_date_parution());
+        //    pstmt.setInt(1, pObj.getCommentaire_id());
+            pstmt.setInt(1, pObj.getCommentaire_annonce_id());
+            pstmt.setInt(2, pObj.getCommentaire_utilisateur_id());
+            pstmt.setInt(3, pObj.getCommentaire_note());
+            pstmt.setString(4, pObj.getCommentaire_message());
+            pstmt.setDate(5, FonctionsDate.utilDateVersSqlDate(pObj.getCommentaire_date_parution()));
 
             pstmt.executeUpdate();
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()){
-                pObj.setCommentaire_id(rs.getInt(1));
-            }
+//            rs = pstmt.getGeneratedKeys();
+//            if (rs.next()){
+//                pObj.setCommentaire_id(rs.getInt(1));
+//            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         }finally {
@@ -96,13 +97,12 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
-            pstmt.setInt(1, pObj.getCommentaire_id());
-            pstmt.setInt(2, pObj.getCommentaire_annonce_id());
-            pstmt.setInt(3, pObj.getCommentaire_utilisateur_id());
-            pstmt.setInt(4, pObj.getCommentaire_note());
-            pstmt.setString(5, pObj.getCommentaire_message());
-            pstmt.setDate(6, (Date) pObj.getCommentaire_date_parution());
-
+            pstmt.setInt(1, pObj.getCommentaire_annonce_id());
+            pstmt.setInt(2, pObj.getCommentaire_utilisateur_id());
+            pstmt.setInt(3, pObj.getCommentaire_note());
+            pstmt.setString(4, pObj.getCommentaire_message());
+            pstmt.setDate(5, FonctionsDate.utilDateVersSqlDate(pObj.getCommentaire_date_parution()));
+            pstmt.setInt(6, pObj.getCommentaire_id());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -240,7 +240,7 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
                 );
             }
             else {
-                throw new DALException("Aucune adresse trouvée avec l'identifiant : "+pId);
+                throw new DALException("Aucun commentaire trouvé avec l'identifiant : "+pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);

@@ -236,12 +236,16 @@ public class PageMateriels extends JFrame {
 
             blankMateriel.setMateriel_prix(0);
 
-
 //            if (materiel != null){
 //                blankMateriel.setSortie_materiel_id(materiel.getMateriel_id());
 //            }
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
+            try {
+                MaterielManager.getInstance().insert(blankMateriel);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
 
             TableModelMateriel model = new TableModelMateriel(materiels);
             model.fireTableDataChanged();
@@ -255,7 +259,6 @@ public class PageMateriels extends JFrame {
          * @param materiel
          **/
         btnEnregistrerMateriel.addActionListener(e -> {
-            MaterielManager mm = MaterielManager.getInstance();
 
             /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauMateriel.getRowCount(); i++) {
@@ -276,7 +279,6 @@ public class PageMateriels extends JFrame {
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || !(materiel.getMateriel_prix() == prixMaterielModifie)) {
-                    try {
                         materiel.setMateriel_description(descriptionMaterielModifie);
                         materiel.setMateriel_nom(nomMaterielModifie);
                         materiel.setMateriel_prix(prixMaterielModifie);
@@ -286,16 +288,24 @@ public class PageMateriels extends JFrame {
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
-                            mm.update(materiel);
-                            JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + tableauMateriel.getValueAt(i, 5) + " modifié");
-                        }
-                    } catch (BLLException bllException) {
-                        bllException.printStackTrace();
+                            try {
+                                if (blankMateriel != null) {
+                                    MaterielManager.getInstance().update(materiel);
+                                    JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + blankMateriel.getMateriel_id() + " ajouté");
+                                    blankMateriel = null;
+                                    break;
+                                } else {
+                                    MaterielManager.getInstance().update(materiel);
+                                    JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " modifié");
+                                    // displayRightTable();
+                                    break;
+                                }
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        } else {break;}
                     }
-                }
-            }//fin boucle for
-            //  tableauMateriel.clearSelection();
-
+            }//fin for
         });
 
 
