@@ -39,6 +39,7 @@ public class PageHubAdmin extends JFrame {
     private JButton bVisuels = new JButton("Visuels");
     private JButton bSorties = new JButton("Sorties");
 
+
     private JTable tableauAnomalies = new JTable();
 
     private JLabel anomaliesASurveiller = new JLabel();
@@ -88,6 +89,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bMateriels);
         panBtn.add(bVisuels);
         panBtn.add(bSorties);
+        panBtn.add(bCommentaires);
         panBtn.add(bEnregistrer);
 
         /***** Panel des anomalies*/

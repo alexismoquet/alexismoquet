@@ -4,6 +4,7 @@ import com.dsi.controller.tableModel.TableModelSortie;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.SortieManager;
 
 import javax.swing.*;
@@ -170,6 +171,11 @@ public class PageSorties extends JFrame {
                 blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
             }
 
+            try {
+                SortieManager.getInstance().insert(blankSortie);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelSortie model = new TableModelSortie(sorties);
@@ -184,8 +190,6 @@ public class PageSorties extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            SortieManager sm = SortieManager.getInstance();
-
             /** Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSortie.getRowCount(); i++) {
                 try {
@@ -212,12 +216,12 @@ public class PageSorties extends JFrame {
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                 if (blankSortie != null) {
-                                    sm.insert(blankSortie);
+                                    SortieManager.getInstance().update(sortie);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sortie " + blankSortie.getSortie_id() + " ajoutée");
                                     blankSortie = null;
                                     break;
                                 } else {
-                                    sm.update(sortie);
+                                    SortieManager.getInstance().update(sortie);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sortie " + sortie.getSortie_id() + " modifiée");
                                     displayRightTable();
                                     break;

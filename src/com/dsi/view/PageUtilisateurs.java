@@ -4,6 +4,8 @@ import com.dsi.controller.tableModel.TableModelUtilisateur;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.CommentaireManager;
+import com.dsi.model.bll.SportManager;
 import com.dsi.model.bll.UtilisateurManager;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -185,6 +187,11 @@ public class PageUtilisateurs extends JFrame {
             blankUtilisateur.setDateInscription(new Date());
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
+            try {
+                UtilisateurManager.getInstance().insert(blankUtilisateur);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
 
             TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
             model.fireTableDataChanged();
@@ -198,7 +205,6 @@ public class PageUtilisateurs extends JFrame {
         btnEnrModifUtil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilisateurManager um = UtilisateurManager.getInstance();
 
                 /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
                 for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
@@ -243,13 +249,13 @@ public class PageUtilisateurs extends JFrame {
                             if (j == 0)  /**user a dit oui*/ {
                                 try {
                                     if (blankUtilisateur != null) {
-                                        um.insert(blankUtilisateur);
+                                       UtilisateurManager.getInstance().update(utilisateur);
                                         JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté. Retenez bien votre mot de passe, nous allons le crypter");
                                         blankUtilisateur = null;
                                         afficheJTableUtilisateurs();
                                         break;
                                     } else {
-                                        um.update(utilisateur);
+                                        UtilisateurManager.getInstance().update(utilisateur);
                                         afficheJTableUtilisateurs();
                                     }
                                 }

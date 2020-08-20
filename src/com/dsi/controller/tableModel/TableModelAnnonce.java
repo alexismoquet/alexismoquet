@@ -1,7 +1,9 @@
 package com.dsi.controller.tableModel;
 
+import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Annonce;
 import javax.swing.table.AbstractTableModel;
+import java.util.Date;
 import java.util.List;
 
 public class TableModelAnnonce extends AbstractTableModel {
@@ -63,6 +65,12 @@ public class TableModelAnnonce extends AbstractTableModel {
             annonces.get(rowIndex).setAnnonce_titre(value.toString());
         } else if (columnIndex == 1){
             annonces.get(rowIndex).setAnnonce_description(value.toString());
+        } else if (columnIndex == 2){
+            annonces.get(rowIndex).setAnnonce_utilisateur_id(Integer.parseInt(value.toString()));
+        } else if (columnIndex == 3){
+            annonces.get(rowIndex).setAnnonce_id(Integer.parseInt(value.toString()));
+        } else if (columnIndex == 4){
+            annonces.get(rowIndex).setAnnonce_materiel_id(Integer.parseInt(value.toString()));
         }
     }
 

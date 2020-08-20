@@ -4,6 +4,7 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.CommentaireManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -221,6 +222,12 @@ public class PageAnnonces extends JFrame {
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
             }
 
+            try {
+                AnnonceManager.getInstance().insert(blankAnnonce);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             TableModelAnnonce model = new TableModelAnnonce(annonces);
             model.fireTableDataChanged();
             tableauAnnonce.revalidate();
@@ -262,7 +269,7 @@ public class PageAnnonces extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             if (blankAnnonce != null) {
-                                AnnonceManager.getInstance().insert(blankAnnonce);
+                                AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(btnModifierAnnonce, "Annonce " + blankAnnonce.getAnnonce_id() + " ajoutée");
                                 blankAnnonce = null;
                                 break;

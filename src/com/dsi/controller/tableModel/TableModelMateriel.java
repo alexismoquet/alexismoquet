@@ -53,6 +53,7 @@ public class TableModelMateriel extends AbstractTableModel {
                 return "";
         }
     }
+
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
@@ -60,6 +61,14 @@ public class TableModelMateriel extends AbstractTableModel {
             materiels.get(rowIndex).setMateriel_nom(value.toString());
         } else if (columnIndex == 1){
             materiels.get(rowIndex).setMateriel_description(value.toString());
+        } else if (columnIndex == 2){
+            materiels.get(rowIndex).setMateriel_adresse_id(Integer.parseInt(value.toString()));
+        } else if (columnIndex == 3){
+            materiels.get(rowIndex).setMateriel_categorie_id(Integer.parseInt(value.toString()));
+        } else if (columnIndex == 4){
+            materiels.get(rowIndex).setMateriel_sport_id(Integer.parseInt(value.toString()));
+        } else if (columnIndex == 5){
+            materiels.get(rowIndex).setMateriel_id(Integer.parseInt(value.toString()));
         } else if (columnIndex == 6){
             materiels.get(rowIndex).setMateriel_prix(Math.round(Double.parseDouble((value.toString()))));
         }

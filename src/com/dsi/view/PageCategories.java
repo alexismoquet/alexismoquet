@@ -4,6 +4,8 @@ import com.dsi.controller.tableModel.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
+import com.dsi.model.bll.CommentaireManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -162,6 +164,12 @@ public class PageCategories extends JFrame {
             blankCategorie.setCategorie_libelle("");
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            try {
+                CategorieManager.getInstance().insert(blankCategorie);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             TableModelCategorie model = new TableModelCategorie(categories);
             model.addCategorie(blankCategorie);
             model.fireTableDataChanged();
@@ -175,7 +183,6 @@ public class PageCategories extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            CategorieManager sm = CategorieManager.getInstance();
 
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCategorie.getRowCount(); i++) {
@@ -203,12 +210,12 @@ public class PageCategories extends JFrame {
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                 if (blankCategorie != null) {
-                                    sm.insert(blankCategorie);
+                                    CategorieManager.getInstance().update(categorie);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + blankCategorie.getCategorie_id() + " ajoutée");
                                     blankCategorie = null;
                                     break;
                                 } else {
-                                    sm.update(categorie);
+                                    CategorieManager.getInstance().update(categorie);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + categorie.getCategorie_id() + " modifiée");
                                     break;
                                 }

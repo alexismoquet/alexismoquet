@@ -3,6 +3,7 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelSport;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.SportManager;
 import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
@@ -157,6 +158,12 @@ public class PageSports extends JFrame {
             blankSport.setSport_libelle("");
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            try {
+                SportManager.getInstance().insert(blankSport);
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             TableModelSport model = new TableModelSport(sports);
             model.fireTableDataChanged();
             tableauSport.revalidate();
@@ -169,7 +176,6 @@ public class PageSports extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            SportManager sm = SportManager.getInstance();
 
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSport.getRowCount(); i++) {
@@ -197,12 +203,12 @@ public class PageSports extends JFrame {
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                 if (blankSport != null) {
-                                    sm.insert(blankSport);
+                                    SportManager.getInstance().update(sport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + blankSport.getSport_id() + " ajouté");
                                     blankSport = null;
                                     break;
                                 } else {
-                                    sm.update(sport);
+                                    SportManager.getInstance().update(sport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
                                     break;
                                 }
