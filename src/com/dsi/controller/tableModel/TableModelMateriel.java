@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelMateriel extends AbstractTableModel {
 
-    private final String[] titres = {"Nom","Description","IdAdresse","IdCategorie", "IdSport", "IdMateriel", "Prix"};
+    private final String[] titres = {"Nom","Description","IdAdresse","IdCategorie", "IdSport", "IdMateriel", "Prix", "Prix caution"};
 
     private List<Materiel> materiels;
 
@@ -49,6 +49,8 @@ public class TableModelMateriel extends AbstractTableModel {
                 return materiels.get(rowIndex).getMateriel_id();
             case 6:
                 return materiels.get(rowIndex).getMateriel_prix();
+            case 7:
+                return materiels.get(rowIndex).getMateriel_caution_prix();
             default:
                 return "";
         }
@@ -71,6 +73,8 @@ public class TableModelMateriel extends AbstractTableModel {
             materiels.get(rowIndex).setMateriel_id(Integer.parseInt(value.toString()));
         } else if (columnIndex == 6){
             materiels.get(rowIndex).setMateriel_prix(Math.round(Double.parseDouble((value.toString()))));
+        } else if (columnIndex == 7){
+            materiels.get(rowIndex).setMateriel_caution_prix(Math.round(Double.parseDouble((value.toString()))));
         }
     }
 
