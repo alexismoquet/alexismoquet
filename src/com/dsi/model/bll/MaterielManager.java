@@ -40,7 +40,11 @@ public class MaterielManager implements  Manager<Materiel> {
     }
     @Override
     public void insert(Materiel pObj) throws BLLException {
-
+        try {
+            dao.insert(pObj);
+        } catch (DALException e) {
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement du matériel", e);
+        }
     }
 
     @Override

@@ -1,18 +1,11 @@
 package com.dsi.view;
 
-import com.dsi.controller.Materiels;
-import com.dsi.controller.tableModel.TableModelCommentaire;
+
 import com.dsi.controller.tableModel.TableModelMateriel;
-import com.dsi.controller.tableModel.TableModelSortie;
-import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.beans.Materiel;
-import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.VisuelManager;
-import com.sun.xml.internal.bind.v2.TODO;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -23,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import static com.dsi.controller.Materiels.*;
-import static com.dsi.controller.Materiels.remplirJTableWithIdMateriels;
 
 
 public class PageMateriels extends JFrame {
@@ -201,6 +193,7 @@ public class PageMateriels extends JFrame {
          */
         btnAjouterMateriel.setSize(140, 50);
         btnAjouterMateriel.addActionListener(e -> {
+
             blankMateriel = new Materiel();
             materiels.add(blankMateriel);
 
@@ -218,31 +211,29 @@ public class PageMateriels extends JFrame {
             blankMateriel.setMateriel_id(idMax + 1);
             blankMateriel.setMateriel_nom("");
             blankMateriel.setMateriel_description("");
+
             if (utilisateur == null){
-                blankMateriel.setMateriel_adresse_id(0);
+                blankMateriel.setMateriel_adresse_id(5);
             }else{
             blankMateriel.setMateriel_adresse_id(utilisateur.getAdresses().get(0).getIdAdresse());}
 
             if (categorie == null){
-                blankMateriel.setMateriel_categorie_id(0);
+                blankMateriel.setMateriel_categorie_id(2);
             }else{
             blankMateriel.setMateriel_categorie_id((Integer) tableauMateriel.getValueAt(0,3));
             }
 
-            if (sport == null){ blankMateriel.setMateriel_sport_id(0);
+            if (sport == null){ blankMateriel.setMateriel_sport_id(2);
             }else{
                 blankMateriel.setMateriel_sport_id((Integer) tableauMateriel.getValueAt(0,4));
             }
 
-            blankMateriel.setMateriel_prix(0);
-
-//            if (materiel != null){
-//                blankMateriel.setSortie_materiel_id(materiel.getMateriel_id());
-//            }
+            blankMateriel.setMateriel_prix(44.0);
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 MaterielManager.getInstance().insert(blankMateriel);
+                JOptionPane.showMessageDialog(btnAjouterMateriel, "Materiel " + blankMateriel.getMateriel_id()+ " ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -268,43 +259,58 @@ public class PageMateriels extends JFrame {
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
+
                 String nomMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 0));
                 String descriptionMaterielModifie = String.valueOf(tableauMateriel.getValueAt(i, 1));
                 double prixMaterielModifie = (double) tableauMateriel.getValueAt(i, 6);
+                double cautionPrixMaterielModifie = (double) tableauMateriel.getValueAt(i, 7);
+                int idCategorieMaterielModifie = (int) tableauMateriel.getValueAt(i, 3);
+                int idSportMaterielModifie = (int) tableauMateriel.getValueAt(i, 4);
+                int idAdresseMaterielModifie = (int) tableauMateriel.getValueAt(i, 2);
 
                 tableauMateriel.setValueAt(descriptionMaterielModifie, i, 1);
                 tableauMateriel.setValueAt(nomMaterielModifie, i, 0);
                 tableauMateriel.setValueAt(prixMaterielModifie, i, 6);
+                tableauMateriel.setValueAt(idSportMaterielModifie, i, 4);
+                tableauMateriel.setValueAt(idAdresseMaterielModifie, i, 2);
+                tableauMateriel.setValueAt(idCategorieMaterielModifie, i, 3);
+                tableauMateriel.setValueAt(cautionPrixMaterielModifie, i, 7);
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || !(materiel.getMateriel_prix() == prixMaterielModifie)) {
-                        materiel.setMateriel_description(descriptionMaterielModifie);
-                        materiel.setMateriel_nom(nomMaterielModifie);
-                        materiel.setMateriel_prix(prixMaterielModifie);
+                    materiel.setMateriel_description(descriptionMaterielModifie);
+                    materiel.setMateriel_nom(nomMaterielModifie);
+                    materiel.setMateriel_prix(prixMaterielModifie);
+                    materiel.setMateriel_adresse_id(idAdresseMaterielModifie);
+                    materiel.setMateriel_categorie_id(idCategorieMaterielModifie);
+                    materiel.setMateriel_sport_id(idSportMaterielModifie);
+                    materiel.setMateriel_caution_prix(cautionPrixMaterielModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                    int j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                            "Veuillez confirmer votre choix",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
-                            try {
-                                if (blankMateriel != null) {
-                                    MaterielManager.getInstance().update(materiel);
-                                    JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + blankMateriel.getMateriel_id() + " ajouté");
-                                    blankMateriel = null;
-                                    break;
-                                } else {
-                                    MaterielManager.getInstance().update(materiel);
-                                    JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " modifié");
-                                    // displayRightTable();
-                                    break;
-                                }
-                            } catch (BLLException ex) {
-                                ex.printStackTrace();
+                    if (j == 0)  /**user a dit oui*/ {
+                        try {
+                            if (blankMateriel != null) {
+                                MaterielManager.getInstance().update(materiel);
+                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + blankMateriel.getMateriel_id() + " ajouté");
+                                blankMateriel = null;
+                                break;
+                            } else {
+                                MaterielManager.getInstance().update(materiel);
+                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " modifié");
+                                // displayRightTable();
+                                break;
                             }
-                        } else {break;}
+                        } catch (BLLException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        break;
                     }
+                }//fin if
             }//fin for
         });
 
