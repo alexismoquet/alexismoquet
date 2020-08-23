@@ -278,7 +278,9 @@ public class PageMateriels extends JFrame {
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || !(materiel.getMateriel_prix() == prixMaterielModifie)) {
+                if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || materiel.getMateriel_prix() != prixMaterielModifie ||
+                materiel.getMateriel_categorie_id() != idCategorieMaterielModifie || materiel.getMateriel_adresse_id() != idAdresseMaterielModifie || materiel.getMateriel_sport_id() != idSportMaterielModifie ||
+                materiel.getMateriel_caution_prix() != cautionPrixMaterielModifie ) {
                     materiel.setMateriel_description(descriptionMaterielModifie);
                     materiel.setMateriel_nom(nomMaterielModifie);
                     materiel.setMateriel_prix(prixMaterielModifie);
