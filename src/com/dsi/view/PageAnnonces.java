@@ -46,13 +46,11 @@ public class PageAnnonces extends JFrame {
     List<Annonce> annonces = new ArrayList<>();
 
     List<Annonce> listRechercheAnnonces = new ArrayList<>();
-    Categorie categorie;
     Annonce annonce, blankAnnonce;
     Materiel materiel;
     ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
-    List<Integer>annonceIdsMateriel;
 
     /************************************************************/
     /******************** Constructeurs**************************/
@@ -108,7 +106,9 @@ public class PageAnnonces extends JFrame {
 
         panBas.setSize(500, 200);
         panBas.add(btnModifierAnnonce);
-        panBas.add(btnAjouterLigne);
+        if (materiel != null || utilisateur != null){
+            panBas.add(btnAjouterLigne);
+        }
         panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
         panBas.add(bCommentaires);
@@ -136,7 +136,7 @@ public class PageAnnonces extends JFrame {
             listRechercheAnnonces = new ArrayList<>();
             AnnonceManager um = AnnonceManager.getInstance();
             try {
-                um.SelectAll();
+               annonces = um.SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -184,7 +184,7 @@ public class PageAnnonces extends JFrame {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             annonce = null;
             blankAnnonce = null;
-           diplayRightTable();
+            diplayRightTable();
         });
 
         /**
@@ -193,33 +193,43 @@ public class PageAnnonces extends JFrame {
          */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
+            List<Annonce>allAnnonces = null;
+            AnnonceManager am = new AnnonceManager();
+            try {
+                allAnnonces = am.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             blankAnnonce = new Annonce();
             annonces.add(blankAnnonce);
 
-            //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            int idMax = annonces.get(0).getAnnonce_id();
+            //////  On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus ////////////////
+            assert allAnnonces != null;
+            int idMax = allAnnonces.get(0).getAnnonce_id();
 
-            for (int i = 0; i < annonces.size(); i++) {
-                int annonceId = annonces.get(i).getAnnonce_id();
+            for (int i = 0; i < allAnnonces.size(); i++) {
+                int annonceId = allAnnonces.get(i).getAnnonce_id();
                 if (annonceId > idMax) {
                     idMax = annonceId;
                 }
             }
             blankAnnonce.setAnnonce_id(idMax + 1);
             blankAnnonce.setAnnonce_titre("");
+            blankAnnonce.setAnnonce_description("");
             blankAnnonce.setAnnonce_date_parution(new Date());
-            blankAnnonce.setAnnonce_materiel_id((annonces.get(annonces.size()-2).getAnnonce_materiel_id())+1);
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            if (utilisateur != null){
-              blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
-            }
-            if (materiel != null){
-                blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
-            }
-            if (materiel != null && utilisateur != null){
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if (materiel == null){
+                    blankAnnonce.setAnnonce_materiel_id(0);
+                } else {
+                    blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
+                }
+               if (utilisateur == null){
+                    blankAnnonce.setAnnonce_utilisateur_id(5);
+                } else{
                 blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur());
-                blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id());
             }
 
             try {
@@ -232,7 +242,11 @@ public class PageAnnonces extends JFrame {
             model.fireTableDataChanged();
             tableauAnnonce.revalidate();
             tableauAnnonce.setModel(model);
+
+            blankAnnonce = null;
         });
+
+
 
 
         /**
@@ -250,34 +264,33 @@ public class PageAnnonces extends JFrame {
                 }
                 String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
                 String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
-                int idUtilisateur = (int) tableauAnnonce.getValueAt(i, 2);
+                int annonceIdUtilisateurModifie = (int) tableauAnnonce.getValueAt(i, 2);
+                int annonceIdMaterielModifie = (int) tableauAnnonce.getValueAt(i, 4);
 
                 tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
                 tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
-                tableauAnnonce.setValueAt(idUtilisateur, i, 2);
+                tableauAnnonce.setValueAt(annonceIdUtilisateurModifie, i, 2);
+                tableauAnnonce.setValueAt(annonceIdMaterielModifie, i, 4);
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)) {
+                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
+                    ||  annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
                     try {
                         annonce.setAnnonce_description(descriptionAnnonceModifie);
                         annonce.setAnnonce_titre(titreAnnonceModifie);
+                        annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
+                        annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnModifierAnnonce, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
-                            if (blankAnnonce != null) {
-                                AnnonceManager.getInstance().update(annonce);
-                                JOptionPane.showMessageDialog(btnModifierAnnonce, "Annonce " + blankAnnonce.getAnnonce_id() + " ajoutée");
-                                blankAnnonce = null;
-                                break;
-                            } else {
                                 AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
-                                diplayRightTable();
-                            }
+                              //  diplayRightTable();
+                                break;
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();

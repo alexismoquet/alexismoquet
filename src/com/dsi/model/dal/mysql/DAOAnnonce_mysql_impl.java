@@ -56,10 +56,10 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             pstmt.setDate(5, FonctionsDate.utilDateVersSqlDate(pObj.getAnnonce_date_parution()));
 
             pstmt.executeUpdate();
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                pObj.setAnnonce_id(rs.getInt(1));
-            }
+//            rs = pstmt.getGeneratedKeys();
+//            if (rs.next()) {
+//                pObj.setAnnonce_id(rs.getInt(1));
+//            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
