@@ -2,15 +2,13 @@ package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCommentaire;
 import com.dsi.controller.tableModel.TableModelSortie;
-import com.dsi.model.beans.Annonce;
-import com.dsi.model.beans.Commentaire;
-import com.dsi.model.beans.Sortie;
-import com.dsi.model.beans.Utilisateur;
+import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableRowSorter;
+import javax.xml.stream.events.Comment;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -117,7 +115,6 @@ public class PageCommentaires extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 txtRechercher.setText("");
-                afficheJTableCommentaires();
             }
         });
 
@@ -179,41 +176,58 @@ public class PageCommentaires extends JFrame {
          */
         btnAjouterCommentaire.setSize(140, 50);
         btnAjouterCommentaire.addActionListener(e -> {
-            blankCommentaire = new Commentaire();
 
+            List<Commentaire>allCommentaires = null;
+            CommentaireManager mm = new CommentaireManager();
+            try {
+                allCommentaires = mm.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
+            blankCommentaire = new Commentaire();
             commentaires.add(blankCommentaire);
 
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
-            int idMax = commentaires.get(0).getCommentaire_id();
+            assert allCommentaires != null;
+            int idMax = allCommentaires.get(0).getCommentaire_id();
 
-            for (int i = 0; i < commentaires.size(); i++) {
-                int commentaireId = commentaires.get(i).getCommentaire_id();
+            for (int i = 0; i < allCommentaires.size(); i++) {
+                int commentaireId = allCommentaires.get(i).getCommentaire_id();
                 if (commentaireId > idMax) {
                     idMax = commentaireId;
                 }
             }
             blankCommentaire.setCommentaire_id(idMax + 1);
+            blankCommentaire.setCommentaire_note(0);
+            blankCommentaire.setCommentaire_message("");
+            blankCommentaire.setCommentaire_date_parution(new Date());
 
             if (utilisateur != null){
                 blankCommentaire.setCommentaire_utilisateur_id(utilisateur.getIdUtilisateur());
+            } else {
+                blankCommentaire.setCommentaire_utilisateur_id(2);
             }
             if (annonce != null){
                 blankCommentaire.setCommentaire_annonce_id(annonce.getAnnonce_id());
+            }else{
+                blankCommentaire.setCommentaire_annonce_id(2);
             }
-            blankCommentaire.setCommentaire_note(0);
-            blankCommentaire.setCommentaire_date_parution(new Date());
 
             try {
                 CommentaireManager.getInstance().insert(blankCommentaire);
+                JOptionPane.showMessageDialog(btnAjouterCommentaire, "Commentaire " + blankCommentaire.getCommentaire_id()+ " ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             model.fireTableDataChanged();
             tableauCommentaire.revalidate();
             tableauCommentaire.setModel(model);
+
+            blankCommentaire = null;
+            displayRightTable();
         });
 
         /**
@@ -221,7 +235,6 @@ public class PageCommentaires extends JFrame {
          */
         btnModifierCommentaire.setSize(140, 50);
         btnModifierCommentaire.addActionListener(e -> {
-            CommentaireManager cm = CommentaireManager.getInstance();
 
             /** Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCommentaire.getRowCount(); i++) {
@@ -231,19 +244,36 @@ public class PageCommentaires extends JFrame {
                     bllException.printStackTrace();
                 }
 
-                String commentaireModifie = String.valueOf(tableauCommentaire.getValueAt(i, 0));
-                int idCommentaireModifie = (int) tableauCommentaire.getValueAt(i, 3);
+                String commentaireMessageModifie = String.valueOf(tableauCommentaire.getValueAt(i, 0));
                 int commentaireNoteModifie = (int) tableauCommentaire.getValueAt(i, 2);
+                int idCommentaireModifie = (int) tableauCommentaire.getValueAt(i, 3);
+                int commentaireIdUtilisateurModifie = (int) tableauCommentaire.getValueAt(i, 4);
+                int commentaireIdAnnonceModifie = (int) tableauCommentaire.getValueAt(i, 5);
+
+                if (commentaireIdAnnonceModifie ==0 || commentaireIdUtilisateurModifie ==0){
+                    JOptionPane.showMessageDialog(null, "Merci de corriger les champs IidUtilisateur et/ou IdAnnonce");
+                    return;
+                }
+
+                tableauCommentaire.setValueAt(commentaireMessageModifie, i,0);
+                tableauCommentaire.setValueAt(commentaireNoteModifie, i,2);
+                tableauCommentaire.setValueAt(idCommentaireModifie, i,3);
+                tableauCommentaire.setValueAt(commentaireIdUtilisateurModifie, i,4);
+                tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
+
 
                 if (commentaire == null) {
                     //JOptionPane.showMessageDialog(btnModifierCommentaire, "Merci d'ajouter le message");
                     return;
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireModifie) || !(commentaire.getCommentaire_id() == idCommentaireModifie)) {
-                        commentaire.setCommentaire_message(commentaireModifie);
+                    if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie) || !(commentaire.getCommentaire_id() == idCommentaireModifie)
+                            || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie) || !(commentaire.getCommentaire_utilisateur_id() == commentaireIdUtilisateurModifie)) {
+                        commentaire.setCommentaire_message(commentaireMessageModifie);
                         commentaire.setCommentaire_id(idCommentaireModifie);
                         commentaire.setCommentaire_note(commentaireNoteModifie);
+                        commentaire.setCommentaire_annonce_id(commentaireIdAnnonceModifie);
+                        commentaire.setCommentaire_utilisateur_id(commentaireIdUtilisateurModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
                                 "Veuillez confirmer votre choix",
@@ -251,17 +281,11 @@ public class PageCommentaires extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankCommentaire != null) {
-                                    CommentaireManager.getInstance().insert(commentaire);
-                                    JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + blankCommentaire.getCommentaire_id() + " ajouté");
-                                    blankCommentaire = null;
-                                    break;
-                                } else {
                                     CommentaireManager.getInstance().update(commentaire);
-                                    JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " modifié");
-                                   // displayRightTable();
+                                    JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " enregistré");
+                                    displayRightTable();
                                     break;
-                                }
+
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }

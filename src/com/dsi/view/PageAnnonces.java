@@ -112,7 +112,10 @@ public class PageAnnonces extends JFrame {
         panBas.add(btnSupprimerAnnonce);
         panBas.add(btnAnnuler);
         panBas.add(bCommentaires);
-        panBas.add(bMateriels);
+
+        if (materiel == null) {
+            panBas.add(bMateriels);
+        }
 
         diplayRightTable();
 
@@ -220,7 +223,10 @@ public class PageAnnonces extends JFrame {
             blankAnnonce.setAnnonce_date_parution(new Date());
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            if (annonces.size() > 1){
+                JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
+                return;
+            }
                 if (materiel == null){
                     blankAnnonce.setAnnonce_materiel_id(0);
                 } else {
@@ -245,9 +251,6 @@ public class PageAnnonces extends JFrame {
 
             blankAnnonce = null;
         });
-
-
-
 
         /**
          * listenner sur le btnModifierAnnonce pour enregistrer les modifications
@@ -288,7 +291,7 @@ public class PageAnnonces extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                                 AnnonceManager.getInstance().update(annonce);
-                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " modifiée");
+                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " enregistrée");
                               //  diplayRightTable();
                                 break;
                         }

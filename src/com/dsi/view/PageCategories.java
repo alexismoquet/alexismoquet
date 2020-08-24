@@ -145,11 +145,10 @@ public class PageCategories extends JFrame {
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
-            afficheJTableCategories();
-            categorie = null;
-            blankCategorie = new Categorie();
 
-        //    categories.add(blankCategorie);
+            blankCategorie = new Categorie();
+            categories.add(blankCategorie);
+
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
             int idMax = categories.get(0).getCategorie_id();
@@ -166,15 +165,17 @@ public class PageCategories extends JFrame {
 
             try {
                 CategorieManager.getInstance().insert(blankCategorie);
+                JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie " + blankCategorie.getCategorie_id()+ " ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
 
             TableModelCategorie model = new TableModelCategorie(categories);
-            model.addCategorie(blankCategorie);
             model.fireTableDataChanged();
-//            tableauCategorie.revalidate();
+            tableauCategorie.revalidate();
             tableauCategorie.setModel(model);
+
+            blankCategorie = null;
         });
 
 
@@ -209,16 +210,9 @@ public class PageCategories extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankCategorie != null) {
                                     CategorieManager.getInstance().update(categorie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + blankCategorie.getCategorie_id() + " ajoutée");
-                                    blankCategorie = null;
+                                    JOptionPane.showMessageDialog(null, "Categorie " + categorie.getCategorie_id() + " enregistrée");
                                     break;
-                                } else {
-                                    CategorieManager.getInstance().update(categorie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Categorie " + categorie.getCategorie_id() + " modifiée");
-                                    break;
-                                }
                                 //   afficheJTableCategories();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();

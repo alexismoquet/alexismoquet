@@ -1,8 +1,10 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSortie;
+import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.SortieManager;
@@ -93,7 +95,9 @@ public class PageSorties extends JFrame {
 
         panBas.setSize(600, 250);
         panBas.add(btnEnrModifs);
-        panBas.add(btnAjouterSortie);
+        if (materiel != null ){
+            panBas.add(btnAjouterSortie);
+        }
         panBas.add(btnSupprimerSortie);
         panBas.add(btnAnnuler);
 
@@ -109,7 +113,6 @@ public class PageSorties extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                //       txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -149,15 +152,23 @@ public class PageSorties extends JFrame {
          */
         btnAjouterSortie.setSize(140, 50);
         btnAjouterSortie.addActionListener(e -> {
-            blankSortie = new Sortie();
+            List<Sortie>allSorties = null;
+            SortieManager sm = new SortieManager();
+            try {
+                allSorties = sm.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
 
+            blankSortie = new Sortie();
             sorties.add(blankSortie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
-            int idMax = sorties.get(0).getSortie_id();
+            assert allSorties != null;
+            int idMax = allSorties.get(0).getSortie_id();
 
-            for (int i = 0; i < sorties.size(); i++) {
-                int sortieId = sorties.get(i).getSortie_id();
+            for (int i = 0; i < allSorties.size(); i++) {
+                int sortieId = allSorties.get(i).getSortie_id();
                 if (sortieId > idMax) {
                     idMax = sortieId;
                 }
@@ -167,7 +178,13 @@ public class PageSorties extends JFrame {
             blankSortie.setSortie_date_sortie(new Date());
             blankSortie.setSortie_date_retour(new Date());
 
-            if (materiel != null){
+            if (sorties.size() > 1){
+                JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
+                return;
+            }
+            if (materiel == null){
+                blankSortie.setSortie_materiel_id(0);
+            }else {
                 blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
             }
 
@@ -182,6 +199,8 @@ public class PageSorties extends JFrame {
             model.fireTableDataChanged();
             tableauSortie.revalidate();
             tableauSortie.setModel(model);
+
+            blankSortie = null;
         });
 
 
@@ -215,18 +234,10 @@ public class PageSorties extends JFrame {
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankSortie != null) {
                                     SortieManager.getInstance().update(sortie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sortie " + blankSortie.getSortie_id() + " ajoutée");
-                                    blankSortie = null;
-                                    break;
-                                } else {
-                                    SortieManager.getInstance().update(sortie);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sortie " + sortie.getSortie_id() + " modifiée");
+                                    JOptionPane.showMessageDialog(null, "Sortie " + sortie.getSortie_id() + " enregistrée");
                                     displayRightTable();
                                     break;
-                                }
-                                //   afficheJTableSorties();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
