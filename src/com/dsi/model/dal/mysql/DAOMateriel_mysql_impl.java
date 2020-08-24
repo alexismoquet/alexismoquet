@@ -25,7 +25,6 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
     private String SQL_Update                   = "UPDATE materiels SET materiel_categorie_id=?, materiel_sport_id=?,materiel_adresse_id=?, materiel_nom=?, materiel_description=?, materiel_prix=?, materiel_caution_prix=? WHERE materiel_id=?;";
     private String SQL_Delete                   = "DELETE FROM materiels WHERE materiel_id=?;";
     private Materiel materiel;
-    private Annonce annonce;
     private List<Materiel> materiels;
     private PreparedStatement pstmt;
     private Statement stmt;

@@ -4,6 +4,7 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelMateriel;
 import com.dsi.model.beans.*;
 import com.dsi.model.beans.Materiel;
+import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
 import javax.swing.*;
@@ -194,14 +195,23 @@ public class PageMateriels extends JFrame {
         btnAjouterMateriel.setSize(140, 50);
         btnAjouterMateriel.addActionListener(e -> {
 
+            List<Materiel>allMateriels = null;
+            MaterielManager mm = new MaterielManager();
+            try {
+                allMateriels = mm.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             blankMateriel = new Materiel();
             materiels.add(blankMateriel);
 
             //////////////On récupére la plus haute id du tableau pour assigner blankMateriel à 1 au dessus ////////////////
-            int idMax = materiels.get(0).getMateriel_id();
+            assert allMateriels != null;
+            int idMax = allMateriels.get(0).getMateriel_id();
 
-            for (int i = 0; i < materiels.size(); i++) {
-                int materielId = materiels.get(i).getMateriel_id();
+            for (int i = 0; i < allMateriels.size(); i++) {
+                int materielId = allMateriels.get(i).getMateriel_id();
                 if (materielId > idMax) {
                     idMax = materielId;
                 }
@@ -242,6 +252,8 @@ public class PageMateriels extends JFrame {
             model.fireTableDataChanged();
             tableauMateriel.revalidate();
             tableauMateriel.setModel(model);
+
+            blankMateriel = null;
         });
 
 
@@ -295,17 +307,17 @@ public class PageMateriels extends JFrame {
 
                     if (j == 0)  /**user a dit oui*/ {
                         try {
-                            if (blankMateriel != null) {
+//                            if (blankMateriel != null) {
+//                                MaterielManager.getInstance().update(materiel);
+//                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + blankMateriel.getMateriel_id() + " ajouté");
+//                                blankMateriel = null;
+//                                break;
+//                            } else {
                                 MaterielManager.getInstance().update(materiel);
-                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + blankMateriel.getMateriel_id() + " ajouté");
-                                blankMateriel = null;
-                                break;
-                            } else {
-                                MaterielManager.getInstance().update(materiel);
-                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " modifié");
+                                JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " enregistré");
                                 // displayRightTable();
                                 break;
-                            }
+    //                        }
                         } catch (BLLException ex) {
                             ex.printStackTrace();
                         }
