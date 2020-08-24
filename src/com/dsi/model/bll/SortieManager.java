@@ -19,7 +19,7 @@ public class SortieManager implements  Manager<Sortie> {
     /**
      * Constructeur
      */
-    private SortieManager() { dao = DAO_Factory.getDAO_Sortie(); }
+    public SortieManager() { dao = DAO_Factory.getDAO_Sortie(); }
 
     /**
      * Singleton

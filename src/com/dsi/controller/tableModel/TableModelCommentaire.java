@@ -58,17 +58,17 @@ public class TableModelCommentaire extends AbstractTableModel {
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {
-            commentaires.get(row).setCommentaire_message((String) value);
+            commentaires.get(row).setCommentaire_message(value.toString());
         } else if (column ==1){
             commentaires.get(row).setCommentaire_date_parution(new Date());
         } else if (column ==2){
-            commentaires.get(row).setCommentaire_note(Integer.parseInt((String)value));
+            commentaires.get(row).setCommentaire_note(Integer.parseInt(value.toString()));
         } else if (column ==3){
-            commentaires.get(row).setCommentaire_id(Integer.parseInt((String)value));
+            commentaires.get(row).setCommentaire_id(Integer.parseInt(value.toString()));
         } else if (column ==4){
-            commentaires.get(row).setCommentaire_utilisateur_id(Integer.parseInt((String)value));
+            commentaires.get(row).setCommentaire_utilisateur_id(Integer.parseInt(value.toString()));
         }else if (column ==5){
-            commentaires.get(row).setCommentaire_annonce_id(Integer.parseInt((String)value));
+            commentaires.get(row).setCommentaire_annonce_id(Integer.parseInt(value.toString()));
         }
     }
 

@@ -26,7 +26,7 @@ public class CommentaireManager implements Manager<Commentaire> {
     /**
      * Constructeur
      */
-    private CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
+    public CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
 
     /**
      * Singleton

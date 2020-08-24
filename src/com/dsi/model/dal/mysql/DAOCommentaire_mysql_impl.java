@@ -53,7 +53,6 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
 
             //Execution de la requête
             pstmt =cnx.prepareStatement(SQL_Insert);
-        //    pstmt.setInt(1, pObj.getCommentaire_id());
             pstmt.setInt(1, pObj.getCommentaire_annonce_id());
             pstmt.setInt(2, pObj.getCommentaire_utilisateur_id());
             pstmt.setInt(3, pObj.getCommentaire_note());
