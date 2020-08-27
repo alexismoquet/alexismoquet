@@ -3,6 +3,8 @@ package com.dsi.controller.tableModel;
 import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Annonce;
 import javax.swing.table.AbstractTableModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +73,13 @@ public class TableModelAnnonce extends AbstractTableModel {
             annonces.get(rowIndex).setAnnonce_id(Integer.parseInt(value.toString()));
         } else if (columnIndex == 4){
             annonces.get(rowIndex).setAnnonce_materiel_id(Integer.parseInt(value.toString()));
+        }else if (columnIndex == 5){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                annonces.get(rowIndex).setAnnonce_date_parution(sdf.parse(value.toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,9 +1,6 @@
 package com.dsi.controller.tableModel;
 
-import com.dsi.librairies.FonctionsDate;
-import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.Date;
 import java.util.List;

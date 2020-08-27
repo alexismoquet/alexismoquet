@@ -34,27 +34,22 @@ public class TableModelCategorie extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
-        if (columnIndex == 0) {
-            return categories.get(rowIndex).getCategorie_libelle();
-        } else if (columnIndex == 1) {
-            return categories.get(rowIndex).getCategorie_id();
-        } else {
+        switch (columnIndex) {
+            case 0:
+                return categories.get(rowIndex).getCategorie_libelle();
+            case 1:
+                return categories.get(rowIndex).getCategorie_id();
+            default:
             return "";
         }
     }
 
+    @Override
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {
             categories.get(row).setCategorie_libelle((String) value);
         }
-    }
-
-    public void addCategorie (Categorie categorie) {
-        int index = categories.size();
-        categories.add(categorie);
-     //   fireTableRowsInserted(index, index);
     }
 
 }//fin class

@@ -77,6 +77,8 @@ public class TableModelAdresse extends AbstractTableModel {
             adresses.get(rowIndex).setPays(value.toString());
         }else if (columnIndex ==6){
             adresses.get(rowIndex).setIdAdresse(Integer.parseInt(String.valueOf(value)));
+        }else if (columnIndex ==7){
+            adresses.get(rowIndex).setIdUtilisateur(Integer.parseInt(String.valueOf(value)));
         }
     }
 

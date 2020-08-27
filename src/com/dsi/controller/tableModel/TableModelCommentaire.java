@@ -48,13 +48,14 @@ public class TableModelCommentaire extends AbstractTableModel {
                 return commentaires.get(rowIndex).getCommentaire_id();
             case 4:
                 return commentaires.get(rowIndex).getCommentaire_utilisateur_id();
-                case 5:
+            case 5:
                 return commentaires.get(rowIndex).getCommentaire_annonce_id();
             default:
                 return "";
         }
     }
 
+    @Override
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {

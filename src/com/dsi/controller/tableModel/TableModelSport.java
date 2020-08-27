@@ -46,6 +46,7 @@ public class TableModelSport extends AbstractTableModel {
             }
         }
 
+    @Override
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {

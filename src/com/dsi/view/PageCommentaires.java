@@ -34,7 +34,7 @@ public class PageCommentaires extends JFrame {
     private JButton btnModifierCommentaire = new JButton("Enregistrer");
     private JButton btnSupprimerCommentaire = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAjouterCommentaire = new JButton("Ajouter commentaire");
+    private JButton btnAjouterCommentaire = new JButton("Ajouter");
 
     private JTextField txtRechercher = new JTextField();
     private JButton btnRechercher = new JButton("Rechercher");
@@ -162,6 +162,7 @@ public class PageCommentaires extends JFrame {
             {
                 try {
                     cm.delete(commentaire);
+                    JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
                     afficheJTableCommentaires();
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -206,17 +207,17 @@ public class PageCommentaires extends JFrame {
             if (utilisateur != null){
                 blankCommentaire.setCommentaire_utilisateur_id(utilisateur.getIdUtilisateur());
             } else {
-                blankCommentaire.setCommentaire_utilisateur_id(2);
+                blankCommentaire.setCommentaire_utilisateur_id(1);
             }
             if (annonce != null){
                 blankCommentaire.setCommentaire_annonce_id(annonce.getAnnonce_id());
             }else{
-                blankCommentaire.setCommentaire_annonce_id(2);
+                blankCommentaire.setCommentaire_annonce_id(1);
             }
 
             try {
                 CommentaireManager.getInstance().insert(blankCommentaire);
-                JOptionPane.showMessageDialog(btnAjouterCommentaire, "Commentaire " + blankCommentaire.getCommentaire_id()+ " ajouté");
+              //  JOptionPane.showMessageDialog(btnAjouterCommentaire, "Commentaire ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -261,7 +262,6 @@ public class PageCommentaires extends JFrame {
                 tableauCommentaire.setValueAt(commentaireIdUtilisateurModifie, i,4);
                 tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
 
-
                 if (commentaire == null) {
                     //JOptionPane.showMessageDialog(btnModifierCommentaire, "Merci d'ajouter le message");
                     return;
@@ -275,7 +275,7 @@ public class PageCommentaires extends JFrame {
                         commentaire.setCommentaire_annonce_id(commentaireIdAnnonceModifie);
                         commentaire.setCommentaire_utilisateur_id(commentaireIdUtilisateurModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire "+commentaire.getCommentaire_id()+" ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 

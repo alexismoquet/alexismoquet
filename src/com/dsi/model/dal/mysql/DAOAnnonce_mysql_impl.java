@@ -22,7 +22,7 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
     private String SQL_SelectByIdUtilisateur = "SELECT * FROM annonces WHERE annonce_utilisateur_id = ?;";
     private String SQL_SelectByIdMateriel = "SELECT * FROM annonces WHERE annonce_materiel_id = ?;";
     private String SQL_Insert = "INSERT INTO annonces(annonce_utilisateur_id, annonce_materiel_id, annonce_titre, annonce_description, annonce_date_parution) VALUES(?,?,?,?,?);";
-    private String SQL_Update = "UPDATE annonces SET annonce_titre=?, annonce_description=?, annonce_date_parution=? WHERE annonce_id=?;";
+    private String SQL_Update = "UPDATE annonces SET annonce_titre=?, annonce_description=?, annonce_date_parution=?, annonce_utilisateur_id=? WHERE annonce_id=?;";
     private String SQL_Delete = "DELETE FROM annonces WHERE annonce_id=?;";
 
 
@@ -95,7 +95,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
             pstmt.setString(1, pObj.getAnnonce_titre());
             pstmt.setString(2, pObj.getAnnonce_description());
             pstmt.setDate(3, FonctionsDate.utilDateVersSqlDate(pObj.getAnnonce_date_parution()));
-            pstmt.setInt(4, pObj.getAnnonce_id());
+            pstmt.setString(4, String.valueOf(pObj.getAnnonce_utilisateur_id()));
+            pstmt.setInt(5, pObj.getAnnonce_id());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

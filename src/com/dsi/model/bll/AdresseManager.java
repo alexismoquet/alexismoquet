@@ -25,7 +25,7 @@ public class AdresseManager implements Manager<Adresse> {
     /**
      * Constructeur
      */
-    private AdresseManager() { dao = DAO_Factory.getDAO_Adresse(); }
+    public AdresseManager() { dao = DAO_Factory.getDAO_Adresse(); }
 
     /**
      * Singleton

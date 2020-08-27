@@ -8,17 +8,14 @@ import java.util.List;
 
 public class Commentaires {
     public static List<Commentaire> remplirJTableWithCommentaires() throws BLLException {
-        CommentaireManager cm = CommentaireManager.getInstance();
-        return cm.SelectAll();
+        return CommentaireManager.getInstance().SelectAll();
     }
 
     public static List<Commentaire> remplirJTableWithCommentairesIdAnnonce(int idAnnonce) throws BLLException {
-        CommentaireManager cm = CommentaireManager.getInstance();
-        return cm.SelectByIdAnnonce(idAnnonce);
+        return CommentaireManager.getInstance().SelectByIdAnnonce(idAnnonce);
     }
 
     public static List<Commentaire> remplirJTableWithCommentairesIdUtilisateur(int idUtilisateur) throws BLLException {
-        CommentaireManager cm = CommentaireManager.getInstance();
-        return cm.SelectByIdUtilisateur(idUtilisateur);
+        return CommentaireManager.getInstance().SelectByIdUtilisateur(idUtilisateur);
     }
 }

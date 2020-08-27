@@ -8,12 +8,10 @@ import java.util.List;
 
 public class Adresses {
     public static List<Adresse> remplirJTableWithAdressesIdUser(int idUtilisateur) throws BLLException {
-        AdresseManager am = AdresseManager.getInstance();
-        return am.SelectByIdUtilisateur(idUtilisateur);
+        return AdresseManager.getInstance().SelectByIdUtilisateur(idUtilisateur);
     }
 
     public static List<Adresse> remplirJTableWithAllAdresses() throws BLLException {
-        AdresseManager am = AdresseManager.getInstance();
-        return am.SelectAll();
+        return AdresseManager.getInstance().SelectAll();
     }
 }

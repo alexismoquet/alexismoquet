@@ -1,11 +1,10 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSport;
+import com.dsi.model.beans.Categorie;
 import com.dsi.model.beans.Sport;
-import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.MaterielManager;
-import com.dsi.model.bll.SportManager;
-import com.dsi.model.bll.UtilisateurManager;
+import com.dsi.model.bll.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -33,7 +32,7 @@ public class PageSports extends JFrame {
     private JButton btnSupprimerSport = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterSport = new JButton("Ajouter une ligne");
+    private JButton btnAjouterSport = new JButton("Ajouter");
     private JButton btnEnrModifs = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
@@ -142,14 +141,22 @@ public class PageSports extends JFrame {
          */
         btnAjouterSport.setSize(140, 50);
         btnAjouterSport.addActionListener(e -> {
+            List<Sport> allSports = null;
+            SportManager sm = new SportManager();
+            try {
+                allSports = sm.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
             blankSport = new Sport();
             sports.add(blankSport);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            int idMax = sports.get(0).getSport_id();
+            assert allSports != null;
+            int idMax = allSports.get(0).getSport_id();
 
-            for (int i = 0; i < sports.size(); i++) {
-                int sportId = sports.get(i).getSport_id();
+            for (Sport allSport : allSports) {
+                int sportId = allSport.getSport_id();
                 if (sportId > idMax) {
                     idMax = sportId;
                 }
@@ -157,9 +164,10 @@ public class PageSports extends JFrame {
             blankSport.setSport_id(idMax + 1);
             blankSport.setSport_libelle("");
             //////////////////////////////////////////////////////////////////////////////////////////////////////
-
             try {
                 SportManager.getInstance().insert(blankSport);
+            //    JOptionPane.showMessageDialog(btnAjouterSport, "Sport ajouté");
+
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -168,6 +176,9 @@ public class PageSports extends JFrame {
             model.fireTableDataChanged();
             tableauSport.revalidate();
             tableauSport.setModel(model);
+
+            blankSport = null;
+            afficheJTableSports();
         });
 
 
@@ -176,7 +187,6 @@ public class PageSports extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSport.getRowCount(); i++) {
                 try {
@@ -196,26 +206,21 @@ public class PageSports extends JFrame {
                         sport.setSport_libelle(libelleSportModifie);
                         sport.setSport_id(idSportModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " +sport.getSport_id()+" ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
-                                if (blankSport != null) {
                                     SportManager.getInstance().update(sport);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + blankSport.getSport_id() + " ajouté");
-                                    blankSport = null;
+                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " enregistré");
                                     break;
-                                } else {
-                                    SportManager.getInstance().update(sport);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " modifié");
-                                    break;
-                                }
                                 //   afficheJTableSports();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
+                        }else{
+                            return;
                         }
                     }
                 }
@@ -228,7 +233,6 @@ public class PageSports extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
                 return;
             }
-
             SportManager sm = SportManager.getInstance();
             int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                     "Veuillez confirmer votre choix",
@@ -236,7 +240,7 @@ public class PageSports extends JFrame {
             if (i == 0) //user a dit oui
             {
                 try {
-                    sm.delete(sport);
+                    SportManager.getInstance().delete(sport);
                     JOptionPane.showMessageDialog(btnSupprimerSport, "Sport " + sport.getSport_id() + " supprimé");
                     afficheJTableSports();
                 } catch (BLLException ex) {
@@ -270,7 +274,6 @@ public class PageSports extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSport = (int) tableauSport.getValueAt(tableauSport.getSelectedRow(), 1);
-            //    JOptionPane.showMessageDialog(null, "Le sport " + idSport + " est sélectionné");
                 try {
                     sport = SportManager.getInstance().SelectById(idSport);
                 } catch (BLLException ex) {

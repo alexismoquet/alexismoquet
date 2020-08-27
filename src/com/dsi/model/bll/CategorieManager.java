@@ -24,7 +24,7 @@ public class CategorieManager implements Manager<Categorie> {
     /**
      * Constructeur
      */
-    private CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
+    public CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
 
     /**
      * Singleton

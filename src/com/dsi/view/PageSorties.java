@@ -38,7 +38,7 @@ public class PageSorties extends JFrame {
 
     private JButton btnSupprimerSortie = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAjouterSortie = new JButton("Ajouter une ligne");
+    private JButton btnAjouterSortie = new JButton("Ajouter");
     private JButton btnEnrModifs = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
@@ -190,6 +190,7 @@ public class PageSorties extends JFrame {
 
             try {
                 SortieManager.getInstance().insert(blankSortie);
+             //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -201,6 +202,8 @@ public class PageSorties extends JFrame {
             tableauSortie.setModel(model);
 
             blankSortie = null;
+
+            displayRightTable();
         });
 
 
@@ -218,17 +221,23 @@ public class PageSorties extends JFrame {
                 }
                 String etatSortieModifie = String.valueOf(tableauSortie.getValueAt(i, 2));
                 int idSortieModifie = (int) tableauSortie.getValueAt(i, 4);
+                int idMaterielSortieModifie = (int) tableauSortie.getValueAt(i, 3);
+
+                tableauSortie.setValueAt(etatSortieModifie, i, 2);
+                tableauSortie.setValueAt(idMaterielSortieModifie, i, 3);
+                tableauSortie.setValueAt(etatSortieModifie, i, 2);
 
                 if (sortie == null) {
                     return;
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sortie");
                 } else {
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie) || !(sortie.getSortie_id() == idSortieModifie)) {
+                    if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie) || !(sortie.getSortie_id() == idSortieModifie) || !(sortie.getSortie_materiel_id() == idMaterielSortieModifie)) {
                         sortie.setSortie_etat(etatSortieModifie);
                         sortie.setSortie_id(idSortieModifie);
+                        sortie.setSortie_materiel_id(idMaterielSortieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " +sortie.getSortie_id()+" ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
