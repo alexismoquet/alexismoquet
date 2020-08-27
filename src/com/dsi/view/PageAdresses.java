@@ -1,20 +1,15 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelAdresse;
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.dsi.controller.Adresses.*;
@@ -33,7 +28,7 @@ public class PageAdresses extends JFrame {
     private JPanel panBas = new JPanel();
 
     private JButton btnModifierAdresse = new JButton("Enregistrer");
-    private JButton btnAjouterLigne = new JButton("Ajouter une ligne");
+    private JButton btnAjouterLigne = new JButton("Ajouter");
     private JButton btnSupprimerAdresse = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
 
@@ -105,12 +100,7 @@ public class PageAdresses extends JFrame {
 
         setContentPane(panPrincipal);
 
-        if (utilisateur == null) {
-            afficheJTableWithAllAdresses();
-        } else {
-            afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());
-        }
-
+        displayRightTable();
 
 /**************************************************************************************************************************************/
 /*************************************************************** Les listenners des boutons *******************************************************/
@@ -189,14 +179,23 @@ public class PageAdresses extends JFrame {
          */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
+            List<Adresse> allAdresses = null;
+            AdresseManager am = new AdresseManager();
+            try {
+                allAdresses = am.SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
+
             blankAdresse = new Adresse();
             adresses.add(blankAdresse);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            int idMax = adresses.get(0).getIdAdresse();
+            assert allAdresses != null;
+            int idMax = allAdresses.get(0).getIdAdresse();
 
-            for (int i = 0; i < adresses.size(); i++) {
-                int adresseId = adresses.get(i).getIdAdresse();
+            for (Adresse allAdress : allAdresses) {
+                int adresseId = allAdress.getIdAdresse();
                 if (adresseId > idMax) {
                     idMax = adresseId;
                 }
@@ -212,9 +211,12 @@ public class PageAdresses extends JFrame {
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             if (utilisateur != null){
                 blankAdresse.setIdUtilisateur(utilisateur.getIdUtilisateur());
+            } else {
+                blankAdresse.setIdUtilisateur(5);
             }
             try {
                 AdresseManager.getInstance().insert(blankAdresse);
+          //      JOptionPane.showMessageDialog(btnAjouterLigne, "Adresse ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -223,8 +225,10 @@ public class PageAdresses extends JFrame {
             model.fireTableDataChanged();
             tableauAdresse.revalidate();
             tableauAdresse.setModel(model);
-        });
 
+            blankAdresse = null;
+            displayRightTable();
+        });
 
         /**
          * listenner sur le btnModifierAdresse pour enregistrer modifications
@@ -239,13 +243,14 @@ public class PageAdresses extends JFrame {
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
-
                 String adresseModifiee = String.valueOf(tableauAdresse.getValueAt(i, 0));
                 String villeModifiee = String.valueOf(tableauAdresse.getValueAt(i, 1));
                 String cpModifie = String.valueOf(tableauAdresse.getValueAt(i, 2));
                 String complementModifie = String.valueOf(tableauAdresse.getValueAt(i, 3));
                 String departementModifie = String.valueOf(tableauAdresse.getValueAt(i, 4));
                 String paysModifie = String.valueOf(tableauAdresse.getValueAt(i, 5));
+                int idUtilisateurModifie = (int)(tableauAdresse.getValueAt(i, 7));
+
 
                 tableauAdresse.setValueAt(adresseModifiee, i, 0);
                 tableauAdresse.setValueAt(villeModifiee, i, 1);
@@ -253,12 +258,15 @@ public class PageAdresses extends JFrame {
                 tableauAdresse.setValueAt(complementModifie, i, 3);
                 tableauAdresse.setValueAt(departementModifie, i, 4);
                 tableauAdresse.setValueAt(paysModifie, i,5 );
+                tableauAdresse.setValueAt(idUtilisateurModifie, i,7 );
 
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!adresse.getAdresse().equals(adresseModifiee) || !adresse.getVille().equals(villeModifiee)
                         || !adresse.getCodePostal().equals(cpModifie)|| !adresse.getComplement().equals(complementModifie)
-                        || !adresse.getDepartement().equals(departementModifie)|| !adresse.getPays().equals(paysModifie)) {
+                        || !adresse.getDepartement().equals(departementModifie)|| !adresse.getPays().equals(paysModifie)
+                        || adresse.getIdUtilisateur() != (idUtilisateurModifie))
+                      {
                     try {
                         adresse.setAdresse(adresseModifiee);
                         adresse.setVille(villeModifiee);
@@ -266,23 +274,18 @@ public class PageAdresses extends JFrame {
                         adresse.setComplement(complementModifie);
                         adresse.setDepartement(departementModifie);
                         adresse.setPays(paysModifie);
+                        adresse.setIdUtilisateur(idUtilisateurModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierAdresse, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnModifierAdresse, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'adresse "+adresse.getIdAdresse()+" ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
-                            if (blankAdresse != null) {
                                 AdresseManager.getInstance().update(adresse);
-                                JOptionPane.showMessageDialog(btnModifierAdresse, "Adresse " + blankAdresse.getIdAdresse() + " ajoutée");
-                                blankAdresse = null;
+                                JOptionPane.showMessageDialog(null, "Adresse " + adresse.getIdAdresse() + " enregistrée");
+                                displayRightTable();
                                 break;
-                            } else {
-                                am.update(adresse);
-                                JOptionPane.showMessageDialog(null, "Adresse " + tableauAdresse.getValueAt(i, 6) + " modifiée");
-                                afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());
                             }
-                        }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
@@ -344,6 +347,14 @@ public class PageAdresses extends JFrame {
             tableauAdresse.setModel(model);
         } catch (BLLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void displayRightTable (){
+        if (utilisateur == null){
+            afficheJTableWithAllAdresses();
+        } else {
+            afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());;
         }
     }
 

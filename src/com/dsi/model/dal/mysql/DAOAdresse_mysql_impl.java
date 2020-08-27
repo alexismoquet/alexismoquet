@@ -20,7 +20,7 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
     private String SQL_SelectById               = "SELECT * FROM adresses WHERE adresse_id = ?;";
     private String SQL_SelectByIdUtilisateur    = "SELECT * FROM adresses WHERE adresse_utilisateur_id = ?;";
     private String SQL_Insert                   = "INSERT INTO adresses(adresse_utilisateur_id, adresse_adresse, adresse_complement, adresse_code_postal, adresse_ville, adresse_departement, adresse_pays, adresse_longitude, adresse_latitude) VALUES(?,?,?,?,?,?,?,?,?);";
-    private String SQL_Update                   = "UPDATE adresses SET adresse_adresse=?, adresse_complement=?, adresse_code_postal=?, adresse_ville=?, adresse_departement=?, adresse_pays=?, adresse_longitude=?, adresse_latitude=? WHERE adresse_id=?;";
+    private String SQL_Update                   = "UPDATE adresses SET adresse_utilisateur_id=?, adresse_adresse=?, adresse_complement=?, adresse_code_postal=?, adresse_ville=?, adresse_departement=?, adresse_pays=?, adresse_longitude=?, adresse_latitude=? WHERE adresse_id=?;";
     private String SQL_Delete                   = "DELETE FROM adresses WHERE adresse_id=?;";
 
     private String SQL_AlterUtilisateur = "ALTER Utilisateurs ADD CONSTRAINT Adresses_Utilisateurs_FK FOREIGN KEY (adresse_utilisateur_id) REFERENCES adresses(adresse_utilisateur_id) ON UPDATE CASCADE; ";
@@ -94,15 +94,16 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
-            pstmt.setString(1, pObj.getAdresse());
-            pstmt.setString(2, pObj.getComplement());
-            pstmt.setString(3, pObj.getCodePostal());
-            pstmt.setString(4, pObj.getVille());
-            pstmt.setString(5, pObj.getDepartement());
-            pstmt.setString(6, pObj.getPays());
-            pstmt.setFloat(7, pObj.getLongitude());
-            pstmt.setFloat(8, pObj.getLatitude());
-            pstmt.setInt(9, pObj.getIdAdresse());
+            pstmt.setInt(1, pObj.getIdUtilisateur());
+            pstmt.setString(2, pObj.getAdresse());
+            pstmt.setString(3, pObj.getComplement());
+            pstmt.setString(4, pObj.getCodePostal());
+            pstmt.setString(5, pObj.getVille());
+            pstmt.setString(6, pObj.getDepartement());
+            pstmt.setString(7, pObj.getPays());
+            pstmt.setFloat(8, pObj.getLongitude());
+            pstmt.setFloat(9, pObj.getLatitude());
+            pstmt.setInt(10, pObj.getIdAdresse());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -116,7 +117,6 @@ public class DAOAdresse_mysql_impl implements DAO_Adresse {
                     throw new DALException("Problème lors de la fermeture du statement !", e);
                 }
             }
-
             //Fermeture de la connexion
             try {
                 cnx.close();

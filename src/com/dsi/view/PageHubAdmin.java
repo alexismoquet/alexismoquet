@@ -38,19 +38,15 @@ public class PageHubAdmin extends JFrame {
     private JButton bMateriels = new JButton("Materiels");
     private JButton bVisuels = new JButton("Visuels");
     private JButton bSorties = new JButton("Sorties");
-
+    private JButton bAdresses = new JButton("Adresses");
 
     private JTable tableauAnomalies = new JTable();
-
     private JLabel anomaliesASurveiller = new JLabel();
 
     List<Annonce> listAnomalies = new ArrayList<>();
     List<Annonce> annonces;
     Annonce annonceSelect, annonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-    String titreAnnonceModifiee;
-    String descriptionAnnonceModifiee;
-
 
     //************************************************************
     // Constructeur par defaut
@@ -90,6 +86,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bVisuels);
         panBtn.add(bSorties);
         panBtn.add(bCommentaires);
+        panBtn.add(bAdresses);
         panBtn.add(bEnregistrer);
 
         /***** Panel des anomalies*/
@@ -167,6 +164,12 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) { PageSorties ps = new PageSorties(); }
         });
 
+        bAdresses.setSize(100, 50);
+        bAdresses.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { PageAdresses pa = new PageAdresses(); }
+        });
+
         /**
          * Listener btnEnregistrer - enregistrer les modifs du tableau anomalies (annonces)
          */
@@ -174,9 +177,6 @@ public class PageHubAdmin extends JFrame {
         bEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                AnnonceManager am = AnnonceManager.getInstance();
-
                 /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
                 for (int i = 0; i < tableauAnomalies.getRowCount(); i++) {
 
@@ -191,7 +191,6 @@ public class PageHubAdmin extends JFrame {
                     tableauAnomalies.setValueAt(descriptionAnnonceModifiee, i, 1);
                     tableauAnomalies.setValueAt(titreAnnonceModifiee, i, 0);
 
-
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!annonce.getAnnonce_titre().equals(titreAnnonceModifiee) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifiee)) {
                         try {
@@ -203,7 +202,7 @@ public class PageHubAdmin extends JFrame {
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                             if (j == 0)  /**user a dit oui*/ {
-                                am.update(annonce);
+                                AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " modifiée");
                                 remplirJTableWithAnomalies();
                             }

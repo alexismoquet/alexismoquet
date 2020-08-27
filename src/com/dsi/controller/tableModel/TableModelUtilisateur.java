@@ -1,9 +1,13 @@
 package com.dsi.controller.tableModel;
 
+import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -18,25 +22,25 @@ public class TableModelUtilisateur extends AbstractTableModel {
     private List <Utilisateur> utilisateurs;
 
 
-    public void addUtilisateur(Utilisateur utilisateur) {
-        int index = utilisateurs.size();
-        utilisateurs.add(utilisateur);
-        fireTableRowsInserted(index, index);
-    }
-
-    public Utilisateur getUtilisateurAt(int row) {
-        if (row >= utilisateurs.size())
-            return null;
-        else
-            return utilisateurs.get(row);
-    }
-
-    public void deleteUtilisateurAt(int row){
-        if (row < utilisateurs.size()){
-            utilisateurs.remove(row);
-            fireTableRowsDeleted(row, row);
-        }
-    }
+//    public void addUtilisateur(Utilisateur utilisateur) {
+//        int index = utilisateurs.size();
+//        utilisateurs.add(utilisateur);
+//        fireTableRowsInserted(index, index);
+//    }
+//
+//    public Utilisateur getUtilisateurAt(int row) {
+//        if (row >= utilisateurs.size())
+//            return null;
+//        else
+//            return utilisateurs.get(row);
+//    }
+//
+//    public void deleteUtilisateurAt(int row){
+//        if (row < utilisateurs.size()){
+//            utilisateurs.remove(row);
+//            fireTableRowsDeleted(row, row);
+//        }
+//    }
 
     /**************************Contructeurs***********************/
 
@@ -92,7 +96,7 @@ public class TableModelUtilisateur extends AbstractTableModel {
         }
     }
 
-
+    @Override
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {
@@ -114,9 +118,14 @@ public class TableModelUtilisateur extends AbstractTableModel {
             utilisateurs.get(row).setMotDePasse((String) value);
             }
         else if (column == 6) {
-            utilisateurs.get(row).setDateInscription((Date) value);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                utilisateurs.get(row).setDateInscription(sdf.parse(value.toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } //fin setValue
+        }
+    } //fin setValue
 
 
 } //fin class

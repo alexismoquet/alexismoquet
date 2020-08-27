@@ -18,7 +18,7 @@ public class SportManager implements Manager<Sport> {
     /**
      * Constructeur
      */
-    private SportManager() { dao = DAO_Factory.getDAO_Sport(); }
+    public SportManager() { dao = DAO_Factory.getDAO_Sport(); }
 
     /**
      * Singleton

@@ -20,7 +20,7 @@ public class VisuelManager implements Manager<Visuel> {
     /**
      * Constructeur
      */
-    private VisuelManager() { dao = DAO_Factory.getDAO_Visuel(); }
+    public VisuelManager() { dao = DAO_Factory.getDAO_Visuel(); }
 
     /**
      * Singleton

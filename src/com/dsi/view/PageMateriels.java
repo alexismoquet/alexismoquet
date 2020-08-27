@@ -4,7 +4,6 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelMateriel;
 import com.dsi.model.beans.*;
 import com.dsi.model.beans.Materiel;
-import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.BLLException;
 import javax.swing.*;
@@ -34,7 +33,7 @@ public class PageMateriels extends JFrame {
     private JButton btnRechercher = new JButton("Rechercher");
     private JButton btnSorties = new JButton("Sortie");
     private JButton btnAnnonces = new JButton("Annonce(s)");
-    private JButton btnAjouterMateriel = new JButton("Ajouter Materiel");
+    private JButton btnAjouterMateriel = new JButton("Ajouter");
 
     private JTextField txtRechercher = new JTextField();
     private JTable tableauMateriel = new JTable();
@@ -75,7 +74,7 @@ public class PageMateriels extends JFrame {
     public PageMateriels(int annonce_materiel_id) throws BLLException {
         this.annonce_materiel_id = annonce_materiel_id;
         MaterielManager mm = new MaterielManager();
-        materiel = mm.SelectById(annonce_materiel_id);
+        materiel = MaterielManager.getInstance().SelectById(annonce_materiel_id);
         materiels.add(materiel);
         initialiserComposants();
         TableModelMateriel model = new TableModelMateriel(materiels);
@@ -120,7 +119,9 @@ public class PageMateriels extends JFrame {
         tableauMateriel.setRowHeight(30);
 
         panBas.setSize(500, 200);
-        panBas.add(btnAjouterMateriel);
+        if (annonce_materiel_id == null){
+            panBas.add(btnAjouterMateriel);
+        }
         panBas.add(btnEnregistrerMateriel);
         panBas.add(btnSupprimerMateriel);
         panBas.add(btnAnnuler);
@@ -129,10 +130,10 @@ public class PageMateriels extends JFrame {
         if (annonce_materiel_id == null){
             panBas.add(btnAnnonces);
         }
+
         setContentPane(panPrincipal);
 
         displayRightTable();
-
 
         /**************************************************************************************************************************************/
         /*************************************************************** Les listenners *******************************************************/
@@ -149,16 +150,15 @@ public class PageMateriels extends JFrame {
             }
         });
 
-
         /**
-         * Listenner btnRechercher
+         * Listenner sur le bouton btnRechercher
+         * @param materiels
          *
          **/
         btnRechercher.addActionListener(e -> {
             listRechercheMateriels = new ArrayList<>();
-            MaterielManager um = MaterielManager.getInstance();
             try {
-                um.SelectAll();
+                MaterielManager.getInstance().SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -196,15 +196,12 @@ public class PageMateriels extends JFrame {
          */
         btnAjouterMateriel.setSize(140, 50);
         btnAjouterMateriel.addActionListener(e -> {
-
             List<Materiel>allMateriels = null;
-            MaterielManager mm = new MaterielManager();
             try {
-                allMateriels = mm.SelectAll();
+                allMateriels = MaterielManager.getInstance().SelectAll();
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
-
             blankMateriel = new Materiel();
             materiels.add(blankMateriel);
 
@@ -212,40 +209,32 @@ public class PageMateriels extends JFrame {
             assert allMateriels != null;
             int idMax = allMateriels.get(0).getMateriel_id();
 
-            for (int i = 0; i < allMateriels.size(); i++) {
-                int materielId = allMateriels.get(i).getMateriel_id();
+            for (Materiel allMateriel : allMateriels) {
+                int materielId = allMateriel.getMateriel_id();
                 if (materielId > idMax) {
                     idMax = materielId;
                 }
             }
-
-            //////////////////On Set les valeurs des colonnes du tableauMateriel //////////////////////
+            //////////////////On Set les valeurs de blankMateriel pour insertion dans la base //////////////////////
             blankMateriel.setMateriel_id(idMax + 1);
             blankMateriel.setMateriel_nom("");
             blankMateriel.setMateriel_description("");
 
-            if (utilisateur == null){
-                blankMateriel.setMateriel_adresse_id(5);
-            }else{
-            blankMateriel.setMateriel_adresse_id(utilisateur.getAdresses().get(0).getIdAdresse());}
+            if (utilisateur == null){blankMateriel.setMateriel_adresse_id(1);}
+            else{blankMateriel.setMateriel_adresse_id(utilisateur.getAdresses().get(0).getIdAdresse());}
 
-            if (categorie == null){
-                blankMateriel.setMateriel_categorie_id(2);
-            }else{
-            blankMateriel.setMateriel_categorie_id((Integer) tableauMateriel.getValueAt(0,3));
-            }
+            if (categorie == null){ blankMateriel.setMateriel_categorie_id(1); }
+            else{blankMateriel.setMateriel_categorie_id(categorie.getCategorie_id());}
 
-            if (sport == null){ blankMateriel.setMateriel_sport_id(2);
-            }else{
-                blankMateriel.setMateriel_sport_id((Integer) tableauMateriel.getValueAt(0,4));
-            }
+            if (sport == null){ blankMateriel.setMateriel_sport_id(1);
+            }else{blankMateriel.setMateriel_sport_id(sport.getSport_id()); }
 
-            blankMateriel.setMateriel_prix(44.0);
+            blankMateriel.setMateriel_prix(0.0);
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 MaterielManager.getInstance().insert(blankMateriel);
-                JOptionPane.showMessageDialog(btnAjouterMateriel, "Materiel " + blankMateriel.getMateriel_id()+ " ajouté");
+             //   JOptionPane.showMessageDialog(btnAjouterMateriel, "Matériel ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -283,14 +272,13 @@ public class PageMateriels extends JFrame {
                 int idSportMaterielModifie = (int) tableauMateriel.getValueAt(i, 4);
                 int idAdresseMaterielModifie = (int) tableauMateriel.getValueAt(i, 2);
 
-                tableauMateriel.setValueAt(descriptionMaterielModifie, i, 1);
                 tableauMateriel.setValueAt(nomMaterielModifie, i, 0);
-                tableauMateriel.setValueAt(prixMaterielModifie, i, 6);
-                tableauMateriel.setValueAt(idSportMaterielModifie, i, 4);
+                tableauMateriel.setValueAt(descriptionMaterielModifie, i, 1);
                 tableauMateriel.setValueAt(idAdresseMaterielModifie, i, 2);
                 tableauMateriel.setValueAt(idCategorieMaterielModifie, i, 3);
+                tableauMateriel.setValueAt(idSportMaterielModifie, i, 4);
+                tableauMateriel.setValueAt(prixMaterielModifie, i, 6);
                 tableauMateriel.setValueAt(cautionPrixMaterielModifie, i, 7);
-
 
                 /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || materiel.getMateriel_prix() != prixMaterielModifie ||
@@ -304,7 +292,7 @@ public class PageMateriels extends JFrame {
                     materiel.setMateriel_sport_id(idSportMaterielModifie);
                     materiel.setMateriel_caution_prix(cautionPrixMaterielModifie);
 
-                    int j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                    int j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le matériel "+materiel.getMateriel_id()+" ?",
                             "Veuillez confirmer votre choix",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
@@ -324,7 +312,6 @@ public class PageMateriels extends JFrame {
             }//fin for
         });
 
-
         /**
          * Listenner du bouton supprimer le materiel sélectionné
          * @param materiel
@@ -334,15 +321,13 @@ public class PageMateriels extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerMateriel, "Merci de sélectionner un matériel");
                 return;
             }
-            MaterielManager am = MaterielManager.getInstance();
-
             int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel " + materiel.getMateriel_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
-                    am.delete(materiel);
+                    MaterielManager.getInstance().delete(materiel);
                     JOptionPane.showMessageDialog(btnSupprimerMateriel, "Matériel " + materiel.getMateriel_id() + " supprimé");
                     displayRightTable();
                 } catch (BLLException ex) {
@@ -361,7 +346,6 @@ public class PageMateriels extends JFrame {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 5);
           //      JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
                 try {
-
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);
                 } catch (BLLException ex) {
                     ex.printStackTrace();
@@ -378,7 +362,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un materiel");
+                    JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un matériel");
                 } else {
                     new PageVisuels(materiel);
                 }
@@ -393,13 +377,12 @@ public class PageMateriels extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un materiel");
+                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
                 } else {
                     new PageSorties(materiel);
                 }
             }
         });
-
 
         /**
          * listenner sur le bouton Annonces
@@ -409,7 +392,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un materiel");
+                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
                 } else {
                     new PageAnnonces(materiel);
                 }
@@ -429,7 +412,7 @@ public class PageMateriels extends JFrame {
         }
     } //fin afficheJTable
 
-    private void afficheJTableMaterielsWithIdCategorie(int idCategorie) {
+    private void afficheJTableMaterielsWithIdCategorie() {
         try {
             materiels = remplirJTableWithMaterielsIdCategorie(categorie.getCategorie_id());
             TableModelMateriel model = new TableModelMateriel(materiels);
@@ -440,12 +423,10 @@ public class PageMateriels extends JFrame {
     } //fin afficheJTable
 
     private void afficheJTableMaterielsWithIdAdresse() {
-
         try {
             materiels = remplirJTableWithMaterielsIdAdresse(utilisateur.getAdresses().get(0).getIdAdresse());
             TableModelMateriel model = new TableModelMateriel(materiels);
             tableauMateriel.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
@@ -470,7 +451,7 @@ public class PageMateriels extends JFrame {
         if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
             afficheJTableWithAllMateriels();
         } else if (utilisateur == null && sport == null && annonce_materiel_id == null) {
-            afficheJTableMaterielsWithIdCategorie(categorie.getCategorie_id());
+            afficheJTableMaterielsWithIdCategorie();
         } else if (categorie == null && sport == null && annonce_materiel_id == null) {
             afficheJTableMaterielsWithIdAdresse();
         } else if (utilisateur == null && categorie == null && annonce_materiel_id == null) {

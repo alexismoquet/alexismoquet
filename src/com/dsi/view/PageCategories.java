@@ -1,7 +1,9 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCategorie;
+import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Categorie;
+import com.dsi.model.bll.AdresseManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
 import com.dsi.model.bll.CommentaireManager;
@@ -33,7 +35,7 @@ public class PageCategories extends JFrame {
     private JButton btnSupprimerCategorie = new JButton("Supprimer");
     private JButton btnAnnuler = new JButton("Annuler");
     private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterCategorie = new JButton("Ajouter une ligne");
+    private JButton btnAjouterCategorie = new JButton("Ajouter");
     private JButton btnEnrModifs = new JButton("Enregistrer");
 
     private JTextField txtRechercher = new JTextField();
@@ -146,15 +148,21 @@ public class PageCategories extends JFrame {
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
 
+            List<Categorie> allCategories = null;
+            try {
+                allCategories = CategorieManager.getInstance().SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
             blankCategorie = new Categorie();
             categories.add(blankCategorie);
 
-
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
-            int idMax = categories.get(0).getCategorie_id();
+            assert allCategories != null;
+            int idMax = allCategories.get(0).getCategorie_id();
 
-            for (int i = 0; i < categories.size(); i++) {
-                int categorieId = categories.get(i).getCategorie_id();
+            for (int i = 0; i < allCategories.size(); i++) {
+                int categorieId = allCategories.get(i).getCategorie_id();
                 if (categorieId > idMax) {
                     idMax = categorieId;
                 }
@@ -165,7 +173,7 @@ public class PageCategories extends JFrame {
 
             try {
                 CategorieManager.getInstance().insert(blankCategorie);
-                JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie " + blankCategorie.getCategorie_id()+ " ajoutée");
+          //      JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -176,6 +184,7 @@ public class PageCategories extends JFrame {
             tableauCategorie.setModel(model);
 
             blankCategorie = null;
+            afficheJTableCategories();
         });
 
 
@@ -184,7 +193,6 @@ public class PageCategories extends JFrame {
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCategorie.getRowCount(); i++) {
                 try {
@@ -195,6 +203,9 @@ public class PageCategories extends JFrame {
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
                 int idCategorieModifie = (int) tableauCategorie.getValueAt(i, 1);
 
+//                tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
+//                tableauCategorie.setValueAt(idCategorieModifie, i, 1);
+
                 if (categorie == null) {
                     return;
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un categorie");
@@ -204,24 +215,23 @@ public class PageCategories extends JFrame {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
                         categorie.setCategorie_id(idCategorieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " +categorie.getCategorie_id()+" ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /**user a dit oui*/ {
                             try {
                                     CategorieManager.getInstance().update(categorie);
-                                    JOptionPane.showMessageDialog(null, "Categorie " + categorie.getCategorie_id() + " enregistrée");
+                                    JOptionPane.showMessageDialog(null, "Catégorie " + categorie.getCategorie_id() + " enregistrée");
+                                    afficheJTableCategories();
                                     break;
-                                //   afficheJTableCategories();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        }
+                        } else {return;}
                     }
                 }
             }//fin for
-            afficheJTableCategories();
         });
 
         /**

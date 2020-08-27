@@ -3,25 +3,13 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelUtilisateur;
 import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
-import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.CommentaireManager;
-import com.dsi.model.bll.SportManager;
-import com.dsi.model.bll.UtilisateurManager;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
+import com.dsi.model.bll.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.List;
-
 import static com.dsi.controller.Utilisateurs.remplirJTableWithAllUtilisateurs;
 
 /**
@@ -32,25 +20,26 @@ import static com.dsi.controller.Utilisateurs.remplirJTableWithAllUtilisateurs;
  */
 public class PageUtilisateurs extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnAjouterUtilisateur = new JButton("Ajouter une ligne");
-    private JButton btnEnrModifUtil = new JButton("Enregistrer");
-    private JButton btnSupprimerUtil = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAnnonce = new JButton("Annonces");
-    private JButton btnAdresse = new JButton("Adresses");
-    private JButton btnMateriel = new JButton("Materiels");
-    private JButton btnCommentaire = new JButton("Commentaires");
+    private final JButton btnAjouterUtilisateur = new JButton("Ajouter");
+    private final JButton btnEnrModifUtil = new JButton("Enregistrer");
+    private final JButton btnSupprimerUtil = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+   // private JButton btnAnnonce = new JButton("Annonces");
+    private final JButton btnAdresse = new JButton("Adresses");
+    private final JButton btnMateriel = new JButton("Materiels");
+    private final JButton btnCommentaire = new JButton("Commentaires");
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauUtilisateur = new JTable();
+    private final JTable tableauUtilisateur = new JTable();
 
+    private final JLabel notice = new JLabel();
     List<Utilisateur> utilisateurs = new ArrayList<>();
     List<Adresse> adresses = new ArrayList<>();
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
@@ -86,9 +75,12 @@ public class PageUtilisateurs extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText(" Rechercher par Nom ");
-        panHaut.add(txtRechercher);
-        panHaut.add(btnRechercher);
+        panHaut.setLayout(new BorderLayout());
+        txtRechercher.setText(" Rechercher un utilisateur par Nom ");
+        panHaut.add(txtRechercher, BorderLayout.CENTER);
+        panHaut.add(btnRechercher, BorderLayout.NORTH);
+        panHaut.add(notice, BorderLayout.SOUTH);
+
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -98,18 +90,21 @@ public class PageUtilisateurs extends JFrame {
         panCentre.add(new JScrollPane(tableauUtilisateur), BorderLayout.CENTER);
         tableauUtilisateur.setRowHeight(30);
 
+        notice.setSize(200, 100);
+        notice.setBackground(Color.white);
+        notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse " +
+                "     2- créer un matériel     3- créer une annonce</body></html>");
+        notice.setToolTipText(notice.getText());
+
         panBas.setSize(900, 100);
         panBas.add(btnEnrModifUtil);
         panBas.add(btnAjouterUtilisateur);
         panBas.add(btnSupprimerUtil);
         panBas.add(btnAnnuler);
-        panBas.add(btnAnnonce);
+      // panBas.add(btnAnnonce);
         panBas.add(btnMateriel);
         panBas.add(btnCommentaire);
         panBas.add(btnAdresse);
-
-        btnAnnonce.setVisible(true);
-        btnMateriel.setVisible(true);
 
         setContentPane(panPrincipal);
 
@@ -155,7 +150,7 @@ public class PageUtilisateurs extends JFrame {
          * Listener bouton annuler
          */
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText(" Rechercher par Nom ");
+            txtRechercher.setText(" Rechercher un utilisateur par Nom ");
             utilisateur = null;
             blankUtilisateur = null;
             afficheJTableUtilisateurs();
@@ -165,14 +160,21 @@ public class PageUtilisateurs extends JFrame {
          */
         btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
+            List<Utilisateur> allUtilisateurs = null;
+            try {
+                allUtilisateurs = UtilisateurManager.getInstance().SelectAll();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
             blankUtilisateur = new Utilisateur();
             utilisateurs.add(blankUtilisateur);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            int idMax = utilisateurs.get(0).getIdUtilisateur();
+            assert allUtilisateurs != null;
+            int idMax = allUtilisateurs.get(0).getIdUtilisateur();
 
-            for (Utilisateur value : utilisateurs) {
-                int utilisateurId = value.getIdUtilisateur();
+            for (Utilisateur allUtilisateur : allUtilisateurs) {
+                int utilisateurId = allUtilisateur.getIdUtilisateur();
                 if (utilisateurId > idMax) {
                     idMax = utilisateurId;
                 }
@@ -189,6 +191,7 @@ public class PageUtilisateurs extends JFrame {
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 UtilisateurManager.getInstance().insert(blankUtilisateur);
+             //   JOptionPane.showMessageDialog(btnAjouterUtilisateur, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -197,77 +200,77 @@ public class PageUtilisateurs extends JFrame {
             model.fireTableDataChanged();
             tableauUtilisateur.revalidate();
             tableauUtilisateur.setModel(model);
+
+            blankUtilisateur = null;
+            afficheJTableUtilisateurs();
         });
 
         /**
          * Listener bouton Modifier
          */
-        btnEnrModifUtil.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnEnrModifUtil.addActionListener(e -> {
+            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
+                try {
+                    utilisateur = UtilisateurManager.getInstance().SelectById((Integer) tableauUtilisateur.getValueAt(i, 7));
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                String nomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 0));
+                String prenomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 1));
+                String emailUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 2));
+                String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
+                String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
+                String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
+                Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
-                /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
-                for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
+                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
+                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
+                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
+                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
+                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
+                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
+                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
 
-                    try {
-                        utilisateur = UtilisateurManager.getInstance().SelectById((Integer) tableauUtilisateur.getValueAt(i, 7));
-                    } catch (BLLException bllException) {
-                        bllException.printStackTrace();
-                    }
-                    String nomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 0));
-                    String prenomUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 1));
-                    String emailUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 2));
-                    String telMobUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 3));
-                    String telFixUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 4));
-                    String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
-                    Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
+                if (utilisateur == null) {
+                    JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
+                } else {
+                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
+                            !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
+                            !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
+                            !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
+                            !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
+                       //     !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie) ||
+                       //     !(utilisateur.getDateInscription() == dateInscUtilisateurModifie)
+                    ) {
+                        utilisateur.setNom(nomUtilisateurModifie);
+                        utilisateur.setPrenom(prenomUtilisateurModifie);
+                        utilisateur.setEmail(emailUtilisateurModifie);
+                        utilisateur.setTelMob(telMobUtilisateurModifie);
+                        utilisateur.setTelFix(telFixUtilisateurModifie);
+                        utilisateur.setMotDePasse(mdpUtilisateurModifie);
+                   //     utilisateur.setMotDePasse(mdpUtilisateurModifie);
+                        utilisateur.setDateInscription(dateInscUtilisateurModifie);
 
-                    if (utilisateur == null) {
-                        JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
-                    } else {
-                        /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                        if (    !utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
-                                !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
-                                !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
-                                !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
-                                !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie) ||
-                                !(utilisateur.getDateInscription() == dateInscUtilisateurModifie)
-                        ) {
-                            utilisateur.setNom(nomUtilisateurModifie);
-                            utilisateur.setPrenom(prenomUtilisateurModifie);
-                            utilisateur.setEmail(emailUtilisateurModifie);
-                            utilisateur.setTelMob(telMobUtilisateurModifie);
-                            utilisateur.setTelFix(telFixUtilisateurModifie);
-                            utilisateur.setMotDePasse(mdpUtilisateurModifie);
-                            utilisateur.setDateInscription(dateInscUtilisateurModifie);
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur()+" ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-
-                            int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
-                                    "Veuillez confirmer votre choix",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
-                            if (j == 0)  /**user a dit oui*/ {
-                                try {
-                                    if (blankUtilisateur != null) {
-                                       UtilisateurManager.getInstance().update(utilisateur);
-                                        JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté. Retenez bien votre mot de passe, nous allons le crypter");
-                                        blankUtilisateur = null;
-                                        afficheJTableUtilisateurs();
-                                        break;
-                                    } else {
-                                        UtilisateurManager.getInstance().update(utilisateur);
-                                        afficheJTableUtilisateurs();
-                                    }
-                                }
-                                catch(BLLException ex){
-                                        ex.printStackTrace();
-                                    }
+                        if (j == 0)  /**user a dit oui*/ {
+                            try {
+                                UtilisateurManager.getInstance().update(utilisateur);
+                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré. Retenez bien votre mot de passe : "+utilisateur.getMotDePasse()+" , nous allons le CRYPTER");
+                                afficheJTableUtilisateurs();
+                                break;
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
                             }
-                        }
+                        }else {break;}
                     }
                 }
-            }
-     });
+            }//fin for
+        });
 
 
         /**
@@ -276,12 +279,12 @@ public class PageUtilisateurs extends JFrame {
          */
         btnSupprimerUtil.addActionListener(e -> {
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
                 return;
             } else {
                 UtilisateurManager um = UtilisateurManager.getInstance();
 
-                int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur "+utilisateur.getIdUtilisateur()+" ?",
+                int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
@@ -323,7 +326,7 @@ public class PageUtilisateurs extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idUserSelected = (int) tableauUtilisateur.getValueAt(tableauUtilisateur.getSelectedRow(), 7);
-             //   JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
+                //   JOptionPane.showMessageDialog( null, "L'utilisateur " + idUserSelected + " est sélectionné");
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById(idUserSelected);
                 } catch (BLLException ex) {
@@ -333,21 +336,22 @@ public class PageUtilisateurs extends JFrame {
         });
 
 
-        /**
-         * listenner sur le bouton annonce
-         * @param utilisateur
-         */
-        btnAnnonce.setSize(100, 50);
-        btnAnnonce.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
-                } else {
-                    new PageAnnonces(utilisateur);
-                }
-            }
-        });
+//        /**
+//         * listenner sur le bouton annonce
+//         * @param utilisateur
+//         */
+//        btnAnnonce.setSize(100, 50);
+//        btnAnnonce.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                afficheJTableUtilisateurs();
+//                if (utilisateur == null) {
+//                    JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
+//                } else {
+//                    new PageAnnonces(utilisateur);
+//                }
+//            }
+//        });
 
         /**
          * listenner sur le bouton adresse

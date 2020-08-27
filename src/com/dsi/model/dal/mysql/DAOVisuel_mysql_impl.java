@@ -24,7 +24,7 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
     private String SQL_SelectById               = "SELECT * FROM visuels WHERE visuel_id = ?;";
     private String SQL_SelectByIdMateriel       = "SELECT * FROM visuels WHERE visuel_materiel_id = ?;";
     private String SQL_Insert                   = "INSERT INTO visuels (visuel_materiel_id, visuel_nom_fichier) VALUES (?,?);";
-    private String SQL_Update                   = "UPDATE visuels SET visuel_nom_fichier=?,  WHERE visuel_id=?;";
+    private String SQL_Update                   = "UPDATE visuels SET visuel_nom_fichier=?, visuel_materiel_id=?  WHERE visuel_id=?;";
     private String SQL_Delete                   = "DELETE FROM visuels WHERE visuel_id=?;";
 
     private Visuel visuel;
@@ -36,12 +36,82 @@ public class DAOVisuel_mysql_impl implements DAO_Visuel {
 
     @Override
     public void insert(Visuel pObj) throws DALException {
+        pstmt = null;
+        rs = null;
+        Connection cnx = null;
+
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt =cnx.prepareStatement(SQL_Insert);
+            pstmt.setInt(1, pObj.getVisuel_materiel_id());
+            pstmt.setString(2, pObj.getVisuel_nom_fichier());
+
+            pstmt.executeUpdate();
+//            rs = pstmt.getGeneratedKeys();
+//
+//            if (rs.next()) {
+//                pObj.setVisuel_id(rs.getInt(1));
+//            }
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
 
     }
 
     @Override
     public void update(Visuel pObj) throws DALException {
+        pstmt = null;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Update);
+            pstmt.setString(1, pObj.getVisuel_nom_fichier());
+            pstmt.setInt(2, pObj.getVisuel_materiel_id());
+            pstmt.setInt(3, pObj.getVisuel_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
     private String SQL_SelectAll    = "SELECT * FROM utilisateurs;";
     private String SQL_SelectById   = "SELECT * FROM utilisateurs WHERE utilisateur_id=?;";
     private String SQL_Insert       = "INSERT INTO utilisateurs(utilisateur_nom, utilisateur_prenom, utilisateur_tel_fix, utilisateur_tel_mob, utilisateur_email, utilisateur_mot_de_passe, utilisateur_date_inscription, utilisateur_id) VALUES(?,?,?,?,?,?,?,?);";
-    private String SQL_Update       = "UPDATE utlisateurs SET utilisateur_nom=?, utilisateur_prenom=?, utilisateur_tel_fix=?, utilisateur_tel_mob=?, utilisateur_email=?, utilisateur_mot_de_passe=?, utilisateur_date_inscription=? WHERE utilisateur_id=?;";
+    private String SQL_Update       = "UPDATE utilisateurs SET utilisateur_nom=?, utilisateur_prenom=?, utilisateur_tel_fix=?, utilisateur_tel_mob=?, utilisateur_email=?, utilisateur_mot_de_passe=?, utilisateur_date_inscription=? WHERE utilisateur_id=?;";
     private String SQL_Delete       = "DELETE FROM utilisateurs WHERE utilisateur_id=?;";
 
     private Utilisateur utilisateur;
@@ -51,7 +51,6 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
 
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
-
             pstmt.setString(1, pObj.getNom());
             pstmt.setString(2, pObj.getPrenom());
             pstmt.setString(3, pObj.getTelFix());
@@ -252,7 +251,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         rs.getString("utilisateur_tel_mob"),
                         rs.getString("utilisateur_email"),
                         rs.getString("utilisateur_mot_de_passe"),
-                        FonctionsDate.sqlDateVersJavaDate(rs.getDate("utilisateur_date_inscription"))
+                        rs.getDate("utilisateur_date_inscription")
                 );
 
                 System.out.println(rs.getString("utilisateur_id"));

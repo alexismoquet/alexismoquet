@@ -10,9 +10,7 @@ import java.util.List;
 public class Sports {
 
     public static List<Sport> remplirJTableWithAllSports() throws BLLException {
-        SportManager sm = SportManager.getInstance();
-
-        return sm.SelectAll();
+        return SportManager.getInstance().SelectAll();
     }
 }//fin class
 
