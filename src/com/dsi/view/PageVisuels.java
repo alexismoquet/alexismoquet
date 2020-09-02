@@ -282,10 +282,10 @@ public class PageVisuels extends JFrame {
 
                 if (e.getClickCount() == 2 && !e.isConsumed()) {
                     ImageCellRenderer icr = new ImageCellRenderer();
-                    icr.getTableCellRendererComponent(tableauVisuel,tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 0), true, true, tableauVisuel.getSelectedRow(), 0);
+                    icr.getTableCellRendererComponent(tableauVisuel,tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1), true, true, tableauVisuel.getSelectedRow(), 0);
                 }
 
-                //Gêne pour modifier une ligne du tableauVisuel //JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
+//Gêne pour modifier une ligne du tableauVisuel //JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
                 try {
                     visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
 
