@@ -2,12 +2,15 @@ package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Commentaire;
 import javax.swing.table.AbstractTableModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TableModelCommentaire extends AbstractTableModel {
 
-    private final String[] titres = {"Message","Date parution", "Note", "IdCommentaire","IdUtilisateur", "IdAnnonce"};
+    private final String[] titres = {"Message","Date de parution", "Note", "IdCommentaire","IdUtilisateur", "IdAnnonce"};
 
     private List<Commentaire> commentaires;
 
@@ -58,10 +61,15 @@ public class TableModelCommentaire extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
         if (column == 0) {
             commentaires.get(row).setCommentaire_message(value.toString());
         } else if (column ==1){
-            commentaires.get(row).setCommentaire_date_parution(new Date());
+            try {
+                commentaires.get(row).setCommentaire_date_parution(sdf.parse(value.toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else if (column ==2){
             commentaires.get(row).setCommentaire_note(Integer.parseInt(value.toString()));
         } else if (column ==3){

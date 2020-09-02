@@ -14,52 +14,52 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class UtilisateurTest {
 
-    private Utilisateur utilisateur = new Utilisateur();
+    private final Utilisateur utilisateur = new Utilisateur();
 
     @Test
     void getIdUtilisateur() {
         utilisateur.setIdUtilisateur(1);
         assertEquals(1, utilisateur.getIdUtilisateur());
     }
-
     @Test
     void getNom() {
-        utilisateur.setNom(1);
-        assertEquals(1, utilisateur.getNom());
+        utilisateur.setNom("nom");
+        assertEquals("nom", utilisateur.getNom());
     }
-
     @Test
     void getPrenom() {
-        utilisateur.setPrenom(1);
-        assertEquals(1, utilisateur.getPrenom());
+        utilisateur.setPrenom("prenom");
+        assertEquals("prenom", utilisateur.getPrenom());
     }
     @Test
     void getTelFix() {
-        utilisateur.setTelFix(1);
-        assertEquals(1, utilisateur.getTelFix());
+        utilisateur.setTelFix("telFix");
+        assertEquals("telFix", utilisateur.getTelFix());
     }
     @Test
     void getTelMob() {
-        utilisateur.setTelMob(1);
-        assertEquals(1, utilisateur.getTelMob());
+        utilisateur.setTelMob("telMob");
+        assertEquals("telMob", utilisateur.getTelMob());
     }
     @Test
     void getMotDePasse() {
-        utilisateur.setMotDePasse(1);
-        assertEquals(1, utilisateur.getMotDePasse());
+        utilisateur.setMotDePasse("mdp");
+        assertEquals("mdp", utilisateur.getMotDePasse());
     }
     @Test
     void getEmail() {
-        utilisateur.setEmail(1);
-        assertEquals(1, utilisateur.getEmail());
-    } @Test
-    void getDateInscription() {
-        utilisateur.setDateInscription(1);
-        assertEquals(1, utilisateur.getDateInscription());
-    } @Test
-    void getAdresses() {
-        utilisateur.setAdresses(1);
-        assertEquals(1, utilisateur.getAdresses());
+        utilisateur.setEmail("email");
+        assertEquals("email", utilisateur.getEmail());
     }
+    @Test
+    void getDateInscription() {
+        utilisateur.setDateInscription(new Date());
+        assertEquals(new Date(), utilisateur.getDateInscription());
+    }
+//    @Test
+//    void getAdresses() {
+//        utilisateur.setAdresses(utilisateur.setAdresses(Adresse.get(0));
+//        assertEquals(adresses, utilisateur.getAdresses());
+//    }
 
 }//fin class

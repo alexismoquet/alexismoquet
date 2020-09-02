@@ -83,7 +83,7 @@ public class PageVisuels extends JFrame {
         panCentre.add(tableauVisuel.getTableHeader(), BorderLayout.NORTH);
         panCentre.add(tableauVisuel, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauVisuel), BorderLayout.CENTER);
-        tableauVisuel.setRowHeight(30);
+        tableauVisuel.setRowHeight(40);
 
         panBas.setSize(500, 200);
 

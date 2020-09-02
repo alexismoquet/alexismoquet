@@ -1,6 +1,9 @@
 package com.dsi.librairies;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Classe FonctionsDate
@@ -9,6 +12,9 @@ import java.util.Date;
  * @since Créé le 05/02/2020
  */
 public class FonctionsDate {
+
+    public FonctionsDate() throws ParseException {
+    }
 
     /**
      * Convertion d'une date format java.sql.Date au format java.util.Date

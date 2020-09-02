@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class TableModelAnnonce extends AbstractTableModel {
 
-    private final String[] titres = {"Titres","Description","IdUtilisateur","IdAnnonce", "IdMateriel", "Date de parution"};
+    private final String[] titres = {"Titre","Description","IdUtilisateur","IdAnnonce", "IdMateriel", "Date de parution"};
 
     private List<Annonce> annonces;
 
@@ -63,6 +63,7 @@ public class TableModelAnnonce extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
 
         if(columnIndex == 0) {
             annonces.get(rowIndex).setAnnonce_titre(value.toString());
@@ -75,7 +76,6 @@ public class TableModelAnnonce extends AbstractTableModel {
         } else if (columnIndex == 4){
             annonces.get(rowIndex).setAnnonce_materiel_id(Integer.parseInt(value.toString()));
         }else if (columnIndex == 5){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
             try {
                 annonces.get(rowIndex).setAnnonce_date_parution(sdf.parse(value.toString()));
             } catch (ParseException e) {

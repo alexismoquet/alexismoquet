@@ -1,21 +1,15 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSortie;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
-import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.MaterielManager;
 import com.dsi.model.bll.SortieManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,20 +25,20 @@ import static com.dsi.controller.Sorties.remplirJTableWithAllSorties;
  */
 public class PageSorties extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnSupprimerSortie = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAjouterSortie = new JButton("Ajouter");
-    private JButton btnEnrModifs = new JButton("Enregistrer");
+    private final JButton btnSupprimerSortie = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnAjouterSortie = new JButton("Ajouter");
+    private final JButton btnEnrModifs = new JButton("Enregistrer");
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauSortie = new JTable();
+    private final JTable tableauSortie = new JTable();
     List<Sortie> sorties = new ArrayList<>();
     List<Sortie> listRechercheSorties = new ArrayList<>();
 
@@ -53,18 +47,25 @@ public class PageSorties extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
-    /************************************************************/
-    /******************** Constructeur par defaut****************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageSorties() {
         initialiserComposants();
     }
 
+    /**
+     * Constructeur
+     * @param: pMateriel
+     */
     public PageSorties(Materiel pMateriel) {
         this.materiel = pMateriel;
         initialiserComposants();
     }
 
+    /**
+     * Méthode qui affiche le graphisme de la page
+     */
     public void initialiserComposants() {
         setTitle("Sorties");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -81,7 +82,7 @@ public class PageSorties extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText(" Rechercher par date YYYY-MM-dd");
+        txtRechercher.setText(" Rechercher par état ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
@@ -95,7 +96,7 @@ public class PageSorties extends JFrame {
 
         panBas.setSize(600, 250);
         panBas.add(btnEnrModifs);
-        if (materiel != null ){
+        if (materiel != null) {
             panBas.add(btnAjouterSortie);
         }
         panBas.add(btnSupprimerSortie);
@@ -105,9 +106,9 @@ public class PageSorties extends JFrame {
 
         displayRightTable();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
+        /*
+         * MouseListenner sur JTextField rechercher
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -116,20 +117,22 @@ public class PageSorties extends JFrame {
             }
         });
 
+        /*
+         * Listenner sur le bouton btnRechercher
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheSorties = new ArrayList<>();
-            SortieManager sm = SortieManager.getInstance();
             try {
-                sm.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                SortieManager.getInstance().SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            /** ON PARCOURS LA LISTE DES sorties **/
+            /* ON PARCOURS LA LISTE DES sorties **/
             for (Sortie sortie : sorties) {
-                String sp = String.valueOf(sortie.getSortie_date_sortie());
-                String recherche =  txtRechercher.getText().toLowerCase();
+                String sp = String.valueOf(sortie.getSortie_etat());
+                String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.equals(recherche)) {
+                if (sp.startsWith(recherche)) {
                     listRechercheSorties.add(sortie);
                     TableModelSortie model = new TableModelSortie(listRechercheSorties);
                     tableauSortie.setModel(model);
@@ -140,22 +143,24 @@ public class PageSorties extends JFrame {
             }
         });
 
+        /*
+         * Listenner du btnAnnuler
+         **/
         btnAnnuler.addActionListener(e -> {
-            txtRechercher.setText(" Rechercher par date YYYY-MM-dd");
+            txtRechercher.setText(" Rechercher par état ");
             sortie = null;
             blankSortie = null;
             displayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le btnajouterSortie pour ajouter une ligne vierge
          */
         btnAjouterSortie.setSize(140, 50);
         btnAjouterSortie.addActionListener(e -> {
-            List<Sortie>allSorties = null;
-            SortieManager sm = new SortieManager();
+            List<Sortie> allSorties = null;
             try {
-                allSorties = sm.SelectAll();
+                allSorties = SortieManager.getInstance().SelectAll();
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -167,8 +172,8 @@ public class PageSorties extends JFrame {
             assert allSorties != null;
             int idMax = allSorties.get(0).getSortie_id();
 
-            for (int i = 0; i < allSorties.size(); i++) {
-                int sortieId = allSorties.get(i).getSortie_id();
+            for (Sortie allSorty : allSorties) {
+                int sortieId = allSorty.getSortie_id();
                 if (sortieId > idMax) {
                     idMax = sortieId;
                 }
@@ -178,19 +183,19 @@ public class PageSorties extends JFrame {
             blankSortie.setSortie_date_sortie(new Date());
             blankSortie.setSortie_date_retour(new Date());
 
-            if (sorties.size() > 1){
+            if (sorties.size() > 1) {
                 JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
                 return;
             }
-            if (materiel == null){
+            if (materiel == null) {
                 blankSortie.setSortie_materiel_id(0);
-            }else {
+            } else {
                 blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
             }
 
             try {
                 SortieManager.getInstance().insert(blankSortie);
-             //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
+                //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -207,12 +212,12 @@ public class PageSorties extends JFrame {
         });
 
 
-        /**
+        /*
          * listenner sur le bouton Enregistrer les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            /** Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSortie.getRowCount(); i++) {
                 try {
                     sortie = SortieManager.getInstance().SelectById((Integer) tableauSortie.getValueAt(i, 4));
@@ -222,55 +227,64 @@ public class PageSorties extends JFrame {
                 String etatSortieModifie = String.valueOf(tableauSortie.getValueAt(i, 2));
                 int idSortieModifie = (int) tableauSortie.getValueAt(i, 4);
                 int idMaterielSortieModifie = (int) tableauSortie.getValueAt(i, 3);
+                Date dateRetourSortieModifiee = (Date) tableauSortie.getValueAt(i, 0);
+                Date dateSortieSortieModifiee = (Date) tableauSortie.getValueAt(i, 1);
 
-                tableauSortie.setValueAt(etatSortieModifie, i, 2);
-                tableauSortie.setValueAt(idMaterielSortieModifie, i, 3);
-                tableauSortie.setValueAt(etatSortieModifie, i, 2);
+//                tableauSortie.setValueAt(etatSortieModifie, i, 2);
+//                tableauSortie.setValueAt(idMaterielSortieModifie, i, 3);
+//                tableauSortie.setValueAt(dateRetourSortieModifiee, i, 0);
+//                tableauSortie.setValueAt(dateSortieSortieModifiee, i, 1);
 
                 if (sortie == null) {
                     return;
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sortie");
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie) || !(sortie.getSortie_id() == idSortieModifie) || !(sortie.getSortie_materiel_id() == idMaterielSortieModifie)) {
                         sortie.setSortie_etat(etatSortieModifie);
                         sortie.setSortie_id(idSortieModifie);
                         sortie.setSortie_materiel_id(idMaterielSortieModifie);
+                        sortie.setSortie_date_retour(dateRetourSortieModifiee);
+                        sortie.setSortie_date_sortie(dateSortieSortieModifiee);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " +sortie.getSortie_id()+" ?",
+
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
-                                    SortieManager.getInstance().update(sortie);
-                                    JOptionPane.showMessageDialog(null, "Sortie " + sortie.getSortie_id() + " enregistrée");
-                                    displayRightTable();
-                                    break;
+                                SortieManager.getInstance().update(sortie);
+                                JOptionPane.showMessageDialog(null, "Sortie " + sortie.getSortie_id() + " enregistrée");
+                                displayRightTable();
+                                break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        } else {break;}
+                        } else {
+                            break;
+                        }
                     }
                 }
             }//fin for
         });
 
-
+        /*
+         *Listener bouton Supprimer
+         */
         btnSupprimerSortie.addActionListener(e -> {
             if (sortie == null) {
                 JOptionPane.showMessageDialog(btnSupprimerSortie, "Merci de sélectionner un sortie");
                 return;
             }
 
-            SortieManager sm = SortieManager.getInstance();
             int i = JOptionPane.showConfirmDialog(btnSupprimerSortie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sortie " + sortie.getSortie_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
-                    sm.delete(sortie);
+                    SortieManager.getInstance().delete(sortie);
                     JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimée");
                     displayRightTable();
                 } catch (BLLException ex) {
@@ -280,16 +294,14 @@ public class PageSorties extends JFrame {
             }
         });
 
-
-        /**
-         *
+        /*
          * Mouse listenner sur le tableau sortie
          */
         tableauSortie.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idSortie = (int) tableauSortie.getValueAt(tableauSortie.getSelectedRow(), 4);
-         //       JOptionPane.showMessageDialog(tableauSortie, "Le sortie " + idSortie + " est sélectionnée");
+                //       JOptionPane.showMessageDialog(tableauSortie, "Le sortie " + idSortie + " est sélectionnée");
                 try {
                     sortie = SortieManager.getInstance().SelectById(idSortie);
                 } catch (BLLException ex) {
@@ -300,6 +312,9 @@ public class PageSorties extends JFrame {
 
     }//fin initialiserComposants
 
+    /**
+     * Méthode qui affiche toutes les sorties
+     */
     private void afficheJTableSorties() {
         try {
             sorties = remplirJTableWithAllSorties();
@@ -310,7 +325,10 @@ public class PageSorties extends JFrame {
         }
     } //fin afficheJTable
 
-
+    /**
+     * Méthode qui affiche les sorties du
+     * matériel sélectionné
+     */
     private void afficheJTableSortiesWithIdMateriel() {
         try {
             sorties = remplirJTableSortiesWithIdMateriel(materiel.getMateriel_id());
@@ -322,8 +340,8 @@ public class PageSorties extends JFrame {
     } //fin afficheJTable
 
 
-    private void displayRightTable(){
-        if (materiel == null){
+    private void displayRightTable() {
+        if (materiel == null) {
             afficheJTableSorties();
         } else {
             afficheJTableSortiesWithIdMateriel();

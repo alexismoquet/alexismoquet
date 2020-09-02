@@ -1,15 +1,20 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelUtilisateur;
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
-import com.dsi.model.bll.*;
+import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import static com.dsi.controller.Utilisateurs.remplirJTableWithAllUtilisateurs;
 
 /**
@@ -29,7 +34,7 @@ public class PageUtilisateurs extends JFrame {
     private final JButton btnEnrModifUtil = new JButton("Enregistrer");
     private final JButton btnSupprimerUtil = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
-   // private JButton btnAnnonce = new JButton("Annonces");
+    // private JButton btnAnnonce = new JButton("Annonces");
     private final JButton btnAdresse = new JButton("Adresses");
     private final JButton btnMateriel = new JButton("Materiels");
     private final JButton btnCommentaire = new JButton("Commentaires");
@@ -40,8 +45,8 @@ public class PageUtilisateurs extends JFrame {
     private final JTable tableauUtilisateur = new JTable();
 
     private final JLabel notice = new JLabel();
+
     List<Utilisateur> utilisateurs = new ArrayList<>();
-    List<Adresse> adresses = new ArrayList<>();
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
 
     Utilisateur utilisateur, blankUtilisateur;
@@ -49,16 +54,16 @@ public class PageUtilisateurs extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
-    //************************************************************
-    // Constructeur par defaut
-    //************************************************************
+    /**
+     * Constructeur par defaut
+     */
     public PageUtilisateurs() {
         initialiserComposants();
     }
 
-    //************************************************************
-    // Methode qui va charger les composants de la fenetre
-    //************************************************************
+    /**
+     * Méthode qui affiche le graphisme de la page
+     */
     public void initialiserComposants() {
         setTitle("Utilisateurs");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -74,13 +79,15 @@ public class PageUtilisateurs extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 100));
+        panHaut.setPreferredSize(new Dimension(900, 75));
         panHaut.setLayout(new BorderLayout());
         txtRechercher.setText(" Rechercher un utilisateur par Nom ");
         panHaut.add(txtRechercher, BorderLayout.CENTER);
+        txtRechercher.setSize(900, 35);
         panHaut.add(btnRechercher, BorderLayout.NORTH);
+        btnRechercher.setSize(700, 20);
         panHaut.add(notice, BorderLayout.SOUTH);
-
+        notice.setSize(900, 20);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -101,7 +108,7 @@ public class PageUtilisateurs extends JFrame {
         panBas.add(btnAjouterUtilisateur);
         panBas.add(btnSupprimerUtil);
         panBas.add(btnAnnuler);
-      // panBas.add(btnAnnonce);
+        // panBas.add(btnAnnonce);
         panBas.add(btnMateriel);
         panBas.add(btnCommentaire);
         panBas.add(btnAdresse);
@@ -110,19 +117,20 @@ public class PageUtilisateurs extends JFrame {
 
         afficheJTableUtilisateurs();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
-
+        /*
+         * MouseListenner sur JTextField rechercher
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                txtRechercher.removeMouseListener(this);
             }
         });
 
+        /*
+         * Listenner sur le bouton btnRechercher
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheUtilisateurs = new ArrayList<>();
             UtilisateurManager um = UtilisateurManager.getInstance();
@@ -137,7 +145,8 @@ public class PageUtilisateurs extends JFrame {
 
                 if (user.startsWith(recherche)) {
                     listRechercheUtilisateurs.add(utilisateur);
-                    TableModelUtilisateur model = new TableModelUtilisateur(listRechercheUtilisateurs);
+                    TableModelUtilisateur model = null;
+                    model = new TableModelUtilisateur(listRechercheUtilisateurs);
                     tableauUtilisateur.setModel(model);
                 }
             }
@@ -146,7 +155,7 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-        /**
+        /*
          * Listener bouton annuler
          */
         btnAnnuler.addActionListener(e -> {
@@ -155,8 +164,10 @@ public class PageUtilisateurs extends JFrame {
             blankUtilisateur = null;
             afficheJTableUtilisateurs();
         });
-        /**
-         * listenner sur le btnajouterUtilisateur pour ajouter une ligne vierge
+
+        /*
+         * listenner sur le btnAjouterUtilisateur pour ajouter une ligne vierge
+         * @param: blankUtilisateur
          */
         btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
@@ -191,12 +202,13 @@ public class PageUtilisateurs extends JFrame {
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 UtilisateurManager.getInstance().insert(blankUtilisateur);
-             //   JOptionPane.showMessageDialog(btnAjouterUtilisateur, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
+                //   JOptionPane.showMessageDialog(btnAjouterUtilisateur, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
 
-            TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
+            TableModelUtilisateur model;
+            model = new TableModelUtilisateur(utilisateurs);
             model.fireTableDataChanged();
             tableauUtilisateur.revalidate();
             tableauUtilisateur.setModel(model);
@@ -205,11 +217,11 @@ public class PageUtilisateurs extends JFrame {
             afficheJTableUtilisateurs();
         });
 
-        /**
+        /*
          * Listener bouton Modifier
          */
         btnEnrModifUtil.addActionListener(e -> {
-            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauUtilisateur.getRowCount(); i++) {
                 try {
                     utilisateur = UtilisateurManager.getInstance().SelectById((Integer) tableauUtilisateur.getValueAt(i, 7));
@@ -224,25 +236,25 @@ public class PageUtilisateurs extends JFrame {
                 String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
                 Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
-                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
-                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
-                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
-                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
-                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
-                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
+//                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
+//                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
+//                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
+//                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
+//                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
+//                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
+//                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
 
                 if (utilisateur == null) {
                     JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRE LES VALEURS DS LA BASE ***/
                     if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
                             !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
                             !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                             !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                             !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
-                       //     !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie) ||
-                       //     !(utilisateur.getDateInscription() == dateInscUtilisateurModifie)
+                        //     !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie) ||
+                        //   !(utilisateur.getDateInscription() == (dateInscUtilisateurModifie))
                     ) {
                         utilisateur.setNom(nomUtilisateurModifie);
                         utilisateur.setPrenom(prenomUtilisateurModifie);
@@ -250,37 +262,37 @@ public class PageUtilisateurs extends JFrame {
                         utilisateur.setTelMob(telMobUtilisateurModifie);
                         utilisateur.setTelFix(telFixUtilisateurModifie);
                         utilisateur.setMotDePasse(mdpUtilisateurModifie);
-                   //     utilisateur.setMotDePasse(mdpUtilisateurModifie);
+                        //     utilisateur.setMotDePasse(mdpUtilisateurModifie);
                         utilisateur.setDateInscription(dateInscUtilisateurModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur()+" ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
                                 UtilisateurManager.getInstance().update(utilisateur);
-                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré. Retenez bien votre mot de passe : "+utilisateur.getMotDePasse()+" , nous allons le CRYPTER");
+                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré. Nous allons CRYPTER votre mot de passe : " + utilisateur.getMotDePasse());
                                 afficheJTableUtilisateurs();
                                 break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        }else {break;}
+                        } else {
+                            break;
+                        }
                     }
                 }
             }//fin for
         });
 
 
-        /**
+        /*
          *Listener bouton Supprimer
-         * @param utilisateur
          */
         btnSupprimerUtil.addActionListener(e -> {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
-                return;
             } else {
                 UtilisateurManager um = UtilisateurManager.getInstance();
 
@@ -288,7 +300,7 @@ public class PageUtilisateurs extends JFrame {
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                ///////Jouer un son qd suppression/////////////
+                ///////Joue un son qd suppression/////////////
 //                InputStream in = null;
 //                try {
 //                    in = new FileInputStream("0200.mp3");
@@ -305,7 +317,7 @@ public class PageUtilisateurs extends JFrame {
 //                AudioPlayer.player.stop(in);
                 ////////////////////////////////
 
-                if (i == 0)  /**user a dit oui*/ {
+                if (i == 0)  /*user a dit oui*/ {
                     try {
                         um.delete(utilisateur);
                         JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
@@ -319,7 +331,7 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner sur le tableau utilisateur
          */
         tableauUtilisateur.addMouseListener(new MouseAdapter() {
@@ -353,9 +365,8 @@ public class PageUtilisateurs extends JFrame {
 //            }
 //        });
 
-        /**
+        /*
          * listenner sur le bouton adresse
-         * @param utilisateur
          */
         btnAdresse.setSize(100, 50);
         btnAdresse.addActionListener(new ActionListener() {
@@ -369,9 +380,8 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-        /**
+        /*
          * listenner sur le bouton materiel
-         * @param utilisateur
          */
         btnMateriel.setSize(100, 50);
         btnMateriel.addActionListener(new ActionListener() {
@@ -385,9 +395,8 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-        /**
+        /*
          * listenner sur le bouton commentaire
-         * @param utilisateur
          */
         btnCommentaire.setSize(100, 50);
         btnCommentaire.addActionListener(new ActionListener() {
@@ -404,6 +413,9 @@ public class PageUtilisateurs extends JFrame {
     } //fin initialiserComposants
 
 
+    /**
+     * Méthode qui affiche tous les utilisateurs
+     */
     private void afficheJTableUtilisateurs() {
         try {
             utilisateurs = remplirJTableWithAllUtilisateurs();
@@ -413,7 +425,6 @@ public class PageUtilisateurs extends JFrame {
             ex.printStackTrace();
         }
     } //fin afficheJTable
-
 
 }// fin class
 

@@ -1,13 +1,9 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCategorie;
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Categorie;
-import com.dsi.model.bll.AdresseManager;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
-import com.dsi.model.bll.CommentaireManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -27,31 +23,30 @@ import static com.dsi.controller.Categories.remplirJTableWithAllCategories;
  */
 public class PageCategories extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnSupprimerCategorie = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterCategorie = new JButton("Ajouter");
-    private JButton btnEnrModifs = new JButton("Enregistrer");
+    private final JButton btnSupprimerCategorie = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnMateriels = new JButton("Matériels");
+    private final JButton btnAjouterCategorie = new JButton("Ajouter");
+    private final JButton btnEnrModifs = new JButton("Enregistrer");
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauCategorie = new JTable();
+    private final JTable tableauCategorie = new JTable();
     List<Categorie> categories = new ArrayList<>();
     List<Categorie> listRechercheCategories = new ArrayList<>();
 
     Categorie categorie, blankCategorie;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
-
-    /************************************************************/
-    /******************** Constructeur par defaut****************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageCategories() {
         initialiserComposants();
     }
@@ -96,9 +91,9 @@ public class PageCategories extends JFrame {
 
         afficheJTableCategories();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
+        /**
+         * Mouse listenner du champ de recherche
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -107,6 +102,9 @@ public class PageCategories extends JFrame {
             }
         });
 
+        /**
+         * Mouse listenner du bouton de recherche
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheCategories = new ArrayList<>();
             CategorieManager sm = CategorieManager.getInstance();
@@ -115,7 +113,7 @@ public class PageCategories extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            /** ON PARCOURS LA LISTE DES SPORTS **/
+            /** ON PARCOURS LA LISTE DES CATEGORIES */
             for (Categorie categorie : categories) {
                 String sp = categorie.getCategorie_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
@@ -132,7 +130,7 @@ public class PageCategories extends JFrame {
         });
 
         /**
-         * listenner sur le btnajouterAnnuler
+         * listenner sur le btnAnnuler
          */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par nom");
@@ -142,8 +140,7 @@ public class PageCategories extends JFrame {
         });
 
         /**
-         * listenner sur le btnajouterCategorie pour ajouter une ligne vierge
-         * paramètre: blankcategorie
+         * listenner sur le btnAjouterCategorie pour ajouter une ligne vierge
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
@@ -189,7 +186,7 @@ public class PageCategories extends JFrame {
 
 
         /**
-         * listenner sur le bouton Enregistrer - les modifications dans la base
+         * listenner sur le bouton Enregistrer qui enregistre les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
@@ -236,7 +233,6 @@ public class PageCategories extends JFrame {
 
         /**
          * Listenner sur le bouton supprimer
-         * paramètres : categorie
          */
         btnSupprimerCategorie.addActionListener(e -> {
             if (categorie == null) {
@@ -263,7 +259,7 @@ public class PageCategories extends JFrame {
 
 
         /**
-         * listenner sur le bouton materiel
+         * listenner sur le bouton materiel qui dirige sur la page matériel en fonction de la catégorie sélectionnée
          */
         btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(new ActionListener() {
@@ -297,6 +293,9 @@ public class PageCategories extends JFrame {
 
     }//fin initialiserComposants
 
+    /**
+     * Méthode qui affiche toutes les catégories
+     */
     private void afficheJTableCategories() {
         try {
             categories = remplirJTableWithAllCategories();

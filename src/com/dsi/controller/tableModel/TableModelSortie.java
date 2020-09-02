@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class TableModelSortie extends AbstractTableModel {
 
-    private final String[] titres = {"Date retour","Date sortie", "sortie état", "IdMateriel", "IdSortie"};
+    private final String[] titres = {"Date retour","Date sortie", "Etat sortie", "IdMatériel", "IdSortie"};
 
     private List<Sortie> sorties;
 
@@ -56,16 +56,15 @@ public class TableModelSortie extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         fireTableCellUpdated(rowIndex, columnIndex);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
 
         if(columnIndex == 0) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
             try {
                 sorties.get(rowIndex).setSortie_date_retour(sdf.parse(value.toString()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else if (columnIndex == 1){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
             try {
                 sorties.get(rowIndex).setSortie_date_sortie(sdf.parse(value.toString()));
             } catch (ParseException e) {

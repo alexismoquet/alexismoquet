@@ -3,7 +3,6 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelAdresse;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -22,21 +21,21 @@ import static com.dsi.controller.Adresses.*;
  */
 public class PageAdresses extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnModifierAdresse = new JButton("Enregistrer");
-    private JButton btnAjouterLigne = new JButton("Ajouter");
-    private JButton btnSupprimerAdresse = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnModifierAdresse = new JButton("Enregistrer");
+    private final JButton btnAjouterLigne = new JButton("Ajouter");
+    private final JButton btnSupprimerAdresse = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
 
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauAdresse = new JTable();
+    private final JTable tableauAdresse = new JTable();
     List<Adresse> adresses = new ArrayList<>();
 
     List<Adresse> listRechercheAdresses = new ArrayList<>();
@@ -45,19 +44,23 @@ public class PageAdresses extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
 
-    /************************************************************/
-    /******************** Constructeurs**************************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageAdresses() {
         initialiserComposants();
     }
 
+    /**
+     * Constructeur
+     * @param pUtilisateur
+     */
     public PageAdresses(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
         initialiserComposants();
     }
 
-    /************************************************************/
+
 
     public void initialiserComposants() {
         setTitle("Adresses");
@@ -99,15 +102,11 @@ public class PageAdresses extends JFrame {
         panBas.add(btnAnnuler);
 
         setContentPane(panPrincipal);
-
         displayRightTable();
 
-/**************************************************************************************************************************************/
-/*************************************************************** Les listenners des boutons *******************************************************/
-/**************************************************************************************************************************************/
-
-
-        /****Mouse listenner du champ de recherche  ***********************/
+        /**
+         * Mouse listenner du champ de recherche
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -116,6 +115,10 @@ public class PageAdresses extends JFrame {
             }
         });
 
+        /**
+         * Mouse listenner du bouton de recherche
+         * @param adresse
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheAdresses = new ArrayList<>();
             AdresseManager um = AdresseManager.getInstance();
@@ -140,7 +143,6 @@ public class PageAdresses extends JFrame {
             }
         });
 
-
         /**
          * Mouse listenner sur le tableau adresse
          */
@@ -159,10 +161,6 @@ public class PageAdresses extends JFrame {
         });
 
 
-        /*************************************************************************************************/
-        /***************************  ACTION LISTENNERS DES BOUTONS DU PANEL BAS  ************************/
-        /*************************************************************************************************/
-
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             adresse = null;
@@ -170,13 +168,10 @@ public class PageAdresses extends JFrame {
             if (utilisateur == null) {
                 afficheJTableWithAllAdresses();
             } else {
-                afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());
+                afficheJTableAdressesIdUtilisateur();
             }
         });
 
-        /**
-         * listenner sur le btnajouterAdresse pour ajouter une ligne vierge
-         */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
             List<Adresse> allAdresses = null;
@@ -230,12 +225,10 @@ public class PageAdresses extends JFrame {
             displayRightTable();
         });
 
-        /**
-         * listenner sur le btnModifierAdresse pour enregistrer modifications
-         */
         btnModifierAdresse.addActionListener(e -> {
-            AdresseManager am = AdresseManager.getInstance();
-            /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            /** On récupére les valeurs du tableauAdresse, on boucle pour chaque ligne pour
+             * détecter si changement
+             * */
             for (int i = 0; i < tableauAdresse.getRowCount(); i++) {
 
                 try {
@@ -251,17 +244,14 @@ public class PageAdresses extends JFrame {
                 String paysModifie = String.valueOf(tableauAdresse.getValueAt(i, 5));
                 int idUtilisateurModifie = (int)(tableauAdresse.getValueAt(i, 7));
 
+//                tableauAdresse.setValueAt(adresseModifiee, i, 0);
+//                tableauAdresse.setValueAt(villeModifiee, i, 1);
+//                tableauAdresse.setValueAt(cpModifie, i, 2);
+//                tableauAdresse.setValueAt(complementModifie, i, 3);
+//                tableauAdresse.setValueAt(departementModifie, i, 4);
+//                tableauAdresse.setValueAt(paysModifie, i,5 );
+//                tableauAdresse.setValueAt(idUtilisateurModifie, i,7 );
 
-                tableauAdresse.setValueAt(adresseModifiee, i, 0);
-                tableauAdresse.setValueAt(villeModifiee, i, 1);
-                tableauAdresse.setValueAt(cpModifie, i, 2);
-                tableauAdresse.setValueAt(complementModifie, i, 3);
-                tableauAdresse.setValueAt(departementModifie, i, 4);
-                tableauAdresse.setValueAt(paysModifie, i,5 );
-                tableauAdresse.setValueAt(idUtilisateurModifie, i,7 );
-
-
-                /*** ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!adresse.getAdresse().equals(adresseModifiee) || !adresse.getVille().equals(villeModifiee)
                         || !adresse.getCodePostal().equals(cpModifie)|| !adresse.getComplement().equals(complementModifie)
                         || !adresse.getDepartement().equals(departementModifie)|| !adresse.getPays().equals(paysModifie)
@@ -295,10 +285,6 @@ public class PageAdresses extends JFrame {
         });
 
 
-        /**
-         * listenner sur le btnSupprimerAdresse
-         * @param adresse
-         */
         btnSupprimerAdresse.addActionListener(e -> {
             if (adresse == null) {
                 JOptionPane.showMessageDialog(btnSupprimerAdresse, "Veuillez sélectionner une adresse");
@@ -318,7 +304,7 @@ public class PageAdresses extends JFrame {
                         afficheJTableWithAllAdresses();
                         //    tableauAdresse.clearSelection();
                     } else {
-                        afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());
+                        afficheJTableAdressesIdUtilisateur();
                         tableauAdresse.clearSelection();
                     }
                 } catch (BLLException ex) {
@@ -330,7 +316,10 @@ public class PageAdresses extends JFrame {
     }//fin initialiserComposants
 
 
-    private void afficheJTableAdressesIdUtilisateur(int pIdUtilisateur) {
+    /**
+     * Méthode qui affiche l'adresse de l'utilisateur sélectionné
+     */
+    private void afficheJTableAdressesIdUtilisateur() {
         try {
             adresses = remplirJTableWithAdressesIdUser(utilisateur.getIdUtilisateur());
             TableModelAdresse model = new TableModelAdresse(adresses);
@@ -340,6 +329,9 @@ public class PageAdresses extends JFrame {
         }
     }
 
+    /**
+     * Méthode qui affiche toutes les adresses
+     */
     private void afficheJTableWithAllAdresses() {
         try {
             adresses = remplirJTableWithAllAdresses();
@@ -350,11 +342,14 @@ public class PageAdresses extends JFrame {
         }
     }
 
+    /**
+     * Méthode qui affiche le bon tableau selon la page de provenance
+     */
     private void displayRightTable (){
         if (utilisateur == null){
             afficheJTableWithAllAdresses();
         } else {
-            afficheJTableAdressesIdUtilisateur(utilisateur.getIdUtilisateur());;
+            afficheJTableAdressesIdUtilisateur();
         }
     }
 
