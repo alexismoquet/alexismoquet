@@ -47,7 +47,6 @@ public class PageMateriels extends JFrame {
     Materiel materiel, blankMateriel;
     Integer annonce_materiel_id;
 
-
     /************************************************************/
     /*********************** Constructeurs **********************/
     /************************************************************/
@@ -58,6 +57,10 @@ public class PageMateriels extends JFrame {
 
     public PageMateriels(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
+        if (utilisateur.getAdresses().size() == 0){
+            JOptionPane.showMessageDialog(null, "Merci de créer une adresse");
+            return;
+        }
         initialiserComposants();
     }
 
@@ -132,7 +135,6 @@ public class PageMateriels extends JFrame {
         }
 
         setContentPane(panPrincipal);
-
         displayRightTable();
 
         /**************************************************************************************************************************************/
@@ -336,7 +338,6 @@ public class PageMateriels extends JFrame {
             }
         });
 
-
         /**
          * Mouse listenner sur le tableau materiel
          */
@@ -344,7 +345,7 @@ public class PageMateriels extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idMaterielSelected = (int) tableauMateriel.getValueAt(tableauMateriel.getSelectedRow(), 5);
-          //      JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné");
+           //     JOptionPane.showMessageDialog(null, "Le materiel " + idMaterielSelected + " est sélectionné", null, JOptionPane.WARNING_MESSAGE);
                 try {
                     materiel = MaterielManager.getInstance().SelectById(idMaterielSelected);
                 } catch (BLLException ex) {
@@ -352,7 +353,6 @@ public class PageMateriels extends JFrame {
                 }
             }
         });
-
 
         /**
          * listenner sur le bouton Visuels

@@ -1,14 +1,13 @@
 package com.dsi.controller.tableModel;
 
-import com.dsi.librairies.FonctionsDate;
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Utilisateur;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+
 
 import javax.swing.table.AbstractTableModel;
 
@@ -118,7 +117,7 @@ public class TableModelUtilisateur extends AbstractTableModel {
             utilisateurs.get(row).setMotDePasse((String) value);
             }
         else if (column == 6) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
             try {
                 utilisateurs.get(row).setDateInscription(sdf.parse(value.toString()));
             } catch (ParseException e) {
@@ -126,6 +125,5 @@ public class TableModelUtilisateur extends AbstractTableModel {
             }
         }
     } //fin setValue
-
 
 } //fin class

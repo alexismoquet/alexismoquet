@@ -1,8 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSortie;
-import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.controller.tableModel.TableModelVisuel;
+import com.dsi.controller.tableModel.*;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
 
@@ -237,15 +235,15 @@ public class PageVisuels extends JFrame {
             /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauVisuel.getRowCount(); i++) {
                 try {
-                    visuel = VisuelManager.getInstance().SelectById((Integer) tableauVisuel.getValueAt(i, 1));
+                    visuel = VisuelManager.getInstance().SelectById((Integer) tableauVisuel.getValueAt(i, 2));
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
-                String nomFichierVisuelModifie = String.valueOf(tableauVisuel.getValueAt(i, 0));
-                int idMaterielVisuelModifie = (int) tableauVisuel.getValueAt(i, 2);
+                String nomFichierVisuelModifie = String.valueOf(tableauVisuel.getValueAt(i, 1));
+                int idMaterielVisuelModifie = (int) tableauVisuel.getValueAt(i, 3);
 
-                tableauVisuel.setValueAt(nomFichierVisuelModifie, i, 0);
-                tableauVisuel.setValueAt(idMaterielVisuelModifie, i, 2);
+                tableauVisuel.setValueAt(nomFichierVisuelModifie, i, 1);
+                tableauVisuel.setValueAt(idMaterielVisuelModifie, i, 3);
 
                 if (visuel == null) {
                     return;
@@ -279,8 +277,15 @@ public class PageVisuels extends JFrame {
         tableauVisuel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1);
-                //Gêne pour modifier une ligne du tableauVisuel //      JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
+                int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 2);
+                Object imgVisuel = tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 0);
+
+                if (e.getClickCount() == 2 && !e.isConsumed()) {
+                    ImageCellRenderer icr = new ImageCellRenderer();
+                    icr.getTableCellRendererComponent(tableauVisuel,tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 0), true, true, tableauVisuel.getSelectedRow(), 0);
+                }
+
+                //Gêne pour modifier une ligne du tableauVisuel //JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
                 try {
                     visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
 
