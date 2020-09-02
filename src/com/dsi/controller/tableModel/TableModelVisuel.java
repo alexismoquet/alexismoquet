@@ -1,14 +1,13 @@
 package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Visuel;
-
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
 
-    private final String[] titres = {"Image","Nom fichier", "IdVisuel", "IdMatériel"};
+    private final String[] titres = {"Visuel","Nom du fichier", "IdVisuel", "IdMatériel"};
     private List<Visuel> visuels;
 
     
@@ -43,7 +42,6 @@ public class TableModelVisuel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-      //  new ImageCellRenderer ();
 
         switch (columnIndex) {
             case 0:

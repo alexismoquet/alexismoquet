@@ -1,15 +1,11 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelSport;
-import com.dsi.model.beans.Categorie;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.bll.*;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,21 +20,21 @@ import static com.dsi.controller.Sports.remplirJTableWithAllSports;
  */
 public class PageSports extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnSupprimerSport = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnMateriels = new JButton("Matériels");
-    private JButton btnAjouterSport = new JButton("Ajouter");
-    private JButton btnEnrModifs = new JButton("Enregistrer");
+    private final JButton btnSupprimerSport = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnMateriels = new JButton("Matériels");
+    private final JButton btnAjouterSport = new JButton("Ajouter");
+    private final JButton btnEnrModifs = new JButton("Enregistrer");
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauSport = new JTable();
+    private final JTable tableauSport = new JTable();
     List<Sport> sports = new ArrayList<>();
     List<Sport> listRechercheSports = new ArrayList<>();
 
@@ -46,14 +42,16 @@ public class PageSports extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
-    /************************************************************/
-    /******************** Constructeur par defaut****************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageSports() {
         initialiserComposants();
     }
 
-
+    /**
+     * Méthode qui affiche le graphisme de la page
+     */
     public void initialiserComposants() {
         setTitle("Sports");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -93,9 +91,9 @@ public class PageSports extends JFrame {
 
         afficheJTableSports();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
+        /*
+         * MouseListenner sur JTextField rechercher
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -105,6 +103,9 @@ public class PageSports extends JFrame {
             }
         });
 
+        /*
+         * Listenner sur le bouton btnRechercher
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheSports = new ArrayList<>();
             SportManager sm = SportManager.getInstance();
@@ -113,7 +114,7 @@ public class PageSports extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            /** ON PARCOURS LA LISTE DES SPORTS **/
+            /*ON PARCOURS LA LISTE DES SPORTS **/
             for (Sport sport : sports) {
                 String sp = sport.getSport_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
@@ -129,6 +130,9 @@ public class PageSports extends JFrame {
             }
         });
 
+        /*
+         * Listenner du btnAnnuler
+         **/
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par nom ");
             sport = null;
@@ -136,7 +140,7 @@ public class PageSports extends JFrame {
             afficheJTableSports();
         });
 
-        /**
+        /*
          * listenner sur le btnajouterSport pour ajouter une ligne vierge
          */
         btnAjouterSport.setSize(140, 50);
@@ -163,7 +167,7 @@ public class PageSports extends JFrame {
             }
             blankSport.setSport_id(idMax + 1);
             blankSport.setSport_libelle("");
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
+
             try {
                 SportManager.getInstance().insert(blankSport);
             //    JOptionPane.showMessageDialog(btnAjouterSport, "Sport ajouté");
@@ -182,12 +186,13 @@ public class PageSports extends JFrame {
         });
 
 
-        /**
-         * listenner sur le bouton Enregistrer les modifications dans la base
+        /*
+         * listenner sur le boutonbtnEnrModifs qui
+         * enregistre les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauSport.getRowCount(); i++) {
                 try {
                     sport = SportManager.getInstance().SelectById((Integer) tableauSport.getValueAt(i, 1));
@@ -201,7 +206,7 @@ public class PageSports extends JFrame {
                     return;
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) || !(sport.getSport_id() == idSportModifie)) {
                         sport.setSport_libelle(libelleSportModifie);
                         sport.setSport_id(idSportModifie);
@@ -210,7 +215,7 @@ public class PageSports extends JFrame {
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
                                     SportManager.getInstance().update(sport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " enregistré");
@@ -227,13 +232,14 @@ public class PageSports extends JFrame {
             }//fin for
         });
 
-
+        /*
+         *Listener bouton btnSupprimerSport
+         */
         btnSupprimerSport.addActionListener(e -> {
             if (sport == null) {
                 JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
                 return;
             }
-            SportManager sm = SportManager.getInstance();
             int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
@@ -250,25 +256,21 @@ public class PageSports extends JFrame {
             }
         });
 
-        /**
-         * listenner sur le bouton materiel
+        /*
+         * listenner sur le bouton btnMateriels
          */
         btnMateriels.setSize(100, 50);
-        btnMateriels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (sport == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sport");
-                } else {
-                    new PageMateriels(sport);
-                }
+        btnMateriels.addActionListener(e -> {
+            if (sport == null) {
+                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sport");
+            } else {
+                new PageMateriels(sport);
             }
         });
 
 
-        /**
-         *
-         * Mouse listenner sur le tableau sport
+        /*
+          Mouse listenner sur le tableau sport
          */
         tableauSport.addMouseListener(new MouseAdapter() {
             @Override
@@ -284,6 +286,9 @@ public class PageSports extends JFrame {
 
     }//fin initialiserComposants
 
+    /**
+     * Méthode qui affiche tous les sports
+     */
     private void afficheJTableSports() {
         try {
             sports = remplirJTableWithAllSports();

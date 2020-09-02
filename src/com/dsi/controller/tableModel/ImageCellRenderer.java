@@ -6,6 +6,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
+
+/**
+ * Créer le 02/09 par Alexis Moquet
+ * @param: cheminImageVisuel
+ */
 public class ImageCellRenderer extends DefaultTableCellRenderer {
 
     public Materiel visuels;
@@ -18,9 +23,9 @@ public class ImageCellRenderer extends DefaultTableCellRenderer {
         Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
         JLabel label = (JLabel) component;
-        String cheminImage = String.valueOf(value);
+        String cheminImageVisuel = String.valueOf(value);
 
-        ImageIcon icon = new ImageIcon(cheminImage);
+        ImageIcon icon = new ImageIcon(cheminImageVisuel);
 
         if (icon.getImageLoadStatus() == java.awt.MediaTracker.COMPLETE) {
             label.setIcon(icon);

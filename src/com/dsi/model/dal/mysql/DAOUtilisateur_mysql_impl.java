@@ -254,8 +254,6 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
                         rs.getDate("utilisateur_date_inscription")
                 );
 
-                System.out.println(rs.getString("utilisateur_id"));
-
                 DAO_Adresse dao = DAO_Factory.getDAO_Adresse();
 
                 try {

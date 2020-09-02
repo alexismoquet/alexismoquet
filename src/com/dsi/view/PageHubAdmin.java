@@ -13,8 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,20 +25,21 @@ import java.util.List;
  * @since Créé le 04/02/2020
  */
 public class PageHubAdmin extends JFrame {
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panBtn = new JPanel();
-    private JPanel panAnomalies = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panBtn = new JPanel();
+    private final JPanel panAnomalies = new JPanel();
 
-    private JButton bUtilisateurs = new JButton("Utilisateurs");
-    private JButton bCategories = new JButton("Catégories");
-    private JButton bSports = new JButton("Sports");
-    private JButton bCommentaires = new JButton("Commentaires");
-    private JButton bEnregistrer = new JButton("Enregistrer");
-    private JButton bAnnonces = new JButton("Annonces");
-    private JButton bMateriels = new JButton("Materiels");
-    private JButton bVisuels = new JButton("Visuels");
-    private JButton bSorties = new JButton("Sorties");
-    private JButton bAdresses = new JButton("Adresses");
+    private final JButton bUtilisateurs = new JButton("Utilisateurs");
+    private final JButton bCategories = new JButton("Catégories");
+    private final JButton bSports = new JButton("Sports");
+    private final JButton bCommentaires = new JButton("Commentaires");
+    private final JButton bEnregistrer = new JButton("Enregistrer");
+    private final JButton bAnnonces = new JButton("Annonces");
+    private final JButton bMateriels = new JButton("Materiels");
+    private final JButton bVisuels = new JButton("Visuels");
+    private final JButton bSorties = new JButton("Sorties");
+    private final JButton bAdresses = new JButton("Adresses");
+    private final JButton bAnnuler = new JButton("Annuler");
 
     private JTable tableauAnomalies = new JTable();
     private JLabel anomaliesASurveiller = new JLabel();
@@ -48,9 +49,9 @@ public class PageHubAdmin extends JFrame {
     Annonce annonceSelect, annonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
-    //************************************************************
-    // Constructeur par defaut
-    //************************************************************
+    /**
+     * Constructeur par defaut
+     */
     public PageHubAdmin() throws BLLException {
         initialiserComposants();
     }
@@ -76,9 +77,22 @@ public class PageHubAdmin extends JFrame {
 
         /***** Panel des boutons*/
         panBtn.setBackground(Color.decode("#11417d")); //bleu
-        panBtn.setPreferredSize(new Dimension(900, 70));
+        panBtn.setPreferredSize(new Dimension(900, 100));
         panBtn.setBorder(new EmptyBorder(10, 10, 0, 10));
         panBtn.add(bUtilisateurs);
+
+//        bUtilisateurs.setBorder(new EmptyBorder(9,20,9,20));
+//        bCategories.setBorder(new EmptyBorder(9,20,9,20));
+//        bSports.setBorder(new EmptyBorder(9,20,9,20));
+//        bAnnonces.setBorder(new EmptyBorder(9,20,9,20));
+//        bMateriels.setBorder(new EmptyBorder(9,20,9,20));
+//        bVisuels.setBorder(new EmptyBorder(9,20,9,20));
+//        bSorties.setBorder(new EmptyBorder(9,20,9,20));
+//        bAdresses.setBorder(new EmptyBorder(9,20,9,20));
+//        bCommentaires.setBorder(new EmptyBorder(9,20,9,20));
+//        bEnregistrer.setBorder(new EmptyBorder(9,20,9,20));
+//        bAnnuler.setBorder(new EmptyBorder(9,20,9,20));
+
         panBtn.add(bCategories);
         panBtn.add(bSports);
         panBtn.add(bAnnonces);
@@ -87,6 +101,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bSorties);
         panBtn.add(bCommentaires);
         panBtn.add(bAdresses);
+        panBtn.add(bAnnuler);
         panBtn.add(bEnregistrer);
 
         /***** Panel des anomalies*/
@@ -102,8 +117,8 @@ public class PageHubAdmin extends JFrame {
         panAnomalies.add(anomaliesASurveiller, BorderLayout.NORTH);
         panAnomalies.add(new JScrollPane(tableauAnomalies), BorderLayout.CENTER);
         panAnomalies.setPreferredSize(new Dimension(900, 700));
-        panAnomalies.setBorder(new EmptyBorder(5, 20, 20, 20));
-        tableauAnomalies.setRowHeight(20);
+        panAnomalies.setBorder(new EmptyBorder(0, 20, 10, 20));
+        tableauAnomalies.setRowHeight(30);
 
         bUtilisateurs.setSize(100, 50);
         bUtilisateurs.addActionListener(new ActionListener() {
@@ -170,14 +185,27 @@ public class PageHubAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) { PageAdresses pa = new PageAdresses(); }
         });
 
+        bAnnuler.setSize(100, 50);
+        bAnnuler.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                annonce = null;
+                try {
+                    remplirJTableWithAnomalies();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+            }
+        });
+
         /**
-         * Listener btnEnregistrer - enregistrer les modifs du tableau anomalies (annonces)
+         * Listener btnEnregistrer qui enregistre les modifications du tableau des anomalies dans les annonces
          */
         bEnregistrer.setSize(100, 50);
         bEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /** Récupérer les valeurs du tableauAnomalies, on boucle pour chaque ligne */
+                /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
                 for (int i = 0; i < tableauAnomalies.getRowCount(); i++) {
 
                     try {
@@ -185,38 +213,47 @@ public class PageHubAdmin extends JFrame {
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
-                    String titreAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 0));
-                    String descriptionAnnonceModifiee = String.valueOf(tableauAnomalies.getValueAt(i, 1));
+                    String titreAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 0));
+                    String descriptionAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 1));
+                    int annonceIdUtilisateurModifie = (int) tableauAnomalies.getValueAt(i, 2);
+                    int annonceIdMaterielModifie = (int) tableauAnomalies.getValueAt(i, 4);
+                    Date annonceDateParutionModifie = (Date) tableauAnomalies.getValueAt(i, 5);
 
-                    tableauAnomalies.setValueAt(descriptionAnnonceModifiee, i, 1);
-                    tableauAnomalies.setValueAt(titreAnnonceModifiee, i, 0);
+//                    tableauAnomalies.setValueAt(titreAnnonceModifie, i, 0);
+//                    tableauAnomalies.setValueAt(descriptionAnnonceModifie, i, 1);
+//                    tableauAnomalies.setValueAt(annonceIdUtilisateurModifie, i, 2);
+//                    tableauAnomalies.setValueAt(annonceIdMaterielModifie, i, 4);
+//                    tableauAnomalies.setValueAt(annonceDateParutionModifie, i, 5);
+
 
                     /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!annonce.getAnnonce_titre().equals(titreAnnonceModifiee) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifiee)) {
+                    if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
+                            || annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
                         try {
-                            annonce.setAnnonce_description(descriptionAnnonceModifiee);
-                            annonce.setAnnonce_titre(titreAnnonceModifiee);
+                            annonce.setAnnonce_description(descriptionAnnonceModifie);
+                            annonce.setAnnonce_titre(titreAnnonceModifie);
+                            annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
+                            annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
+                            annonce.setAnnonce_date_parution(annonceDateParutionModifie);
 
-                            int j = JOptionPane.showConfirmDialog(bEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir continuer ?",
+                            int j = JOptionPane.showConfirmDialog(bEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                             if (j == 0)  /**user a dit oui*/ {
                                 AnnonceManager.getInstance().update(annonce);
-                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " modifiée");
+                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " enregistrée");
                                 remplirJTableWithAnomalies();
+                                break;
                             }
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
                     }
                 }//fin boucle for
-
                 tableauAnomalies.clearSelection();
-
-            }//fin actionPerformed
-
-        });
+            }
+         });
 
         remplirJTableWithAnomalies();
 
@@ -224,7 +261,9 @@ public class PageHubAdmin extends JFrame {
 
     }//fin initialiser composants
 
-
+    /**
+     * Méthode qui affiche les anomalies dans les annonces
+     */
     private void remplirJTableWithAnomalies() throws BLLException {
         listAnomalies = new ArrayList<>();
         AnnonceManager am = new AnnonceManager();

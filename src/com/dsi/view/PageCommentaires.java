@@ -1,14 +1,10 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelCommentaire;
-import com.dsi.controller.tableModel.TableModelSortie;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableRowSorter;
-import javax.xml.stream.events.Comment;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,20 +22,20 @@ import static com.dsi.controller.Commentaires.*;
  */
 public class PageCommentaires extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnModifierCommentaire = new JButton("Enregistrer");
-    private JButton btnSupprimerCommentaire = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAjouterCommentaire = new JButton("Ajouter");
+    private final JButton btnModifierCommentaire = new JButton("Enregistrer");
+    private final JButton btnSupprimerCommentaire = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnAjouterCommentaire = new JButton("Ajouter");
 
-    private JTextField txtRechercher = new JTextField();
-    private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauCommentaire = new JTable();
+    private final JTable tableauCommentaire = new JTable();
     List<Commentaire> commentaires = new ArrayList<>();
     List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
@@ -49,15 +45,19 @@ public class PageCommentaires extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
-    /************************************************************/
-    /******************** Constructeur par defaut****************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageCommentaires() {
         initialiserComposants();
     }
 
-    public PageCommentaires(Annonce annonce) {
-        this.annonce = annonce;
+    /**
+     * Constructeur
+     * @param pAnnonce
+     */
+    public PageCommentaires(Annonce pAnnonce) {
+        this.annonce = pAnnonce;
         initialiserComposants();
     }
 
@@ -107,10 +107,9 @@ public class PageCommentaires extends JFrame {
         displayRightTable();
 
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
-
+        /**
+         * Mouse listenner du champ de recherche qui efface le contenu du champ
+         **/
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,6 +117,9 @@ public class PageCommentaires extends JFrame {
             }
         });
 
+        /**
+         * Mouse listenner du bouton de recherche
+         **/
         btnRechercher.addActionListener(e -> {
             listRechercheCommentaires = new ArrayList<>();
             CommentaireManager um = CommentaireManager.getInstance();
@@ -141,6 +143,9 @@ public class PageCommentaires extends JFrame {
             }
         });
 
+        /**
+         * Mouse listenner sur le bouton annuler
+         */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             blankCommentaire = null;
@@ -148,6 +153,9 @@ public class PageCommentaires extends JFrame {
             displayRightTable();
         });
 
+        /**
+         * Mouse listenner sur le bouton supprimer
+         */
         btnSupprimerCommentaire.addActionListener(e -> {
             if (commentaire == null) {
                 JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner un commentaire");
@@ -232,7 +240,7 @@ public class PageCommentaires extends JFrame {
         });
 
         /**
-         * listenner sur le bouton Enregistrer les modifications dans la base
+         * listenner sur le bouton btnModifierCommentaire qui enregistre les modifications dans la base
          */
         btnModifierCommentaire.setSize(140, 50);
         btnModifierCommentaire.addActionListener(e -> {
@@ -250,17 +258,17 @@ public class PageCommentaires extends JFrame {
                 int idCommentaireModifie = (int) tableauCommentaire.getValueAt(i, 3);
                 int commentaireIdUtilisateurModifie = (int) tableauCommentaire.getValueAt(i, 4);
                 int commentaireIdAnnonceModifie = (int) tableauCommentaire.getValueAt(i, 5);
+                Date dateParutionAnnonceModifie = (Date) tableauCommentaire.getValueAt(i, 1);
 
                 if (commentaireIdAnnonceModifie ==0 || commentaireIdUtilisateurModifie ==0){
                     JOptionPane.showMessageDialog(null, "Merci de corriger les champs IidUtilisateur et/ou IdAnnonce");
                     return;
                 }
-
-                tableauCommentaire.setValueAt(commentaireMessageModifie, i,0);
-                tableauCommentaire.setValueAt(commentaireNoteModifie, i,2);
-                tableauCommentaire.setValueAt(idCommentaireModifie, i,3);
-                tableauCommentaire.setValueAt(commentaireIdUtilisateurModifie, i,4);
-                tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
+//                tableauCommentaire.setValueAt(commentaireMessageModifie, i,0);
+//                tableauCommentaire.setValueAt(commentaireNoteModifie, i,2);
+//                tableauCommentaire.setValueAt(idCommentaireModifie, i,3);
+//                tableauCommentaire.setValueAt(commentaireIdUtilisateurModifie, i,4);
+//                tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
 
                 if (commentaire == null) {
                     //JOptionPane.showMessageDialog(btnModifierCommentaire, "Merci d'ajouter le message");
@@ -274,6 +282,7 @@ public class PageCommentaires extends JFrame {
                         commentaire.setCommentaire_note(commentaireNoteModifie);
                         commentaire.setCommentaire_annonce_id(commentaireIdAnnonceModifie);
                         commentaire.setCommentaire_utilisateur_id(commentaireIdUtilisateurModifie);
+                        commentaire.setCommentaire_date_parution(dateParutionAnnonceModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire "+commentaire.getCommentaire_id()+" ?",
                                 "Veuillez confirmer votre choix",
@@ -314,6 +323,9 @@ public class PageCommentaires extends JFrame {
         });
     }//fin initialiserComposants
 
+    /**
+     * Méthode qui affiche le bon tableau selon la page de provenance
+     */
     private void displayRightTable(){
         if (annonce ==  null && utilisateur == null){
             afficheJTableCommentaires();
@@ -324,6 +336,9 @@ public class PageCommentaires extends JFrame {
         }
     }
 
+    /**
+     * Méthode qui affiche le tableau de tous les commentaires
+     */
     private void afficheJTableCommentaires() {
         try {
             commentaires = remplirJTableWithCommentaires();
@@ -333,9 +348,11 @@ public class PageCommentaires extends JFrame {
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-
     } //fin afficheJTable
 
+    /**
+     * Méthode qui affiche les commentaires selon l'annonce sélectionnée
+     */
     private void afficheJTableCommentairesWithIdAnnonce() {
         try {
             commentaires = remplirJTableWithCommentairesIdAnnonce(annonce.getAnnonce_id());
@@ -348,7 +365,9 @@ public class PageCommentaires extends JFrame {
 
     } //fin afficheJTable
 
-
+    /**
+     * Méthode qui affiche les commentaires selon l'utilisateur sélectionné
+     */
     private void afficheJTableCommentairesWithIdUtilisateur() {
         try {
             commentaires = remplirJTableWithCommentairesIdUtilisateur(utilisateur.getIdUtilisateur());

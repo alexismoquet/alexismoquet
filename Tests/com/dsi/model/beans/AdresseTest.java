@@ -34,8 +34,8 @@ class AdresseTest {
 
     @Test
     void getCodePostal() {
-        adresse.setCodePostal("44260");
-        assertEquals("44260", adresse.getCodePostal());
+        adresse.setCodePostal("code postal");
+        assertEquals("code postal", adresse.getCodePostal());
     }
 
     @Test

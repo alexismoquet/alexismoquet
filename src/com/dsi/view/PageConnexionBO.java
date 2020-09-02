@@ -11,15 +11,15 @@ import java.awt.event.KeyListener;
 
 
 public class PageConnexionBO extends JFrame {
-    private JPanel pan = new JPanel(new BorderLayout());
-    private JPanel panBas = new JPanel();
-    private JPanel panelBouton = new JPanel();
-    private JLabel login = new JLabel("Login :");
-    private JLabel motDePasse = new JLabel("Mot de passe :");
-    private JTextField texteLogin = new JTextField();
-    private JPasswordField texteMotDePasse = new JPasswordField();
-    private JButton bIdentification = new JButton("S'identifier");
-    private BOConnexion ac = new BOConnexion();
+    private final JPanel pan = new JPanel(new BorderLayout());
+    private final JPanel panBas = new JPanel();
+    private final JPanel panelBouton = new JPanel();
+    private final JLabel login = new JLabel("Login :");
+    private final JLabel motDePasse = new JLabel("Mot de passe :");
+    private final JTextField texteLogin = new JTextField();
+    private final JPasswordField texteMotDePasse = new JPasswordField();
+    private final JButton bIdentification = new JButton("S'identifier");
+    private final BOConnexion ac = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
 
@@ -51,10 +51,9 @@ public class PageConnexionBO extends JFrame {
         bIdentification.setPreferredSize(new Dimension(100, 25));
 
 
-      //  ######################################################
-       // #################### LISTENNERS ######################
-      //  ######################################################
-
+        /**
+         * listenner sur le bIdentification
+         */
         bIdentification.addActionListener(e -> {
             try {
                 actionConnexion();
