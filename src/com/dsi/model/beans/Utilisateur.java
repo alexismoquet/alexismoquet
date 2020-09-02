@@ -1,6 +1,7 @@
 package com.dsi.model.beans;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -270,4 +271,6 @@ public class Utilisateur implements Serializable {
                 '}';
     }
 
+    public void setDateInscription(SimpleDateFormat simpleDateFormat) {
+    }
 }

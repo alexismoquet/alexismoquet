@@ -219,9 +219,8 @@ public class PageAnnonces extends JFrame {
             blankAnnonce.setAnnonce_id(idMax + 1);
             blankAnnonce.setAnnonce_titre("");
             blankAnnonce.setAnnonce_description("");
-            blankAnnonce.setAnnonce_date_parution(new Date("YYYY-MM-dd"));
+            blankAnnonce.setAnnonce_date_parution(new Date());
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
             if (annonces.size() > 1){
                 JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
                 return;

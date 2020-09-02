@@ -2,8 +2,11 @@ package com.dsi.controller.tableModel;
 
 import com.dsi.model.beans.Sortie;
 import javax.swing.table.AbstractTableModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class TableModelSortie extends AbstractTableModel {
@@ -55,9 +58,19 @@ public class TableModelSortie extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex);
 
         if(columnIndex == 0) {
-            sorties.get(rowIndex).setSortie_date_retour((Date) value);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+            try {
+                sorties.get(rowIndex).setSortie_date_retour(sdf.parse(value.toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else if (columnIndex == 1){
-            sorties.get(rowIndex).setSortie_date_sortie((Date) value);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+            try {
+                sorties.get(rowIndex).setSortie_date_sortie(sdf.parse(value.toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else if (columnIndex == 2){
             sorties.get(rowIndex).setSortie_etat((String) value);
         } else if (columnIndex == 3){
