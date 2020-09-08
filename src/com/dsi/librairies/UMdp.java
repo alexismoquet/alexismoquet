@@ -27,6 +27,7 @@ public class UMdp {
      * @return boolean: True si le mot de passe est valide sinon false
      */
     public static boolean mdpCompare(String pMdpAValider, String pMdpValide){
-        return pMdpValide.equals(Hash.creerHash_SHA256(pMdpAValider));
+        //Hash.creerHash_SHA256
+        return pMdpValide.equals((pMdpAValider));
     }
 }

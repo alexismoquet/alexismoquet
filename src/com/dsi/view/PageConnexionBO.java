@@ -19,13 +19,13 @@ public class PageConnexionBO extends JFrame {
     private final JTextField texteLogin = new JTextField();
     private final JPasswordField texteMotDePasse = new JPasswordField();
     private final JButton bIdentification = new JButton("S'identifier");
-    private final BOConnexion ac = new BOConnexion();
+    private final BOConnexion BOC = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
 
-    //************************************************************
-    // Methode qui va charger les composants de la fenetre
-    //************************************************************
+    /*
+    *Methode qui va charger les composants de la fenetre
+    */
     public void initialiserComposants() {
         setTitle("Identification");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -35,10 +35,11 @@ public class PageConnexionBO extends JFrame {
         setResizable(false);
 
         pan.setLayout(position);
-        pan.setBorder(new EmptyBorder(30, 40, 0, 40));
+        pan.setBorder(new EmptyBorder(30, 10, 0, 10));
         pan.add(login);
         login.setForeground(Color.white);
         pan.add(texteLogin);
+
         pan.add(motDePasse);
         motDePasse.setForeground(Color.white);
         pan.add(texteMotDePasse);
@@ -50,8 +51,7 @@ public class PageConnexionBO extends JFrame {
         panelBouton.setBackground(Color.decode("#11417d"));
         bIdentification.setPreferredSize(new Dimension(100, 25));
 
-
-        /**
+        /*
          * listenner sur le bIdentification
          */
         bIdentification.addActionListener(e -> {
@@ -62,6 +62,9 @@ public class PageConnexionBO extends JFrame {
             }
         });
 
+        /*
+         * listenner sur le champ texteMotDePasse
+         */
         texteMotDePasse.addKeyListener(new KeyListener() {
 
             @Override
@@ -90,14 +93,16 @@ public class PageConnexionBO extends JFrame {
     }
 
         private void actionConnexion() throws BLLException {
-        boolean rep = ac.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
-        System.out.println(rep);
+        boolean rep = BOC.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
 
         if (rep){
             PageHubAdmin ha = new PageHubAdmin();
             ha.setVisible(true);
         } else {
-            actionConnexion();
+            setVisible(false);
+            PageConnexionBO pcbo = new PageConnexionBO();
+            pcbo.initialiserComposants();
+            pcbo.setVisible(true);
         }
     }
 

@@ -9,12 +9,10 @@ import java.util.List;
 public class Sorties {
 
     public static List<Sortie> remplirJTableWithAllSorties()  throws BLLException {
-        SortieManager sm = SortieManager.getInstance();
-        return sm.SelectAll();
+        return SortieManager.getInstance().SelectAll();
     }
 
     public static List<Sortie> remplirJTableSortiesWithIdMateriel( int idMateriel)  throws BLLException {
-        SortieManager sm = SortieManager.getInstance();
-        return sm.SelectByIdMateriel(idMateriel);
+        return SortieManager.getInstance().SelectByIdMateriel(idMateriel);
     }
 }

@@ -7,8 +7,6 @@ import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -97,10 +95,10 @@ public class PageUtilisateurs extends JFrame {
         panCentre.add(new JScrollPane(tableauUtilisateur), BorderLayout.CENTER);
         tableauUtilisateur.setRowHeight(30);
 
-        notice.setSize(200, 100);
+       // notice.setSize(200, 200);
         notice.setBackground(Color.white);
-        notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse " +
-                "     2- créer un matériel     3- créer une annonce</body></html>");
+        notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse  " +
+                "     2- créer un matériel      3- créer une annonce</body></html>");
         notice.setToolTipText(notice.getText());
 
         panBas.setSize(900, 100);
@@ -133,9 +131,8 @@ public class PageUtilisateurs extends JFrame {
          **/
         btnRechercher.addActionListener(e -> {
             listRechercheUtilisateurs = new ArrayList<>();
-            UtilisateurManager um = UtilisateurManager.getInstance();
             try {
-                um.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                UtilisateurManager.getInstance().SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -145,7 +142,7 @@ public class PageUtilisateurs extends JFrame {
 
                 if (user.startsWith(recherche)) {
                     listRechercheUtilisateurs.add(utilisateur);
-                    TableModelUtilisateur model = null;
+                    TableModelUtilisateur model;
                     model = new TableModelUtilisateur(listRechercheUtilisateurs);
                     tableauUtilisateur.setModel(model);
                 }
@@ -168,7 +165,7 @@ public class PageUtilisateurs extends JFrame {
         /*
          * listenner sur le btnAjouterUtilisateur pour ajouter une ligne vierge
          * @param: blankUtilisateur
-         */
+         **/
         btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
             List<Utilisateur> allUtilisateurs = null;
@@ -247,13 +244,13 @@ public class PageUtilisateurs extends JFrame {
                 if (utilisateur == null) {
                     JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
                 } else {
-                    /* ENREGISTRE LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRE LES VALEURS DS LA BASE SI DIFFERENCE */
                     if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
                             !utilisateur.getPrenom().equalsIgnoreCase(prenomUtilisateurModifie) ||
                             !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                             !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
-                            !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie)
-                        //     !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie) ||
+                            !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie) ||
+                             !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie)
                         //   !(utilisateur.getDateInscription() == (dateInscUtilisateurModifie))
                     ) {
                         utilisateur.setNom(nomUtilisateurModifie);
@@ -278,14 +275,11 @@ public class PageUtilisateurs extends JFrame {
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        } else {
-                            break;
                         }
                     }
                 }
             }//fin for
         });
-
 
         /*
          *Listener bouton Supprimer
@@ -294,8 +288,6 @@ public class PageUtilisateurs extends JFrame {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
             } else {
-                UtilisateurManager um = UtilisateurManager.getInstance();
-
                 int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
@@ -319,7 +311,7 @@ public class PageUtilisateurs extends JFrame {
 
                 if (i == 0)  /*user a dit oui*/ {
                     try {
-                        um.delete(utilisateur);
+                        UtilisateurManager.getInstance().delete(utilisateur);
                         JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
                         afficheJTableUtilisateurs();
 
@@ -347,7 +339,6 @@ public class PageUtilisateurs extends JFrame {
             }
         });
 
-
 //        /**
 //         * listenner sur le bouton annonce
 //         * @param utilisateur
@@ -369,14 +360,11 @@ public class PageUtilisateurs extends JFrame {
          * listenner sur le bouton adresse
          */
         btnAdresse.setSize(100, 50);
-        btnAdresse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnAdresse, "Veuillez sélectionner un utilisateur");
-                } else {
-                    new PageAdresses(utilisateur);
-                }
+        btnAdresse.addActionListener(e -> {
+            if (utilisateur == null) {
+                JOptionPane.showMessageDialog(btnAdresse, "Veuillez sélectionner un utilisateur");
+            } else {
+                new PageAdresses(utilisateur);
             }
         });
 
@@ -384,14 +372,11 @@ public class PageUtilisateurs extends JFrame {
          * listenner sur le bouton materiel
          */
         btnMateriel.setSize(100, 50);
-        btnMateriel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnMateriel, "Veuillez sélectionner un utilisateur");
-                } else {
-                    new PageMateriels(utilisateur);
-                }
+        btnMateriel.addActionListener(e -> {
+            if (utilisateur == null) {
+                JOptionPane.showMessageDialog(btnMateriel, "Veuillez sélectionner un utilisateur");
+            } else {
+                new PageMateriels(utilisateur);
             }
         });
 
@@ -399,14 +384,11 @@ public class PageUtilisateurs extends JFrame {
          * listenner sur le bouton commentaire
          */
         btnCommentaire.setSize(100, 50);
-        btnCommentaire.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnMateriel, "Veuillez sélectionner un utilisateur");
-                } else {
-                    new PageCommentaires(utilisateur);
-                }
+        btnCommentaire.addActionListener(e -> {
+            if (utilisateur == null) {
+                JOptionPane.showMessageDialog(btnMateriel, "Veuillez sélectionner un utilisateur");
+            } else {
+                new PageCommentaires(utilisateur);
             }
         });
 

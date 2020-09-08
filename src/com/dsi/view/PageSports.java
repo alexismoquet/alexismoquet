@@ -187,7 +187,7 @@ public class PageSports extends JFrame {
 
 
         /*
-         * listenner sur le boutonbtnEnrModifs qui
+         * listenner sur le bouton btnEnrModifs qui
          * enregistre les modifications dans la base
          */
         btnEnrModifs.setSize(140, 50);
@@ -224,8 +224,6 @@ public class PageSports extends JFrame {
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        }else{
-                            return;
                         }
                     }
                 }

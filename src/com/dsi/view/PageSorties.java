@@ -261,8 +261,6 @@ public class PageSorties extends JFrame {
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        } else {
-                            break;
                         }
                     }
                 }

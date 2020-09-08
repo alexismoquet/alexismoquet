@@ -54,7 +54,7 @@ public class PageCommentaires extends JFrame {
 
     /**
      * Constructeur
-     * @param pAnnonce
+     * @param: pAnnonce
      */
     public PageCommentaires(Annonce pAnnonce) {
         this.annonce = pAnnonce;
@@ -73,7 +73,6 @@ public class PageCommentaires extends JFrame {
         setVisible(true);
         setResizable(true);
 
-        /*********************Panel Principal******************************************/
         panPrincipal.setLayout(new BorderLayout());
         panPrincipal.setBorder(new EmptyBorder(10, 10, 10, 10));
         panPrincipal.setBackground(Color.decode("#11417d"));
@@ -81,13 +80,11 @@ public class PageCommentaires extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        /*********************Panel haut******************************************/
         panHaut.setPreferredSize(new Dimension(900, 100));
         txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 
-        /*********************Panel centre******************************************/
         panCentre.setPreferredSize(new Dimension(900, 250));
         panCentre.setLayout(new BorderLayout());
         panCentre.add(tableauCommentaire.getTableHeader(), BorderLayout.NORTH);
@@ -95,7 +92,6 @@ public class PageCommentaires extends JFrame {
         panCentre.add(new JScrollPane(tableauCommentaire), BorderLayout.CENTER);
         tableauCommentaire.setRowHeight(30);
 
-        /*********************Panel Bas******************************************/
         panBas.setSize(500, 200);
         panBas.add(btnAjouterCommentaire);
         panBas.add(btnModifierCommentaire);
@@ -107,7 +103,7 @@ public class PageCommentaires extends JFrame {
         displayRightTable();
 
 
-        /**
+        /*
          * Mouse listenner du champ de recherche qui efface le contenu du champ
          **/
         txtRechercher.addMouseListener(new MouseAdapter() {
@@ -117,7 +113,7 @@ public class PageCommentaires extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner du bouton de recherche
          **/
         btnRechercher.addActionListener(e -> {
@@ -143,7 +139,7 @@ public class PageCommentaires extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner sur le bouton annuler
          */
         btnAnnuler.addActionListener(e -> {
@@ -153,7 +149,7 @@ public class PageCommentaires extends JFrame {
             displayRightTable();
         });
 
-        /**
+        /*
          * Mouse listenner sur le bouton supprimer
          */
         btnSupprimerCommentaire.addActionListener(e -> {
@@ -180,7 +176,7 @@ public class PageCommentaires extends JFrame {
             displayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le btnajouterSortie pour ajouter une ligne vierge
          */
         btnAjouterCommentaire.setSize(140, 50);
@@ -201,8 +197,8 @@ public class PageCommentaires extends JFrame {
             assert allCommentaires != null;
             int idMax = allCommentaires.get(0).getCommentaire_id();
 
-            for (int i = 0; i < allCommentaires.size(); i++) {
-                int commentaireId = allCommentaires.get(i).getCommentaire_id();
+            for (Commentaire allCommentaire : allCommentaires) {
+                int commentaireId = allCommentaire.getCommentaire_id();
                 if (commentaireId > idMax) {
                     idMax = commentaireId;
                 }
@@ -239,13 +235,13 @@ public class PageCommentaires extends JFrame {
             displayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le bouton btnModifierCommentaire qui enregistre les modifications dans la base
          */
         btnModifierCommentaire.setSize(140, 50);
         btnModifierCommentaire.addActionListener(e -> {
 
-            /** Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauSortie, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCommentaire.getRowCount(); i++) {
                 try {
                     commentaire = CommentaireManager.getInstance().SelectById((Integer) tableauCommentaire.getValueAt(i, 3));
@@ -274,7 +270,7 @@ public class PageCommentaires extends JFrame {
                     //JOptionPane.showMessageDialog(btnModifierCommentaire, "Merci d'ajouter le message");
                     return;
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie) || !(commentaire.getCommentaire_id() == idCommentaireModifie)
                             || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie) || !(commentaire.getCommentaire_utilisateur_id() == commentaireIdUtilisateurModifie)) {
                         commentaire.setCommentaire_message(commentaireMessageModifie);
@@ -288,7 +284,7 @@ public class PageCommentaires extends JFrame {
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
                                     CommentaireManager.getInstance().update(commentaire);
                                     JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " enregistré");
@@ -298,14 +294,14 @@ public class PageCommentaires extends JFrame {
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        } else {break;}
+                        }
                     }
                 }
             }//fin for
         });
 
 
-        /**
+        /*
          * Mouse listenner sur le tableau commentaire
          */
         tableauCommentaire.addMouseListener(new MouseAdapter() {
