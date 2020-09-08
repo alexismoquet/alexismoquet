@@ -56,7 +56,7 @@ public class DAOUtilisateur_mysql_impl implements DAO_Utilisateur {
             pstmt.setString(3, pObj.getTelFix());
             pstmt.setString(4, pObj.getTelMob());
             pstmt.setString(5, pObj.getEmail());
-            pstmt.setString(6, UMdp.mdpCrypte(pObj.getMotDePasse()));
+            pstmt.setString(6, pObj.getMotDePasse());
             pstmt.setDate(7, FonctionsDate.utilDateVersSqlDate(pObj.getDateInscription()));
             pstmt.setInt(8, pObj.getIdUtilisateur());
 

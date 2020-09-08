@@ -10,7 +10,7 @@ public enum Roles {
 
     ADMIN("Administrateur"), MODERATEUR("Modérateur");
 
-    private String libelle;
+    private final String libelle;
 
     Roles(String pLibelle){
         this.libelle = pLibelle;

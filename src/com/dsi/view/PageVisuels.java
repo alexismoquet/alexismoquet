@@ -1,8 +1,11 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.*;
-import com.dsi.model.beans.*;
-import com.dsi.model.bll.*;
+import com.dsi.controller.tableModel.ImageCellRenderer;
+import com.dsi.controller.tableModel.TableModelVisuel;
+import com.dsi.model.beans.Materiel;
+import com.dsi.model.beans.Visuel;
+import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +13,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.dsi.controller.Visuels.remplirJTableWithAllVisuels;
@@ -25,20 +27,20 @@ import static com.dsi.controller.Visuels.remplirJTableWithVisuelsIdMateriel;
  */
 public class PageVisuels extends JFrame {
 
-    private JPanel panPrincipal = new JPanel();
-    private JPanel panHaut = new JPanel();
-    private JPanel panCentre = new JPanel();
-    private JPanel panBas = new JPanel();
+    private final JPanel panPrincipal = new JPanel();
+    private final JPanel panHaut = new JPanel();
+    private final JPanel panCentre = new JPanel();
+    private final JPanel panBas = new JPanel();
 
-    private JButton btnEnregistrerVisuel = new JButton("Enregistrer");
-    private JButton btnSupprimerVisuel = new JButton("Supprimer");
-    private JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAjouterVisuel = new JButton("Ajouter");
+    private final JButton btnEnregistrerVisuel = new JButton("Enregistrer");
+    private final JButton btnSupprimerVisuel = new JButton("Supprimer");
+    private final JButton btnAnnuler = new JButton("Annuler");
+    private final JButton btnAjouterVisuel = new JButton("Ajouter");
 
     //     private JTextField txtRechercher = new JTextField();
     //     private JButton btnRechercher = new JButton("Rechercher");
 
-    private JTable tableauVisuel = new JTable();
+    private final JTable tableauVisuel = new JTable();
     List<Visuel> visuels = new ArrayList<>();
     //  List <Visuel> listRechercheVisuels = new ArrayList<>();
     Visuel visuel, blankVisuel;
@@ -46,13 +48,17 @@ public class PageVisuels extends JFrame {
     Materiel materiel;
 
 
-    /************************************************************/
-    /******************** Constructeur par defaut****************/
-    /************************************************************/
+    /**
+     * Constructeur par defaut
+     */
     public PageVisuels() {
         initialiserComposants();
     }
 
+    /**
+     * Constructeur
+     * @param: pMateriel
+     */
     public PageVisuels(Materiel pMateriel) {
         this.materiel = pMateriel;
         initialiserComposants();
@@ -98,9 +104,6 @@ public class PageVisuels extends JFrame {
 
         displayRightTable();
 
-        /**************************************************************************************************************************************/
-        /*************************************************************** Les listenners *******************************************************/
-        /**************************************************************************************************************************************/
 
 //            txtRechercher.addMouseListener(new MouseAdapter() {
 //                @Override
@@ -144,7 +147,7 @@ public class PageVisuels extends JFrame {
             }
         });
 
-        /**
+        /*
          * Bouton supprimer le visuel
          */
         btnSupprimerVisuel.addActionListener(e -> {
@@ -152,15 +155,13 @@ public class PageVisuels extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerVisuel, "Merci de sélectionner un visuel");
                 return;
             }
-            VisuelManager am = VisuelManager.getInstance();
-
             int i = JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel " + visuel.getVisuel_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
-                    am.delete(visuel);
+                    VisuelManager.getInstance().delete(visuel);
                     JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel " + visuel.getVisuel_id() + " supprimé");
                     if (materiel == null) {
                         afficheJTableWithAllVisuels();
@@ -175,13 +176,12 @@ public class PageVisuels extends JFrame {
 
         });
 
-        /**
+        /*
          * listenner sur le btnajouterVisuel pour ajouter une ligne vierge
          */
         btnAjouterVisuel.setSize(140, 50);
         btnAjouterVisuel.addActionListener(e -> {
             List<Visuel> allVisuels = null;
-            VisuelManager sm = new VisuelManager();
             try {
                 allVisuels = VisuelManager.getInstance().SelectAll();
             } catch (BLLException bllException) {
@@ -195,8 +195,8 @@ public class PageVisuels extends JFrame {
             assert allVisuels != null;
             int idMax = allVisuels.get(0).getVisuel_id();
 
-            for (int i = 0; i < allVisuels.size(); i++) {
-                int sortieId = allVisuels.get(i).getVisuel_id();
+            for (Visuel allVisuel : allVisuels) {
+                int sortieId = allVisuel.getVisuel_id();
                 if (sortieId > idMax) {
                     idMax = sortieId;
                 }
@@ -215,7 +215,6 @@ public class PageVisuels extends JFrame {
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             TableModelVisuel model = new TableModelVisuel(visuels);
             model.fireTableDataChanged();
@@ -227,12 +226,12 @@ public class PageVisuels extends JFrame {
             displayRightTable();
         });
 
-        /**
+        /*
          * Bouton Modifier le visuel
          */
         btnEnregistrerVisuel.addActionListener(e -> {
 
-            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauVisuel.getRowCount(); i++) {
                 try {
                     visuel = VisuelManager.getInstance().SelectById((Integer) tableauVisuel.getValueAt(i, 2));
@@ -248,7 +247,7 @@ public class PageVisuels extends JFrame {
                 if (visuel == null) {
                     return;
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
+                    /* ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
                     if (!visuel.getVisuel_nom_fichier().equalsIgnoreCase(nomFichierVisuelModifie) || !(visuel.getVisuel_materiel_id() == idMaterielVisuelModifie)) {
                         visuel.setVisuel_nom_fichier(nomFichierVisuelModifie);
                         visuel.setVisuel_materiel_id(idMaterielVisuelModifie);
@@ -257,7 +256,7 @@ public class PageVisuels extends JFrame {
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
                                 VisuelManager.getInstance().update(visuel);
                                 JOptionPane.showMessageDialog(null, "Visuel " + visuel.getVisuel_id() + " enregistré");
@@ -271,20 +270,19 @@ public class PageVisuels extends JFrame {
             }//fin for
         });
 
-        /**
+        /*
          * Mouse listenner sur le tableau Visuel
          */
         tableauVisuel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idVisuelSelected = (int) tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 2);
-                Object imgVisuel = tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 0);
+                tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 0);
 
                 if (e.getClickCount() == 2 && !e.isConsumed()) {
                     ImageCellRenderer icr = new ImageCellRenderer();
-                    icr.getTableCellRendererComponent(tableauVisuel,tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1), true, true, tableauVisuel.getSelectedRow(), 0);
+                    icr.getTableCellRendererComponent(tableauVisuel, tableauVisuel.getValueAt(tableauVisuel.getSelectedRow(), 1), true, true, tableauVisuel.getSelectedRow(), 0);
                 }
-
 //Gêne pour modifier une ligne du tableauVisuel //JOptionPane.showMessageDialog( null, "Le visuel " + idVisuelSelected + " est sélectionné");
                 try {
                     visuel = VisuelManager.getInstance().SelectById(idVisuelSelected);
@@ -297,7 +295,7 @@ public class PageVisuels extends JFrame {
     }//fin initialiserComposants
 
 
-    private void afficheJTableVisuelsWithIdMateriel(int idMateriel) {
+    private void afficheJTableVisuelsWithIdMateriel(int pMateriel_Id) {
         try {
             visuels = remplirJTableWithVisuelsIdMateriel(materiel.getMateriel_id());
             TableModelVisuel model = new TableModelVisuel(visuels);
@@ -318,16 +316,6 @@ public class PageVisuels extends JFrame {
         }
     } //fin afficheJTable
 
-
-    public void afficheLeVisuel() throws BLLException {
-        String adresseVisuel = "C:\\wamp64\\www\\handispap\\img\\mat";
-
-        for (int i = 0; i < visuels.size(); i++) {
-            String fichierVisuel = visuels.get(i).getVisuel_nom_fichier() + adresseVisuel;
-            ImageIcon icone1 = new ImageIcon("C:\\wamp64\\www\\handispap\\img\\mat\\" + fichierVisuel);
-            tableauVisuel.getValueAt(i, 0);
-        }
-    }
 
     private void displayRightTable() {
         if (materiel == null) {

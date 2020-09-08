@@ -12,8 +12,6 @@ import com.dsi.model.bll.MaterielManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -61,6 +59,7 @@ public class PageMateriels extends JFrame {
 
     /**
      * Constructeur
+     *
      * @param: pUtilisateur
      */
     public PageMateriels(Utilisateur pUtilisateur) {
@@ -74,6 +73,7 @@ public class PageMateriels extends JFrame {
 
     /**
      * Constructeur
+     *
      * @param: pCategorie
      */
     public PageMateriels(Categorie pCategorie) {
@@ -83,19 +83,21 @@ public class PageMateriels extends JFrame {
 
     /**
      * Constructeur
+     *
      * @param: pSport
      */
     public PageMateriels(Sport pSport) {
         this.sport = pSport;
         initialiserComposants();
     }
+
     /**
      * Constructeur
+     *
      * @param: annonce_materiel_id
      */
     public PageMateriels(int annonce_materiel_id) throws BLLException {
         this.annonce_materiel_id = annonce_materiel_id;
-        MaterielManager mm = new MaterielManager();
         materiel = MaterielManager.getInstance().SelectById(annonce_materiel_id);
         materiels.add(materiel);
         initialiserComposants();
@@ -152,7 +154,7 @@ public class PageMateriels extends JFrame {
 
         displayRightTable();
 
-        /**
+        /*
          * MouseListenner sur JTextField rechercher
          **/
         txtRechercher.addMouseListener(new MouseAdapter() {
@@ -163,7 +165,7 @@ public class PageMateriels extends JFrame {
             }
         });
 
-        /**
+        /*
          * Listenner sur le bouton btnRechercher
          **/
         btnRechercher.addActionListener(e -> {
@@ -190,7 +192,7 @@ public class PageMateriels extends JFrame {
         });
 
 
-        /**
+        /*
          * Listenner btnAnnuler
          **/
         btnAnnuler.addActionListener(e -> {
@@ -200,7 +202,7 @@ public class PageMateriels extends JFrame {
             displayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le btnajouterMateriel pour ajouter une ligne vierge
          */
         btnAjouterMateriel.setSize(140, 50);
@@ -249,7 +251,6 @@ public class PageMateriels extends JFrame {
 
             blankMateriel.setMateriel_prix(0.0);
 
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 MaterielManager.getInstance().insert(blankMateriel);
                 //   JOptionPane.showMessageDialog(btnAjouterMateriel, "Matériel ajouté");
@@ -266,13 +267,12 @@ public class PageMateriels extends JFrame {
             displayRightTable();
         });
 
-
-        /**
+        /*
          * Listenner du bouton enregistrer les modifications
          **/
         btnEnregistrerMateriel.addActionListener(e -> {
 
-            /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauMateriel.getRowCount(); i++) {
 
                 try {
@@ -297,7 +297,7 @@ public class PageMateriels extends JFrame {
 //                tableauMateriel.setValueAt(prixMaterielModifie, i, 6);
 //                tableauMateriel.setValueAt(cautionPrixMaterielModifie, i, 7);
 
-                /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                /* ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!materiel.getMateriel_nom().equals(nomMaterielModifie) || !materiel.getMateriel_description().equals(descriptionMaterielModifie) || materiel.getMateriel_prix() != prixMaterielModifie ||
                         materiel.getMateriel_categorie_id() != idCategorieMaterielModifie || materiel.getMateriel_adresse_id() != idAdresseMaterielModifie || materiel.getMateriel_sport_id() != idSportMaterielModifie ||
                         materiel.getMateriel_caution_prix() != cautionPrixMaterielModifie) {
@@ -313,7 +313,7 @@ public class PageMateriels extends JFrame {
                             "Veuillez confirmer votre choix",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                    if (j == 0)  /**user a dit oui*/ {
+                    if (j == 0)  /*user a dit oui*/ {
                         try {
                             MaterielManager.getInstance().update(materiel);
                             JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " enregistré");
@@ -322,14 +322,13 @@ public class PageMateriels extends JFrame {
                         } catch (BLLException ex) {
                             ex.printStackTrace();
                         }
-                    } else {
-                        break;
                     }
                 }//fin if
+
             }//fin for
         });
 
-        /**
+        /*
          * Listenner du bouton supprimer qui supprime le materiel sélectionné
          **/
         btnSupprimerMateriel.addActionListener(e -> {
@@ -352,7 +351,7 @@ public class PageMateriels extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner sur le tableau materiel
          */
         tableauMateriel.addMouseListener(new MouseAdapter() {
@@ -368,48 +367,39 @@ public class PageMateriels extends JFrame {
             }
         });
 
-        /**
+        /*
          * listenner sur le btnVisuels
          */
         btnVisuels.setSize(100, 50);
-        btnVisuels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un matériel");
-                } else {
-                    new PageVisuels(materiel);
-                }
+        btnVisuels.addActionListener(e -> {
+            if (materiel == null) {
+                JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un matériel");
+            } else {
+                new PageVisuels(materiel);
             }
         });
 
-        /**
+        /*
          * listenner sur le btnSorties
          */
         btnSorties.setSize(100, 50);
-        btnSorties.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
-                } else {
-                    new PageSorties(materiel);
-                }
+        btnSorties.addActionListener(e -> {
+            if (materiel == null) {
+                JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
+            } else {
+                new PageSorties(materiel);
             }
         });
 
-        /**
+        /*
          * listenner sur le btnAnnonces
          */
         btnAnnonces.setSize(100, 50);
-        btnAnnonces.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (materiel == null) {
-                    JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
-                } else {
-                    new PageAnnonces(materiel);
-                }
+        btnAnnonces.addActionListener(e -> {
+            if (materiel == null) {
+                JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
+            } else {
+                new PageAnnonces(materiel);
             }
         });
 

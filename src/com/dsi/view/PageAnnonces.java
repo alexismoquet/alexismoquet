@@ -58,13 +58,12 @@ public class PageAnnonces extends JFrame {
 
     /**
      * Constructeur
-     * @param pMateriel
+     * @param: pMateriel
      */
     public PageAnnonces(Materiel pMateriel) {
         this.materiel = pMateriel;
         initialiserComposants();
     }
-
 
     /**
      * Méthode qui affiche le graphisme de la page
@@ -119,8 +118,7 @@ public class PageAnnonces extends JFrame {
 
         setContentPane(panPrincipal);
 
-
-        /**
+        /*
          * Mouse listenner du champ de recherche qui efface le contenu du champ
          **/
         txtRechercher.addMouseListener(new MouseAdapter() {
@@ -131,7 +129,7 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner du bouton de recherche
          **/
         btnRechercher.addActionListener(e -> {
@@ -158,8 +156,7 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-
-        /**
+        /*
          * Mouse listenner sur le tableau annonce
          */
         tableauAnnonce.addMouseListener(new MouseAdapter() {
@@ -176,9 +173,7 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-
-
-        /**
+        /*
          * Mouse listenner sur le bouton annuler
          */
         btnAnnuler.addActionListener(e -> {
@@ -188,7 +183,7 @@ public class PageAnnonces extends JFrame {
             diplayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le btnAjouterAnnonce pour ajouter une ligne vierge
          */
         btnAjouterLigne.setSize(140, 50);
@@ -207,8 +202,8 @@ public class PageAnnonces extends JFrame {
             assert allAnnonces != null;
             int idMax = allAnnonces.get(0).getAnnonce_id();
 
-            for (int i = 0; i < allAnnonces.size(); i++) {
-                int annonceId = allAnnonces.get(i).getAnnonce_id();
+            for (Annonce allAnnonce : allAnnonces) {
+                int annonceId = allAnnonce.getAnnonce_id();
                 if (annonceId > idMax) {
                     idMax = annonceId;
                 }
@@ -245,12 +240,12 @@ public class PageAnnonces extends JFrame {
             diplayRightTable();
         });
 
-        /**
+        /*
          * listenner sur le btnModifierAnnonce pour enregistrer les modifications
          */
         btnModifierAnnonce.addActionListener(e -> {
 
-            /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauAnnonce.getRowCount(); i++) {
 
                 try {
@@ -270,7 +265,7 @@ public class PageAnnonces extends JFrame {
 //                tableauAnnonce.setValueAt(annonceIdMaterielModifie, i, 4);
 //                tableauAnnonce.setValueAt(annonceDateParutionModifie, i, 5);
 
-                /*** ENREGISTRER LES VALEURS DS LA BASE ***/
+                /* ENREGISTRER LES VALEURS DS LA BASE ***/
                 if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
                     ||  annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
                     try {
@@ -284,7 +279,7 @@ public class PageAnnonces extends JFrame {
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                                 AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " enregistrée");
                                 diplayRightTable();
@@ -299,7 +294,7 @@ public class PageAnnonces extends JFrame {
         });
 
 
-        /**
+        /*
          * listenner sur le btnSupprimerAnnonce pour supprimer l'annonce sélectionnée
          */
         btnSupprimerAnnonce.addActionListener(e -> {
@@ -325,36 +320,30 @@ public class PageAnnonces extends JFrame {
         });
 
 
-        /**
+        /*
          * Action listenner sur le bouton commentaire
          */
         btnCommentaires.setSize(100, 50);
-        btnCommentaires.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (annonce == null) {
-                    JOptionPane.showMessageDialog(btnCommentaires, "Veuillez sélectionner une annonce");
-                } else {
-                    new PageCommentaires(annonce);
-                }
+        btnCommentaires.addActionListener(e -> {
+            if (annonce == null) {
+                JOptionPane.showMessageDialog(btnCommentaires, "Veuillez sélectionner une annonce");
+            } else {
+                new PageCommentaires(annonce);
             }
         });
 
-        /**
+        /*
          * Action listenner sur le bouton materiel
          */
         btnMateriels.setSize(100, 50);
-        btnMateriels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (annonce == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une annonce");
-                } else {
-                    try {
-                        new PageMateriels(annonce.getAnnonce_materiel_id());
-                    } catch (BLLException bllException) {
-                        bllException.printStackTrace();
-                    }
+        btnMateriels.addActionListener(e -> {
+            if (annonce == null) {
+                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une annonce");
+            } else {
+                try {
+                    new PageMateriels(annonce.getAnnonce_materiel_id());
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
                 }
             }
         });

@@ -31,7 +31,6 @@ public class PageAdresses extends JFrame {
     private final JButton btnSupprimerAdresse = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
 
-
     private final JTextField txtRechercher = new JTextField();
     private final JButton btnRechercher = new JButton("Rechercher");
 
@@ -39,7 +38,6 @@ public class PageAdresses extends JFrame {
     List<Adresse> adresses = new ArrayList<>();
 
     List<Adresse> listRechercheAdresses = new ArrayList<>();
-    Categorie categorie;
     Adresse adresse, blankAdresse;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
@@ -53,7 +51,7 @@ public class PageAdresses extends JFrame {
 
     /**
      * Constructeur
-     * @param pUtilisateur
+     * @param: pUtilisateur
      */
     public PageAdresses(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
@@ -104,9 +102,9 @@ public class PageAdresses extends JFrame {
         setContentPane(panPrincipal);
         displayRightTable();
 
-        /**
-         * Mouse listenner du champ de recherche
-         **/
+        /*
+        Mouse listenner du champ de recherche
+        */
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -115,10 +113,9 @@ public class PageAdresses extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner du bouton de recherche
-         * @param adresse
-         **/
+         */
         btnRechercher.addActionListener(e -> {
             listRechercheAdresses = new ArrayList<>();
             AdresseManager um = AdresseManager.getInstance();
@@ -143,7 +140,7 @@ public class PageAdresses extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner sur le tableau adresse
          */
         tableauAdresse.addMouseListener(new MouseAdapter() {
@@ -185,7 +182,7 @@ public class PageAdresses extends JFrame {
             blankAdresse = new Adresse();
             adresses.add(blankAdresse);
 
-            //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
+            /* On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus */
             assert allAdresses != null;
             int idMax = allAdresses.get(0).getIdAdresse();
 
@@ -226,7 +223,7 @@ public class PageAdresses extends JFrame {
         });
 
         btnModifierAdresse.addActionListener(e -> {
-            /** On récupére les valeurs du tableauAdresse, on boucle pour chaque ligne pour
+            /* On récupére les valeurs du tableauAdresse, on boucle pour chaque ligne pour
              * détecter si changement
              * */
             for (int i = 0; i < tableauAdresse.getRowCount(); i++) {
@@ -270,7 +267,7 @@ public class PageAdresses extends JFrame {
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                                 AdresseManager.getInstance().update(adresse);
                                 JOptionPane.showMessageDialog(null, "Adresse " + adresse.getIdAdresse() + " enregistrée");
                                 displayRightTable();

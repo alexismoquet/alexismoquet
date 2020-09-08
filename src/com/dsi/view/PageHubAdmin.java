@@ -4,22 +4,15 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
-import org.mariadb.jdbc.internal.com.read.resultset.SelectResultSet;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * Classe HubAdmin
+ * Class HubAdmin
  *
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
@@ -29,6 +22,7 @@ public class PageHubAdmin extends JFrame {
     private final JPanel panBtn = new JPanel();
     private final JPanel panAnomalies = new JPanel();
 
+    private final JButton bUtilisateursBO = new JButton("Utilisateurs BO");
     private final JButton bUtilisateurs = new JButton("Utilisateurs");
     private final JButton bCategories = new JButton("Catégories");
     private final JButton bSports = new JButton("Sports");
@@ -41,8 +35,8 @@ public class PageHubAdmin extends JFrame {
     private final JButton bAdresses = new JButton("Adresses");
     private final JButton bAnnuler = new JButton("Annuler");
 
-    private JTable tableauAnomalies = new JTable();
-    private JLabel anomaliesASurveiller = new JLabel();
+    private final JTable tableauAnomalies = new JTable();
+    private final JLabel anomaliesASurveiller = new JLabel();
 
     List<Annonce> listAnomalies = new ArrayList<>();
     List<Annonce> annonces;
@@ -69,30 +63,19 @@ public class PageHubAdmin extends JFrame {
         setResizable(true);
         setVisible(true);
 
-        /***** Panel principal  */
+        /* Panel principal  */
         panPrincipal.setBackground(Color.decode("#11417d"));
         panPrincipal.setLayout(new BorderLayout());
         panPrincipal.add(panBtn, BorderLayout.NORTH);
         panPrincipal.add(panAnomalies, BorderLayout.CENTER);
 
-        /***** Panel des boutons*/
+        /* Panel des boutons*/
         panBtn.setBackground(Color.decode("#11417d")); //bleu
         panBtn.setPreferredSize(new Dimension(900, 100));
         panBtn.setBorder(new EmptyBorder(10, 10, 0, 10));
+
+        panBtn.add(bUtilisateursBO);
         panBtn.add(bUtilisateurs);
-
-//        bUtilisateurs.setBorder(new EmptyBorder(9,20,9,20));
-//        bCategories.setBorder(new EmptyBorder(9,20,9,20));
-//        bSports.setBorder(new EmptyBorder(9,20,9,20));
-//        bAnnonces.setBorder(new EmptyBorder(9,20,9,20));
-//        bMateriels.setBorder(new EmptyBorder(9,20,9,20));
-//        bVisuels.setBorder(new EmptyBorder(9,20,9,20));
-//        bSorties.setBorder(new EmptyBorder(9,20,9,20));
-//        bAdresses.setBorder(new EmptyBorder(9,20,9,20));
-//        bCommentaires.setBorder(new EmptyBorder(9,20,9,20));
-//        bEnregistrer.setBorder(new EmptyBorder(9,20,9,20));
-//        bAnnuler.setBorder(new EmptyBorder(9,20,9,20));
-
         panBtn.add(bCategories);
         panBtn.add(bSports);
         panBtn.add(bAnnonces);
@@ -104,7 +87,7 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bAnnuler);
         panBtn.add(bEnregistrer);
 
-        /***** Panel des anomalies*/
+        /* Panel des anomalies */
         anomaliesASurveiller.setSize(200, 100);
         anomaliesASurveiller.setBackground(Color.white);
         anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte  dans les annonces à surveiller :</body></html>");
@@ -121,103 +104,63 @@ public class PageHubAdmin extends JFrame {
         tableauAnomalies.setRowHeight(30);
 
         bUtilisateurs.setSize(100, 50);
-        bUtilisateurs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageUtilisateurs pu = new PageUtilisateurs();
-            }
-        });
+        bUtilisateurs.addActionListener(e -> new PageUtilisateurs());
+
+        bUtilisateursBO.setSize(100, 50);
+        bUtilisateursBO.addActionListener(e -> new PageUtilisateurBO());
 
         bCategories.setSize(100, 50);
-        bCategories.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageCategories pu = new PageCategories();
-            }
-        });
+        bCategories.addActionListener(e -> new PageCategories());
 
         bSports.setSize(100, 50);
-        bSports.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageSports ps = new PageSports();
-            }
-        });
+        bSports.addActionListener(e -> new PageSports());
 
         bCommentaires.setSize(100, 50);
-        bCommentaires.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageCommentaires pc = new PageCommentaires();
-            }
-        });
+        bCommentaires.addActionListener(e -> new PageCommentaires());
+
         bAnnonces.setSize(100, 50);
-        bAnnonces.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageAnnonces pa = new PageAnnonces();
-            }
-        });
+        bAnnonces.addActionListener(e -> new PageAnnonces());
 
         bMateriels.setSize(100, 50);
-        bMateriels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PageMateriels pm = new PageMateriels();
-            }
-        });
+        bMateriels.addActionListener(e -> new PageMateriels());
 
         bVisuels.setSize(100, 50);
-        bVisuels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { PageVisuels pv = new PageVisuels(); }
-        });
+        bVisuels.addActionListener(e -> new PageVisuels());
 
         bSorties.setSize(100, 50);
-        bSorties.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { PageSorties ps = new PageSorties(); }
-        });
+        bSorties.addActionListener(e -> new PageSorties());
 
         bAdresses.setSize(100, 50);
-        bAdresses.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { PageAdresses pa = new PageAdresses(); }
-        });
+        bAdresses.addActionListener(e -> new PageAdresses());
 
         bAnnuler.setSize(100, 50);
-        bAnnuler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                annonce = null;
-                try {
-                    remplirJTableWithAnomalies();
-                } catch (BLLException bllException) {
-                    bllException.printStackTrace();
-                }
+        bAnnuler.addActionListener(e -> {
+            annonce = null;
+            try {
+                remplirJTableWithAnomalies();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
             }
         });
 
-        /**
+        /*
          * Listener btnEnregistrer qui enregistre les modifications du tableau des anomalies dans les annonces
          */
         bEnregistrer.setSize(100, 50);
-        bEnregistrer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /** Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
-                for (int i = 0; i < tableauAnomalies.getRowCount(); i++) {
+        bEnregistrer.addActionListener(e -> {
+            /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+            for (int i = 0; i < tableauAnomalies.getRowCount(); i++) {
 
-                    try {
-                        annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnomalies.getValueAt(i, 3));
-                    } catch (BLLException bllException) {
-                        bllException.printStackTrace();
-                    }
-                    String titreAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 0));
-                    String descriptionAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 1));
-                    int annonceIdUtilisateurModifie = (int) tableauAnomalies.getValueAt(i, 2);
-                    int annonceIdMaterielModifie = (int) tableauAnomalies.getValueAt(i, 4);
-                    Date annonceDateParutionModifie = (Date) tableauAnomalies.getValueAt(i, 5);
+                try {
+                    annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnomalies.getValueAt(i, 3));
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                String titreAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 0));
+                String descriptionAnnonceModifie = String.valueOf(tableauAnomalies.getValueAt(i, 1));
+                int annonceIdUtilisateurModifie = (int) tableauAnomalies.getValueAt(i, 2);
+                int annonceIdMaterielModifie = (int) tableauAnomalies.getValueAt(i, 4);
+                Date annonceDateParutionModifie = (Date) tableauAnomalies.getValueAt(i, 5);
 
 //                    tableauAnomalies.setValueAt(titreAnnonceModifie, i, 0);
 //                    tableauAnomalies.setValueAt(descriptionAnnonceModifie, i, 1);
@@ -226,34 +169,33 @@ public class PageHubAdmin extends JFrame {
 //                    tableauAnomalies.setValueAt(annonceDateParutionModifie, i, 5);
 
 
-                    /*** ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
-                            || annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
-                        try {
-                            annonce.setAnnonce_description(descriptionAnnonceModifie);
-                            annonce.setAnnonce_titre(titreAnnonceModifie);
-                            annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
-                            annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
-                            annonce.setAnnonce_date_parution(annonceDateParutionModifie);
+                /* ENREGISTRER LES VALEURS DS LA BASE */
+                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
+                        || annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
+                    try {
+                        annonce.setAnnonce_description(descriptionAnnonceModifie);
+                        annonce.setAnnonce_titre(titreAnnonceModifie);
+                        annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
+                        annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
+                        annonce.setAnnonce_date_parution(annonceDateParutionModifie);
 
-                            int j = JOptionPane.showConfirmDialog(bEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
-                                    "Veuillez confirmer votre choix",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        int j = JOptionPane.showConfirmDialog(bEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                            if (j == 0)  /**user a dit oui*/ {
-                                AnnonceManager.getInstance().update(annonce);
-                                JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " enregistrée");
-                                remplirJTableWithAnomalies();
-                                break;
-                            }
-                        } catch (BLLException bllException) {
-                            bllException.printStackTrace();
+                        if (j == 0)  /*user a dit oui*/ {
+                            AnnonceManager.getInstance().update(annonce);
+                            JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " enregistrée");
+                            remplirJTableWithAnomalies();
+                            break;
                         }
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
                     }
-                }//fin boucle for
-                tableauAnomalies.clearSelection();
-            }
-         });
+                }
+            }//fin boucle for
+            tableauAnomalies.clearSelection();
+        });
 
         remplirJTableWithAnomalies();
 
@@ -270,10 +212,10 @@ public class PageHubAdmin extends JFrame {
         
         annonces = am.SelectAll();
 
-        for (int i = 0; i < annonces.size(); i++) {
-            annonceSelect = annonces.get(i);
-            String titreAnnonceSelect = annonces.get(i).getAnnonce_titre().toLowerCase();
-            String descriptionAnnonceSelect = annonces.get(i).getAnnonce_description().toLowerCase();
+        for (Annonce value : annonces) {
+            annonceSelect = value;
+            String titreAnnonceSelect = value.getAnnonce_titre().toLowerCase();
+            String descriptionAnnonceSelect = value.getAnnonce_description().toLowerCase();
 
             if (titreAnnonceSelect.contains("sex") || descriptionAnnonceSelect.contains("sex")) {
                 listAnomalies.add(annonceSelect);

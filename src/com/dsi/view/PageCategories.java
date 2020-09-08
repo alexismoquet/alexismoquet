@@ -4,15 +4,15 @@ import com.dsi.controller.tableModel.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.dsi.controller.Categories.remplirJTableWithAllCategories;
 
 /**
@@ -91,7 +91,7 @@ public class PageCategories extends JFrame {
 
         afficheJTableCategories();
 
-        /**
+        /*
          * Mouse listenner du champ de recherche
          **/
         txtRechercher.addMouseListener(new MouseAdapter() {
@@ -102,7 +102,7 @@ public class PageCategories extends JFrame {
             }
         });
 
-        /**
+        /*
          * Mouse listenner du bouton de recherche
          **/
         btnRechercher.addActionListener(e -> {
@@ -113,7 +113,7 @@ public class PageCategories extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            /** ON PARCOURS LA LISTE DES CATEGORIES */
+            /*ON PARCOURS LA LISTE DES CATEGORIES */
             for (Categorie categorie : categories) {
                 String sp = categorie.getCategorie_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
@@ -129,7 +129,7 @@ public class PageCategories extends JFrame {
             }
         });
 
-        /**
+        /*
          * listenner sur le btnAnnuler
          */
         btnAnnuler.addActionListener(e -> {
@@ -139,7 +139,7 @@ public class PageCategories extends JFrame {
             afficheJTableCategories();
         });
 
-        /**
+        /*
          * listenner sur le btnAjouterCategorie pour ajouter une ligne vierge
          */
         btnAjouterCategorie.setSize(140, 50);
@@ -158,8 +158,8 @@ public class PageCategories extends JFrame {
             assert allCategories != null;
             int idMax = allCategories.get(0).getCategorie_id();
 
-            for (int i = 0; i < allCategories.size(); i++) {
-                int categorieId = allCategories.get(i).getCategorie_id();
+            for (Categorie allCategory : allCategories) {
+                int categorieId = allCategory.getCategorie_id();
                 if (categorieId > idMax) {
                     idMax = categorieId;
                 }
@@ -170,7 +170,7 @@ public class PageCategories extends JFrame {
 
             try {
                 CategorieManager.getInstance().insert(blankCategorie);
-          //      JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie ajoutée");
+                //      JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -184,13 +184,11 @@ public class PageCategories extends JFrame {
             afficheJTableCategories();
         });
 
-
-        /**
+        /*
          * listenner sur le bouton Enregistrer qui enregistre les modifications dans la base
          */
-        btnEnrModifs.setSize(140, 50);
         btnEnrModifs.addActionListener(e -> {
-            /** Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
+            /* Récupérer les valeurs du tableauUtilisateur, on boucle pour chaque ligne */
             for (int i = 0; i < tableauCategorie.getRowCount(); i++) {
                 try {
                     categorie = CategorieManager.getInstance().SelectById((Integer) tableauCategorie.getValueAt(i, 1));
@@ -198,40 +196,37 @@ public class PageCategories extends JFrame {
                     bllException.printStackTrace();
                 }
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
-                int idCategorieModifie = (int) tableauCategorie.getValueAt(i, 1);
 
 //                tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
 //                tableauCategorie.setValueAt(idCategorieModifie, i, 1);
 
                 if (categorie == null) {
-                    return;
-                    //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un categorie");
+                    JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner une categorie");
                 } else {
-                    /*** ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
-                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie) || !(categorie.getCategorie_id() == idCategorieModifie)) {
+                    /* ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
+                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
-                        categorie.setCategorie_id(idCategorieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " +categorie.getCategorie_id()+" ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /**user a dit oui*/ {
+                        if (j == 0)  /*user a dit oui*/ {
                             try {
-                                    CategorieManager.getInstance().update(categorie);
-                                    JOptionPane.showMessageDialog(null, "Catégorie " + categorie.getCategorie_id() + " enregistrée");
-                                    afficheJTableCategories();
-                                    break;
+                                CategorieManager.getInstance().update(categorie);
+                                JOptionPane.showMessageDialog(null, "Catégorie " + categorie.getCategorie_id() + " enregistrée");
+                                afficheJTableCategories();
+                                break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        } else {return;}
+                        }
                     }
                 }
             }//fin for
         });
 
-        /**
+        /*
          * Listenner sur le bouton supprimer
          */
         btnSupprimerCategorie.addActionListener(e -> {
@@ -258,24 +253,19 @@ public class PageCategories extends JFrame {
         });
 
 
-        /**
+        /*
          * listenner sur le bouton materiel qui dirige sur la page matériel en fonction de la catégorie sélectionnée
          */
         btnMateriels.setSize(100, 50);
-        btnMateriels.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une categorie");
-                } else {
-                    new PageMateriels(categorie);
-                }
+        btnMateriels.addActionListener(e -> {
+            if (categorie == null) {
+                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une categorie");
+            } else {
+                new PageMateriels(categorie);
             }
         });
 
-
-        /**
-         *
+        /*
          * Mouse listenner sur le tableau categorie
          */
         tableauCategorie.addMouseListener(new MouseAdapter() {
@@ -284,7 +274,7 @@ public class PageCategories extends JFrame {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
-              //gene pour double-clics sur cellule du tableauCategorie   //   JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionnée");
+                    //gene pour double-clics sur cellule du tableauCategorie   //   JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionnée");
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
