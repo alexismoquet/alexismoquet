@@ -23,7 +23,7 @@ public class BOConnexion {
  //      return UMdp.mdpCompare(texteMotDePasse, ubo.getMdp());
 
         UtilisateurBoManager ubom =  UtilisateurBoManager.getInstance();
-        UtilisateurBo ubo = ubom.selectByLogin("aaaa");
+        UtilisateurBo ubo = ubom.selectByLogin(texteLogin);
         return UMdp.mdpCompare(texteMotDePasse, ubo.getMdp());
     }
 
