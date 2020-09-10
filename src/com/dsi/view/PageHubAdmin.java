@@ -99,7 +99,6 @@ public class PageHubAdmin extends JFrame {
         panAnomalies.setLayout(new BorderLayout());
         panAnomalies.add(anomaliesASurveiller, BorderLayout.NORTH);
         panAnomalies.add(new JScrollPane(tableauAnomalies), BorderLayout.CENTER);
-        panAnomalies.setPreferredSize(new Dimension(900, 700));
         panAnomalies.setBorder(new EmptyBorder(0, 20, 10, 20));
         tableauAnomalies.setRowHeight(30);
 
@@ -217,6 +216,10 @@ public class PageHubAdmin extends JFrame {
             String titreAnnonceSelect = value.getAnnonce_titre().toLowerCase();
             String descriptionAnnonceSelect = value.getAnnonce_description().toLowerCase();
 
+            
+            /*
+             Anomalies à définir
+             */
             if (titreAnnonceSelect.contains("sex") || descriptionAnnonceSelect.contains("sex")) {
                 listAnomalies.add(annonceSelect);
             }
