@@ -251,9 +251,6 @@ public class PageUtilisateurBO extends JFrame {
                         if (j == 0)  /*user a dit oui*/ {
                             UtilisateurBoManager.getInstance().update(utilisateurBo);
                             JOptionPane.showMessageDialog(null, "Utilisateur BO " + tableauUtilisateurBO.getValueAt(i, 3) + " enregistré. Nous allons CRYPTER votre mot de passe : " + utilisateurBo.getMdp());
-                            afficheJTableWithAllUtilisateurBO();
-                            System.out.println(utilisateurBo.getMdp());
-                            break;
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
@@ -262,7 +259,8 @@ public class PageUtilisateurBO extends JFrame {
                 //  JOptionPane.showMessageDialog(null, "Aucune(s) modification(s) détectée(s)");
 
             }//fin boucle for
-            tableauUtilisateurBO.clearSelection();
+        //    tableauUtilisateurBO.clearSelection();
+            afficheJTableWithAllUtilisateurBO();
         });
 
         /*

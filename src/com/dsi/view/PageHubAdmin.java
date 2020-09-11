@@ -185,15 +185,18 @@ public class PageHubAdmin extends JFrame {
                         if (j == 0)  /*user a dit oui*/ {
                             AnnonceManager.getInstance().update(annonce);
                             JOptionPane.showMessageDialog(null, "Annonce " + tableauAnomalies.getValueAt(i, 3) + " enregistrée");
-                            remplirJTableWithAnomalies();
-                            break;
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
                 }
             }//fin boucle for
-            tableauAnomalies.clearSelection();
+        //    tableauAnomalies.clearSelection();
+            try {
+                remplirJTableWithAnomalies();
+            } catch (BLLException bllException) {
+                bllException.printStackTrace();
+            }
         });
 
         remplirJTableWithAnomalies();

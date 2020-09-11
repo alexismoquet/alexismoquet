@@ -260,7 +260,6 @@ public class PageVisuels extends JFrame {
                             try {
                                 VisuelManager.getInstance().update(visuel);
                                 JOptionPane.showMessageDialog(null, "Visuel " + visuel.getVisuel_id() + " enregistré");
-                                break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }

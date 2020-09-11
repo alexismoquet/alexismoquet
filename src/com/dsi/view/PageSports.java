@@ -219,8 +219,6 @@ public class PageSports extends JFrame {
                             try {
                                     SportManager.getInstance().update(sport);
                                     JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " enregistré");
-                                    break;
-                                //   afficheJTableSports();
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -228,6 +226,7 @@ public class PageSports extends JFrame {
                     }
                 }
             }//fin for
+            afficheJTableSports();
         });
 
         /*

@@ -256,8 +256,6 @@ public class PageSorties extends JFrame {
                             try {
                                 SortieManager.getInstance().update(sortie);
                                 JOptionPane.showMessageDialog(null, "Sortie " + sortie.getSortie_id() + " enregistrée");
-                                displayRightTable();
-                                break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -265,6 +263,7 @@ public class PageSorties extends JFrame {
                     }
                 }
             }//fin for
+            displayRightTable();
         });
 
         /*
