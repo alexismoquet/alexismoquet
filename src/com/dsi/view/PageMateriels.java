@@ -317,15 +317,13 @@ public class PageMateriels extends JFrame {
                         try {
                             MaterielManager.getInstance().update(materiel);
                             JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " enregistré");
-                            displayRightTable();
-                            break;
                         } catch (BLLException ex) {
                             ex.printStackTrace();
                         }
                     }
                 }//fin if
-
             }//fin for
+            displayRightTable();
         });
 
         /*

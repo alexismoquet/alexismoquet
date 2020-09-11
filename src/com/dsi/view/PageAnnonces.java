@@ -282,15 +282,15 @@ public class PageAnnonces extends JFrame {
                         if (j == 0)  /*user a dit oui*/ {
                                 AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " enregistrée");
-                                diplayRightTable();
-                                break;
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
                 }
             }//fin boucle for
-            tableauAnnonce.clearSelection();
+      //      tableauAnnonce.clearSelection();
+            diplayRightTable();
+
         });
 
 

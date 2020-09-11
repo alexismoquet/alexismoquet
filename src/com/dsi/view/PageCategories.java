@@ -166,7 +166,6 @@ public class PageCategories extends JFrame {
             }
             blankCategorie.setCategorie_id(idMax + 1);
             blankCategorie.setCategorie_libelle("");
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             try {
                 CategorieManager.getInstance().insert(blankCategorie);
@@ -215,8 +214,6 @@ public class PageCategories extends JFrame {
                             try {
                                 CategorieManager.getInstance().update(categorie);
                                 JOptionPane.showMessageDialog(null, "Catégorie " + categorie.getCategorie_id() + " enregistrée");
-                                afficheJTableCategories();
-                                break;
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -224,6 +221,7 @@ public class PageCategories extends JFrame {
                     }
                 }
             }//fin for
+            afficheJTableCategories();
         });
 
         /*

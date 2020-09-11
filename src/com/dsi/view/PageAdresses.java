@@ -270,8 +270,6 @@ public class PageAdresses extends JFrame {
                         if (j == 0)  /*user a dit oui*/ {
                                 AdresseManager.getInstance().update(adresse);
                                 JOptionPane.showMessageDialog(null, "Adresse " + adresse.getIdAdresse() + " enregistrée");
-                                displayRightTable();
-                                break;
                             }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
@@ -279,6 +277,7 @@ public class PageAdresses extends JFrame {
                 }
             }//fin boucle for
             tableauAdresse.clearSelection();
+            displayRightTable();
         });
 
 

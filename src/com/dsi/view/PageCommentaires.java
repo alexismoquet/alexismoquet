@@ -286,11 +286,7 @@ public class PageCommentaires extends JFrame {
 
                         if (j == 0)  /*user a dit oui*/ {
                             try {
-                                    CommentaireManager.getInstance().update(commentaire);
-                                    JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " enregistré");
-                                    displayRightTable();
-                                    break;
-
+                                    CommentaireManager.getInstance().update(commentaire);JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " enregistré");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -298,6 +294,7 @@ public class PageCommentaires extends JFrame {
                     }
                 }
             }//fin for
+            displayRightTable();
         });
 
 
