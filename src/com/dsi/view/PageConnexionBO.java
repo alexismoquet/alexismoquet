@@ -59,6 +59,7 @@ public class PageConnexionBO extends JFrame {
                 actionConnexion();
             } catch (BLLException ex) {
                 ex.printStackTrace();
+                JOptionPane.showMessageDialog(bIdentification,"Login inconnu");
             }
         });
 
@@ -98,7 +99,8 @@ public class PageConnexionBO extends JFrame {
         if (rep){
             PageHubAdmin ha = new PageHubAdmin();
             ha.setVisible(true);
-        } else {
+        } else {JOptionPane.showMessageDialog(null, "Mot de passe incorrect");
+
             setVisible(false);
             PageConnexionBO pcbo = new PageConnexionBO();
             pcbo.initialiserComposants();
