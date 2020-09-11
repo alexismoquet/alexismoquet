@@ -55,7 +55,7 @@ public class PageHubAdmin extends JFrame {
     //************************************************************
     public void initialiserComposants() throws BLLException {
 
-        setTitle("HANDISPAP");
+        setTitle("HandiSpap");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(1000, 600);
         setLocation(200, 200);
@@ -203,7 +203,7 @@ public class PageHubAdmin extends JFrame {
     }//fin initialiser composants
 
     /**
-     * Méthode qui affiche les anomalies dans les annonces
+     * Méthode qui affiche des anomalies A DEFINIR : ci-dessous, pour le mot "sex" dans les annonces
      */
     private void remplirJTableWithAnomalies() throws BLLException {
         listAnomalies = new ArrayList<>();

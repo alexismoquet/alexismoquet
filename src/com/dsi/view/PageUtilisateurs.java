@@ -196,7 +196,6 @@ public class PageUtilisateurs extends JFrame {
             blankUtilisateur.setMotDePasse("");
             blankUtilisateur.setDateInscription(new Date());
 
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
             try {
                 UtilisateurManager.getInstance().insert(blankUtilisateur);
                 //   JOptionPane.showMessageDialog(btnAjouterUtilisateur, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
@@ -233,13 +232,13 @@ public class PageUtilisateurs extends JFrame {
                 String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
                 Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
-//                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
-//                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-//                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
-//                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
-//                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
-//                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
-//                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
+                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
+                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
+                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
+                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
+                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
+                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
+                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
 
                 if (utilisateur == null) {
                     JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
@@ -269,9 +268,7 @@ public class PageUtilisateurs extends JFrame {
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 UtilisateurManager.getInstance().update(utilisateur);
-                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré. Nous allons CRYPTER votre mot de passe : " + utilisateur.getMotDePasse());
-                                afficheJTableUtilisateurs();
-                                break;
+                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -279,6 +276,7 @@ public class PageUtilisateurs extends JFrame {
                     }
                 }
             }//fin for
+            afficheJTableUtilisateurs();
         });
 
         /*
