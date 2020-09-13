@@ -240,7 +240,12 @@ public class PageSorties extends JFrame {
                     //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sortie");
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie) || !(sortie.getSortie_id() == idSortieModifie) || !(sortie.getSortie_materiel_id() == idMaterielSortieModifie)) {
+                    if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie)
+                            || !(sortie.getSortie_id() == idSortieModifie)
+                            || !(sortie.getSortie_materiel_id() == idMaterielSortieModifie)
+                            || !(sortie.getSortie_date_retour().equals(dateRetourSortieModifiee))
+                            || !(sortie.getSortie_date_sortie().equals(dateSortieSortieModifiee))
+                    ) {
                         sortie.setSortie_etat(etatSortieModifie);
                         sortie.setSortie_id(idSortieModifie);
                         sortie.setSortie_materiel_id(idMaterielSortieModifie);
