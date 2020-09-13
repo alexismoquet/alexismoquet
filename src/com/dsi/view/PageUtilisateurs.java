@@ -99,8 +99,9 @@ public class PageUtilisateurs extends JFrame {
        // notice.setSize(200, 200);
         notice.setBackground(Color.white);
         notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse  " +
-                "     2- créer un matériel      3- créer une annonce" + "</br> Attention : Si nouveau mot de passe, recréer un utilisateur"+
-                "</body></html>");
+                "     2- créer un matériel      3- créer une annonce" + " " +
+                "----------  Attention : Si création d'un nouveau mot de passe," +
+                " créer un nouvel utilisateur "+"</body></html>");
         notice.setToolTipText(notice.getText());
 
         panBas.setSize(900, 100);

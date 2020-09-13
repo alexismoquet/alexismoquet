@@ -271,8 +271,12 @@ public class PageCommentaires extends JFrame {
                     return;
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie) || !(commentaire.getCommentaire_id() == idCommentaireModifie)
-                            || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie) || !(commentaire.getCommentaire_utilisateur_id() == commentaireIdUtilisateurModifie)) {
+                    if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie)
+                            || !(commentaire.getCommentaire_id() == idCommentaireModifie)
+                            || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie)
+                            || !(commentaire.getCommentaire_utilisateur_id() == commentaireIdUtilisateurModifie)
+                            || !(commentaire.getCommentaire_date_parution().equals(dateParutionAnnonceModifie))
+                    ) {
                         commentaire.setCommentaire_message(commentaireMessageModifie);
                         commentaire.setCommentaire_id(idCommentaireModifie);
                         commentaire.setCommentaire_note(commentaireNoteModifie);
