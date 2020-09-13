@@ -266,8 +266,12 @@ public class PageAnnonces extends JFrame {
 //                tableauAnnonce.setValueAt(annonceDateParutionModifie, i, 5);
 
                 /* ENREGISTRER LES VALEURS DS LA BASE ***/
-                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie) || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
-                    ||  annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie) {
+                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie)
+                        || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
+                    ||  annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie
+                        || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie
+                        || !annonce.getAnnonce_date_parution().equals(annonceDateParutionModifie))
+                {
                     try {
                         annonce.setAnnonce_description(descriptionAnnonceModifie);
                         annonce.setAnnonce_titre(titreAnnonceModifie);
