@@ -1,6 +1,7 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.TableModelUtilisateur;
+import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurManager;
@@ -85,7 +86,7 @@ public class PageUtilisateurs extends JFrame {
         panHaut.add(btnRechercher, BorderLayout.NORTH);
         btnRechercher.setSize(700, 20);
         panHaut.add(notice, BorderLayout.SOUTH);
-        notice.setSize(900, 20);
+        notice.setSize(900, 40);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -98,7 +99,8 @@ public class PageUtilisateurs extends JFrame {
        // notice.setSize(200, 200);
         notice.setBackground(Color.white);
         notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse  " +
-                "     2- créer un matériel      3- créer une annonce</body></html>");
+                "     2- créer un matériel      3- créer une annonce" + "</br> Attention : Si nouveau mot de passe, recréer un utilisateur"+
+                "</body></html>");
         notice.setToolTipText(notice.getText());
 
         panBas.setSize(900, 100);
@@ -197,6 +199,9 @@ public class PageUtilisateurs extends JFrame {
             blankUtilisateur.setDateInscription(new Date());
 
             try {
+                String input = JOptionPane.showInputDialog(null, "Merci de saisir le  MOT DE PASSE qui sera crypté");
+                blankUtilisateur.setMotDePasse(input);
+
                 UtilisateurManager.getInstance().insert(blankUtilisateur);
                 //   JOptionPane.showMessageDialog(btnAjouterUtilisateur, "Utilisateur " + blankUtilisateur.getIdUtilisateur() + " ajouté");
             } catch (BLLException bllException) {
@@ -232,13 +237,13 @@ public class PageUtilisateurs extends JFrame {
                 String mdpUtilisateurModifie = String.valueOf(tableauUtilisateur.getValueAt(i, 5));
                 Date dateInscUtilisateurModifie = (Date) tableauUtilisateur.getValueAt(i, 6);
 
-                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
-                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
-                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
-                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
-                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
-                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
-                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
+//                tableauUtilisateur.setValueAt(nomUtilisateurModifie, i, 0);
+//                tableauUtilisateur.setValueAt(prenomUtilisateurModifie, i, 1);
+//                tableauUtilisateur.setValueAt(emailUtilisateurModifie, i, 2);
+//                tableauUtilisateur.setValueAt(telMobUtilisateurModifie, i, 3);
+//                tableauUtilisateur.setValueAt(telFixUtilisateurModifie, i, 4);
+//                tableauUtilisateur.setValueAt(mdpUtilisateurModifie, i, 5);
+//                tableauUtilisateur.setValueAt(dateInscUtilisateurModifie, i, 6);
 
                 if (utilisateur == null) {
                     JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
@@ -249,8 +254,8 @@ public class PageUtilisateurs extends JFrame {
                             !utilisateur.getEmail().equalsIgnoreCase(emailUtilisateurModifie) ||
                             !utilisateur.getTelMob().equalsIgnoreCase(telMobUtilisateurModifie) ||
                             !utilisateur.getTelFix().equalsIgnoreCase(telFixUtilisateurModifie) ||
-                             !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie)
-                        //   !(utilisateur.getDateInscription() == (dateInscUtilisateurModifie))
+                             !utilisateur.getMotDePasse().equalsIgnoreCase(mdpUtilisateurModifie)||
+                           !(utilisateur.getDateInscription().equals(dateInscUtilisateurModifie))
                     ) {
                         utilisateur.setNom(nomUtilisateurModifie);
                         utilisateur.setPrenom(prenomUtilisateurModifie);
