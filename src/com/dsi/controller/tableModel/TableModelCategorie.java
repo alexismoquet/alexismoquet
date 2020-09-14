@@ -48,7 +48,7 @@ public class TableModelCategorie extends AbstractTableModel {
     public void setValueAt(Object value, int row, int column) {
         fireTableCellUpdated(row, column);
         if (column == 0) {
-            categories.get(row).setCategorie_libelle((String) value);
+            categories.get(row).setCategorie_libelle((String.valueOf(value)));
         }
     }
 

@@ -214,7 +214,6 @@ public class DAOSport_mysql_impl implements DAO_Sport {
                         rs.getInt("sport_id"),
                         rs.getString("sport_libelle")
                 );
-
             } else {
                 throw new DALException("Aucune sport trouvé avec l'identifiant : " + pId);
             }

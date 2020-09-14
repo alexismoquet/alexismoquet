@@ -37,12 +37,12 @@ public class PageVisuels extends JFrame {
     private final JButton btnAnnuler = new JButton("Annuler");
     private final JButton btnAjouterVisuel = new JButton("Ajouter");
 
-    //     private JTextField txtRechercher = new JTextField();
-    //     private JButton btnRechercher = new JButton("Rechercher");
+    private final JTextField txtRechercher = new JTextField();
+    private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauVisuel = new JTable();
     List<Visuel> visuels = new ArrayList<>();
-    //  List <Visuel> listRechercheVisuels = new ArrayList<>();
+    List <Visuel> listRechercheVisuels = new ArrayList<>();
     Visuel visuel, blankVisuel;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Materiel materiel;
@@ -79,9 +79,9 @@ public class PageVisuels extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-        //  txtRechercher.setText("     Rechercher par id visuel   ");
-        //  panHaut.add(txtRechercher);
-        // panHaut.add(btnRechercher);
+          txtRechercher.setText("   Rechercher par nom de fichier  ");
+          panHaut.add(txtRechercher);
+         panHaut.add(btnRechercher);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -105,37 +105,34 @@ public class PageVisuels extends JFrame {
         displayRightTable();
 
 
-//            txtRechercher.addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    JTextField txtRechercher = ((JTextField) e.getSource());
-//                    txtRechercher.setText("");
-//                    txtRechercher.removeMouseListener(this);
-//                }
-//            });
+            txtRechercher.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JTextField txtRechercher = ((JTextField) e.getSource());
+                    txtRechercher.setText("");
+                }
+            });
 
-//            btnRechercher.addActionListener(e -> {
-//                listRechercheVisuels = new ArrayList<>();
-//                VisuelManager um = VisuelManager.getInstance();
-//                try {
-//                    um.SelectAll();
-//                } catch (BLLException ex) {
-//                    ex.printStackTrace();
-//                }
-//                for (Visuel visuel : visuels) {
-//                    String sp = String.valueOf(visuel.getVisuel_id());
-//                    String recherche = txtRechercher.getText().toLowerCase();
-//
-//                    if (sp.equals(recherche)) {
-//                        listRechercheVisuels.add(visuel);
-//                        TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
-//                        tableauVisuel.setModel(model);
-//                    }
-//                }
-//                if (listRechercheVisuels.size() == 0) {
-//                    JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
-//                }
-//            });
+            btnRechercher.addActionListener(e -> {
+                try {
+                    VisuelManager.getInstance().SelectAll();
+                } catch (BLLException ex) {
+                    ex.printStackTrace();
+                }
+                for (Visuel visuel : visuels) {
+                    String sp = visuel.getVisuel_nom_fichier();
+                    String recherche = txtRechercher.getText().toLowerCase();
+
+                    if (sp.contains(recherche)) {
+                        listRechercheVisuels.add(visuel);
+                        TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
+                        tableauVisuel.setModel(model);
+                    }
+                }
+                if (listRechercheVisuels.size() == 0) {
+                    JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
 
         btnAnnuler.addActionListener(e -> {
             //      txtRechercher.setText("");
@@ -192,6 +189,8 @@ public class PageVisuels extends JFrame {
             visuels.add(blankVisuel);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
+
+            if (visuel != null){
             assert allVisuels != null;
             int idMax = allVisuels.get(0).getVisuel_id();
 
@@ -199,9 +198,10 @@ public class PageVisuels extends JFrame {
                 int sortieId = allVisuel.getVisuel_id();
                 if (sortieId > idMax) {
                     idMax = sortieId;
+                    }
                 }
-            }
             blankVisuel.setVisuel_id(idMax + 1);
+            }
             blankVisuel.setVisuel_nom_fichier("");
 
             if (materiel == null) {

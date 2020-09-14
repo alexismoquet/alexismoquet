@@ -106,7 +106,7 @@ public class PageMateriels extends JFrame {
     }
 
     /**
-     * Méthode qui affiche le graphisme de la page
+     * Méthode qui affiche les composants graphiques de la page
      */
     public void initialiserComposants() {
         setTitle("Materiels");
@@ -217,6 +217,8 @@ public class PageMateriels extends JFrame {
             materiels.add(blankMateriel);
 
             //////////////On récupére la plus haute id du tableau pour assigner blankMateriel à 1 au dessus ////////////////
+
+            if(materiel != null){
             assert allMateriels != null;
             int idMax = allMateriels.get(0).getMateriel_id();
 
@@ -227,7 +229,8 @@ public class PageMateriels extends JFrame {
                 }
             }
             //////////////////On Set les valeurs de blankMateriel pour insertion dans la base //////////////////////
-            blankMateriel.setMateriel_id(idMax + 1);
+            blankMateriel.setMateriel_id(idMax);
+        }
             blankMateriel.setMateriel_nom("");
             blankMateriel.setMateriel_description("");
 
@@ -397,7 +400,8 @@ public class PageMateriels extends JFrame {
             if (materiel == null) {
                 JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
             } else {
-                new PageAnnonces(materiel);
+               new PageAnnonces(materiel, utilisateur);
+
             }
         });
 

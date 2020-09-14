@@ -156,16 +156,18 @@ public class PageSports extends JFrame {
             sports.add(blankSport);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            assert allSports != null;
-            int idMax = allSports.get(0).getSport_id();
+            if (sport != null) {
+                assert allSports != null;
+                int idMax = allSports.get(0).getSport_id();
 
-            for (Sport allSport : allSports) {
-                int sportId = allSport.getSport_id();
-                if (sportId > idMax) {
-                    idMax = sportId;
+                for (Sport allSport : allSports) {
+                    int sportId = allSport.getSport_id();
+                    if (sportId > idMax) {
+                        idMax = sportId;
+                    }
                 }
+                blankSport.setSport_id(idMax + 1);
             }
-            blankSport.setSport_id(idMax + 1);
             blankSport.setSport_libelle("");
 
             try {

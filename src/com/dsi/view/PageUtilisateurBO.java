@@ -9,6 +9,7 @@ import com.dsi.model.bll.UtilisateurBoManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class PageUtilisateurBO extends JFrame {
     private final JPanel panCentre = new JPanel();
     private final JPanel panBas = new JPanel();
 
-    private final JButton btnModifierUtilisateur = new JButton("Enregistrer");
+    private final JButton btnEnrModif = new JButton("Enregistrer");
     private final JButton btnAjouterLigne = new JButton("Ajouter");
     private final JButton btnSupprimerUtilisateur = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
@@ -44,6 +45,7 @@ public class PageUtilisateurBO extends JFrame {
     UtilisateurBo utilisateurBo, blankUtilisateurBO;
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+ //   ImageIcon iconeAttention = new ImageIcon("attention.png");
 
     /**
      * Constructeur par defaut
@@ -78,9 +80,9 @@ public class PageUtilisateurBO extends JFrame {
         panHaut.add(btnRechercher, BorderLayout.NORTH);
         panHaut.add(notice, BorderLayout.SOUTH);
 
-        notice.setSize(200, 100);
-        notice.setBackground(Color.white);
-        notice.setText("<html><body><font color='black'> Rôle = MODERATEUR ou ADMIN </body></html>");
+        notice.setSize(200, 50);
+       // notice.setIcon(iconeAttention);
+        notice.setText("Rôle = MODERATEUR  ou  ADMIN");
         notice.setToolTipText(notice.getText());
 
         //Panel centre
@@ -97,7 +99,7 @@ public class PageUtilisateurBO extends JFrame {
         panCentre.add(new JScrollPane(tableauUtilisateurBO), BorderLayout.CENTER);
 
         panBas.setSize(500, 200);
-        panBas.add(btnModifierUtilisateur);
+        panBas.add(btnEnrModif);
         panBas.add(btnAjouterLigne);
         panBas.add(btnSupprimerUtilisateur);
         panBas.add(btnAnnuler);
@@ -200,6 +202,8 @@ public class PageUtilisateurBO extends JFrame {
             blankUtilisateurBO.setRole(Roles.ADMIN);
 
             try {
+                String input = JOptionPane.showInputDialog(null, "Merci de saisir le  MOT DE PASSE qui sera crypté");
+                blankUtilisateurBO.setMdp(input);
                 UtilisateurBoManager.getInstance().insert(blankUtilisateurBO);
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
@@ -215,9 +219,9 @@ public class PageUtilisateurBO extends JFrame {
         });
 
         /*
-         * listenner sur le btnModifierUtilisateur pour enregistrer les modifications
+         * listenner sur le btnEnrModif pour enregistrer les modifications
          */
-        btnModifierUtilisateur.addActionListener(e -> {
+        btnEnrModif.addActionListener(e -> {
             /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauUtilisateurBO.getRowCount(); i++) {
                 try {
@@ -244,22 +248,20 @@ public class PageUtilisateurBO extends JFrame {
                         utilisateurBo.setMdp(mdpUtilisateurBO);
                         utilisateurBo.setRole(roleUtilisateurBO);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierUtilisateur, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur BO " + utilisateurBo.getIdUtilisateur() + " ?",
+                        int j = JOptionPane.showConfirmDialog(btnEnrModif, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur BO " + utilisateurBo.getIdUtilisateur() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
                         if (j == 0)  /*user a dit oui*/ {
                             UtilisateurBoManager.getInstance().update(utilisateurBo);
-                            JOptionPane.showMessageDialog(null, "Utilisateur BO " + tableauUtilisateurBO.getValueAt(i, 3) + " enregistré. Nous allons CRYPTER votre mot de passe : " + utilisateurBo.getMdp());
+                            JOptionPane.showMessageDialog(null, "Utilisateur BO " + tableauUtilisateurBO.getValueAt(i, 3) + " enregistré ");
                         }
                     } catch (BLLException bllException) {
                         bllException.printStackTrace();
                     }
                 }
-                //  JOptionPane.showMessageDialog(null, "Aucune(s) modification(s) détectée(s)");
-
             }//fin boucle for
-        //    tableauUtilisateurBO.clearSelection();
+           //   JOptionPane.showMessageDialog(null, "Aucune(s) modification(s) détectée(s)");
             afficheJTableWithAllUtilisateurBO();
         });
 
