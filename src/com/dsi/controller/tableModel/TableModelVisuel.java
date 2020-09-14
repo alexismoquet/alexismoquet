@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
 
-    private final String[] titres = {"Visuel","Nom du fichier", "IdVisuel", "IdMatériel"};
+    private final String[] titres = {"Affichage du visuel","Nom du fichier", "IdVisuel", "IdMatériel"};
     private List<Visuel> visuels;
 
     

@@ -96,13 +96,13 @@ public class PageUtilisateurs extends JFrame {
         panCentre.add(new JScrollPane(tableauUtilisateur), BorderLayout.CENTER);
         tableauUtilisateur.setRowHeight(30);
 
-       // notice.setSize(200, 200);
+        notice.setSize(500, 40);
         notice.setBackground(Color.white);
-        notice.setText("<html><body><font color='black'>CREATION UTILISATEUR :  1- créer une adresse  " +
-                "     2- créer un matériel      3- créer une annonce" + " " +
-                "----------  Attention : Si création d'un nouveau mot de passe," +
-                " créer un nouvel utilisateur "+"</body></html>");
-        notice.setToolTipText(notice.getText());
+        notice.setText("CREATION UTILISATEUR :  1- créer une adresse  " +
+                "     2- créer un matériel      3- créer une annonce" + "   " +
+                "------  Attention, si création d'un nouveau mot de passe," +
+                " créer un nouvel utilisateur");
+      //  notice.setToolTipText(notice.getText());
 
         panBas.setSize(900, 100);
         panBas.add(btnEnrModifUtil);
@@ -181,16 +181,21 @@ public class PageUtilisateurs extends JFrame {
             utilisateurs.add(blankUtilisateur);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            assert allUtilisateurs != null;
-            int idMax = allUtilisateurs.get(0).getIdUtilisateur();
 
-            for (Utilisateur allUtilisateur : allUtilisateurs) {
-                int utilisateurId = allUtilisateur.getIdUtilisateur();
-                if (utilisateurId > idMax) {
-                    idMax = utilisateurId;
+            if (utilisateurs != null) {
+
+                assert allUtilisateurs != null;
+                int idMax = allUtilisateurs.get(0).getIdUtilisateur();
+
+                for (Utilisateur allUtilisateur : allUtilisateurs) {
+                    int utilisateurId = allUtilisateur.getIdUtilisateur();
+                    if (utilisateurId > idMax) {
+                        idMax = utilisateurId;
+                    }
                 }
             }
-            blankUtilisateur.setIdUtilisateur(idMax + 1);
+            else{ blankUtilisateur.setIdUtilisateur(1);
+            }
             blankUtilisateur.setNom("");
             blankUtilisateur.setPrenom("");
             blankUtilisateur.setEmail("");

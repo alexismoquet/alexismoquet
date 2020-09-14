@@ -107,9 +107,8 @@ public class PageCategories extends JFrame {
          **/
         btnRechercher.addActionListener(e -> {
             listRechercheCategories = new ArrayList<>();
-            CategorieManager sm = CategorieManager.getInstance();
             try {
-                sm.SelectAll();  //retourne une list d'utilisateurs = utilisateurs
+                CategorieManager.getInstance().SelectAll();  //retourne une list d'utilisateurs = utilisateurs
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
@@ -155,16 +154,18 @@ public class PageCategories extends JFrame {
             categories.add(blankCategorie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
-            assert allCategories != null;
-            int idMax = allCategories.get(0).getCategorie_id();
+            if (categorie != null) {
+                assert allCategories != null;
+                int idMax = allCategories.get(0).getCategorie_id();
 
-            for (Categorie allCategory : allCategories) {
-                int categorieId = allCategory.getCategorie_id();
-                if (categorieId > idMax) {
-                    idMax = categorieId;
+                for (Categorie allCategory : allCategories) {
+                    int categorieId = allCategory.getCategorie_id();
+                    if (categorieId > idMax) {
+                        idMax = categorieId;
+                    }
                 }
+                blankCategorie.setCategorie_id(idMax + 1);
             }
-            blankCategorie.setCategorie_id(idMax + 1);
             blankCategorie.setCategorie_libelle("");
 
             try {
@@ -196,20 +197,19 @@ public class PageCategories extends JFrame {
                 }
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
 
-//                tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
+                tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
 //                tableauCategorie.setValueAt(idCategorieModifie, i, 1);
 
                 if (categorie == null) {
                     JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner une categorie");
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
-                    if (!categorie.getCategorie_libelle().equalsIgnoreCase(libelleCategorieModifie)) {
+                    if (!categorie.getCategorie_libelle().equals(libelleCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
 
                         int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 CategorieManager.getInstance().update(categorie);
@@ -232,15 +232,13 @@ public class PageCategories extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");
                 return;
             }
-
-            CategorieManager sm = CategorieManager.getInstance();
             int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
-                    sm.delete(categorie);
+                    CategorieManager.getInstance().delete(categorie);
                     JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimée");
                     afficheJTableCategories();
                 } catch (BLLException ex) {

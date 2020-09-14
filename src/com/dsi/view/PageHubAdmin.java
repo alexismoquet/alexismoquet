@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.awt.BorderLayout.SOUTH;
+
 /**
  * Class HubAdmin
  *
@@ -20,6 +22,7 @@ import java.util.List;
 public class PageHubAdmin extends JFrame {
     private final JPanel panPrincipal = new JPanel();
     private final JPanel panBtn = new JPanel();
+    private final JPanel panBtnBas = new JPanel();
     private final JPanel panAnomalies = new JPanel();
 
     private final JButton bUtilisateursBO = new JButton("Utilisateurs BO");
@@ -55,7 +58,7 @@ public class PageHubAdmin extends JFrame {
     //************************************************************
     public void initialiserComposants() throws BLLException {
 
-        setTitle("HandiSpap");
+        setTitle("HandiSpap : Le Meilleur moyen de Prêter ou de Louer du matériel HandiSport");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(1000, 600);
         setLocation(200, 200);
@@ -68,11 +71,17 @@ public class PageHubAdmin extends JFrame {
         panPrincipal.setLayout(new BorderLayout());
         panPrincipal.add(panBtn, BorderLayout.NORTH);
         panPrincipal.add(panAnomalies, BorderLayout.CENTER);
+        panPrincipal.add(panBtnBas, SOUTH);
 
-        /* Panel des boutons*/
+        /* Panel des boutons haut*/
         panBtn.setBackground(Color.decode("#11417d")); //bleu
         panBtn.setPreferredSize(new Dimension(900, 100));
         panBtn.setBorder(new EmptyBorder(10, 10, 0, 10));
+
+        /* Panel Bas des boutons*/
+        panBtnBas.setBackground(Color.decode("#11417d")); //bleu
+        panBtnBas.setPreferredSize(new Dimension(900, 40));
+        panBtnBas.setBorder(new EmptyBorder(10, 10, 20, 10));
 
         panBtn.add(bUtilisateursBO);
         panBtn.add(bUtilisateurs);
@@ -84,11 +93,12 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bSorties);
         panBtn.add(bCommentaires);
         panBtn.add(bAdresses);
-        panBtn.add(bAnnuler);
-        panBtn.add(bEnregistrer);
+
+        panBtnBas.add(bAnnuler);
+        panBtnBas.add(bEnregistrer);
 
         /* Panel des anomalies */
-        anomaliesASurveiller.setSize(200, 100);
+        anomaliesASurveiller.setSize(200, 50);
         anomaliesASurveiller.setBackground(Color.white);
         anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte  dans les annonces à surveiller :</body></html>");
         anomaliesASurveiller.setToolTipText(anomaliesASurveiller.getText());
@@ -100,6 +110,7 @@ public class PageHubAdmin extends JFrame {
         panAnomalies.add(anomaliesASurveiller, BorderLayout.NORTH);
         panAnomalies.add(new JScrollPane(tableauAnomalies), BorderLayout.CENTER);
         panAnomalies.setBorder(new EmptyBorder(0, 20, 10, 20));
+        panAnomalies.add(panBtnBas, SOUTH);
         tableauAnomalies.setRowHeight(30);
 
         bUtilisateurs.setSize(100, 50);
@@ -210,16 +221,13 @@ public class PageHubAdmin extends JFrame {
      */
     private void remplirJTableWithAnomalies() throws BLLException {
         listAnomalies = new ArrayList<>();
-        AnnonceManager am = new AnnonceManager();
-        
-        annonces = am.SelectAll();
+        annonces = AnnonceManager.getInstance().SelectAll();
 
         for (Annonce value : annonces) {
             annonceSelect = value;
             String titreAnnonceSelect = value.getAnnonce_titre().toLowerCase();
             String descriptionAnnonceSelect = value.getAnnonce_description().toLowerCase();
 
-            
             /*
              Anomalies à définir
              */

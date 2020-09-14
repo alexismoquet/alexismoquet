@@ -182,18 +182,21 @@ public class PageCommentaires extends JFrame {
         btnAjouterCommentaire.setSize(140, 50);
         btnAjouterCommentaire.addActionListener(e -> {
 
-            List<Commentaire>allCommentaires = null;
-            CommentaireManager mm = new CommentaireManager();
-            try {
-                allCommentaires = mm.SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
 
             blankCommentaire = new Commentaire();
             commentaires.add(blankCommentaire);
 
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
+            if (commentaire != null){
+
+            List<Commentaire>allCommentaires;
+            try {
+                allCommentaires = CommentaireManager.getInstance().SelectAll();
+        } catch (BLLException bllException) {
+            bllException.printStackTrace();
+             return;
+                }
+
             assert allCommentaires != null;
             int idMax = allCommentaires.get(0).getCommentaire_id();
 
@@ -201,9 +204,13 @@ public class PageCommentaires extends JFrame {
                 int commentaireId = allCommentaire.getCommentaire_id();
                 if (commentaireId > idMax) {
                     idMax = commentaireId;
+                     }
                 }
+            blankCommentaire.setCommentaire_id(idMax);
+            } else {
+                blankCommentaire.setCommentaire_id(1);
             }
-            blankCommentaire.setCommentaire_id(idMax + 1);
+
             blankCommentaire.setCommentaire_note(0);
             blankCommentaire.setCommentaire_message("");
             blankCommentaire.setCommentaire_date_parution(new Date());

@@ -45,7 +45,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getLogin());
-            pstmt.setString(2,  pObj.getMdp());
+            pstmt.setString(2,  UMdp.mdpCrypte(pObj.getMdp()));
             pstmt.setString(3, pObj.getRole().getLibelle());
 
             pstmt.executeUpdate();
@@ -87,7 +87,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getLogin());
-            pstmt.setString(2, UMdp.mdpCrypte(pObj.getMdp()));
+            pstmt.setString(2, pObj.getMdp());
             pstmt.setString(3, pObj.getRole().getLibelle());
             pstmt.setInt(4, pObj.getIdUtilisateur());
 

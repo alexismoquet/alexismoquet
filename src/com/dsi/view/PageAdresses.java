@@ -183,16 +183,20 @@ public class PageAdresses extends JFrame {
             adresses.add(blankAdresse);
 
             /* On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus */
-            assert allAdresses != null;
-            int idMax = allAdresses.get(0).getIdAdresse();
 
-            for (Adresse allAdress : allAdresses) {
-                int adresseId = allAdress.getIdAdresse();
-                if (adresseId > idMax) {
-                    idMax = adresseId;
-                }
-            }
-            blankAdresse.setIdAdresse(idMax + 1);
+                    if (adresse != null) {
+                        assert allAdresses != null;
+                        int idMax = allAdresses.get(0).getIdAdresse();
+
+                        for (Adresse allAdress : allAdresses) {
+                            int adresseId = allAdress.getIdAdresse();
+                            if (adresseId > idMax) {
+                                idMax = adresseId;
+                            }
+                        }
+                        blankAdresse.setIdAdresse(idMax + 1);
+                    }
+
             blankAdresse.setAdresse("");
             blankAdresse.setVille("");
             blankAdresse.setCodePostal("");

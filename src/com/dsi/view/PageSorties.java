@@ -10,9 +10,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.dsi.controller.Sorties.remplirJTableSortiesWithIdMateriel;
 import static com.dsi.controller.Sorties.remplirJTableWithAllSorties;
@@ -129,10 +132,10 @@ public class PageSorties extends JFrame {
             }
             /* ON PARCOURS LA LISTE DES sorties **/
             for (Sortie sortie : sorties) {
-                String sp = String.valueOf(sortie.getSortie_etat());
+                String sp = String.valueOf(sortie.getSortie_etat()).toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (sp.startsWith(recherche)) {
+                if (sp.contains(recherche)) {
                     listRechercheSorties.add(sortie);
                     TableModelSortie model = new TableModelSortie(listRechercheSorties);
                     tableauSortie.setModel(model);
@@ -169,29 +172,35 @@ public class PageSorties extends JFrame {
             sorties.add(blankSortie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
-            assert allSorties != null;
-            int idMax = allSorties.get(0).getSortie_id();
 
-            for (Sortie allSorty : allSorties) {
-                int sortieId = allSorty.getSortie_id();
-                if (sortieId > idMax) {
-                    idMax = sortieId;
+            if (sortie != null) {
+                assert allSorties != null;
+                int idMax = allSorties.get(0).getSortie_id();
+
+                for (Sortie allSorty : allSorties) {
+                    int sortieId = allSorty.getSortie_id();
+                    if (sortieId > idMax) {
+                        idMax = sortieId;
+                    }
                 }
+                /*S'il y a 2 sorties pour un seul matériel*/
+                if (sorties.size() > 1) {
+                    JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
+                    return;
+                }
+                blankSortie.setSortie_id(idMax + 1);
             }
-            blankSortie.setSortie_id(idMax + 1);
+
             blankSortie.setSortie_etat("");
             blankSortie.setSortie_date_sortie(new Date());
             blankSortie.setSortie_date_retour(new Date());
 
-            if (sorties.size() > 1) {
-                JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
-                return;
-            }
             if (materiel == null) {
                 blankSortie.setSortie_materiel_id(0);
             } else {
                 blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
             }
+
 
             try {
                 SortieManager.getInstance().insert(blankSortie);

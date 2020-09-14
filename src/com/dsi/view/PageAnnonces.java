@@ -64,6 +64,24 @@ public class PageAnnonces extends JFrame {
         this.materiel = pMateriel;
         initialiserComposants();
     }
+    /**
+     * Constructeur
+     * @param: pUtilisateur
+     */
+    public PageAnnonces(Utilisateur pUtilisateur) {
+        this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
+
+    /**
+     * Constructeur
+     * @param: pMateriel, pUtilisateur
+     */
+    public PageAnnonces(Materiel pMateriel, Utilisateur pUtilisateur) {
+        this.materiel = pMateriel;
+        this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
 
     /**
      * Méthode qui affiche le graphisme de la page
@@ -189,16 +207,19 @@ public class PageAnnonces extends JFrame {
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
 
-            List<Annonce>allAnnonces = null;
-            try {
-                allAnnonces = AnnonceManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
+
             blankAnnonce = new Annonce();
-            annonces.add(blankAnnonce);
 
             //////  On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus ////////////////
+
+            if (annonces.size() != 0){
+                List<Annonce>allAnnonces = null;
+                try {
+                    allAnnonces = AnnonceManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+
             assert allAnnonces != null;
             int idMax = allAnnonces.get(0).getAnnonce_id();
 
@@ -206,9 +227,13 @@ public class PageAnnonces extends JFrame {
                 int annonceId = allAnnonce.getAnnonce_id();
                 if (annonceId > idMax) {
                     idMax = annonceId;
+                    }
                 }
+                blankAnnonce.setAnnonce_id(idMax);
+            } else {
+                blankAnnonce.setAnnonce_id(1);
             }
-            blankAnnonce.setAnnonce_id(idMax + 1);
+
             blankAnnonce.setAnnonce_titre("");
             blankAnnonce.setAnnonce_description("");
             blankAnnonce.setAnnonce_date_parution(new Date());
@@ -217,12 +242,18 @@ public class PageAnnonces extends JFrame {
                 JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
                 return;
             }
-                if (materiel == null){ JOptionPane.showMessageDialog(null, "Merci de créer un matériel");
+
+            if (materiel == null){
+                JOptionPane.showMessageDialog(null, "Merci de créer un matériel");
                 return;
-                }else {blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id()); }
-                if (utilisateur == null){
+                } else {
+                blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id()); }
+
+            if (utilisateur == null){
                     blankAnnonce.setAnnonce_utilisateur_id(1);
                 } else{ blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur()); }
+
+            annonces.add(blankAnnonce);
 
             try {
                 AnnonceManager.getInstance().insert(blankAnnonce);
@@ -245,19 +276,21 @@ public class PageAnnonces extends JFrame {
          */
         btnModifierAnnonce.addActionListener(e -> {
 
-            /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
-            for (int i = 0; i < tableauAnnonce.getRowCount(); i++) {
+            if (annonce != null) {
 
-                try {
-                    annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnnonce.getValueAt(i, 3));
-                } catch (BLLException bllException) {
-                    bllException.printStackTrace();
-                }
-                String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
-                String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
-                int annonceIdUtilisateurModifie = (int) tableauAnnonce.getValueAt(i, 2);
-                int annonceIdMaterielModifie = (int) tableauAnnonce.getValueAt(i, 4);
-                Date annonceDateParutionModifie = (Date) tableauAnnonce.getValueAt(i, 5);
+                /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
+                for (int i = 0; i < tableauAnnonce.getRowCount(); i++) {
+
+                    try {
+                        annonce = AnnonceManager.getInstance().SelectById((Integer) tableauAnnonce.getValueAt(i, 3));
+                    } catch (BLLException bllException) {
+                        bllException.printStackTrace();
+                    }
+                    String titreAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 0));
+                    String descriptionAnnonceModifie = String.valueOf(tableauAnnonce.getValueAt(i, 1));
+                    int annonceIdUtilisateurModifie = (int) tableauAnnonce.getValueAt(i, 2);
+                    int annonceIdMaterielModifie = (int) tableauAnnonce.getValueAt(i, 4);
+                    Date annonceDateParutionModifie = (Date) tableauAnnonce.getValueAt(i, 5);
 
 //                tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
 //                tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
@@ -265,36 +298,35 @@ public class PageAnnonces extends JFrame {
 //                tableauAnnonce.setValueAt(annonceIdMaterielModifie, i, 4);
 //                tableauAnnonce.setValueAt(annonceDateParutionModifie, i, 5);
 
-                /* ENREGISTRER LES VALEURS DS LA BASE ***/
-                if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie)
-                        || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
-                    ||  annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie
-                        || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie
-                        || !annonce.getAnnonce_date_parution().equals(annonceDateParutionModifie))
-                {
-                    try {
-                        annonce.setAnnonce_description(descriptionAnnonceModifie);
-                        annonce.setAnnonce_titre(titreAnnonceModifie);
-                        annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
-                        annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
-                        annonce.setAnnonce_date_parution(annonceDateParutionModifie);
+                    /* ENREGISTRER LES VALEURS DS LA BASE ***/
+                    if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie)
+                            || !annonce.getAnnonce_description().equals(descriptionAnnonceModifie)
+                            || annonce.getAnnonce_utilisateur_id() != annonceIdUtilisateurModifie
+                            || annonce.getAnnonce_materiel_id() != annonceIdMaterielModifie
+                            || !annonce.getAnnonce_date_parution().equals(annonceDateParutionModifie)) {
+                        try {
+                            annonce.setAnnonce_description(descriptionAnnonceModifie);
+                            annonce.setAnnonce_titre(titreAnnonceModifie);
+                            annonce.setAnnonce_utilisateur_id(annonceIdUtilisateurModifie);
+                            annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
+                            annonce.setAnnonce_date_parution(annonceDateParutionModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierAnnonce, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce "+annonce.getAnnonce_id()+" ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                            int j = JOptionPane.showConfirmDialog(btnModifierAnnonce, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
-                        if (j == 0)  /*user a dit oui*/ {
+                            if (j == 0)  /*user a dit oui*/ {
                                 AnnonceManager.getInstance().update(annonce);
                                 JOptionPane.showMessageDialog(null, "Annonce " + tableauAnnonce.getValueAt(i, 3) + " enregistrée");
+                            }
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
                         }
-                    } catch (BLLException bllException) {
-                        bllException.printStackTrace();
                     }
-                }
-            }//fin boucle for
-      //      tableauAnnonce.clearSelection();
-            diplayRightTable();
-
+                }//fin boucle for
+                //      tableauAnnonce.clearSelection();
+                diplayRightTable();
+            }
         });
 
 
@@ -306,15 +338,13 @@ public class PageAnnonces extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
                 return;
             }
-            AnnonceManager am = AnnonceManager.getInstance();
-
             int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
                     "Veuillez confirmer votre choix",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
             if (i == 0) //user a dit oui
             {
                 try {
-                    am.delete(annonce);
+                    AnnonceManager.getInstance().delete(annonce);
                     JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
                    diplayRightTable();
                 } catch (BLLException ex) {
@@ -401,7 +431,7 @@ public class PageAnnonces extends JFrame {
             afficheJTableWithAllAnnonces();
         } else if (materiel == null){
             afficheJTableAnnoncesIdUtilisateur();
-        } else if (utilisateur == null){
+        } else {
             afficheJTableAnnoncesIdMateriel();
         }
     }
