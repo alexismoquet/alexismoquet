@@ -40,7 +40,7 @@ public class PageSports extends JFrame {
 
     Sport sport, blankSport;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-
+    boolean verifSiAjout = false;
 
     /**
      * Constructeur par defaut
@@ -145,6 +145,7 @@ public class PageSports extends JFrame {
          */
         btnAjouterSport.setSize(140, 50);
         btnAjouterSport.addActionListener(e -> {
+            verifSiAjout = true;
             List<Sport> allSports = null;
             SportManager sm = new SportManager();
             try {
@@ -213,10 +214,17 @@ public class PageSports extends JFrame {
                         sport.setSport_libelle(libelleSportModifie);
                         sport.setSport_id(idSportModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " +sport.getSport_id()+" ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                           j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                     SportManager.getInstance().update(sport);

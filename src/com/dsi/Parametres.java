@@ -1,7 +1,6 @@
 package com.dsi;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -19,12 +18,12 @@ public class Parametres {
     private static final String CONFIRMER_SORTIE = "ConfirmerSortie";
 
     //Attributs de la classe
-    private static Properties props = new Properties();
+    private static final Properties props = new Properties();
 
     //Paramètres de l'application
     public static boolean confirmerQuitter = true;
 
-    /**
+    /*
      * Charge les paramètres contenu dans le fichier "conf.properties" au chargement de la classe
      */
     static {
@@ -33,8 +32,6 @@ public class Parametres {
 
             confirmerQuitter = Boolean.parseBoolean(props.getProperty(CONFIRMER_SORTIE,"true"));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,8 +43,7 @@ public class Parametres {
      * @return Valeur
      */
     public static String getProperties(String pKey) {
-    	String parametre = props.getProperty(pKey,null);
-    	return parametre;
+        return props.getProperty(pKey,null);
     }
 
     /**

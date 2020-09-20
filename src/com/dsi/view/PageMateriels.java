@@ -48,6 +48,7 @@ public class PageMateriels extends JFrame {
     Utilisateur utilisateur;
     Materiel materiel, blankMateriel;
     Integer annonce_materiel_id;
+    boolean verifSiAjout = false;
 
 
     /**
@@ -146,12 +147,11 @@ public class PageMateriels extends JFrame {
         panBas.add(btnVisuels);
         panBas.add(btnSorties);
 
-        if (annonce_materiel_id == null) {
+        if (annonce_materiel_id == null) {  //si on vient de la pageAnnonce, le btnAnnonces n'apparait pas
             panBas.add(btnAnnonces);
         }
 
         setContentPane(panPrincipal);
-
         displayRightTable();
 
         /*
@@ -191,7 +191,6 @@ public class PageMateriels extends JFrame {
             }
         });
 
-
         /*
          * Listenner btnAnnuler
          **/
@@ -207,6 +206,7 @@ public class PageMateriels extends JFrame {
          */
         btnAjouterMateriel.setSize(140, 50);
         btnAjouterMateriel.addActionListener(e -> {
+            verifSiAjout = true;
             List<Materiel> allMateriels = null;
             try {
                 allMateriels = MaterielManager.getInstance().SelectAll();
@@ -229,8 +229,9 @@ public class PageMateriels extends JFrame {
                 }
             }
             //////////////////On Set les valeurs de blankMateriel pour insertion dans la base //////////////////////
-            blankMateriel.setMateriel_id(idMax);
-        }
+        } else {
+                blankMateriel.setMateriel_id(1);
+            }
             blankMateriel.setMateriel_nom("");
             blankMateriel.setMateriel_description("");
 
@@ -241,7 +242,7 @@ public class PageMateriels extends JFrame {
             }
 
             if (categorie == null) {
-                blankMateriel.setMateriel_categorie_id(1);
+              blankMateriel.setMateriel_categorie_id(1);
             } else {
                 blankMateriel.setMateriel_categorie_id(categorie.getCategorie_id());
             }
@@ -274,7 +275,6 @@ public class PageMateriels extends JFrame {
          * Listenner du bouton enregistrer les modifications
          **/
         btnEnregistrerMateriel.addActionListener(e -> {
-
             /* Récupérer les valeurs du tableauAnomalies, on vérifie pour chaque ligne */
             for (int i = 0; i < tableauMateriel.getRowCount(); i++) {
 
@@ -312,10 +312,17 @@ public class PageMateriels extends JFrame {
                     materiel.setMateriel_sport_id(idSportMaterielModifie);
                     materiel.setMateriel_caution_prix(cautionPrixMaterielModifie);
 
-                    int j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le matériel " + materiel.getMateriel_id() + " ?",
-                            "Veuillez confirmer votre choix",
-                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                    int j;
+                    if (verifSiAjout) {
+                         j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "Êtes-vous sûr de vouloir enregistrer le matériel " + materiel.getMateriel_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                verifSiAjout = false;
+                    } else {
+                        j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir modifier le matériel " + materiel.getMateriel_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                    }
                     if (j == 0)  /*user a dit oui*/ {
                         try {
                             MaterielManager.getInstance().update(materiel);
@@ -448,6 +455,20 @@ public class PageMateriels extends JFrame {
             ex.printStackTrace();
         }
     } //fin afficheJTable
+
+//    /**
+//     * Méthode qui affiche 1 materiel
+//     */
+//    private void afficheJTableWithIdMateriel() {
+//        try {
+//            materiels = remplirJTableWithIdMateriels(annonce_materiel_id);
+//            TableModelMateriel model = new TableModelMateriel(materiels);
+//            tableauMateriel.setModel(model);
+//
+//        } catch (BLLException ex) {
+//            ex.printStackTrace();
+//        }
+//    } //fin afficheJTable
 
     /**
      * Méthode qui affiche tous les materiels

@@ -43,7 +43,7 @@ public class PageCategories extends JFrame {
 
     Categorie categorie, blankCategorie;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-
+    boolean verifSiAjout = false;
     /**
      * Constructeur par defaut
      */
@@ -143,7 +143,7 @@ public class PageCategories extends JFrame {
          */
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
-
+            verifSiAjout = true;
             List<Categorie> allCategories = null;
             try {
                 allCategories = CategorieManager.getInstance().SelectAll();
@@ -198,7 +198,7 @@ public class PageCategories extends JFrame {
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
 
                 tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
-//                tableauCategorie.setValueAt(idCategorieModifie, i, 1);
+//              tableauCategorie.setValueAt(idCategorieModifie, i, 1);
 
                 if (categorie == null) {
                     JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner une categorie");
@@ -207,9 +207,18 @@ public class PageCategories extends JFrame {
                     if (!categorie.getCategorie_libelle().equals(libelleCategorieModifie)) {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
+
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 CategorieManager.getInstance().update(categorie);

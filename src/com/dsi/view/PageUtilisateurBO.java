@@ -43,6 +43,7 @@ public class PageUtilisateurBO extends JFrame {
 
     List<UtilisateurBo> listRechercheUtilisateursBO = new ArrayList<>();
     UtilisateurBo utilisateurBo, blankUtilisateurBO;
+    boolean verifSiAjout = false;
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
  //   ImageIcon iconeAttention = new ImageIcon("attention.png");
@@ -176,7 +177,7 @@ public class PageUtilisateurBO extends JFrame {
          */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
-
+            verifSiAjout = true;
             List<UtilisateurBo> allUtilisateursBO = null;
             try {
                 allUtilisateursBO = UtilisateurBoManager.getInstance().SelectAll();
@@ -248,10 +249,17 @@ public class PageUtilisateurBO extends JFrame {
                         utilisateurBo.setMdp(mdpUtilisateurBO);
                         utilisateurBo.setRole(roleUtilisateurBO);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModif, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur BO " + utilisateurBo.getIdUtilisateur() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnEnrModif, "Êtes-vous sûr de vouloir enregistrer l'utilisateur BO " + utilisateurBo.getIdUtilisateur() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrModif, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur BO " + utilisateurBo.getIdUtilisateur() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             UtilisateurBoManager.getInstance().update(utilisateurBo);
                             JOptionPane.showMessageDialog(null, "Utilisateur BO " + tableauUtilisateurBO.getValueAt(i, 3) + " enregistré ");

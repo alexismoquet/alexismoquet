@@ -208,10 +208,8 @@ public class DAOAnnonce_mysql_impl implements DAO_Annonce {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
             }
         }
-
         return annonces;
     }
-
 
     @Override
     public Annonce selectById(int pId) throws DALException {
