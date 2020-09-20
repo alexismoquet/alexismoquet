@@ -43,6 +43,7 @@ public class PageCommentaires extends JFrame {
     Utilisateur utilisateur;
     Commentaire commentaire, blankCommentaire;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    boolean verifSiAjout = false;
 
 
     /**
@@ -181,8 +182,7 @@ public class PageCommentaires extends JFrame {
          */
         btnAjouterCommentaire.setSize(140, 50);
         btnAjouterCommentaire.addActionListener(e -> {
-
-
+            verifSiAjout = true;
             blankCommentaire = new Commentaire();
             commentaires.add(blankCommentaire);
 
@@ -291,10 +291,17 @@ public class PageCommentaires extends JFrame {
                         commentaire.setCommentaire_utilisateur_id(commentaireIdUtilisateurModifie);
                         commentaire.setCommentaire_date_parution(dateParutionAnnonceModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire "+commentaire.getCommentaire_id()+" ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                            verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                     CommentaireManager.getInstance().update(commentaire);JOptionPane.showMessageDialog(btnModifierCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " enregistré");

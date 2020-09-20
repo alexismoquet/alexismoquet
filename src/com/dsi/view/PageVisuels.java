@@ -42,10 +42,11 @@ public class PageVisuels extends JFrame {
 
     private final JTable tableauVisuel = new JTable();
     List<Visuel> visuels = new ArrayList<>();
-    List <Visuel> listRechercheVisuels = new ArrayList<>();
+    List<Visuel> listRechercheVisuels = new ArrayList<>();
     Visuel visuel, blankVisuel;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Materiel materiel;
+    boolean verifSiAjout = false;
 
 
     /**
@@ -57,6 +58,7 @@ public class PageVisuels extends JFrame {
 
     /**
      * Constructeur
+     *
      * @param: pMateriel
      */
     public PageVisuels(Materiel pMateriel) {
@@ -79,9 +81,9 @@ public class PageVisuels extends JFrame {
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
         panHaut.setPreferredSize(new Dimension(900, 100));
-          txtRechercher.setText("   Rechercher par nom de fichier  ");
-          panHaut.add(txtRechercher);
-         panHaut.add(btnRechercher);
+        txtRechercher.setText("   Rechercher par nom de fichier  ");
+        panHaut.add(txtRechercher);
+        panHaut.add(btnRechercher);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -105,34 +107,35 @@ public class PageVisuels extends JFrame {
         displayRightTable();
 
 
-            txtRechercher.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    JTextField txtRechercher = ((JTextField) e.getSource());
-                    txtRechercher.setText("");
-                }
-            });
+        txtRechercher.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JTextField txtRechercher = ((JTextField) e.getSource());
+                txtRechercher.setText("");
+            }
+        });
 
-            btnRechercher.addActionListener(e -> {
-                try {
-                    VisuelManager.getInstance().SelectAll();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                for (Visuel visuel : visuels) {
-                    String sp = visuel.getVisuel_nom_fichier();
-                    String recherche = txtRechercher.getText().toLowerCase();
+        btnRechercher.addActionListener(e -> {
+            listRechercheVisuels = new ArrayList<>();
+            try {
+                visuels = VisuelManager.getInstance().SelectAll();
+            } catch (BLLException ex) {
+                ex.printStackTrace();
+            }
+            for (Visuel visuel : visuels) {
+                String sp = visuel.getVisuel_nom_fichier().toLowerCase();
+                String recherche = txtRechercher.getText().toLowerCase();
 
-                    if (sp.contains(recherche)) {
-                        listRechercheVisuels.add(visuel);
-                        TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
-                        tableauVisuel.setModel(model);
-                    }
+                if (sp.contains(recherche)) {
+                    listRechercheVisuels.add(visuel);
+                    TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
+                    tableauVisuel.setModel(model);
                 }
-                if (listRechercheVisuels.size() == 0) {
-                    JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
-                }
-            });
+            }
+            if (listRechercheVisuels.size() == 0) {
+                JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
         btnAnnuler.addActionListener(e -> {
             //      txtRechercher.setText("");
@@ -178,6 +181,7 @@ public class PageVisuels extends JFrame {
          */
         btnAjouterVisuel.setSize(140, 50);
         btnAjouterVisuel.addActionListener(e -> {
+            verifSiAjout = true;
             List<Visuel> allVisuels = null;
             try {
                 allVisuels = VisuelManager.getInstance().SelectAll();
@@ -190,17 +194,17 @@ public class PageVisuels extends JFrame {
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
 
-            if (visuel != null){
-            assert allVisuels != null;
-            int idMax = allVisuels.get(0).getVisuel_id();
+            if (visuel != null) {
+                assert allVisuels != null;
+                int idMax = allVisuels.get(0).getVisuel_id();
 
-            for (Visuel allVisuel : allVisuels) {
-                int sortieId = allVisuel.getVisuel_id();
-                if (sortieId > idMax) {
-                    idMax = sortieId;
+                for (Visuel allVisuel : allVisuels) {
+                    int sortieId = allVisuel.getVisuel_id();
+                    if (sortieId > idMax) {
+                        idMax = sortieId;
                     }
                 }
-            blankVisuel.setVisuel_id(idMax + 1);
+                blankVisuel.setVisuel_id(idMax + 1);
             }
             blankVisuel.setVisuel_nom_fichier("");
 
@@ -238,6 +242,7 @@ public class PageVisuels extends JFrame {
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
+
                 String nomFichierVisuelModifie = String.valueOf(tableauVisuel.getValueAt(i, 1));
                 int idMaterielVisuelModifie = (int) tableauVisuel.getValueAt(i, 3);
 
@@ -252,10 +257,17 @@ public class PageVisuels extends JFrame {
                         visuel.setVisuel_nom_fichier(nomFichierVisuelModifie);
                         visuel.setVisuel_materiel_id(idMaterielVisuelModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnregistrerVisuel, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnEnregistrerVisuel, "Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                            verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnregistrerVisuel, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 VisuelManager.getInstance().update(visuel);
@@ -266,7 +278,8 @@ public class PageVisuels extends JFrame {
                         }
                     }
                 }
-            }//fin for
+            }
+            displayRightTable();
         });
 
         /*

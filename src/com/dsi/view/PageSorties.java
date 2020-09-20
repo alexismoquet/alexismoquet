@@ -47,6 +47,7 @@ public class PageSorties extends JFrame {
 
     Sortie sortie, blankSortie;
     Materiel materiel;
+    boolean verifSiAjout = false;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
 
@@ -161,6 +162,7 @@ public class PageSorties extends JFrame {
          */
         btnAjouterSortie.setSize(140, 50);
         btnAjouterSortie.addActionListener(e -> {
+            verifSiAjout = true;
             List<Sortie> allSorties = null;
             try {
                 allSorties = SortieManager.getInstance().SelectAll();
@@ -260,12 +262,17 @@ public class PageSorties extends JFrame {
                         sortie.setSortie_materiel_id(idMaterielSortieModifie);
                         sortie.setSortie_date_retour(dateRetourSortieModifiee);
                         sortie.setSortie_date_sortie(dateSortieSortieModifiee);
-
-
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                            verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 SortieManager.getInstance().update(sortie);

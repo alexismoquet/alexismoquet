@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: com.dsi.controller.Main
+Class-Path: BOHandispap.jar
+

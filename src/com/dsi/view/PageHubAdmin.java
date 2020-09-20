@@ -43,7 +43,7 @@ public class PageHubAdmin extends JFrame {
 
     List<Annonce> listAnomalies = new ArrayList<>();
     List<Annonce> annonces;
-    Annonce annonceSelect, annonce;
+    Annonce annonce;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
     /**
@@ -100,7 +100,7 @@ public class PageHubAdmin extends JFrame {
         /* Panel des anomalies */
         anomaliesASurveiller.setSize(200, 50);
         anomaliesASurveiller.setBackground(Color.white);
-        anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte  dans les annonces à surveiller :</body></html>");
+        anomaliesASurveiller.setText("<html><body><font color='white'>Anomalies de texte  dans les annonces, à surveiller !</body></html>");
         anomaliesASurveiller.setToolTipText(anomaliesASurveiller.getText());
 
         panAnomalies.setBackground(Color.decode("#11417d")); //rouge = #7d1111
@@ -147,7 +147,7 @@ public class PageHubAdmin extends JFrame {
         bAnnuler.addActionListener(e -> {
             annonce = null;
             try {
-                remplirJTableWithAnomalies();
+                remplirJTableWithAnomaliesAnnonces();
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -202,15 +202,14 @@ public class PageHubAdmin extends JFrame {
                     }
                 }
             }//fin boucle for
-        //    tableauAnomalies.clearSelection();
             try {
-                remplirJTableWithAnomalies();
+                remplirJTableWithAnomaliesAnnonces();
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
         });
 
-        remplirJTableWithAnomalies();
+        remplirJTableWithAnomaliesAnnonces();
 
         setContentPane(panPrincipal);
 
@@ -219,20 +218,18 @@ public class PageHubAdmin extends JFrame {
     /**
      * Méthode qui affiche des anomalies A DEFINIR : ci-dessous, pour le mot "sex" dans les annonces
      */
-    private void remplirJTableWithAnomalies() throws BLLException {
+    private void remplirJTableWithAnomaliesAnnonces() throws BLLException {
         listAnomalies = new ArrayList<>();
         annonces = AnnonceManager.getInstance().SelectAll();
 
         for (Annonce value : annonces) {
-            annonceSelect = value;
             String titreAnnonceSelect = value.getAnnonce_titre().toLowerCase();
             String descriptionAnnonceSelect = value.getAnnonce_description().toLowerCase();
-
             /*
              Anomalies à définir
              */
             if (titreAnnonceSelect.contains("sex") || descriptionAnnonceSelect.contains("sex")) {
-                listAnomalies.add(annonceSelect);
+                listAnomalies.add(value);
             }
         }
         TableModelAnnonce model = new TableModelAnnonce(listAnomalies);

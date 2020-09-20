@@ -49,6 +49,7 @@ public class PageUtilisateurs extends JFrame {
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
 
     Utilisateur utilisateur, blankUtilisateur;
+    boolean verifSiAjout = false;
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -171,6 +172,7 @@ public class PageUtilisateurs extends JFrame {
          **/
         btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
+            verifSiAjout = true;
             List<Utilisateur> allUtilisateurs = null;
             try {
                 allUtilisateurs = UtilisateurManager.getInstance().SelectAll();
@@ -272,10 +274,17 @@ public class PageUtilisateurs extends JFrame {
                         //     utilisateur.setMotDePasse(mdpUtilisateurModifie);
                         utilisateur.setDateInscription(dateInscUtilisateurModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout) {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                            verifSiAjout = false;
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 UtilisateurManager.getInstance().update(utilisateur);

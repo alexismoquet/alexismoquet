@@ -26,7 +26,7 @@ public class PageAdresses extends JFrame {
     private final JPanel panCentre = new JPanel();
     private final JPanel panBas = new JPanel();
 
-    private final JButton btnModifierAdresse = new JButton("Enregistrer");
+    private final JButton btnEnrAdresse = new JButton("Enregistrer");
     private final JButton btnAjouterLigne = new JButton("Ajouter");
     private final JButton btnSupprimerAdresse = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
@@ -41,6 +41,7 @@ public class PageAdresses extends JFrame {
     Adresse adresse, blankAdresse;
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Utilisateur utilisateur;
+    boolean verifSiAjout = false;
 
     /**
      * Constructeur par defaut
@@ -94,11 +95,14 @@ public class PageAdresses extends JFrame {
         panCentre.add(new JScrollPane(tableauAdresse), BorderLayout.CENTER);
 
         panBas.setSize(500, 200);
-        panBas.add(btnModifierAdresse);
-        panBas.add(btnAjouterLigne);
+        panBas.add(btnEnrAdresse);
+        if (utilisateur != null){
+            panBas.add(btnAjouterLigne);
+        }
         panBas.add(btnSupprimerAdresse);
         panBas.add(btnAnnuler);
 
+        
         setContentPane(panPrincipal);
         displayRightTable();
 
@@ -171,10 +175,10 @@ public class PageAdresses extends JFrame {
 
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
+            verifSiAjout = true;
             List<Adresse> allAdresses = null;
-            AdresseManager am = new AdresseManager();
             try {
-                allAdresses = am.SelectAll();
+                allAdresses = AdresseManager.getInstance().SelectAll();
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -183,7 +187,6 @@ public class PageAdresses extends JFrame {
             adresses.add(blankAdresse);
 
             /* On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus */
-
                     if (adresse != null) {
                         assert allAdresses != null;
                         int idMax = allAdresses.get(0).getIdAdresse();
@@ -226,7 +229,7 @@ public class PageAdresses extends JFrame {
             displayRightTable();
         });
 
-        btnModifierAdresse.addActionListener(e -> {
+        btnEnrAdresse.addActionListener(e -> {
             /* On récupére les valeurs du tableauAdresse, on boucle pour chaque ligne pour
              * détecter si changement
              * */
@@ -267,10 +270,16 @@ public class PageAdresses extends JFrame {
                         adresse.setPays(paysModifie);
                         adresse.setIdUtilisateur(idUtilisateurModifie);
 
-                        int j = JOptionPane.showConfirmDialog(btnModifierAdresse, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'adresse "+adresse.getIdAdresse()+" ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-
+                        int j;
+                        if (verifSiAjout){
+                            j = JOptionPane.showConfirmDialog(btnEnrAdresse, "Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        } else {
+                            j = JOptionPane.showConfirmDialog(btnEnrAdresse, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
+                                    "Veuillez confirmer votre choix",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        }
                         if (j == 0)  /*user a dit oui*/ {
                                 AdresseManager.getInstance().update(adresse);
                                 JOptionPane.showMessageDialog(null, "Adresse " + adresse.getIdAdresse() + " enregistrée");
@@ -280,8 +289,9 @@ public class PageAdresses extends JFrame {
                     }
                 }
             }//fin boucle for
-            tableauAdresse.clearSelection();
+      //      tableauAdresse.clearSelection();
             displayRightTable();
+            verifSiAjout = false;
         });
 
 
