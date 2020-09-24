@@ -448,8 +448,13 @@ public class PageMateriels extends JFrame {
      */
     private void afficheJTableMaterielsWithIdAdresse() {
         try {
-            materiels = remplirJTableWithMaterielsIdAdresse(utilisateur.getAdresses().get(0).getIdAdresse());
-            TableModelMateriel model = new TableModelMateriel(materiels);
+            List <Materiel> listMaterielsAdresses = new ArrayList<>();
+            for (int i =0; i<utilisateur.getAdresses().size(); i++){
+                materiels = remplirJTableWithMaterielsIdAdresse(utilisateur.getAdresses().get(i).getIdAdresse());
+                listMaterielsAdresses.addAll(materiels);
+            }
+
+            TableModelMateriel model = new TableModelMateriel(listMaterielsAdresses);
             tableauMateriel.setModel(model);
         } catch (BLLException ex) {
             ex.printStackTrace();
