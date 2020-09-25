@@ -94,8 +94,8 @@ public class PageHubAdmin extends JFrame {
         panBtn.add(bCommentaires);
         panBtn.add(bAdresses);
 
-        panBtnBas.add(bAnnuler);
         panBtnBas.add(bEnregistrer);
+        panBtnBas.add(bAnnuler);
 
         /* Panel des anomalies */
         anomaliesASurveiller.setSize(200, 50);
@@ -218,7 +218,7 @@ public class PageHubAdmin extends JFrame {
     /**
      * Méthode qui affiche des anomalies A DEFINIR : ci-dessous, pour le mot "sex" dans les annonces
      */
-    private void remplirJTableWithAnomaliesAnnonces() throws BLLException {
+    public void remplirJTableWithAnomaliesAnnonces() throws BLLException {
         listAnomalies = new ArrayList<>();
         annonces = AnnonceManager.getInstance().SelectAll();
 

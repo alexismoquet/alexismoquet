@@ -14,5 +14,7 @@ public class Main {
         PageHubAdmin ha = new PageHubAdmin();
         ha.setVisible(true);
 
+       new RepeatAction();
+
     }
 }

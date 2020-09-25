@@ -218,13 +218,15 @@ public class PageCommentaires extends JFrame {
             if (utilisateur != null){
                 blankCommentaire.setCommentaire_utilisateur_id(utilisateur.getIdUtilisateur());
             } else {
-                blankCommentaire.setCommentaire_utilisateur_id(1);
+                blankCommentaire.setCommentaire_utilisateur_id(annonce.getAnnonce_utilisateur_id());
             }
             if (annonce != null){
                 blankCommentaire.setCommentaire_annonce_id(annonce.getAnnonce_id());
             }else{
                 blankCommentaire.setCommentaire_annonce_id(1);
             }
+
+
 
             try {
                 CommentaireManager.getInstance().insert(blankCommentaire);
