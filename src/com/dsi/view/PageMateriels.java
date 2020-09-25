@@ -443,12 +443,12 @@ public class PageMateriels extends JFrame {
     } //fin afficheJTable
 
     /**
-     * Méthode qui affiche les materiels de
-     * l'adresse sélectionnée
+     * Méthode qui affiche une list les materiels des
+     * adresses de l'utilisateur sélectionné
      */
     private void afficheJTableMaterielsWithIdAdresse() {
         try {
-            List <Materiel> listMaterielsAdresses = new ArrayList<>();
+            List <Materiel> listMaterielsAdresses = new ArrayList<>(); //list des materiels des différentes adresses de l'utilisateur
             for (int i =0; i<utilisateur.getAdresses().size(); i++){
                 materiels = remplirJTableWithMaterielsIdAdresse(utilisateur.getAdresses().get(i).getIdAdresse());
                 listMaterielsAdresses.addAll(materiels);

@@ -240,7 +240,7 @@ public class PageAnnonces extends JFrame {
             }
 
             if (materiel == null){
-                JOptionPane.showMessageDialog(null, "Merci de créer un matériel");
+                JOptionPane.showMessageDialog(null, "Merci de créer une annonce depuis l'onglet Matériels");
                 return;
                 } else {
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id()); }
