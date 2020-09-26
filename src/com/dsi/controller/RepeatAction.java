@@ -1,8 +1,5 @@
 package com.dsi.controller;
 
-import com.dsi.model.bll.BLLException;
-import com.dsi.view.PageHubAdmin;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,7 +8,7 @@ public class RepeatAction {
 
     public RepeatAction() {
         t = new Timer();
-        t.schedule(new MonAction(), 0, 1*10000);
+        t.schedule(new MonAction(), 0, 10000);
     }
 
     class MonAction extends TimerTask {
