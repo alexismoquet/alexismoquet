@@ -291,6 +291,7 @@ public class PageAdresses extends JFrame {
             }//fin boucle for
       //      tableauAdresse.clearSelection();
             displayRightTable();
+
             verifSiAjout = false;
         });
 
