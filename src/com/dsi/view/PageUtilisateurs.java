@@ -7,8 +7,6 @@ import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -34,8 +32,8 @@ public class PageUtilisateurs extends JFrame {
     private final JButton btnEnrModifUtil = new JButton("Enregistrer");
     private final JButton btnSupprimerUtil = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
-    private JButton btnAnnonce = new JButton("Annonces");
-    private final JButton btnAdresses = new JButton("Adresses");
+    private final JButton btnAnnonce = new JButton("Annonces");
+    private JButton btnAdresses = new JButton("Adresses");
     private final JButton btnMateriels = new JButton("Materiels");
     private final JButton btnCommentaires = new JButton("Commentaires");
 
@@ -84,18 +82,12 @@ public class PageUtilisateurs extends JFrame {
         panHaut.setLayout(new BorderLayout());
         txtRechercher.setText(" Rechercher un utilisateur par Nom ");
         panHaut.add(txtRechercher, BorderLayout.CENTER);
-        txtRechercher.setSize(900, 35);
+        txtRechercher.setSize(100, 35);
         panHaut.add(btnRechercher, BorderLayout.NORTH);
-        btnRechercher.setSize(700, 20);
+        btnRechercher.setSize(100, 20);
 
-        panHaut.add(notice, BorderLayout.SOUTH);
-        notice.setSize(900, 50);
-        notice.setBackground(Color.white);
-        notice.setText("CREATION UTILISATEUR :  1- créer une adresse  " +
-                "     2- créer un matériel      3- créer une annonce" + "   " +
-                "------  Attention, si changement du mot de passe," +
-                " veuillez créer un nouvel utilisateur");
-        //  notice.setToolTipText(notice.getText());
+        panHaut.add(new JLabel("   Attention, si changement du mot de passe," +
+         " veuillez créer un nouvel utilisateur  "), BorderLayout.SOUTH);
 
         //Panel centre
         panCentre.setPreferredSize(new Dimension(900, 250));
@@ -115,7 +107,7 @@ public class PageUtilisateurs extends JFrame {
         panBas.add(btnMateriels);
         panBas.add(btnCommentaires);
         panBas.add(btnAdresses);
-
+        
         setContentPane(panPrincipal);
 
         afficheJTableUtilisateurs();
@@ -171,7 +163,7 @@ public class PageUtilisateurs extends JFrame {
          * listenner sur le btnAjouterUtilisateur pour ajouter une ligne vierge
          * @param: blankUtilisateur
          **/
-        btnAjouterUtilisateur.setSize(140, 50);
+     //   btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
             verifSiAjoutLigne = true;
             List<Utilisateur> allUtilisateurs = null;
@@ -223,7 +215,10 @@ public class PageUtilisateurs extends JFrame {
             tableauUtilisateurs.revalidate();
             tableauUtilisateurs.setModel(model);
 
+            JOptionPane.showMessageDialog(null, "Veuillez créer une ADRESSE afin de créer un MATERIEL puis une ANNONCE");
+
             blankUtilisateur = null;
+
             afficheJTableUtilisateurs();
         });
 
@@ -361,23 +356,20 @@ public class PageUtilisateurs extends JFrame {
          * listenner sur le bouton annonce
          * @param utilisateur
          */
-        btnAnnonce.setSize(100, 50);
-        btnAnnonce.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                afficheJTableUtilisateurs();
-                if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
-                } else {
-                    new PageAnnonces(utilisateur);
-                }
+  //      btnAnnonce.setSize(100, 50);
+        btnAnnonce.addActionListener(e -> {
+            afficheJTableUtilisateurs();
+            if (utilisateur == null) {
+                JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
+            } else {
+                new PageAnnonces(utilisateur);
             }
         });
 
         /*
          * listenner sur le bouton adresse
          */
-        btnAdresses.setSize(100, 50);
+      //  btnAdresses.setSize(100, 50);
         btnAdresses.addActionListener(e -> {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(btnAdresses, "Veuillez sélectionner un utilisateur");
@@ -389,7 +381,7 @@ public class PageUtilisateurs extends JFrame {
         /*
          * listenner sur le bouton materiel
          */
-        btnMateriels.setSize(100, 50);
+      //  btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(e -> {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un utilisateur");
@@ -401,7 +393,7 @@ public class PageUtilisateurs extends JFrame {
         /*
          * listenner sur le bouton commentaire
          */
-        btnCommentaires.setSize(100, 50);
+      //  btnCommentaires.setSize(100, 50);
         btnCommentaires.addActionListener(e -> {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un utilisateur");
@@ -421,6 +413,16 @@ public class PageUtilisateurs extends JFrame {
             utilisateurs = remplirJTableWithAllUtilisateurs();
             TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
             tableauUtilisateurs.setModel(model);
+
+            if (!verifSiAjoutLigne) {
+                /////Vérifie si il y a au moins une adresse pour un utilisateur
+                for (Utilisateur utilisateur : utilisateurs) {
+                    if (utilisateur.getAdresses().size() == 0) {
+                        btnAdresses.setBackground(Color.red);
+                        JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateur.getIdUtilisateur());
+                    }
+                }
+            }
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
