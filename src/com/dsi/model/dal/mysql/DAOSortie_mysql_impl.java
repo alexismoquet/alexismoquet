@@ -281,9 +281,6 @@ public class DAOSortie_mysql_impl implements DAO_Sortie {
                         rs.getDate("sortie_date_retour")
                 );
                 sorties.add(sortie);
-
-            } else {
-                throw new DALException("Aucune sortie trouvée avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);

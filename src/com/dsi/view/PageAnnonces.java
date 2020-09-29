@@ -57,14 +57,6 @@ public class PageAnnonces extends JFrame {
 
     /**
      * Constructeur
-     * @param: pMateriel
-     */
-    public PageAnnonces (Materiel pMateriel) {
-        this.materiel = pMateriel;
-        initialiserComposants();
-    }
-    /**
-     * Constructeur
      * @param: pUtilisateur
      */
     public PageAnnonces (Utilisateur pUtilisateur) {
