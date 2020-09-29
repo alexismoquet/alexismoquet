@@ -7,14 +7,14 @@ import com.dsi.view.PageHubAdmin;
 public class Main {
     public static void main(String[] args) throws BLLException {
 
-//        PageConnexionBO pcbo = new PageConnexionBO();
-//        pcbo.initialiserComposants();
-//        pcbo.setVisible(true);
+        PageConnexionBO pcbo = new PageConnexionBO();
+        pcbo.initialiserComposants();
+        pcbo.setVisible(true);
+//
+//        PageHubAdmin ha = new PageHubAdmin();
+//        ha.setVisible(true);
 
-        PageHubAdmin ha = new PageHubAdmin();
-        ha.setVisible(true);
-
-       new RepeatAction();
+       //new RepeatAction();
 
     }
 }

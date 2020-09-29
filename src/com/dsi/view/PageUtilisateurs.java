@@ -27,22 +27,17 @@ public class PageUtilisateurs extends JFrame {
     private final JPanel panHaut = new JPanel();
     private final JPanel panCentre = new JPanel();
     private final JPanel panBas = new JPanel();
-
     private final JButton btnAjouterUtilisateur = new JButton("Ajouter");
     private final JButton btnEnrModifUtil = new JButton("Enregistrer");
     private final JButton btnSupprimerUtil = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
     private final JButton btnAnnonce = new JButton("Annonces");
-    private JButton btnAdresses = new JButton("Adresses");
+    private final JButton btnAdresses = new JButton("Adresses");
     private final JButton btnMateriels = new JButton("Materiels");
     private final JButton btnCommentaires = new JButton("Commentaires");
-
-    private final JTextField txtRechercher = new JTextField();
     private final JButton btnRechercher = new JButton("Rechercher");
-
+    private final JTextField txtRechercher = new JTextField(" Rechercher un utilisateur par Nom ");
     private final JTable tableauUtilisateurs = new JTable();
-
-    private final JLabel notice = new JLabel();
 
     List<Utilisateur> utilisateurs = new ArrayList<>();
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
@@ -80,7 +75,6 @@ public class PageUtilisateurs extends JFrame {
 
         panHaut.setPreferredSize(new Dimension(900, 75));
         panHaut.setLayout(new BorderLayout());
-        txtRechercher.setText(" Rechercher un utilisateur par Nom ");
         panHaut.add(txtRechercher, BorderLayout.CENTER);
         txtRechercher.setSize(100, 35);
         panHaut.add(btnRechercher, BorderLayout.NORTH);
@@ -418,7 +412,6 @@ public class PageUtilisateurs extends JFrame {
                 /////Vérifie si il y a au moins une adresse pour un utilisateur
                 for (Utilisateur utilisateur : utilisateurs) {
                     if (utilisateur.getAdresses().size() == 0) {
-                        btnAdresses.setBackground(Color.red);
                         JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateur.getIdUtilisateur());
                     }
                 }
