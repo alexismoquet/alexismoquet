@@ -418,7 +418,6 @@ public class PageUtilisateurs extends JFrame {
                 /////Vérifie si il y a au moins une adresse pour un utilisateur
                 for (Utilisateur utilisateur : utilisateurs) {
                     if (utilisateur.getAdresses().size() == 0) {
-                        btnAdresses.setBackground(Color.red);
                         JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateur.getIdUtilisateur());
                     }
                 }
