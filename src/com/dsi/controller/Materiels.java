@@ -21,6 +21,5 @@ public class Materiels {
     public static List<Materiel> remplirJTableWithIdMateriels(int idMateriel) throws BLLException {
         return MaterielManager.getInstance().SelectById(idMateriel);
     }
-
-
+    
 }
