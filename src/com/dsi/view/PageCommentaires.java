@@ -62,8 +62,14 @@ public class PageCommentaires extends JFrame {
         initialiserComposants();
     }
 
-    public PageCommentaires(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
+    public PageCommentaires(Utilisateur pUtilisateur) {
+        this.utilisateur = pUtilisateur;
+        initialiserComposants();
+    }
+
+    public PageCommentaires(Utilisateur pUtilisateur, Annonce pAannonce) {
+        this.utilisateur = pUtilisateur;
+        this.annonce = pAannonce;
         initialiserComposants();
     }
 
@@ -100,6 +106,10 @@ public class PageCommentaires extends JFrame {
         panBas.add(btnAnnuler);
 
         setContentPane(panPrincipal);
+
+        if (annonce ==  null && utilisateur == null){
+            panBas.remove(btnAjouterCommentaire);
+        }
 
         displayRightTable();
 
@@ -215,18 +225,17 @@ public class PageCommentaires extends JFrame {
             blankCommentaire.setCommentaire_message("");
             blankCommentaire.setCommentaire_date_parution(new Date());
 
+            //On affecte les valeurs à blankCommentaire selon la page de provenance
             if (utilisateur != null){
                 blankCommentaire.setCommentaire_utilisateur_id(utilisateur.getIdUtilisateur());
             } else {
-                blankCommentaire.setCommentaire_utilisateur_id(annonce.getAnnonce_utilisateur_id());
+                blankCommentaire.setCommentaire_utilisateur_id(1);
             }
             if (annonce != null){
                 blankCommentaire.setCommentaire_annonce_id(annonce.getAnnonce_id());
             }else{
                 blankCommentaire.setCommentaire_annonce_id(1);
             }
-
-
 
             try {
                 CommentaireManager.getInstance().insert(blankCommentaire);

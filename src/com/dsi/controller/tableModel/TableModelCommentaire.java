@@ -4,7 +4,6 @@ import com.dsi.model.beans.Commentaire;
 import javax.swing.table.AbstractTableModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,7 +75,7 @@ public class TableModelCommentaire extends AbstractTableModel {
             commentaires.get(row).setCommentaire_id(Integer.parseInt(value.toString()));
         } else if (column ==4){
             commentaires.get(row).setCommentaire_utilisateur_id(Integer.parseInt(value.toString()));
-        }else if (column ==5){
+        } else if (column ==5){
             commentaires.get(row).setCommentaire_annonce_id(Integer.parseInt(value.toString()));
         }
     }
