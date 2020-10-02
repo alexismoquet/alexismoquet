@@ -232,7 +232,7 @@ public class PageAnnonces extends JFrame {
             }
 
             if (materiel == null){
-                JOptionPane.showMessageDialog(null, "Merci de créer une annonce depuis l'onglet Matériels");
+                JOptionPane.showMessageDialog(null, "Merci de créer une annonce avec le bouton Matériels de la page Utilisateurs");
                 return;
                 } else {
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id()); }
@@ -355,6 +355,8 @@ public class PageAnnonces extends JFrame {
         btnCommentaires.addActionListener(e -> {
             if (annonce == null) {
                 JOptionPane.showMessageDialog(btnCommentaires, "Veuillez sélectionner une annonce");
+            } else if  (utilisateur != null){
+                new PageCommentaires(utilisateur, annonce);
             } else {
                 new PageCommentaires(annonce);
             }

@@ -150,6 +150,9 @@ public class PageMateriels extends JFrame {
         if (annonce_materiel_id == null) {  //si on vient de la pageAnnonce, le btnAnnonces n'apparait pas
             panBas.add(btnAnnonces);
         }
+        if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
+            panBas.remove(btnAjouterMateriel);
+        }
 
         setContentPane(panPrincipal);
         displayRightTable();
@@ -490,7 +493,7 @@ public class PageMateriels extends JFrame {
     } //fin afficheJTable
 
     /**
-     * méthode qui affiche du bon tableauMateriel selon la page de provenance
+     * méthode qui affiche le bon tableauMateriel selon la page de provenance
      **/
     public void displayRightTable() {
         if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
