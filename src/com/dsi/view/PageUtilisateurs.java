@@ -3,6 +3,7 @@ package com.dsi.view;
 import com.dsi.controller.tableModel.TableModelUtilisateur;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.CommentaireManager;
 import com.dsi.model.bll.UtilisateurManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -292,7 +293,19 @@ public class PageUtilisateurs extends JFrame {
         btnSupprimerUtil.addActionListener(e -> {
             if (utilisateur == null) {
                 JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
-            } else {
+            return;
+            }
+
+            ///On supprime tous les commentaires sélectionnés
+            int[] selection = tableauUtilisateurs.getSelectedRows();
+            for (int j : selection) {
+                utilisateur = utilisateurs.get(j);
+                try {
+                    utilisateur = UtilisateurManager.getInstance().SelectById(utilisateur.getIdUtilisateur());
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+
                 int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
@@ -318,15 +331,16 @@ public class PageUtilisateurs extends JFrame {
                     try {
                         UtilisateurManager.getInstance().delete(utilisateur);
                         JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
-                        afficheJTableUtilisateurs();
+                        //   afficheJTableUtilisateurs();
 
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
                     tableauUtilisateurs.clearSelection();
                 }
-            }
-        });
+            }//fin for
+            afficheJTableUtilisateurs();
+     });
 
         /*
          * Mouse listenner sur le tableau utilisateur

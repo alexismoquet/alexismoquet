@@ -198,7 +198,6 @@ public class PageCommentaires extends JFrame {
                         try {
                         CommentaireManager.getInstance().delete(commentaire);
                         JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
-                      //  afficheJTableCommentaires();
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
