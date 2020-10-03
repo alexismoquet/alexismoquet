@@ -4,6 +4,8 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.CategorieManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -123,6 +125,8 @@ public class PageAnnonces extends JFrame {
         if (materiel == null) {
             panBas.add(btnMateriels);
         }
+
+        tableauAnnonce.setAutoCreateRowSorter(true);
 
         diplayRightTable();
 
@@ -333,19 +337,29 @@ public class PageAnnonces extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
                 return;
             }
-            int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    AnnonceManager.getInstance().delete(annonce);
-                    JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
-                   diplayRightTable();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+                    ///Supprime tous les annonces sélectionnées
+                    int[] selection = tableauAnnonce.getSelectedRows();
+                    for (int j : selection) {
+                        annonce = annonces.get(j);
+                        try {
+                            annonce = AnnonceManager.getInstance().SelectById(annonce.getAnnonce_id());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) //user a dit oui
+                        {
+                            try {
+                                AnnonceManager.getInstance().delete(annonce);
+                                JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }//fin for
+            diplayRightTable();
         });
 
         /*

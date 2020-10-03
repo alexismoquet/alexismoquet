@@ -104,6 +104,8 @@ public class PageUtilisateurBO extends JFrame {
         panBas.add(btnSupprimerUtilisateur);
         panBas.add(btnAnnuler);
 
+        tableauUtilisateurBO.setAutoCreateRowSorter(true);
+
         afficheJTableWithAllUtilisateurBO();
 
         setContentPane(panPrincipal);

@@ -5,6 +5,8 @@ import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.SortieManager;
+import com.dsi.model.bll.SportManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -107,6 +109,8 @@ public class PageSorties extends JFrame {
         panBas.add(btnAnnuler);
 
         setContentPane(panPrincipal);
+
+        tableauSortie.setAutoCreateRowSorter(true);
 
         displayRightTable();
 
@@ -295,25 +299,34 @@ public class PageSorties extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerSortie, "Merci de sélectionner un sortie");
                 return;
             }
-
-            int i = JOptionPane.showConfirmDialog(btnSupprimerSortie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sortie " + sortie.getSortie_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    SortieManager.getInstance().delete(sortie);
-                    JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimée");
-                    displayRightTable();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                tableauSortie.clearSelection();
-            }
+                    ///Supprime tous les sorties sélectionnées
+                    int[] selection = tableauSortie.getSelectedRows();
+                    for (int j : selection) {
+                        sortie = sorties.get(j);
+                        try {
+                            sortie = SortieManager.getInstance().SelectById(sortie.getSortie_id());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerSortie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sortie " + sortie.getSortie_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) //user a dit oui
+                        {
+                            try {
+                                SortieManager.getInstance().delete(sortie);
+                                JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimée");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                           // tableauSortie.clearSelection();
+                        }
+                    }
+            displayRightTable();
         });
 
         /*
-         * Mouse listenner sur le tableau sortie
+         * Mouse Listener sur le tableau sortie
          */
         tableauSortie.addMouseListener(new MouseAdapter() {
             @Override

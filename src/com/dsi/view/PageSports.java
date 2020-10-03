@@ -85,10 +85,9 @@ public class PageSports extends JFrame {
         panBas.add(btnAjouterSport);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
-        panBas.add(btnMateriels);
 
+        tableauSport.setAutoCreateRowSorter(true);
         setContentPane(panPrincipal);
-
         afficheJTableSports();
 
         /*
@@ -247,20 +246,30 @@ public class PageSports extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
                 return;
             }
-            int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    SportManager.getInstance().delete(sport);
-                    JOptionPane.showMessageDialog(btnSupprimerSport, "Sport " + sport.getSport_id() + " supprimé");
-                    afficheJTableSports();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                tableauSport.clearSelection();
-            }
+                    ///Supprime tous les sports sélectionnés
+                    int[] selection = tableauSport.getSelectedRows();
+                    for (int j : selection) {
+                        sport = sports.get(j);
+                        try {
+                                sport = SportManager.getInstance().SelectById(sport.getSport_id());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) //user a dit oui
+                        {
+                            try {
+                                SportManager.getInstance().delete(sport);
+                                JOptionPane.showMessageDialog(btnSupprimerSport, "Sport " + sport.getSport_id() + " supprimé");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        //    tableauSport.clearSelection();
+                        }
+                    }//fin for
+            afficheJTableSports();
         });
 
         /*

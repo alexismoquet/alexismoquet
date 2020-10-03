@@ -1,14 +1,17 @@
 package com.dsi.view;
 
 import com.dsi.controller.tableModel.ImageCellRenderer;
+import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.controller.tableModel.TableModelVisuel;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Visuel;
 import com.dsi.model.bll.BLLException;
+import com.dsi.model.bll.UtilisateurManager;
 import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -47,7 +50,6 @@ public class PageVisuels extends JFrame {
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     Materiel materiel;
     boolean verifSiAjout = false;
-
 
     /**
      * Constructeur par defaut
@@ -104,6 +106,10 @@ public class PageVisuels extends JFrame {
 
         setContentPane(panPrincipal);
 
+
+
+        tableauVisuel.setAutoCreateRowSorter(true);
+
         displayRightTable();
 
 
@@ -138,7 +144,7 @@ public class PageVisuels extends JFrame {
         });
 
         btnAnnuler.addActionListener(e -> {
-            //      txtRechercher.setText("");
+            txtRechercher.setText("   Rechercher par nom de fichier  ");
             visuel = null;
             if (materiel == null) {
                 afficheJTableWithAllVisuels();
@@ -155,25 +161,37 @@ public class PageVisuels extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerVisuel, "Merci de sélectionner un visuel");
                 return;
             }
-            int i = JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel " + visuel.getVisuel_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    VisuelManager.getInstance().delete(visuel);
-                    JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel " + visuel.getVisuel_id() + " supprimé");
-                    if (materiel == null) {
-                        afficheJTableWithAllVisuels();
-                    } else {
-                        afficheJTableVisuelsWithIdMateriel(materiel.getMateriel_id());
-                    }
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                tableauVisuel.clearSelection();
-            }
 
+            ///Supprime tous les visuels sélectionnés
+            int[] selection = tableauVisuel.getSelectedRows();
+            for (int j : selection) {
+                visuel = visuels.get(j);
+                try {
+                    visuel = VisuelManager.getInstance().SelectById(visuel.getVisuel_id());
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+
+                int i = JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel " + visuel.getVisuel_id() + " ?",
+                        "Veuillez confirmer votre choix",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                if (i == 0) //user a dit oui
+                {
+                    try {
+                        VisuelManager.getInstance().delete(visuel);
+                        JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel " + visuel.getVisuel_id() + " supprimé");
+
+                    } catch (BLLException ex) {
+                        ex.printStackTrace();
+                    }
+                    tableauVisuel.clearSelection();
+                }
+            }//fin for
+            if (materiel == null) {
+                afficheJTableWithAllVisuels();
+            } else {
+                afficheJTableVisuelsWithIdMateriel(materiel.getMateriel_id());
+            }
         });
 
         /*

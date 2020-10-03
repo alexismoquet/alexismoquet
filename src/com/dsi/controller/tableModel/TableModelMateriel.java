@@ -72,10 +72,13 @@ public class TableModelMateriel extends AbstractTableModel {
             materiels.get(rowIndex).setMateriel_sport_id(Integer.parseInt(value.toString()));
         } else if (columnIndex == 5){
             materiels.get(rowIndex).setMateriel_id(Integer.parseInt(value.toString()));
-        } else if (columnIndex == 6){
-            materiels.get(rowIndex).setMateriel_prix(Math.round(Double.parseDouble((value.toString()))));
-        } else if (columnIndex == 7){
-            materiels.get(rowIndex).setMateriel_caution_prix(Math.round(Double.parseDouble((value.toString()))));
+        } else {
+            double round = Math.round(Double.parseDouble((value.toString())));
+            if (columnIndex == 6){
+                materiels.get(rowIndex).setMateriel_prix(round);
+            } else if (columnIndex == 7){
+                materiels.get(rowIndex).setMateriel_caution_prix(round);
+            }
         }
     }
 
