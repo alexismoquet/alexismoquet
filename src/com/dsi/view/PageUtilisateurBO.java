@@ -5,11 +5,9 @@ import com.dsi.librairies.Roles;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurBoManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -99,6 +97,7 @@ public class PageUtilisateurBO extends JFrame {
         panCentre.add(tableauUtilisateurBO, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauUtilisateurBO), BorderLayout.CENTER);
 
+        //Panel bas
         panBas.setSize(500, 200);
         panBas.add(btnEnrModif);
         panBas.add(btnAjouterLigne);

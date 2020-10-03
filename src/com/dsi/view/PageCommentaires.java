@@ -67,9 +67,22 @@ public class PageCommentaires extends JFrame {
         initialiserComposants();
     }
 
-    public PageCommentaires(Utilisateur pUtilisateur, Annonce pAannonce) {
+    public PageCommentaires(Utilisateur pUtilisateur, Annonce pAnnonce) {
         this.utilisateur = pUtilisateur;
-        this.annonce = pAannonce;
+        this.annonce = pAnnonce;
+        initialiserComposants();
+    }
+
+    public PageCommentaires( Annonce pAnnonce, Commentaire pCommentaire) {
+        this.annonce = pAnnonce;
+        this.commentaire = pCommentaire;
+        initialiserComposants();
+    }
+
+    public PageCommentaires(Utilisateur pUtilisateur, Annonce pAnnonce, Commentaire pCommentaire) {
+        this.utilisateur = pUtilisateur;
+        this.annonce = pAnnonce;
+        this.commentaire = pCommentaire;
         initialiserComposants();
     }
 
@@ -168,22 +181,30 @@ public class PageCommentaires extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner un commentaire");
                 return;
             }
-            CommentaireManager cm = CommentaireManager.getInstance();
-
-            int i= JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le commentaire "+commentaire.getCommentaire_id()+" ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,icone);
-            if (i==0) //user a dit oui
-            {
+                ///On supprime tous les commentaires sélectionnés
+            int[] selection = tableauCommentaire.getSelectedRows();
+            for (int j : selection) {
+                commentaire = commentaires.get(j);
                 try {
-                    cm.delete(commentaire);
-                    JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
-                    afficheJTableCommentaires();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
+                    commentaire = CommentaireManager.getInstance().SelectById(commentaire.getCommentaire_id());
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
                 }
-                tableauCommentaire.clearSelection();
-            }
+
+                int i = JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                        "Veuillez confirmer votre choix",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                    if (i == 0) {//user a dit oui
+                        try {
+                        CommentaireManager.getInstance().delete(commentaire);
+                        JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
+                      //  afficheJTableCommentaires();
+                    } catch (BLLException ex) {
+                        ex.printStackTrace();
+                    }
+                 ////////// tableauCommentaire.clearSelection();
+                }//fin if
+            }//fin for
             displayRightTable();
         });
 
@@ -198,7 +219,6 @@ public class PageCommentaires extends JFrame {
 
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
             if (commentaire != null){
-
             List<Commentaire>allCommentaires;
             try {
                 allCommentaires = CommentaireManager.getInstance().SelectAll();
@@ -217,9 +237,10 @@ public class PageCommentaires extends JFrame {
                      }
                 }
             blankCommentaire.setCommentaire_id(idMax);
-            } else {
-                blankCommentaire.setCommentaire_id(1);
             }
+//            else {
+//                blankCommentaire.setCommentaire_id(commentaire.getCommentaire_id());
+//            }
 
             blankCommentaire.setCommentaire_note(0);
             blankCommentaire.setCommentaire_message("");

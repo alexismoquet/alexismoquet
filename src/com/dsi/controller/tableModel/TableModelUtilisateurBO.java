@@ -2,12 +2,8 @@ package com.dsi.controller.tableModel;
 
 import com.dsi.librairies.Roles;
 import com.dsi.model.beans.UtilisateurBo;
-
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class TableModelUtilisateurBO extends AbstractTableModel {
 
