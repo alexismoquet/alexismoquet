@@ -4,6 +4,7 @@ import com.dsi.controller.tableModel.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
+import com.dsi.model.bll.SortieManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -86,9 +87,8 @@ public class PageCategories extends JFrame {
         panBas.add(btnSupprimerCategorie);
         panBas.add(btnAnnuler);
         panBas.add(btnMateriels);
-
+        tableauCategorie.setAutoCreateRowSorter(true);
         setContentPane(panPrincipal);
-
         afficheJTableCategories();
 
         /*
@@ -144,22 +144,22 @@ public class PageCategories extends JFrame {
         btnAjouterCategorie.setSize(140, 50);
         btnAjouterCategorie.addActionListener(e -> {
             verifSiAjout = true;
-            List<Categorie> allCategories = null;
-            try {
-                allCategories = CategorieManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
             blankCategorie = new Categorie();
             categories.add(blankCategorie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
             if (categorie != null) {
+                List<Categorie> allCategories = null;
+                try {
+                    allCategories = CategorieManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
                 assert allCategories != null;
                 int idMax = allCategories.get(0).getCategorie_id();
 
-                for (Categorie allCategory : allCategories) {
-                    int categorieId = allCategory.getCategorie_id();
+                for (Categorie categorie : allCategories) {
+                    int categorieId = categorie.getCategorie_id();
                     if (categorieId > idMax) {
                         idMax = categorieId;
                     }
@@ -241,20 +241,29 @@ public class PageCategories extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");
                 return;
             }
-            int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    CategorieManager.getInstance().delete(categorie);
-                    JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimée");
-                    afficheJTableCategories();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-                tableauCategorie.clearSelection();
-            }
+                    ///Supprime tous les categories sélectionnées
+                    int[] selection = tableauCategorie.getSelectedRows();
+                    for (int j : selection) {
+                        categorie = categories.get(j);
+                        try {
+                            categorie = CategorieManager.getInstance().SelectById(categorie.getCategorie_id());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) {//user a dit oui
+                            try {
+                                CategorieManager.getInstance().delete(categorie);
+                                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimée");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                            tableauCategorie.clearSelection();
+                        }
+                    }//fin for
+            afficheJTableCategories();
         });
 
 

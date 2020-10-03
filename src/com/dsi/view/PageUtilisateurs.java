@@ -90,7 +90,6 @@ public class PageUtilisateurs extends JFrame {
         panCentre.add(new JScrollPane(tableauUtilisateurs), BorderLayout.CENTER);
         tableauUtilisateurs.setRowHeight(30);
 
-
         panBas.setSize(900, 100);
         panBas.add(btnEnrModifUtil);
         panBas.add(btnAjouterUtilisateur);
@@ -100,7 +99,8 @@ public class PageUtilisateurs extends JFrame {
         panBas.add(btnMateriels);
         panBas.add(btnCommentaires);
         panBas.add(btnAdresses);
-        
+        tableauUtilisateurs.setAutoCreateRowSorter(true);
+
         setContentPane(panPrincipal);
 
         afficheJTableUtilisateurs();
@@ -130,7 +130,7 @@ public class PageUtilisateurs extends JFrame {
                 String user = utilisateur.getNom().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (user.startsWith(recherche)) {
+                if (user.contains(recherche)) {
                     listRechercheUtilisateurs.add(utilisateur);
                     TableModelUtilisateur model;
                     model = new TableModelUtilisateur(listRechercheUtilisateurs);
@@ -152,10 +152,11 @@ public class PageUtilisateurs extends JFrame {
             afficheJTableUtilisateurs();
         });
 
+
         /*
          * listenner sur le btnAjouterUtilisateur pour ajouter une ligne vierge
          * @param: blankUtilisateur
-         **/
+         */
      //   btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
             verifSiAjoutLigne = true;
@@ -169,9 +170,7 @@ public class PageUtilisateurs extends JFrame {
             utilisateurs.add(blankUtilisateur);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-
             if (utilisateurs != null) {
-
                 assert allUtilisateurs != null;
                 int idMax = allUtilisateurs.get(0).getIdUtilisateur();
 
@@ -296,7 +295,7 @@ public class PageUtilisateurs extends JFrame {
             return;
             }
 
-            ///On supprime tous les commentaires sélectionnés
+            ///On supprime tous les utilisateurs sélectionnés
             int[] selection = tableauUtilisateurs.getSelectedRows();
             for (int j : selection) {
                 utilisateur = utilisateurs.get(j);

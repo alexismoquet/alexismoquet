@@ -102,8 +102,10 @@ public class PageAdresses extends JFrame {
         panBas.add(btnSupprimerAdresse);
         panBas.add(btnAnnuler);
 
-        
+        tableauAdresse.setAutoCreateRowSorter(true);
+
         setContentPane(panPrincipal);
+
         displayRightTable();
 
         /*
@@ -301,26 +303,32 @@ public class PageAdresses extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerAdresse, "Veuillez sélectionner une adresse");
                 return;
             }
-            AdresseManager am = AdresseManager.getInstance();
-
-            int i = JOptionPane.showConfirmDialog(btnSupprimerAdresse, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'adresse "+adresse.getIdAdresse()+" ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    am.delete(adresse);
-                    JOptionPane.showMessageDialog(btnSupprimerAdresse, "Adresse " + adresse.getIdAdresse() + " supprimée");
-                    if (utilisateur == null) {
-                        afficheJTableWithAllAdresses();
-                        //    tableauAdresse.clearSelection();
-                    } else {
-                        afficheJTableAdressesIdUtilisateur();
-                        tableauAdresse.clearSelection();
-                    }
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
+                    ///Supprime tous les adresses sélectionnées
+                    int[] selection = tableauAdresse.getSelectedRows();
+                    for (int j : selection) {
+                        adresse = adresses.get(j);
+                        try {
+                            adresse = AdresseManager.getInstance().SelectById(adresse.getIdAdresse());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerAdresse, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'adresse " + adresse.getIdAdresse() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) //user a dit oui
+                        {
+                            try {
+                                AdresseManager.getInstance().delete(adresse);
+                                JOptionPane.showMessageDialog(btnSupprimerAdresse, "Adresse " + adresse.getIdAdresse() + " supprimée");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }//fin for
+            if (utilisateur == null) {
+                afficheJTableWithAllAdresses();
+            } else {
+                afficheJTableAdressesIdUtilisateur();
             }
         });
 

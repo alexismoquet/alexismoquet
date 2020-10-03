@@ -57,19 +57,9 @@ public class PageCommentaires extends JFrame {
      * Constructeur
      * @param: pAnnonce
      */
-    public PageCommentaires(Annonce pAnnonce) {
-        this.annonce = pAnnonce;
-        initialiserComposants();
-    }
 
     public PageCommentaires(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
-        initialiserComposants();
-    }
-
-    public PageCommentaires(Utilisateur pUtilisateur, Annonce pAnnonce) {
-        this.utilisateur = pUtilisateur;
-        this.annonce = pAnnonce;
         initialiserComposants();
     }
 
@@ -118,14 +108,14 @@ public class PageCommentaires extends JFrame {
         panBas.add(btnSupprimerCommentaire);
         panBas.add(btnAnnuler);
 
+        tableauCommentaire.setAutoCreateRowSorter(true);
+
         setContentPane(panPrincipal);
 
         if (annonce ==  null && utilisateur == null){
             panBas.remove(btnAjouterCommentaire);
         }
-
         displayRightTable();
-
 
         /*
          * Mouse listenner du champ de recherche qui efface le contenu du champ
@@ -201,7 +191,7 @@ public class PageCommentaires extends JFrame {
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
-                 ////////// tableauCommentaire.clearSelection();
+               tableauCommentaire.clearSelection();
                 }//fin if
             }//fin for
             displayRightTable();
@@ -217,7 +207,6 @@ public class PageCommentaires extends JFrame {
             commentaires.add(blankCommentaire);
 
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
-            if (commentaire != null){
             List<Commentaire>allCommentaires;
             try {
                 allCommentaires = CommentaireManager.getInstance().SelectAll();
@@ -236,10 +225,6 @@ public class PageCommentaires extends JFrame {
                      }
                 }
             blankCommentaire.setCommentaire_id(idMax);
-            }
-//            else {
-//                blankCommentaire.setCommentaire_id(commentaire.getCommentaire_id());
-//            }
 
             blankCommentaire.setCommentaire_note(0);
             blankCommentaire.setCommentaire_message("");
@@ -249,21 +234,21 @@ public class PageCommentaires extends JFrame {
             if (utilisateur != null){
                 blankCommentaire.setCommentaire_utilisateur_id(utilisateur.getIdUtilisateur());
             } else {
+                JOptionPane.showMessageDialog(null, "merci de remplir l'IdUtilisateur initialisé à 1 par défaut");
                 blankCommentaire.setCommentaire_utilisateur_id(1);
             }
             if (annonce != null){
                 blankCommentaire.setCommentaire_annonce_id(annonce.getAnnonce_id());
             }else{
+                JOptionPane.showMessageDialog(null, "merci de remplir l'IdAnnonce initialisé à 1 par défaut");
                 blankCommentaire.setCommentaire_annonce_id(1);
             }
-
             try {
                 CommentaireManager.getInstance().insert(blankCommentaire);
               //  JOptionPane.showMessageDialog(btnAjouterCommentaire, "Commentaire ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
-
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             model.fireTableDataChanged();
             tableauCommentaire.revalidate();
@@ -286,7 +271,6 @@ public class PageCommentaires extends JFrame {
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
-
                 String commentaireMessageModifie = String.valueOf(tableauCommentaire.getValueAt(i, 0));
                 int commentaireNoteModifie = (int) tableauCommentaire.getValueAt(i, 2);
                 int idCommentaireModifie = (int) tableauCommentaire.getValueAt(i, 3);
@@ -305,10 +289,9 @@ public class PageCommentaires extends JFrame {
 //                tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
 
                 if (commentaire == null) {
-                    //JOptionPane.showMessageDialog(btnModifierCommentaire, "Merci d'ajouter le message");
                     return;
                 } else {
-                    /* ENREGISTRER LES VALEURS DS LA BASE ***/
+                    /* ENREGISTRER LES VALEURS DS LA BASE si une d'entre elles est différente ***/
                     if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie)
                             || !(commentaire.getCommentaire_id() == idCommentaireModifie)
                             || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie)
@@ -325,13 +308,11 @@ public class PageCommentaires extends JFrame {
                         int j;
                         if (verifSiAjout) {
                             j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
-                                    "Veuillez confirmer votre choix",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
-                                    "Veuillez confirmer votre choix",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
@@ -355,7 +336,6 @@ public class PageCommentaires extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int id = (int) tableauCommentaire.getValueAt(tableauCommentaire.getSelectedRow(), 3);
             //    JOptionPane.showMessageDialog(null, "Le commentaire " + id + " est sélectionné");
-
                 try {
                     commentaire = CommentaireManager.getInstance().SelectById(id);
                 } catch (BLLException ex) {
@@ -366,19 +346,6 @@ public class PageCommentaires extends JFrame {
     }//fin initialiserComposants
 
     /**
-     * Méthode qui affiche le bon tableau selon la page de provenance
-     */
-    private void displayRightTable(){
-        if (annonce ==  null && utilisateur == null){
-            afficheJTableCommentaires();
-        } else if (utilisateur == null){
-            afficheJTableCommentairesWithIdAnnonce();
-        } else if (annonce == null){
-            afficheJTableCommentairesWithIdUtilisateur();
-        }
-    }
-
-    /**
      * Méthode qui affiche le tableau de tous les commentaires
      */
     private void afficheJTableCommentaires() {
@@ -386,7 +353,6 @@ public class PageCommentaires extends JFrame {
             commentaires = remplirJTableWithCommentaires();
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             tableauCommentaire.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
@@ -400,7 +366,6 @@ public class PageCommentaires extends JFrame {
             commentaires = remplirJTableWithCommentairesIdAnnonce(annonce.getAnnonce_id());
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             tableauCommentaire.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
@@ -415,12 +380,25 @@ public class PageCommentaires extends JFrame {
             commentaires = remplirJTableWithCommentairesIdUtilisateur(utilisateur.getIdUtilisateur());
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             tableauCommentaire.setModel(model);
-
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-
     } //fin afficheJTable
+
+    /**
+     * Méthode qui affiche le bon tableau selon la page de provenance
+     */
+    private void displayRightTable(){
+        if (annonce ==  null && utilisateur == null){
+            afficheJTableCommentaires();
+        }
+        if (annonce != null){
+            afficheJTableCommentairesWithIdAnnonce();
+        }
+        if (utilisateur != null){
+            afficheJTableCommentairesWithIdUtilisateur();
+        }
+    }
 
 }//fin class
 

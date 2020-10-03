@@ -8,7 +8,6 @@ import com.dsi.model.beans.Sport;
 import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.MaterielManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -19,9 +18,7 @@ import java.util.List;
 
 import static com.dsi.controller.Materiels.*;
 
-
 public class PageMateriels extends JFrame {
-
 
     private final JPanel panPrincipal = new JPanel();
     private final JPanel panHaut = new JPanel();
@@ -31,7 +28,7 @@ public class PageMateriels extends JFrame {
     private final JButton btnEnregistrerMateriel = new JButton("Enregistrer");
     private final JButton btnSupprimerMateriel = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
-    private final JButton btnVisuels = new JButton("visuels");
+    private final JButton btnVisuels = new JButton("visuel(s)");
     private final JButton btnRechercher = new JButton("Rechercher");
     private final JButton btnSorties = new JButton("Sortie");
     private final JButton btnAnnonces = new JButton("Annonce(s)");
@@ -153,8 +150,10 @@ public class PageMateriels extends JFrame {
         if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
             panBas.remove(btnAjouterMateriel);
         }
-
         setContentPane(panPrincipal);
+
+        tableauMateriel.setAutoCreateRowSorter(true);
+
         displayRightTable();
 
         /*
@@ -239,18 +238,20 @@ public class PageMateriels extends JFrame {
             blankMateriel.setMateriel_description("");
 
             if (utilisateur == null) {
+                JOptionPane.showMessageDialog(null, "Merci de saisir l'IdAdresse initialisé à 1 par défaut");
                 blankMateriel.setMateriel_adresse_id(1);
             } else {
                 blankMateriel.setMateriel_adresse_id(utilisateur.getAdresses().get(0).getIdAdresse());
             }
 
             if (categorie == null) {
+                JOptionPane.showMessageDialog(null, "Merci de saisir l'IdCategorie initialisé à 1 par défaut");
               blankMateriel.setMateriel_categorie_id(1);
             } else {
                 blankMateriel.setMateriel_categorie_id(categorie.getCategorie_id());
             }
-
             if (sport == null) {
+                JOptionPane.showMessageDialog(null, "Merci de saisir l'IdSport initialisé à 1 par défaut");
                 blankMateriel.setMateriel_sport_id(1);
             } else {
                 blankMateriel.setMateriel_sport_id(sport.getSport_id());
@@ -347,19 +348,29 @@ public class PageMateriels extends JFrame {
                 JOptionPane.showMessageDialog(btnSupprimerMateriel, "Merci de sélectionner un matériel");
                 return;
             }
-            int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel " + materiel.getMateriel_id() + " ?",
-                    "Veuillez confirmer votre choix",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-            if (i == 0) //user a dit oui
-            {
-                try {
-                    MaterielManager.getInstance().delete(materiel);
-                    JOptionPane.showMessageDialog(btnSupprimerMateriel, "Matériel " + materiel.getMateriel_id() + " supprimé");
+                    ///Supprime tous les materiels sélectionnés
+                    int[] selection = tableauMateriel.getSelectedRows();
+                    for (int j : selection) {
+                        materiel = materiels.get(j);
+                        try {
+                            materiel = MaterielManager.getInstance().SelectById(materiel.getMateriel_id());
+                        } catch (BLLException bllException) {
+                            bllException.printStackTrace();
+                        }
+                        int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel " + materiel.getMateriel_id() + " ?",
+                                "Veuillez confirmer votre choix",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                        if (i == 0) //user a dit oui
+                        {
+                            try {
+                                MaterielManager.getInstance().delete(materiel);
+                                JOptionPane.showMessageDialog(btnSupprimerMateriel, "Matériel " + materiel.getMateriel_id() + " supprimé");
+                            } catch (BLLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }//fin for
                     displayRightTable();
-                } catch (BLLException ex) {
-                    ex.printStackTrace();
-                }
-            }
         });
 
         /*
@@ -490,6 +501,19 @@ public class PageMateriels extends JFrame {
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
+    } //fin afficheJTable /**
+
+    /*
+     * Méthode qui affiche tous les materiels
+     */
+    private void afficheJTableWithIdAnnonceMateriels() {
+        try {
+            materiels = remplirJTableWithIdMaterielsAnnonce(annonce_materiel_id);
+            TableModelMateriel model = new TableModelMateriel(materiels);
+            tableauMateriel.setModel(model);
+        } catch (BLLException ex) {
+            ex.printStackTrace();
+        }
     } //fin afficheJTable
 
     /**
@@ -498,13 +522,15 @@ public class PageMateriels extends JFrame {
     public void displayRightTable() {
         if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
             afficheJTableWithAllMateriels();
-        } else if (utilisateur == null && sport == null && annonce_materiel_id == null) {
+        } else if (categorie != null) {
             afficheJTableMaterielsWithIdCategorie();
-        } else if (categorie == null && sport == null && annonce_materiel_id == null) {
+        } else if (utilisateur != null) {
             afficheJTableMaterielsWithIdAdresse();
-        } else if (utilisateur == null && categorie == null && annonce_materiel_id == null) {
+        } else if (sport != null) {
             afficheJTableMaterielsWithIdSport();
-        }
+        } else {
+            afficheJTableWithIdAnnonceMateriels();
+            }
     }
 
 }//fin class

@@ -3,13 +3,13 @@ package com.dsi.controller.tableModel;
 import com.dsi.model.beans.Visuel;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
 
     private final String[] titres = {"Affichage du visuel","Nom du fichier", "IdVisuel", "IdMatériel"};
     private List<Visuel> visuels;
-
     
     public TableModelVisuel(List<Visuel> visuels) {
         this.visuels = visuels;
@@ -61,7 +61,7 @@ public class TableModelVisuel extends AbstractTableModel {
         fireTableCellUpdated(row, column);
         if (column == 1) {
             visuels.get(row).setVisuel_nom_fichier((String) value);
-        } else if (column == 2){
+        } else if (column == 3){
             visuels.get(row).setVisuel_materiel_id(Integer.parseInt(value.toString()));
         }
     }
