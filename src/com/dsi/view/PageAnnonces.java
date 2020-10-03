@@ -44,6 +44,7 @@ public class PageAnnonces extends JFrame {
     List<Annonce> listRechercheAnnonces = new ArrayList<>();
     Annonce annonce, blankAnnonce;
     Materiel materiel;
+    Commentaire commentaire;
     ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
     Utilisateur utilisateur;
     boolean verifSiAJout = false;
@@ -347,7 +348,6 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-
         /*
          * Action listenner sur le bouton commentaire
          */
@@ -355,10 +355,10 @@ public class PageAnnonces extends JFrame {
         btnCommentaires.addActionListener(e -> {
             if (annonce == null) {
                 JOptionPane.showMessageDialog(btnCommentaires, "Veuillez sélectionner une annonce");
-            } else if  (utilisateur != null){
-                new PageCommentaires(utilisateur, annonce);
+            } else if  (utilisateur == null){
+                new PageCommentaires(annonce, commentaire);
             } else {
-                new PageCommentaires(annonce);
+                new PageCommentaires(utilisateur, annonce, commentaire);
             }
         });
 

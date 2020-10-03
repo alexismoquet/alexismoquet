@@ -41,12 +41,10 @@ public class PageUtilisateurs extends JFrame {
 
     List<Utilisateur> utilisateurs = new ArrayList<>();
     List<Utilisateur> listRechercheUtilisateurs = new ArrayList<>();
-
     Utilisateur utilisateur, blankUtilisateur;
     boolean verifSiAjoutLigne = false;
 
     ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-
 
     /**
      * Constructeur par defaut
