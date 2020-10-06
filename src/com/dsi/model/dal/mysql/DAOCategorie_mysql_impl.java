@@ -226,7 +226,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                             rs.getInt("categorie_id"),
                             rs.getString("categorie_libelle")
                     );
-                 //   categories.add(categorie);
+                    categories.add(categorie);
             }else {
                 throw new DALException("Aucune catégorie trouvée avec l'identifiant : " + pId);
             }

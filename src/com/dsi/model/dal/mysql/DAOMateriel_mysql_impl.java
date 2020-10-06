@@ -225,7 +225,7 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
             pstmt.setInt(1, pId);
             rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 materiel = new Materiel(
                         rs.getInt("materiel_id"),
                         rs.getInt("materiel_categorie_id"),
@@ -237,6 +237,8 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
                         rs.getBoolean("materiel_caution"),
                         rs.getFloat("materiel_caution_prix")
                 );
+            } else {
+                throw new DALException("Aucun matériel trouvé avec l'identifiant : " + pId);
             }
 
         } catch (SQLException e) {
@@ -253,7 +255,8 @@ public class DAOMateriel_mysql_impl implements DAO_Materiel {
 
             //Fermeture de la connexion
             try {
-                cnx.setAutoCommit(true);
+             //   cnx.setAutoCommit(true);
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);

@@ -208,6 +208,7 @@ public class PageCommentaires extends JFrame {
 
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
             List<Commentaire>allCommentaires;
+
             try {
                 allCommentaires = CommentaireManager.getInstance().SelectAll();
         } catch (BLLException bllException) {
@@ -224,8 +225,8 @@ public class PageCommentaires extends JFrame {
                     idMax = commentaireId;
                      }
                 }
-            blankCommentaire.setCommentaire_id(idMax);
 
+            blankCommentaire.setCommentaire_id(idMax);
             blankCommentaire.setCommentaire_note(0);
             blankCommentaire.setCommentaire_message("");
             blankCommentaire.setCommentaire_date_parution(new Date());
