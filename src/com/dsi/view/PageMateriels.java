@@ -94,13 +94,9 @@ public class PageMateriels extends JFrame {
      *
      * @param: annonce_materiel_id
      */
-    public PageMateriels(int annonce_materiel_id) throws BLLException {
+    public PageMateriels(int annonce_materiel_id) {
         this.annonce_materiel_id = annonce_materiel_id;
-        materiel = MaterielManager.getInstance().SelectById(annonce_materiel_id);
-        materiels.add(materiel);
         initialiserComposants();
-        TableModelMateriel model = new TableModelMateriel(materiels);
-        tableauMateriel.setModel(model);
     }
 
     /**
@@ -150,9 +146,10 @@ public class PageMateriels extends JFrame {
         if (utilisateur == null && categorie == null && sport == null && annonce_materiel_id == null) {
             panBas.remove(btnAjouterMateriel);
         }
-        setContentPane(panPrincipal);
 
         tableauMateriel.setAutoCreateRowSorter(true);
+
+        setContentPane(panPrincipal);
 
         displayRightTable();
 
@@ -506,7 +503,7 @@ public class PageMateriels extends JFrame {
     /*
      * Méthode qui affiche tous les materiels
      */
-    private void afficheJTableWithIdAnnonceMateriels() {
+    private void afficheJTableWithAnnonceIdMateriels() {
         try {
             materiels = remplirJTableWithIdMaterielsAnnonce(annonce_materiel_id);
             TableModelMateriel model = new TableModelMateriel(materiels);
@@ -529,7 +526,7 @@ public class PageMateriels extends JFrame {
         } else if (sport != null) {
             afficheJTableMaterielsWithIdSport();
         } else {
-            afficheJTableWithIdAnnonceMateriels();
+            afficheJTableWithAnnonceIdMateriels();
             }
     }
 

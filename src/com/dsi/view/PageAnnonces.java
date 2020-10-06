@@ -109,7 +109,6 @@ public class PageAnnonces extends JFrame {
         //ScrollPane
         JScrollPane scrollPane = new JScrollPane(tableauAnnonce);
         panCentre.add(scrollPane, BorderLayout.CENTER);
-
         panCentre.add(tableauAnnonce, BorderLayout.CENTER);
         panCentre.add(new JScrollPane(tableauAnnonce), BorderLayout.CENTER);
 
@@ -122,9 +121,9 @@ public class PageAnnonces extends JFrame {
         panBas.add(btnAnnuler);
         panBas.add(btnCommentaires);
 
-        if (materiel == null) {
-            panBas.add(btnMateriels);
-        }
+//        if (materiel != null) {
+//            panBas.add(btnMateriels);
+//        }
 
         tableauAnnonce.setAutoCreateRowSorter(true);
 
@@ -376,21 +375,18 @@ public class PageAnnonces extends JFrame {
             }
         });
 
-        /*
-         * Action listenner sur le bouton materiel
-         */
-        btnMateriels.setSize(100, 50);
-        btnMateriels.addActionListener(e -> {
-            if (annonce == null) {
-                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une annonce");
-            } else {
-                try {
-                    new PageMateriels(annonce.getAnnonce_materiel_id());
-                } catch (BLLException bllException) {
-                    bllException.printStackTrace();
-                }
-            }
-        });
+//        /*
+//         * Action listenner sur le bouton materiel
+//         */
+//        btnMateriels.setSize(100, 50);
+//        btnMateriels.addActionListener(e -> {
+//            if (annonce == null) {
+//                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une annonce");
+//            } else {
+//                new PageMateriels(annonce.getAnnonce_materiel_id());
+//            }
+//        });
+
     }//fin initialiserComposants
 
     /**
