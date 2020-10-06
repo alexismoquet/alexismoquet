@@ -85,9 +85,11 @@ public class PageSports extends JFrame {
         panBas.add(btnAjouterSport);
         panBas.add(btnSupprimerSport);
         panBas.add(btnAnnuler);
+        panBas.add(btnMateriels);
 
         tableauSport.setAutoCreateRowSorter(true);
         setContentPane(panPrincipal);
+
         afficheJTableSports();
 
         /*
