@@ -233,6 +233,8 @@ public class PageHubAdmin extends JFrame {
             }
         }
         TableModelAnnonce model = new TableModelAnnonce(listAnomalies);
+        model.fireTableDataChanged();
+        tableauAnomalies.revalidate();
         tableauAnomalies.setModel(model);
 
     }//fin JTable

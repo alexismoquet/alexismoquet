@@ -60,7 +60,9 @@ public class PageAdresses extends JFrame {
     }
 
 
-
+    /**
+     * Méthode qui initialise les composants de la page
+     */
     public void initialiserComposants() {
         setTitle("Adresses");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -163,7 +165,9 @@ public class PageAdresses extends JFrame {
             }
         });
 
-
+        /*
+         * Mouse listenner sur le bouton annuler
+         */
         btnAnnuler.addActionListener(e -> {
             txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
             adresse = null;
@@ -175,6 +179,9 @@ public class PageAdresses extends JFrame {
             }
         });
 
+        /*
+         * Mouse listenner sur le bouton annuler Ajouter une ligne
+         */
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
             verifSiAjout = true;
@@ -231,6 +238,9 @@ public class PageAdresses extends JFrame {
             displayRightTable();
         });
 
+        /*
+         * Mouse listenner sur le bouton Enregistrer
+         */
         btnEnrAdresse.addActionListener(e -> {
             /* On récupére les valeurs du tableauAdresse, on boucle pour chaque ligne pour
              * détecter si changement
@@ -297,7 +307,9 @@ public class PageAdresses extends JFrame {
             verifSiAjout = false;
         });
 
-
+        /*
+         * Mouse listenner sur le bouton Supprimer
+         */
         btnSupprimerAdresse.addActionListener(e -> {
             if (adresse == null) {
                 JOptionPane.showMessageDialog(btnSupprimerAdresse, "Veuillez sélectionner une adresse");

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Classe Parametres
+ * Class Parametres
  *
  * @author Christophe Michard
  * @since Créé le 05/02/2020

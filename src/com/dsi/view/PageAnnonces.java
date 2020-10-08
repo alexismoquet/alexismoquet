@@ -4,8 +4,6 @@ import com.dsi.controller.tableModel.TableModelAnnonce;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.CategorieManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -35,7 +33,7 @@ public class PageAnnonces extends JFrame {
     private final JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
     private final JButton btnCommentaires = new JButton("Commentaires");
-    private final JButton btnMateriels = new JButton("Materiels");
+    //private final JButton btnMateriels = new JButton("Materiels");
 
     private final JTextField txtRechercher = new JTextField();
     private final JButton btnRechercher = new JButton("Rechercher");
