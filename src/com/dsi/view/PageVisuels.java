@@ -200,19 +200,23 @@ public class PageVisuels extends JFrame {
         btnAjouterVisuel.setSize(140, 50);
         btnAjouterVisuel.addActionListener(e -> {
             verifSiAjout = true;
-            List<Visuel> allVisuels = null;
-            try {
-                allVisuels = VisuelManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
-
             blankVisuel = new Visuel();
-            visuels.add(blankVisuel);
+
+
+
+
+
+
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
 
-            if (visuel != null) {
+            if (visuels.size() >0) {
+                List<Visuel> allVisuels = null;
+                try {
+                    allVisuels = VisuelManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
                 assert allVisuels != null;
                 int idMax = allVisuels.get(0).getVisuel_id();
 
@@ -223,6 +227,8 @@ public class PageVisuels extends JFrame {
                     }
                 }
                 blankVisuel.setVisuel_id(idMax + 1);
+            } else {
+                blankVisuel.setVisuel_id(1);
             }
             blankVisuel.setVisuel_nom_fichier("");
 
@@ -237,6 +243,8 @@ public class PageVisuels extends JFrame {
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
+
+            visuels.add(blankVisuel);
 
             TableModelVisuel model = new TableModelVisuel(visuels);
             model.fireTableDataChanged();

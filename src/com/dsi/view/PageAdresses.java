@@ -178,6 +178,7 @@ public class PageAdresses extends JFrame {
         btnAjouterLigne.setSize(140, 50);
         btnAjouterLigne.addActionListener(e -> {
             verifSiAjout = true;
+
             List<Adresse> allAdresses = null;
             try {
                 allAdresses = AdresseManager.getInstance().SelectAll();
@@ -223,8 +224,8 @@ public class PageAdresses extends JFrame {
             }
 
             TableModelAdresse model = new TableModelAdresse(adresses);
-            model.fireTableDataChanged();
-            tableauAdresse.revalidate();
+//            model.fireTableDataChanged();
+//            tableauAdresse.revalidate();
             tableauAdresse.setModel(model);
 
             blankAdresse = null;

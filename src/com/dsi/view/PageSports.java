@@ -147,18 +147,16 @@ public class PageSports extends JFrame {
         btnAjouterSport.setSize(140, 50);
         btnAjouterSport.addActionListener(e -> {
             verifSiAjout = true;
-            List<Sport> allSports = null;
-            SportManager sm = new SportManager();
-            try {
-                allSports = sm.SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
             blankSport = new Sport();
-            sports.add(blankSport);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            if (sport != null) {
+            if (sports.size() >=1) {
+                List<Sport> allSports = null;
+                try {
+                    allSports = SportManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
                 assert allSports != null;
                 int idMax = allSports.get(0).getSport_id();
 
@@ -169,6 +167,8 @@ public class PageSports extends JFrame {
                     }
                 }
                 blankSport.setSport_id(idMax + 1);
+            } else {
+                blankSport.setSport_id(1);
             }
             blankSport.setSport_libelle("");
 
@@ -180,6 +180,7 @@ public class PageSports extends JFrame {
                 bllException.printStackTrace();
             }
 
+            sports.add(blankSport);
             TableModelSport model = new TableModelSport(sports);
             model.fireTableDataChanged();
             tableauSport.revalidate();

@@ -204,18 +204,16 @@ public class PageCommentaires extends JFrame {
         btnAjouterCommentaire.addActionListener(e -> {
             verifSiAjout = true;
             blankCommentaire = new Commentaire();
-            commentaires.add(blankCommentaire);
-
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
-            List<Commentaire>allCommentaires;
 
-            try {
-                allCommentaires = CommentaireManager.getInstance().SelectAll();
-        } catch (BLLException bllException) {
-            bllException.printStackTrace();
-             return;
-                }
-
+           if (commentaires.size() >= 1){
+               List<Commentaire>allCommentaires = null;
+               try {
+                   allCommentaires = CommentaireManager.getInstance().SelectAll();
+               } catch (BLLException bllException) {
+                   bllException.printStackTrace();
+//                return;
+               }
             assert allCommentaires != null;
             int idMax = allCommentaires.get(0).getCommentaire_id();
 
@@ -225,8 +223,10 @@ public class PageCommentaires extends JFrame {
                     idMax = commentaireId;
                      }
                 }
-
-            blankCommentaire.setCommentaire_id(idMax);
+               blankCommentaire.setCommentaire_id(idMax);
+           } else {
+               blankCommentaire.setCommentaire_id(1);
+           }
             blankCommentaire.setCommentaire_note(0);
             blankCommentaire.setCommentaire_message("");
             blankCommentaire.setCommentaire_date_parution(new Date());
@@ -250,6 +250,8 @@ public class PageCommentaires extends JFrame {
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
+
+            commentaires.add(blankCommentaire);
             TableModelCommentaire model = new TableModelCommentaire(commentaires);
             model.fireTableDataChanged();
             tableauCommentaire.revalidate();

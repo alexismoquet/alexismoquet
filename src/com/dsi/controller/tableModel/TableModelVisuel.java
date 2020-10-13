@@ -3,7 +3,6 @@ package com.dsi.controller.tableModel;
 import com.dsi.model.beans.Visuel;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableRowSorter;
 import java.util.List;
 
 public class TableModelVisuel extends AbstractTableModel {
