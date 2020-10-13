@@ -145,10 +145,9 @@ public class PageCategories extends JFrame {
         btnAjouterCategorie.addActionListener(e -> {
             verifSiAjout = true;
             blankCategorie = new Categorie();
-            categories.add(blankCategorie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
-            if (categorie != null) {
+            if (categories.size() >=1) {
                 List<Categorie> allCategories = null;
                 try {
                     allCategories = CategorieManager.getInstance().SelectAll();
@@ -165,6 +164,8 @@ public class PageCategories extends JFrame {
                     }
                 }
                 blankCategorie.setCategorie_id(idMax + 1);
+            }else {
+                blankCategorie.setCategorie_id(1);
             }
             blankCategorie.setCategorie_libelle("");
 
@@ -174,6 +175,7 @@ public class PageCategories extends JFrame {
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
+            categories.add(blankCategorie);
 
             TableModelCategorie model = new TableModelCategorie(categories);
             model.fireTableDataChanged();

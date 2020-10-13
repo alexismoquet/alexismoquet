@@ -166,6 +166,8 @@ public class PageSorties extends JFrame {
          */
         btnAjouterSortie.setSize(140, 50);
         btnAjouterSortie.addActionListener(e -> {
+            if(materiel != null && sorties.size() == 0){
+
             verifSiAjout = true;
             List<Sortie> allSorties = null;
             try {
@@ -175,7 +177,6 @@ public class PageSorties extends JFrame {
             }
 
             blankSortie = new Sortie();
-            sorties.add(blankSortie);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
 
@@ -189,25 +190,16 @@ public class PageSorties extends JFrame {
                         idMax = sortieId;
                     }
                 }
-                /*S'il y a 2 sorties pour un seul matériel*/
-                if (sorties.size() > 1) {
-                    JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
-                    return;
-                }
                 blankSortie.setSortie_id(idMax + 1);
+            } else {
+                blankSortie.setSortie_id(1);
             }
 
             blankSortie.setSortie_etat("");
             blankSortie.setSortie_date_sortie(new Date());
             blankSortie.setSortie_date_retour(new Date());
-
-            if (materiel == null) {
-                blankSortie.setSortie_materiel_id(0);
-            } else {
-                blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
-            }
-
-
+            blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
+            
             try {
                 SortieManager.getInstance().insert(blankSortie);
                 //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
@@ -216,14 +208,18 @@ public class PageSorties extends JFrame {
             }
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            sorties.add(blankSortie);
             TableModelSortie model = new TableModelSortie(sorties);
             model.fireTableDataChanged();
             tableauSortie.revalidate();
             tableauSortie.setModel(model);
 
-            blankSortie = null;
-
-            displayRightTable();
+        blankSortie = null;
+        displayRightTable();
+            }//fin if
+                else {
+                   JOptionPane.showMessageDialog(btnAjouterSortie, "Merci de saisir un nouveau matériel");
+            }
         });
 
 

@@ -160,17 +160,16 @@ public class PageUtilisateurs extends JFrame {
      //   btnAjouterUtilisateur.setSize(140, 50);
         btnAjouterUtilisateur.addActionListener(e -> {
             verifSiAjoutLigne = true;
-            List<Utilisateur> allUtilisateurs = null;
-            try {
-                allUtilisateurs = UtilisateurManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
             blankUtilisateur = new Utilisateur();
-            utilisateurs.add(blankUtilisateur);
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            if (utilisateurs != null) {
+            if (utilisateurs.size() >= 1) {
+                List<Utilisateur> allUtilisateurs = null;
+                try {
+                    allUtilisateurs = UtilisateurManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
                 assert allUtilisateurs != null;
                 int idMax = allUtilisateurs.get(0).getIdUtilisateur();
 
@@ -180,8 +179,9 @@ public class PageUtilisateurs extends JFrame {
                         idMax = utilisateurId;
                     }
                 }
-            }
-            else{ blankUtilisateur.setIdUtilisateur(1);
+                blankUtilisateur.setIdUtilisateur(idMax+1);
+            } else{
+                blankUtilisateur.setIdUtilisateur(1);
             }
             blankUtilisateur.setNom("");
             blankUtilisateur.setPrenom("");
@@ -201,10 +201,11 @@ public class PageUtilisateurs extends JFrame {
                 bllException.printStackTrace();
             }
 
-            TableModelUtilisateur model;
-            model = new TableModelUtilisateur(utilisateurs);
-            model.fireTableDataChanged();
-            tableauUtilisateurs.revalidate();
+            utilisateurs.add(blankUtilisateur);
+
+            TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
+//            model.fireTableDataChanged();
+//            tableauUtilisateurs.revalidate();
             tableauUtilisateurs.setModel(model);
 
             JOptionPane.showMessageDialog(null, "Veuillez créer une ADRESSE afin de créer un MATERIEL puis une ANNONCE");

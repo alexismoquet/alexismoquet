@@ -202,14 +202,13 @@ public class PageAnnonces extends JFrame {
             blankAnnonce = new Annonce();
 
             //////  On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus ////////////////
-            if (annonces.size() != 0){
+            if (annonces.size() >= 1){
                 List<Annonce>allAnnonces = null;
                 try {
                     allAnnonces = AnnonceManager.getInstance().SelectAll();
                 } catch (BLLException bllException) {
                     bllException.printStackTrace();
                 }
-
             assert allAnnonces != null;
             int idMax = allAnnonces.get(0).getAnnonce_id();
 
@@ -219,7 +218,7 @@ public class PageAnnonces extends JFrame {
                     idMax = annonceId;
                     }
                 }
-                blankAnnonce.setAnnonce_id(idMax);
+                blankAnnonce.setAnnonce_id(idMax+1);
             } else {
                 blankAnnonce.setAnnonce_id(1);
             }
@@ -232,16 +231,16 @@ public class PageAnnonces extends JFrame {
                 JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
                 return;
             }
-
             if (materiel == null){
                 JOptionPane.showMessageDialog(null, "Merci de créer une annonce avec le bouton Matériels de la page Utilisateurs");
                 return;
                 } else {
                 blankAnnonce.setAnnonce_materiel_id(materiel.getMateriel_id()); }
-
             if (utilisateur == null){
                     blankAnnonce.setAnnonce_utilisateur_id(1);
-                } else{ blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur()); }
+                JOptionPane.showMessageDialog(null, "Merci de saisir l'IdUtilisateur initialisé à 1 par défaut");
+            }
+            else{ blankAnnonce.setAnnonce_utilisateur_id(utilisateur.getIdUtilisateur()); }
 
             annonces.add(blankAnnonce);
 
@@ -252,10 +251,11 @@ public class PageAnnonces extends JFrame {
                 bllException.printStackTrace();
                 JOptionPane.showMessageDialog(btnAjouterLigne, "Merci de créer un nouveau matériel");
             }
+            annonces.add(blankAnnonce);
 
             TableModelAnnonce model = new TableModelAnnonce(annonces);
-            model.fireTableDataChanged();
-            tableauAnnonce.revalidate();
+//            model.fireTableDataChanged();
+//            tableauAnnonce.revalidate();
             tableauAnnonce.setModel(model);
 
             blankAnnonce = null;

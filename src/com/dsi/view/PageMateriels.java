@@ -206,18 +206,16 @@ public class PageMateriels extends JFrame {
         btnAjouterMateriel.setSize(140, 50);
         btnAjouterMateriel.addActionListener(e -> {
             verifSiAjout = true;
-            List<Materiel> allMateriels = null;
-            try {
-                allMateriels = MaterielManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
             blankMateriel = new Materiel();
-            materiels.add(blankMateriel);
 
             //////////////On récupére la plus haute id du tableau pour assigner blankMateriel à 1 au dessus ////////////////
-
-            if(materiel != null){
+            if(materiels.size() >= 1){
+                List<Materiel> allMateriels = null;
+                try {
+                    allMateriels = MaterielManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
             assert allMateriels != null;
             int idMax = allMateriels.get(0).getMateriel_id();
 
@@ -227,7 +225,8 @@ public class PageMateriels extends JFrame {
                     idMax = materielId;
                 }
             }
-            //////////////////On Set les valeurs de blankMateriel pour insertion dans la base //////////////////////
+                //////////////////On Set les valeurs de blankMateriel pour insertion dans la base //////////////////////
+            blankMateriel.setMateriel_id(idMax+1);
         } else {
                 blankMateriel.setMateriel_id(1);
             }
@@ -240,7 +239,6 @@ public class PageMateriels extends JFrame {
             } else {
                 blankMateriel.setMateriel_adresse_id(utilisateur.getAdresses().get(0).getIdAdresse());
             }
-
             if (categorie == null) {
                 JOptionPane.showMessageDialog(null, "Merci de saisir l'IdCategorie initialisé à 1 par défaut");
               blankMateriel.setMateriel_categorie_id(1);
@@ -253,7 +251,6 @@ public class PageMateriels extends JFrame {
             } else {
                 blankMateriel.setMateriel_sport_id(sport.getSport_id());
             }
-
             blankMateriel.setMateriel_prix(0.0);
 
             try {
@@ -263,9 +260,11 @@ public class PageMateriels extends JFrame {
                 bllException.printStackTrace();
             }
 
+            materiels.add(blankMateriel);
+
             TableModelMateriel model = new TableModelMateriel(materiels);
-            model.fireTableDataChanged();
-            tableauMateriel.revalidate();
+//            model.fireTableDataChanged();
+//            tableauMateriel.revalidate();
             tableauMateriel.setModel(model);
 
             blankMateriel = null;
