@@ -168,7 +168,7 @@ public class PageCommentaires extends JFrame {
          */
         btnSupprimerCommentaire.addActionListener(e -> {
             if (commentaire == null) {
-                JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Veuillez sélectionner un commentaire");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un commentaire");
                 return;
             }
                 ///On supprime tous les commentaires sélectionnés
@@ -181,13 +181,13 @@ public class PageCommentaires extends JFrame {
                     bllException.printStackTrace();
                 }
 
-                int i = JOptionPane.showConfirmDialog(btnSupprimerCommentaire, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le commentaire " + commentaire.getCommentaire_id() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                     if (i == 0) {//user a dit oui
                         try {
                         CommentaireManager.getInstance().delete(commentaire);
-                        JOptionPane.showMessageDialog(btnSupprimerCommentaire, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
+                        JOptionPane.showMessageDialog(null, "Commentaire " + commentaire.getCommentaire_id() + " supprimé");
                     } catch (BLLException ex) {
                         ex.printStackTrace();
                     }
@@ -310,11 +310,11 @@ public class PageCommentaires extends JFrame {
 
                         int j;
                         if (verifSiAjout) {
-                            j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
                                     "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnModifierCommentaire, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
                                     "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {

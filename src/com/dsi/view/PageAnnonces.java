@@ -251,7 +251,7 @@ public class PageAnnonces extends JFrame {
               //  JOptionPane.showMessageDialog(btnAjouterLigne, "Annonce ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
-                JOptionPane.showMessageDialog(btnAjouterLigne, "Merci de créer un nouveau matériel");
+                JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
             }
             annonces.add(blankAnnonce);
 
@@ -305,12 +305,12 @@ public class PageAnnonces extends JFrame {
 
                             int j;
                             if (verifSiAJout) {
-                                j = JOptionPane.showConfirmDialog(btnEnrAnnonce, "Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
+                                j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
                                         "Veuillez confirmer votre choix",
                                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                 verifSiAJout = false;
                             } else {
-                                j = JOptionPane.showConfirmDialog(btnEnrAnnonce, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
+                                j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
                                         "Veuillez confirmer votre choix",
                                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             }
@@ -333,7 +333,7 @@ public class PageAnnonces extends JFrame {
          */
         btnSupprimerAnnonce.addActionListener(e -> {
             if (annonce == null) {
-                JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Veuillez sélectionner une annonce");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner une annonce");
                 return;
             }
                     ///Supprime tous les annonces sélectionnées
@@ -345,14 +345,14 @@ public class PageAnnonces extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerAnnonce, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
+                        int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'annonce " + annonce.getAnnonce_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         if (i == 0) //user a dit oui
                         {
                             try {
                                 AnnonceManager.getInstance().delete(annonce);
-                                JOptionPane.showMessageDialog(btnSupprimerAnnonce, "Annonce " + annonce.getAnnonce_id() + " supprimée");
+                                JOptionPane.showMessageDialog(null, "Annonce " + annonce.getAnnonce_id() + " supprimée");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -367,7 +367,7 @@ public class PageAnnonces extends JFrame {
         btnCommentaires.setSize(100, 50);
         btnCommentaires.addActionListener(e -> {
             if (annonce == null) {
-                JOptionPane.showMessageDialog(btnCommentaires, "Veuillez sélectionner une annonce");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner une annonce");
             } else if  (utilisateur == null){
                 new PageCommentaires(annonce, commentaire);
             } else {

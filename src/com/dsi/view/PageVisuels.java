@@ -158,7 +158,7 @@ public class PageVisuels extends JFrame {
          */
         btnSupprimerVisuel.addActionListener(e -> {
             if (visuel == null) {
-                JOptionPane.showMessageDialog(btnSupprimerVisuel, "Merci de sélectionner un visuel");
+                JOptionPane.showMessageDialog(null, "Merci de sélectionner un visuel");
                 return;
             }
 
@@ -172,14 +172,14 @@ public class PageVisuels extends JFrame {
                     bllException.printStackTrace();
                 }
 
-                int i = JOptionPane.showConfirmDialog(btnSupprimerVisuel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel " + visuel.getVisuel_id() + " ?",
+                int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le visuel " + visuel.getVisuel_id() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                 if (i == 0) //user a dit oui
                 {
                     try {
                         VisuelManager.getInstance().delete(visuel);
-                        JOptionPane.showMessageDialog(btnSupprimerVisuel, "Visuel " + visuel.getVisuel_id() + " supprimé");
+                        JOptionPane.showMessageDialog(null, "Visuel " + visuel.getVisuel_id() + " supprimé");
 
                     } catch (BLLException ex) {
                         ex.printStackTrace();
@@ -202,14 +202,7 @@ public class PageVisuels extends JFrame {
             verifSiAjout = true;
             blankVisuel = new Visuel();
 
-
-
-
-
-
-
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
-
             if (visuels.size() >0) {
                 List<Visuel> allVisuels = null;
                 try {
@@ -285,12 +278,12 @@ public class PageVisuels extends JFrame {
 
                         int j;
                         if (verifSiAjout) {
-                            j = JOptionPane.showConfirmDialog(btnEnregistrerVisuel, "Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnregistrerVisuel, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }

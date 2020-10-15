@@ -275,11 +275,11 @@ public class PageAdresses extends JFrame {
 
                         int j;
                         if (verifSiAjout){
-                            j = JOptionPane.showConfirmDialog(btnEnrAdresse, "Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnrAdresse, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'adresse " + adresse.getIdAdresse() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
@@ -301,7 +301,7 @@ public class PageAdresses extends JFrame {
 
         btnSupprimerAdresse.addActionListener(e -> {
             if (adresse == null) {
-                JOptionPane.showMessageDialog(btnSupprimerAdresse, "Veuillez sélectionner une adresse");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner une adresse");
                 return;
             }
                     ///Supprime tous les adresses sélectionnées
@@ -313,14 +313,14 @@ public class PageAdresses extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerAdresse, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'adresse " + adresse.getIdAdresse() + " ?",
+                        int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'adresse " + adresse.getIdAdresse() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         if (i == 0) //user a dit oui
                         {
                             try {
                                 AdresseManager.getInstance().delete(adresse);
-                                JOptionPane.showMessageDialog(btnSupprimerAdresse, "Adresse " + adresse.getIdAdresse() + " supprimée");
+                                JOptionPane.showMessageDialog(null, "Adresse " + adresse.getIdAdresse() + " supprimée");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }

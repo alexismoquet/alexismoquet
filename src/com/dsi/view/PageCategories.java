@@ -203,7 +203,7 @@ public class PageCategories extends JFrame {
 //              tableauCategorie.setValueAt(idCategorieModifie, i, 1);
 
                 if (categorie == null) {
-                    JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner une categorie");
+                    JOptionPane.showMessageDialog(null, "Veuillez sélectionner une categorie");
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE SI BESOIN ***/
                     if (!categorie.getCategorie_libelle().equals(libelleCategorieModifie)) {
@@ -211,12 +211,12 @@ public class PageCategories extends JFrame {
 
                         int j;
                         if (verifSiAjout) {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                     verifSiAjout = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
@@ -240,7 +240,7 @@ public class PageCategories extends JFrame {
          */
         btnSupprimerCategorie.addActionListener(e -> {
             if (categorie == null) {
-                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Merci de sélectionner un categorie");
+                JOptionPane.showMessageDialog(null, "Merci de sélectionner un categorie");
                 return;
             }
                     ///Supprime tous les categories sélectionnées
@@ -252,13 +252,13 @@ public class PageCategories extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerCategorie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
+                        int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer la categorie " + categorie.getCategorie_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         if (i == 0) {//user a dit oui
                             try {
                                 CategorieManager.getInstance().delete(categorie);
-                                JOptionPane.showMessageDialog(btnSupprimerCategorie, "Categorie " + categorie.getCategorie_id() + " supprimée");
+                                JOptionPane.showMessageDialog(null, "Categorie " + categorie.getCategorie_id() + " supprimée");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -275,7 +275,7 @@ public class PageCategories extends JFrame {
         btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(e -> {
             if (categorie == null) {
-                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une categorie");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner une categorie");
             } else {
                 new PageMateriels(categorie);
             }

@@ -189,7 +189,7 @@ public class PageHubAdmin extends JFrame {
                         annonce.setAnnonce_materiel_id(annonceIdMaterielModifie);
                         annonce.setAnnonce_date_parution(annonceDateParutionModifie);
 
-                        int j = JOptionPane.showConfirmDialog(bEnregistrer, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
+                        int j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
