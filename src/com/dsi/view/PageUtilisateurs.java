@@ -243,7 +243,7 @@ public class PageUtilisateurs extends JFrame {
 //                tableauUtilisateurs.setValueAt(dateInscUtilisateurModifie, i, 6);
 
                 if (utilisateur == null) {
-                    JOptionPane.showMessageDialog(btnEnrModifUtil, "Veuillez sélectionner un utilisateur");
+                    JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
                 } else {
                     /* ENREGISTRE LES VALEURS DS LA BASE SI DIFFERENCE */
                     if (!utilisateur.getNom().equalsIgnoreCase(nomUtilisateurModifie) ||
@@ -264,19 +264,19 @@ public class PageUtilisateurs extends JFrame {
 
                         int j;
                         if (verifSiAjoutLigne) {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjoutLigne = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifUtil, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                 UtilisateurManager.getInstance().update(utilisateur);
-                                JOptionPane.showMessageDialog(btnEnrModifUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré");
+                                JOptionPane.showMessageDialog(null, "Utilisateur " + utilisateur.getIdUtilisateur() + " enregistré");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -306,7 +306,7 @@ public class PageUtilisateurs extends JFrame {
                     bllException.printStackTrace();
                 }
 
-                int i = JOptionPane.showConfirmDialog(btnSupprimerUtil, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
+                int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer l'utilisateur " + utilisateur.getIdUtilisateur() + " ?",
                         "Veuillez confirmer votre choix",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
 
@@ -330,7 +330,7 @@ public class PageUtilisateurs extends JFrame {
                 if (i == 0)  /*user a dit oui*/ {
                     try {
                         UtilisateurManager.getInstance().delete(utilisateur);
-                        JOptionPane.showMessageDialog(btnSupprimerUtil, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
+                        JOptionPane.showMessageDialog(null, "Utilisateur " + utilisateur.getIdUtilisateur() + " supprimé");
                         //   afficheJTableUtilisateurs();
 
                     } catch (BLLException ex) {
@@ -366,7 +366,7 @@ public class PageUtilisateurs extends JFrame {
         btnAnnonce.addActionListener(e -> {
             afficheJTableUtilisateurs();
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(btnAnnonce, "Veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
             } else {
                 new PageAnnonces(utilisateur);
             }
@@ -378,7 +378,7 @@ public class PageUtilisateurs extends JFrame {
       //  btnAdresses.setSize(100, 50);
         btnAdresses.addActionListener(e -> {
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(btnAdresses, "Veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
             } else {
                 new PageAdresses(utilisateur);
             }
@@ -390,7 +390,7 @@ public class PageUtilisateurs extends JFrame {
       //  btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(e -> {
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
             } else {
                 new PageMateriels(utilisateur);
             }
@@ -402,7 +402,7 @@ public class PageUtilisateurs extends JFrame {
       //  btnCommentaires.setSize(100, 50);
         btnCommentaires.addActionListener(e -> {
             if (utilisateur == null) {
-                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un utilisateur");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un utilisateur");
             } else {
                 new PageCommentaires(utilisateur);
             }

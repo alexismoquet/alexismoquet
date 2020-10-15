@@ -150,7 +150,7 @@ public class PageSports extends JFrame {
             blankSport = new Sport();
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            if (sports.size() >=1) {
+            if (sports.size() > 0) {
                 List<Sport> allSports = null;
                 try {
                     allSports = SportManager.getInstance().SelectAll();
@@ -175,7 +175,6 @@ public class PageSports extends JFrame {
             try {
                 SportManager.getInstance().insert(blankSport);
             //    JOptionPane.showMessageDialog(btnAjouterSport, "Sport ajouté");
-
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -218,19 +217,19 @@ public class PageSports extends JFrame {
 
                         int j;
                         if (verifSiAjout) {
-                           j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
+                           j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                     verifSiAjout = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {
                             try {
                                     SportManager.getInstance().update(sport);
-                                    JOptionPane.showMessageDialog(btnEnrModifs, "Sport " + sport.getSport_id() + " enregistré");
+                                    JOptionPane.showMessageDialog(null, "Sport " + sport.getSport_id() + " enregistré");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -246,7 +245,7 @@ public class PageSports extends JFrame {
          */
         btnSupprimerSport.addActionListener(e -> {
             if (sport == null) {
-                JOptionPane.showMessageDialog(btnSupprimerSport, "Merci de sélectionner un sport");
+                JOptionPane.showMessageDialog(null, "Merci de sélectionner un sport");
                 return;
             }
                     ///Supprime tous les sports sélectionnés
@@ -258,14 +257,14 @@ public class PageSports extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerSport, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
+                        int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sport " + sport.getSport_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         if (i == 0) //user a dit oui
                         {
                             try {
                                 SportManager.getInstance().delete(sport);
-                                JOptionPane.showMessageDialog(btnSupprimerSport, "Sport " + sport.getSport_id() + " supprimé");
+                                JOptionPane.showMessageDialog(null, "Sport " + sport.getSport_id() + " supprimé");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -281,7 +280,7 @@ public class PageSports extends JFrame {
         btnMateriels.setSize(100, 50);
         btnMateriels.addActionListener(e -> {
             if (sport == null) {
-                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner un sport");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un sport");
             } else {
                 new PageMateriels(sport);
             }

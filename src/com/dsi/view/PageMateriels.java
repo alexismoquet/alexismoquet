@@ -89,15 +89,15 @@ public class PageMateriels extends JFrame {
         initialiserComposants();
     }
 
-    /**
-     * Constructeur
-     *
-     * @param: annonce_materiel_id
-     */
-    public PageMateriels(int annonce_materiel_id) {
-        this.annonce_materiel_id = annonce_materiel_id;
-        initialiserComposants();
-    }
+//    /**
+//     * Constructeur
+//     *
+//     * @param: annonce_materiel_id
+//     */
+//    public PageMateriels(int annonce_materiel_id) {
+//        this.annonce_materiel_id = annonce_materiel_id;
+//        initialiserComposants();
+//    }
 
     /**
      * Méthode qui affiche les composants graphiques de la page
@@ -314,19 +314,19 @@ public class PageMateriels extends JFrame {
 
                     int j;
                     if (verifSiAjout) {
-                         j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "Êtes-vous sûr de vouloir enregistrer le matériel " + materiel.getMateriel_id() + " ?",
+                         j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le matériel " + materiel.getMateriel_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                 verifSiAjout = false;
                     } else {
-                        j = JOptionPane.showConfirmDialog(btnEnregistrerMateriel, "La modification est irréversible. Êtes-vous sûr de vouloir modifier le matériel " + materiel.getMateriel_id() + " ?",
+                        j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir modifier le matériel " + materiel.getMateriel_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                     }
                     if (j == 0)  /*user a dit oui*/ {
                         try {
                             MaterielManager.getInstance().update(materiel);
-                            JOptionPane.showMessageDialog(btnEnregistrerMateriel, "Matériel " + materiel.getMateriel_id() + " enregistré");
+                            JOptionPane.showMessageDialog(null, "Matériel " + materiel.getMateriel_id() + " enregistré");
                         } catch (BLLException ex) {
                             ex.printStackTrace();
                         }
@@ -341,7 +341,7 @@ public class PageMateriels extends JFrame {
          **/
         btnSupprimerMateriel.addActionListener(e -> {
             if (materiel == null) {
-                JOptionPane.showMessageDialog(btnSupprimerMateriel, "Merci de sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, "Merci de sélectionner un matériel");
                 return;
             }
                     ///Supprime tous les materiels sélectionnés
@@ -353,14 +353,14 @@ public class PageMateriels extends JFrame {
                         } catch (BLLException bllException) {
                             bllException.printStackTrace();
                         }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerMateriel, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel " + materiel.getMateriel_id() + " ?",
+                        int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le matériel " + materiel.getMateriel_id() + " ?",
                                 "Veuillez confirmer votre choix",
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         if (i == 0) //user a dit oui
                         {
                             try {
                                 MaterielManager.getInstance().delete(materiel);
-                                JOptionPane.showMessageDialog(btnSupprimerMateriel, "Matériel " + materiel.getMateriel_id() + " supprimé");
+                                JOptionPane.showMessageDialog(null, "Matériel " + materiel.getMateriel_id() + " supprimé");
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
@@ -391,7 +391,7 @@ public class PageMateriels extends JFrame {
         btnVisuels.setSize(100, 50);
         btnVisuels.addActionListener(e -> {
             if (materiel == null) {
-                JOptionPane.showMessageDialog(btnVisuels, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
             } else {
                 new PageVisuels(materiel);
             }
@@ -403,7 +403,7 @@ public class PageMateriels extends JFrame {
         btnSorties.setSize(100, 50);
         btnSorties.addActionListener(e -> {
             if (materiel == null) {
-                JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
             } else {
                 new PageSorties(materiel);
             }
@@ -415,7 +415,7 @@ public class PageMateriels extends JFrame {
         btnAnnonces.setSize(100, 50);
         btnAnnonces.addActionListener(e -> {
             if (materiel == null) {
-                JOptionPane.showMessageDialog(btnSorties, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
             } else {
                new PageAnnonces(materiel, utilisateur);
 

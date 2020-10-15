@@ -5,19 +5,15 @@ import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.SortieManager;
-import com.dsi.model.bll.SportManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static com.dsi.controller.Sorties.remplirJTableSortiesWithIdMateriel;
 import static com.dsi.controller.Sorties.remplirJTableWithAllSorties;
@@ -62,6 +58,7 @@ public class PageSorties extends JFrame {
 
     /**
      * Constructeur
+     *
      * @param: pMateriel
      */
     public PageSorties(Materiel pMateriel) {
@@ -166,59 +163,60 @@ public class PageSorties extends JFrame {
          */
         btnAjouterSortie.setSize(140, 50);
         btnAjouterSortie.addActionListener(e -> {
-            if(materiel != null && sorties.size() == 0){
+            if (materiel != null && sorties.size() == 0) {
 
-            verifSiAjout = true;
-            List<Sortie> allSorties = null;
-            try {
-                allSorties = SortieManager.getInstance().SelectAll();
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
+                verifSiAjout = true;
 
-            blankSortie = new Sortie();
-
-            //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
-
-            if (sortie != null) {
-                assert allSorties != null;
-                int idMax = allSorties.get(0).getSortie_id();
-
-                for (Sortie allSorty : allSorties) {
-                    int sortieId = allSorty.getSortie_id();
-                    if (sortieId > idMax) {
-                        idMax = sortieId;
-                    }
+                List<Sortie> allSorties = null;
+                try {
+                    allSorties = SortieManager.getInstance().SelectAll();
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
                 }
-                blankSortie.setSortie_id(idMax + 1);
-            } else {
-                blankSortie.setSortie_id(1);
-            }
 
-            blankSortie.setSortie_etat("");
-            blankSortie.setSortie_date_sortie(new Date());
-            blankSortie.setSortie_date_retour(new Date());
-            blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
-            
-            try {
-                SortieManager.getInstance().insert(blankSortie);
-                //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
-            } catch (BLLException bllException) {
-                bllException.printStackTrace();
-            }
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
+                blankSortie = new Sortie();
 
-            sorties.add(blankSortie);
-            TableModelSortie model = new TableModelSortie(sorties);
-            model.fireTableDataChanged();
-            tableauSortie.revalidate();
-            tableauSortie.setModel(model);
+                //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
 
-        blankSortie = null;
-        displayRightTable();
+                if (sortie != null) {
+                    assert allSorties != null;
+                    int idMax = allSorties.get(0).getSortie_id();
+
+                    for (Sortie allSorty : allSorties) {
+                        int sortieId = allSorty.getSortie_id();
+                        if (sortieId > idMax) {
+                            idMax = sortieId;
+                        }
+                    }
+                    blankSortie.setSortie_id(idMax + 1);
+                } else {
+                    blankSortie.setSortie_id(1);
+                }
+
+                blankSortie.setSortie_etat("");
+                blankSortie.setSortie_date_sortie(new Date());
+                blankSortie.setSortie_date_retour(new Date());
+                blankSortie.setSortie_materiel_id(materiel.getMateriel_id());
+
+                try {
+                    SortieManager.getInstance().insert(blankSortie);
+                    //   JOptionPane.showMessageDialog(btnAjouterSortie, "Sortie ajoutée");
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                sorties.add(blankSortie);
+                TableModelSortie model = new TableModelSortie(sorties);
+                model.fireTableDataChanged();
+                tableauSortie.revalidate();
+                tableauSortie.setModel(model);
+
+                blankSortie = null;
+                displayRightTable();
             }//fin if
-                else {
-                   JOptionPane.showMessageDialog(btnAjouterSortie, "Merci de saisir un nouveau matériel");
+            else {
+                JOptionPane.showMessageDialog(null, "Merci de saisir un nouveau matériel");
             }
         });
 
@@ -264,12 +262,12 @@ public class PageSorties extends JFrame {
                         sortie.setSortie_date_sortie(dateSortieSortieModifiee);
                         int j;
                         if (verifSiAjout) {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
-                            j = JOptionPane.showConfirmDialog(btnEnrModifs, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
+                            j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
                                     "Veuillez confirmer votre choix",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
@@ -292,32 +290,32 @@ public class PageSorties extends JFrame {
          */
         btnSupprimerSortie.addActionListener(e -> {
             if (sortie == null) {
-                JOptionPane.showMessageDialog(btnSupprimerSortie, "Merci de sélectionner un sortie");
+                JOptionPane.showMessageDialog(null, "Merci de sélectionner un sortie");
                 return;
             }
-                    ///Supprime tous les sorties sélectionnées
-                    int[] selection = tableauSortie.getSelectedRows();
-                    for (int j : selection) {
-                        sortie = sorties.get(j);
-                        try {
-                            sortie = SortieManager.getInstance().SelectById(sortie.getSortie_id());
-                        } catch (BLLException bllException) {
-                            bllException.printStackTrace();
-                        }
-                        int i = JOptionPane.showConfirmDialog(btnSupprimerSortie, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sortie " + sortie.getSortie_id() + " ?",
-                                "Veuillez confirmer votre choix",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
-                        if (i == 0) //user a dit oui
-                        {
-                            try {
-                                SortieManager.getInstance().delete(sortie);
-                                JOptionPane.showMessageDialog(btnSupprimerSortie, "Sortie " + sortie.getSortie_id() + " supprimée");
-                            } catch (BLLException ex) {
-                                ex.printStackTrace();
-                            }
-                           // tableauSortie.clearSelection();
-                        }
+            ///Supprime tous les sorties sélectionnées
+            int[] selection = tableauSortie.getSelectedRows();
+            for (int j : selection) {
+                sortie = sorties.get(j);
+                try {
+                    sortie = SortieManager.getInstance().SelectById(sortie.getSortie_id());
+                } catch (BLLException bllException) {
+                    bllException.printStackTrace();
+                }
+                int i = JOptionPane.showConfirmDialog(null, "La suppression est irréversible. Êtes-vous sûr de vouloir supprimer le sortie " + sortie.getSortie_id() + " ?",
+                        "Veuillez confirmer votre choix",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                if (i == 0) //user a dit oui
+                {
+                    try {
+                        SortieManager.getInstance().delete(sortie);
+                        JOptionPane.showMessageDialog(null, "Sortie " + sortie.getSortie_id() + " supprimée");
+                    } catch (BLLException ex) {
+                        ex.printStackTrace();
                     }
+                    // tableauSortie.clearSelection();
+                }
+            }
             displayRightTable();
         });
 
