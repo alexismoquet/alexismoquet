@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSortie;
+import com.dsi.controller.tableModels.TableModelSortie;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sortie;
 import com.dsi.model.bll.BLLException;
@@ -250,8 +250,8 @@ public class PageSorties extends JFrame {
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!sortie.getSortie_etat().equalsIgnoreCase(etatSortieModifie)
-                            || !(sortie.getSortie_id() == idSortieModifie)
-                            || !(sortie.getSortie_materiel_id() == idMaterielSortieModifie)
+                            || (sortie.getSortie_id() != idSortieModifie)
+                            || (sortie.getSortie_materiel_id() != idMaterielSortieModifie)
                             || !(sortie.getSortie_date_retour().equals(dateRetourSortieModifiee))
                             || !(sortie.getSortie_date_sortie().equals(dateSortieSortieModifiee))
                     ) {
@@ -260,15 +260,17 @@ public class PageSorties extends JFrame {
                         sortie.setSortie_materiel_id(idMaterielSortieModifie);
                         sortie.setSortie_date_retour(dateRetourSortieModifiee);
                         sortie.setSortie_date_sortie(dateSortieSortieModifiee);
+
                         int j;
+                        String confirmChoix = "Veuillez confirmer votre choix";
                         if (verifSiAjout) {
                             j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la sortie " + sortie.getSortie_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {

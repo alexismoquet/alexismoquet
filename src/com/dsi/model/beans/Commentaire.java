@@ -1,5 +1,6 @@
 package com.dsi.model.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @author Alexis Moquet
  * @since Créé le 24/02/2020
  */
-public class Commentaire {
+public class Commentaire implements Serializable {
 
     //#################
     //### Attributs ###

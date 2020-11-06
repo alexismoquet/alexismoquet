@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Sorties {
 
+    private Sorties() {
+    }
+
     public static List<Sortie> remplirJTableWithAllSorties()  throws BLLException {
         return SortieManager.getInstance().SelectAll();
     }

@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelCommentaire;
+import com.dsi.controller.tableModels.TableModelCommentaire;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.*;
 import javax.swing.*;
@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ import static com.dsi.controller.Commentaires.*;
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
  */
-public class PageCommentaires extends JFrame {
+public class PageCommentaires extends JFrame implements Serializable {
 
     private final JPanel panPrincipal = new JPanel();
     private final JPanel panHaut = new JPanel();
@@ -36,13 +37,14 @@ public class PageCommentaires extends JFrame {
     private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauCommentaire = new JTable();
-    List<Commentaire> commentaires = new ArrayList<>();
-    List <Commentaire> listRechercheCommentaires = new ArrayList<>();
+    private List<Commentaire> commentaires = new ArrayList<>();
+    private List <Commentaire> listRechercheCommentaires = new ArrayList<>();
 
-    Annonce annonce;
-    Utilisateur utilisateur;
-    Commentaire commentaire, blankCommentaire;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private Annonce annonce;
+    private Utilisateur utilisateur;
+    private Commentaire commentaire;
+    private Commentaire blankCommentaire;
+    private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     boolean verifSiAjout = false;
 
 
@@ -138,8 +140,8 @@ public class PageCommentaires extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Commentaire commentaire : commentaires) {
-                String cm = commentaire.getCommentaire_message().toLowerCase();
+            for (Commentaire commentaireee : commentaires) {
+                String cm = commentaireee.getCommentaire_message().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (cm.contains(recherche)) {
@@ -148,7 +150,7 @@ public class PageCommentaires extends JFrame {
                     tableauCommentaire.setModel(model);
                 }
             }
-            if (listRechercheCommentaires.size() == 0) {
+            if (listRechercheCommentaires.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucun commentaire trouvé contenant ce(s) mot(s)", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -206,7 +208,7 @@ public class PageCommentaires extends JFrame {
             blankCommentaire = new Commentaire();
             //////  On récupére la plus haute id du tableau pour assigner blankCommentaire à 1 au dessus ////////////////
 
-           if (commentaires.size() >= 1){
+           if (!(commentaires.isEmpty())){
                List<Commentaire>allCommentaires = null;
                try {
                    allCommentaires = CommentaireManager.getInstance().SelectAll();
@@ -296,9 +298,9 @@ public class PageCommentaires extends JFrame {
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE si une d'entre elles est différente ***/
                     if (commentaire.getCommentaire_note() != (commentaireNoteModifie) || !commentaire.getCommentaire_message().equalsIgnoreCase(commentaireMessageModifie)
-                            || !(commentaire.getCommentaire_id() == idCommentaireModifie)
-                            || !(commentaire.getCommentaire_annonce_id() == commentaireIdAnnonceModifie)
-                            || !(commentaire.getCommentaire_utilisateur_id() == commentaireIdUtilisateurModifie)
+                            || (commentaire.getCommentaire_id() != idCommentaireModifie)
+                            || (commentaire.getCommentaire_annonce_id() != commentaireIdAnnonceModifie)
+                            || (commentaire.getCommentaire_utilisateur_id() != commentaireIdUtilisateurModifie)
                             || !(commentaire.getCommentaire_date_parution().equals(dateParutionAnnonceModifie))
                     ) {
                         commentaire.setCommentaire_message(commentaireMessageModifie);
@@ -309,13 +311,14 @@ public class PageCommentaires extends JFrame {
                         commentaire.setCommentaire_date_parution(dateParutionAnnonceModifie);
 
                         int j;
+                        String confirmChoix = "Veuillez confirmer votre choix";
                         if (verifSiAjout) {
                             j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
-                                    "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    confirmChoix, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le commentaire " + commentaire.getCommentaire_id() + " ?",
-                                    "Veuillez confirmer votre choix", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
+                                    confirmChoix, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {
                             try {

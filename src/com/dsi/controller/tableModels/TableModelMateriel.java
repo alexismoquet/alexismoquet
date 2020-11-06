@@ -1,4 +1,4 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
 import com.dsi.model.beans.Materiel;
 import javax.swing.table.AbstractTableModel;

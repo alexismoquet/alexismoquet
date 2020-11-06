@@ -1,4 +1,4 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
 import com.dsi.model.beans.Materiel;
 
@@ -12,8 +12,6 @@ import java.awt.*;
  * @param: cheminImageVisuel
  */
 public class ImageCellRenderer extends DefaultTableCellRenderer {
-
-    public Materiel visuels;
 
     @Override
     public Component getTableCellRendererComponent(JTable table,

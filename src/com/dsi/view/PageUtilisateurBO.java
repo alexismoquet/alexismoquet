@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelUtilisateurBO;
+import com.dsi.controller.tableModels.TableModelUtilisateurBO;
 import com.dsi.librairies.Roles;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.bll.BLLException;

@@ -1,11 +1,9 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
-import com.dsi.librairies.FonctionsDate;
 import com.dsi.model.beans.Annonce;
 import javax.swing.table.AbstractTableModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

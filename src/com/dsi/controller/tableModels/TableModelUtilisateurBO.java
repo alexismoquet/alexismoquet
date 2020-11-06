@@ -1,4 +1,4 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
 import com.dsi.librairies.Roles;
 import com.dsi.model.beans.UtilisateurBo;

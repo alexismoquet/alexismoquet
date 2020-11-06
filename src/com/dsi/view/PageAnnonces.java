@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelAnnonce;
+import com.dsi.controller.tableModels.TableModelAnnonce;
 import com.dsi.model.beans.*;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;
@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.dsi.controller.Annonces.*;
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
  */
-public class PageAnnonces extends JFrame {
+public class PageAnnonces extends JFrame implements Serializable {
 
     private final JPanel panPrincipal = new JPanel();
     private final JPanel panHaut = new JPanel();
@@ -33,21 +34,21 @@ public class PageAnnonces extends JFrame {
     private final JButton btnSupprimerAnnonce = new JButton("Supprimer");
     private final JButton btnAnnuler = new JButton("Annuler");
     private final JButton btnCommentaires = new JButton("Commentaires");
-    //private final JButton btnMateriels = new JButton("Materiels");
 
     private final JTextField txtRechercher = new JTextField();
     private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauAnnonce = new JTable();
-    List<Annonce> annonces = new ArrayList<>();
+    private List<Annonce> annonces = new ArrayList<>();
 
-    List<Annonce> listRechercheAnnonces = new ArrayList<>();
-    Annonce annonce, blankAnnonce;
-    Materiel materiel;
-    Commentaire commentaire;
-    ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
-    Utilisateur utilisateur;
-    boolean verifSiAJout = false;
+    private List<Annonce> listRechercheAnnonces = new ArrayList<>();
+    private Annonce annonce;
+    private Annonce blankAnnonce;
+    private Materiel materiel;
+    private Commentaire commentaire;
+    private ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
+    private Utilisateur utilisateur;
+    private boolean verifSiAJout = false;
 
     /**
      * Constructeur par defaut
@@ -302,14 +303,15 @@ public class PageAnnonces extends JFrame {
                             annonce.setAnnonce_date_parution(annonceDateParutionModifie);
 
                             int j;
+                            String confirmChoix = "Veuillez confirmer votre choix";
                             if (verifSiAJout) {
                                 j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
-                                        "Veuillez confirmer votre choix",
+                                        confirmChoix,
                                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                 verifSiAJout = false;
                             } else {
                                 j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer l'annonce " + annonce.getAnnonce_id() + " ?",
-                                        "Veuillez confirmer votre choix",
+                                        confirmChoix,
                                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             }
 

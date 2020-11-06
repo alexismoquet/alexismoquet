@@ -1,7 +1,6 @@
 package com.dsi.model.beans;
 
-import com.sun.org.apache.xpath.internal.objects.XObject;
-
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.ListIterator;
  * @author Alexis Moquet
  * @since Créé le 24/02/2020
  */
-public class Materiel implements List<Materiel> {
+public class Materiel implements List<Materiel>, Serializable {
 
     //#################
     //### Attributs ###
@@ -268,7 +267,7 @@ public class Materiel implements List<Materiel> {
 
     @Override
     public void clear() {
-
+//pas utilisé
     }
 
     @Override

@@ -1,10 +1,11 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
 import com.dsi.model.beans.Sport;
 import javax.swing.table.AbstractTableModel;
+import java.io.Serializable;
 import java.util.List;
 
-public class TableModelSport extends AbstractTableModel {
+public class TableModelSport extends AbstractTableModel implements Serializable {
 
     private final String[] titres = {"Libellé sport","IdSport"};
 

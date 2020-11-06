@@ -1,11 +1,14 @@
 package com.dsi.model.beans;
+
+import java.io.Serializable;
+
 /**
  * Classe Annonce
  *
  * @author Alexis Moquet
  * @since Créé le 24/02/2020
  */
-public class Visuel {
+public class Visuel  implements Serializable {
 
     //#################
     //### Attributs ###
@@ -25,9 +28,9 @@ public class Visuel {
     }
     /**
      * Constructeur
-     * @param visuel_id
-     * @param visuel_materiel_id
-     * @param visuel_nom_fichier
+     * @param visuel_id : id du visuel
+     * @param visuel_materiel_id : idMateriel du visuel
+     * @param visuel_nom_fichier : nom du fichier image du visuel
      */
     public Visuel(int visuel_id, int visuel_materiel_id, String visuel_nom_fichier) {
         this.visuel_id = visuel_id;

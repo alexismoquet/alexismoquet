@@ -1,16 +1,15 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelCategorie;
+import com.dsi.controller.tableModels.TableModelCategorie;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.CategorieManager;
-import com.dsi.model.bll.SortieManager;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import static com.dsi.controller.Categories.remplirJTableWithAllCategories;
  * @author Alexis Moquet
  * @since Créé le 04/02/2020
  */
-public class PageCategories extends JFrame {
+public class PageCategories extends JFrame implements Serializable {
 
     private final JPanel panPrincipal = new JPanel();
     private final JPanel panHaut = new JPanel();
@@ -39,11 +38,12 @@ public class PageCategories extends JFrame {
     private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauCategorie = new JTable();
-    List<Categorie> categories = new ArrayList<>();
-    List<Categorie> listRechercheCategories = new ArrayList<>();
+    private List<Categorie> categories = new ArrayList<>();
+    private List<Categorie> listRechercheCategories = new ArrayList<>();
 
-    Categorie categorie, blankCategorie;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private Categorie categorie;
+    private Categorie blankCategorie;
+    private ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     boolean verifSiAjout = false;
     /**
      * Constructeur par defaut
@@ -97,7 +97,6 @@ public class PageCategories extends JFrame {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
             }
         });
@@ -113,17 +112,17 @@ public class PageCategories extends JFrame {
                 ex.printStackTrace();
             }
             /*ON PARCOURS LA LISTE DES CATEGORIES */
-            for (Categorie categorie : categories) {
-                String sp = categorie.getCategorie_libelle().toLowerCase();
+            for (Categorie categorieii : categories) {
+                String sp = categorieii.getCategorie_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (sp.startsWith(recherche)) {
-                    listRechercheCategories.add(categorie);
+                    listRechercheCategories.add(categorieii);
                     TableModelCategorie model = new TableModelCategorie(listRechercheCategories);
                     tableauCategorie.setModel(model);
                 }
             }
-            if (listRechercheCategories.size() == 0) {
+            if (listRechercheCategories.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucune categorie trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -147,7 +146,7 @@ public class PageCategories extends JFrame {
             blankCategorie = new Categorie();
 
             //////  On récupére la plus haute id du tableu pour assigner blankCategorie à 1 au dessus ////////////////
-            if (categories.size() >=1) {
+            if (!(categories.isEmpty())) {
                 List<Categorie> allCategories = null;
                 try {
                     allCategories = CategorieManager.getInstance().SelectAll();
@@ -157,8 +156,8 @@ public class PageCategories extends JFrame {
                 assert allCategories != null;
                 int idMax = allCategories.get(0).getCategorie_id();
 
-                for (Categorie categorie : allCategories) {
-                    int categorieId = categorie.getCategorie_id();
+                for (Categorie categorieee : allCategories) {
+                    int categorieId = categorieee.getCategorie_id();
                     if (categorieId > idMax) {
                         idMax = categorieId;
                     }
@@ -210,14 +209,15 @@ public class PageCategories extends JFrame {
                         categorie.setCategorie_libelle(libelleCategorieModifie);
 
                         int j;
+                        String confirmChoix = "Veuillez confirmer votre choix";
                         if (verifSiAjout) {
                             j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                     verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer la catégorie " + categorie.getCategorie_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
 
@@ -290,7 +290,6 @@ public class PageCategories extends JFrame {
                 int idCategorie = (int) tableauCategorie.getValueAt(tableauCategorie.getSelectedRow(), 1);
                 try {
                     categorie = CategorieManager.getInstance().SelectById(idCategorie);
-                    //gene pour double-clics sur cellule du tableauCategorie   //   JOptionPane.showMessageDialog(null, "Le categorie " + idCategorie + " est sélectionnée");
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }

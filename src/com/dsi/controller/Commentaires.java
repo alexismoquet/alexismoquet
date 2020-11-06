@@ -7,6 +7,9 @@ import com.dsi.model.bll.CommentaireManager;
 import java.util.List;
 
 public class Commentaires {
+    private Commentaires() {
+    }
+
     public static List<Commentaire> remplirJTableWithCommentaires() throws BLLException {
         return CommentaireManager.getInstance().SelectAll();
     }
