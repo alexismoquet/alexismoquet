@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelSport;
+import com.dsi.controller.tableModels.TableModelSport;
 import com.dsi.model.beans.Sport;
 import com.dsi.model.bll.*;
 import javax.swing.*;
@@ -216,14 +216,15 @@ public class PageSports extends JFrame {
                         sport.setSport_id(idSportModifie);
 
                         int j;
+                        String confirmChoix = "Veuillez confirmer votre choix";
                         if (verifSiAjout) {
                            j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                   confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                     verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le sport " + sport.getSport_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {

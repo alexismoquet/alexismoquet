@@ -6,6 +6,9 @@ import com.dsi.model.bll.MaterielManager;
 import java.util.List;
 
 public class Materiels {
+    private Materiels() {
+    }
+
     public static List<Materiel> remplirJTableWithMaterielsIdSport(int idSport) throws BLLException {
         return MaterielManager.getInstance().SelectByIdSport(idSport);
     }

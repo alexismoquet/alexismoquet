@@ -1,6 +1,6 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.TableModelAnnonce;
+import com.dsi.controller.tableModels.TableModelAnnonce;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.bll.AnnonceManager;
 import com.dsi.model.bll.BLLException;

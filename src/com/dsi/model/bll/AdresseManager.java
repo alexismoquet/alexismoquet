@@ -1,7 +1,6 @@
 package com.dsi.model.bll;
 
 import com.dsi.model.beans.Adresse;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Adresse;
 import com.dsi.model.dal.DAO_Factory;

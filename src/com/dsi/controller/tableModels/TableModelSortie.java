@@ -1,15 +1,15 @@
-package com.dsi.controller.tableModel;
+package com.dsi.controller.tableModels;
 
 import com.dsi.model.beans.Sortie;
 import javax.swing.table.AbstractTableModel;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 
-public class TableModelSortie extends AbstractTableModel {
+public class TableModelSortie extends AbstractTableModel implements Serializable {
 
     private final String[] titres = {"Date retour","Date sortie", "Etat sortie", "IdMatériel", "IdSortie"};
 
@@ -28,6 +28,7 @@ public class TableModelSortie extends AbstractTableModel {
         return titres.length;
     }
 
+    @Override
     public String getColumnName(int column) {
         return titres[column];
     }

@@ -4,8 +4,6 @@ import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.bll.BLLException;
 import com.dsi.model.bll.UtilisateurBoManager;
-import com.dsi.view.PageConnexionBO;
-import javax.swing.*;
 
 public class BOConnexion {
 

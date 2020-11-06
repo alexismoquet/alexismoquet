@@ -1,17 +1,14 @@
 package com.dsi.view;
 
-import com.dsi.controller.tableModel.ImageCellRenderer;
-import com.dsi.controller.tableModel.TableModelAnnonce;
-import com.dsi.controller.tableModel.TableModelVisuel;
+import com.dsi.controller.tableModels.ImageCellRenderer;
+import com.dsi.controller.tableModels.TableModelVisuel;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Visuel;
 import com.dsi.model.bll.BLLException;
-import com.dsi.model.bll.UtilisateurManager;
 import com.dsi.model.bll.VisuelManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -44,11 +41,11 @@ public class PageVisuels extends JFrame {
     private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauVisuel = new JTable();
-    List<Visuel> visuels = new ArrayList<>();
-    List<Visuel> listRechercheVisuels = new ArrayList<>();
-    Visuel visuel, blankVisuel;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-    Materiel materiel;
+    private List<Visuel> visuels = new ArrayList<>();
+    private List<Visuel> listRechercheVisuels = new ArrayList<>();
+    private Visuel visuel, blankVisuel;
+    private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private Materiel materiel;
     boolean verifSiAjout = false;
 
     /**
@@ -116,7 +113,6 @@ public class PageVisuels extends JFrame {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
             }
         });
@@ -128,17 +124,17 @@ public class PageVisuels extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Visuel visuel : visuels) {
-                String sp = visuel.getVisuel_nom_fichier().toLowerCase();
+            for (Visuel visuelRech : visuels) {
+                String sp = visuelRech.getVisuel_nom_fichier().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (sp.contains(recherche)) {
-                    listRechercheVisuels.add(visuel);
+                    listRechercheVisuels.add(visuelRech);
                     TableModelVisuel model = new TableModelVisuel(listRechercheVisuels);
                     tableauVisuel.setModel(model);
                 }
             }
-            if (listRechercheVisuels.size() == 0) {
+            if (listRechercheVisuels.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucun visuel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -203,7 +199,7 @@ public class PageVisuels extends JFrame {
             blankVisuel = new Visuel();
 
             //////  On récupére la plus haute id du tableu pour assigner blankSortie à 1 au dessus ////////////////
-            if (visuels.size() >0) {
+            if (!(visuels.isEmpty())) {
                 List<Visuel> allVisuels = null;
                 try {
                     allVisuels = VisuelManager.getInstance().SelectAll();
@@ -277,14 +273,15 @@ public class PageVisuels extends JFrame {
                         visuel.setVisuel_materiel_id(idMaterielVisuelModifie);
 
                         int j;
+                        String confirmChoix = "Veuillez confirmer votre choix";
                         if (verifSiAjout) {
                             j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                             verifSiAjout = false;
                         } else {
                             j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir enregistrer le visuel " + visuel.getVisuel_id() + " ?",
-                                    "Veuillez confirmer votre choix",
+                                    confirmChoix,
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                         }
                         if (j == 0)  /*user a dit oui*/ {

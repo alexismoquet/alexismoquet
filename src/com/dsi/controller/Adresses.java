@@ -7,6 +7,9 @@ import com.dsi.model.bll.BLLException;
 import java.util.List;
 
 public class Adresses {
+
+    private Adresses(){}
+
     public static List<Adresse> remplirJTableWithAdressesIdUser(int idUtilisateur) throws BLLException {
         return AdresseManager.getInstance().SelectByIdUtilisateur(idUtilisateur);
     }

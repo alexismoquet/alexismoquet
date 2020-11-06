@@ -6,8 +6,10 @@ import com.dsi.model.bll.BLLException;
 import java.util.List;
 
 public class Annonces {
+    private Annonces() {
+    }
 
-     public static List<Annonce> remplirJTableWithAnnoncesIdUser(int idUtilisateur) throws BLLException {
+    public static List<Annonce> remplirJTableWithAnnoncesIdUser(int idUtilisateur) throws BLLException {
         return AnnonceManager.getInstance().SelectByIdUtilisateur(idUtilisateur);
     }
 

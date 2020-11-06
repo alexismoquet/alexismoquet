@@ -7,6 +7,9 @@ import java.util.List;
 
 public class Utilisateurs {
 
+    private Utilisateurs() {
+    }
+
     public static List <Utilisateur> remplirJTableWithAllUtilisateurs() throws BLLException {
         return UtilisateurManager.getInstance().SelectAll();
     }

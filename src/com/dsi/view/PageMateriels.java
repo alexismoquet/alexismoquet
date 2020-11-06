@@ -1,7 +1,7 @@
 package com.dsi.view;
 
 
-import com.dsi.controller.tableModel.TableModelMateriel;
+import com.dsi.controller.tableModels.TableModelMateriel;
 import com.dsi.model.beans.Categorie;
 import com.dsi.model.beans.Materiel;
 import com.dsi.model.beans.Sport;
@@ -36,16 +36,19 @@ public class PageMateriels extends JFrame {
 
     private final JTextField txtRechercher = new JTextField();
     private final JTable tableauMateriel = new JTable();
-    List<Materiel> materiels = new ArrayList<>();
-    List<Materiel> listRechercheMateriels = new ArrayList<>();
+    private List<Materiel> materiels = new ArrayList<>();
+    private List<Materiel> listRechercheMateriels = new ArrayList<>();
 
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
-    Categorie categorie;
-    Sport sport;
-    Utilisateur utilisateur;
-    Materiel materiel, blankMateriel;
-    Integer annonce_materiel_id;
-    boolean verifSiAjout = false;
+    private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private Categorie categorie;
+    private Sport sport;
+    private Utilisateur utilisateur;
+    private Materiel materiel;
+    private Materiel blankMateriel;
+
+    private Integer annonce_materiel_id;
+    private boolean verifSiAjout = false;
+    private final String selectMateriel = "Veuillez sélectionner un matériel";
 
 
     /**
@@ -62,7 +65,7 @@ public class PageMateriels extends JFrame {
      */
     public PageMateriels(Utilisateur pUtilisateur) {
         this.utilisateur = pUtilisateur;
-        if (utilisateur.getAdresses().size() == 0) {
+        if (utilisateur.getAdresses().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Merci de créer une adresse");
             return;
         }
@@ -159,7 +162,6 @@ public class PageMateriels extends JFrame {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
             }
         });
@@ -174,18 +176,18 @@ public class PageMateriels extends JFrame {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Materiel materiel : materiels) {
-                String nomMateriel = materiel.getMateriel_nom().toLowerCase();
-                String descriptionMateriel = materiel.getMateriel_description().toLowerCase();
+            for (Materiel materiell : materiels) {
+                String nomMateriel = materiell.getMateriel_nom().toLowerCase();
+                String descriptionMateriel = materiell.getMateriel_description().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (nomMateriel.contains(recherche) || descriptionMateriel.contains(recherche)) {
-                    listRechercheMateriels.add(materiel);
+                    listRechercheMateriels.add(materiell);
                     TableModelMateriel model = new TableModelMateriel(listRechercheMateriels);
                     tableauMateriel.setModel(model);
                 }
             }
-            if (listRechercheMateriels.size() == 0) {
+            if (listRechercheMateriels.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucun materiel trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -313,14 +315,15 @@ public class PageMateriels extends JFrame {
                     materiel.setMateriel_caution_prix(cautionPrixMaterielModifie);
 
                     int j;
+                    String confirmChoix = "Veuillez confirmer votre choix";
                     if (verifSiAjout) {
                          j = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir enregistrer le matériel " + materiel.getMateriel_id() + " ?",
-                                "Veuillez confirmer votre choix",
+                                 confirmChoix,
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                                 verifSiAjout = false;
                     } else {
                         j = JOptionPane.showConfirmDialog(null, "La modification est irréversible. Êtes-vous sûr de vouloir modifier le matériel " + materiel.getMateriel_id() + " ?",
-                                "Veuillez confirmer votre choix",
+                                confirmChoix,
                                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icone);
                     }
                     if (j == 0)  /*user a dit oui*/ {
@@ -390,8 +393,9 @@ public class PageMateriels extends JFrame {
          */
         btnVisuels.setSize(100, 50);
         btnVisuels.addActionListener(e -> {
+
             if (materiel == null) {
-                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, selectMateriel);
             } else {
                 new PageVisuels(materiel);
             }
@@ -402,8 +406,9 @@ public class PageMateriels extends JFrame {
          */
         btnSorties.setSize(100, 50);
         btnSorties.addActionListener(e -> {
+
             if (materiel == null) {
-                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, selectMateriel);
             } else {
                 new PageSorties(materiel);
             }
@@ -415,10 +420,9 @@ public class PageMateriels extends JFrame {
         btnAnnonces.setSize(100, 50);
         btnAnnonces.addActionListener(e -> {
             if (materiel == null) {
-                JOptionPane.showMessageDialog(null, "Veuillez sélectionner un matériel");
+                JOptionPane.showMessageDialog(null, selectMateriel);
             } else {
                new PageAnnonces(materiel, utilisateur);
-
             }
         });
 
@@ -439,7 +443,7 @@ public class PageMateriels extends JFrame {
     } //fin afficheJTable
 
     /**
-     * Méthode qui affiche les materiel de
+     * Méthode qui affiche les materiels de
      * la catégorie sélectionnée
      */
     private void afficheJTableMaterielsWithIdCategorie() {
@@ -453,7 +457,7 @@ public class PageMateriels extends JFrame {
     } //fin afficheJTable
 
     /**
-     * Méthode qui affiche une list les materiels des
+     * Méthode qui affiche une liste des materiels des
      * adresses de l'utilisateur sélectionné
      */
     private void afficheJTableMaterielsWithIdAdresse() {
@@ -471,19 +475,6 @@ public class PageMateriels extends JFrame {
         }
     } //fin afficheJTable
 
-//    /**
-//     * Méthode qui affiche 1 materiel
-//     */
-//    private void afficheJTableWithIdMateriel() {
-//        try {
-//            materiels = remplirJTableWithIdMateriels(annonce_materiel_id);
-//            TableModelMateriel model = new TableModelMateriel(materiels);
-//            tableauMateriel.setModel(model);
-//
-//        } catch (BLLException ex) {
-//            ex.printStackTrace();
-//        }
-//    } //fin afficheJTable
 
     /**
      * Méthode qui affiche tous les materiels
@@ -497,9 +488,9 @@ public class PageMateriels extends JFrame {
         } catch (BLLException ex) {
             ex.printStackTrace();
         }
-    } //fin afficheJTable /**
+    } //fin afficheJTable
 
-    /*
+    /**
      * Méthode qui affiche tous les materiels
      */
     private void afficheJTableWithAnnonceIdMateriels() {
