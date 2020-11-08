@@ -4,17 +4,12 @@ import com.dsi.model.beans.Sortie;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sortie;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class SortieManager implements  Manager<Sortie> {
 
     private static SortieManager instance = null;
-
     private DAO_Sortie dao = null;
-    private Sortie sortie;
-    private List<Sortie> sorties;
 
     /**
      * Constructeur
@@ -65,7 +60,7 @@ public class SortieManager implements  Manager<Sortie> {
 
     @Override
     public List<Sortie> SelectAll() throws BLLException {
-        sorties = new ArrayList<>();
+        List<Sortie> sorties;
         try {
             sorties = dao.selectAll();
         } catch (DALException e) {
@@ -77,7 +72,7 @@ public class SortieManager implements  Manager<Sortie> {
 
     @Override
     public Sortie SelectById(int pId) throws BLLException {
-        sortie = null;
+        Sortie sortie = null;
 
         try {
             sortie = dao.selectById(pId);
@@ -90,7 +85,7 @@ public class SortieManager implements  Manager<Sortie> {
 
 
     public List<Sortie> SelectByIdMateriel(int pId) throws BLLException {
-        sorties =null;
+        List<Sortie> sorties;
 
         try {
             sorties = dao.selectByIdMateriel(pId);

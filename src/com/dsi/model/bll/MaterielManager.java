@@ -20,7 +20,6 @@ public class MaterielManager implements  Manager<Materiel> {
 
     private DAO_Materiel dao;
     private List<Materiel> materiel;
-    private List<Materiel> materiels;
 
     /**
      * Constructeur
@@ -67,7 +66,7 @@ public class MaterielManager implements  Manager<Materiel> {
 
     @Override
     public List<Materiel> SelectAll() throws BLLException {
-        materiels = new ArrayList<>();
+        List<Materiel> materiels;
         try {
             materiels = dao.selectAll();
         } catch (DALException e) {

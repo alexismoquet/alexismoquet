@@ -5,15 +5,12 @@ import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SportManager implements Manager<Sport> {
 
     private static SportManager instance = null;
     private DAO_Sport dao = null;
-    private Sport sport;
-    private List<Sport> sports;
 
     /**
      * Constructeur
@@ -61,7 +58,7 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public List<Sport> SelectAll() throws BLLException {
-        sports = new ArrayList<>();
+        List <Sport> sports;
         try {
             sports = dao.selectAll();
         } catch (DALException e) {
@@ -73,7 +70,7 @@ public class SportManager implements Manager<Sport> {
 
     @Override
     public Sport SelectById(int pId) throws BLLException {
-        sport = null;
+        Sport sport = null;
 
         try {
             sport = dao.selectById(pId);
