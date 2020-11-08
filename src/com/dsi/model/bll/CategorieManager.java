@@ -16,10 +16,7 @@ import java.util.List;
 public class CategorieManager implements Manager<Categorie> {
 
     private static CategorieManager instance = null;
-
-    private DAO_Categorie dao = null;
-    private Categorie categorie;
-    private List<Categorie> categories;
+    private final DAO_Categorie dao;
 
     /**
      * Constructeur
@@ -67,6 +64,7 @@ public class CategorieManager implements Manager<Categorie> {
 
     @Override
     public List<Categorie> SelectAll() throws BLLException {
+        List<Categorie> categories;
         try {
             categories = dao.selectAll();
         } catch (DALException e) {
@@ -78,7 +76,7 @@ public class CategorieManager implements Manager<Categorie> {
 
     @Override
     public Categorie SelectById(int pId) throws BLLException {
-        categorie = null;
+        Categorie categorie ;
 
         try {
             categorie = dao.selectById(pId);

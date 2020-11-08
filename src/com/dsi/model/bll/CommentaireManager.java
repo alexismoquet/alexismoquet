@@ -4,9 +4,6 @@ import com.dsi.model.beans.Commentaire;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Commentaire;
 import com.dsi.model.dal.DAO_Factory;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,10 +15,7 @@ import java.util.List;
 public class CommentaireManager implements Manager<Commentaire> {
 
     private static CommentaireManager instance = null;
-
     private DAO_Commentaire dao = null;
-    private Commentaire commentaire;
-    private List<Commentaire> commentaires;
 
     /**
      * Constructeur
@@ -69,7 +63,7 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public List<Commentaire> SelectAll() throws BLLException {
-        commentaires = new ArrayList<>();
+        List <Commentaire> commentaires;
 
         try {
             commentaires = dao.selectAll();
@@ -82,7 +76,7 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public Commentaire SelectById(int pId) throws BLLException {
-        commentaire = null;
+        Commentaire commentaire;
 
         try {
             commentaire = dao.selectById(pId);
@@ -95,7 +89,7 @@ public class CommentaireManager implements Manager<Commentaire> {
 
 
     public List <Commentaire> SelectByIdAnnonce(int pId) throws BLLException {
-        commentaires = null;
+        List <Commentaire> commentaires;
 
         try {
             commentaires = dao.selectByIdAnnonce(pId);
@@ -107,7 +101,7 @@ public class CommentaireManager implements Manager<Commentaire> {
     }
 
     public List <Commentaire> SelectByIdUtilisateur(int pId) throws BLLException {
-        commentaires = null;
+        List <Commentaire> commentaires;
 
         try {
             commentaires = dao.selectByIdUtilisateur(pId);

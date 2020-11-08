@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.awt.BorderLayout.SOUTH;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 /**
  * Class HubAdmin
@@ -41,10 +42,10 @@ public class PageHubAdmin extends JFrame {
     private final JTable tableauAnomalies = new JTable();
     private final JLabel anomaliesASurveiller = new JLabel();
 
-    List<Annonce> listAnomalies = new ArrayList<>();
-    List<Annonce> annonces;
-    Annonce annonce;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private List<Annonce> listAnomalies = new ArrayList<>();
+    private List<Annonce> annonces;
+    private Annonce annonce;
+    private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
     /**
      * Constructeur par defaut
@@ -62,7 +63,7 @@ public class PageHubAdmin extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
         setSize(1000, 600);
         setLocation(200, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(true);
         setVisible(true);
 
@@ -171,12 +172,6 @@ public class PageHubAdmin extends JFrame {
                 int annonceIdUtilisateurModifie = (int) tableauAnomalies.getValueAt(i, 2);
                 int annonceIdMaterielModifie = (int) tableauAnomalies.getValueAt(i, 4);
                 Date annonceDateParutionModifie = (Date) tableauAnomalies.getValueAt(i, 5);
-
-//                    tableauAnomalies.setValueAt(titreAnnonceModifie, i, 0);
-//                    tableauAnomalies.setValueAt(descriptionAnnonceModifie, i, 1);
-//                    tableauAnomalies.setValueAt(annonceIdUtilisateurModifie, i, 2);
-//                    tableauAnomalies.setValueAt(annonceIdMaterielModifie, i, 4);
-//                    tableauAnomalies.setValueAt(annonceDateParutionModifie, i, 5);
 
 
                 /* ENREGISTRER LES VALEURS DS LA BASE */
