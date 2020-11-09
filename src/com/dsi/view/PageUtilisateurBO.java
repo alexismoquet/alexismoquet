@@ -72,7 +72,7 @@ public class PageUtilisateurBO extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 100));
+        panHaut.setPreferredSize(new Dimension(900, 75));
         panHaut.setLayout(new BorderLayout());
         txtRechercher.setText(" Rechercher par login ");
         panHaut.add(txtRechercher, BorderLayout.CENTER);
@@ -133,7 +133,6 @@ public class PageUtilisateurBO extends JFrame {
             }
             for (UtilisateurBo utilisateurBo : utilisateurBoList) {
                 String login = utilisateurBo.getLogin().toLowerCase();
-
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (login.contains(recherche)) {

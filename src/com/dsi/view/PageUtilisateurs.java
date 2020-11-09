@@ -77,9 +77,7 @@ public class PageUtilisateurs extends JFrame {
         panHaut.setPreferredSize(new Dimension(900, 75));
         panHaut.setLayout(new BorderLayout());
         panHaut.add(txtRechercher, BorderLayout.CENTER);
-        txtRechercher.setSize(100, 35);
         panHaut.add(btnRechercher, BorderLayout.NORTH);
-        btnRechercher.setSize(100, 20);
 
         panHaut.add(new JLabel("   Attention, si changement du mot de passe," +
          " veuillez créer un nouvel utilisateur  "), BorderLayout.SOUTH);
@@ -128,10 +126,11 @@ public class PageUtilisateurs extends JFrame {
                 ex.printStackTrace();
             }
             for (Utilisateur utilisateurRech : utilisateurs) {
-                String user = utilisateurRech.getNom().toLowerCase();
+                String nom = utilisateurRech.getNom().toLowerCase();
+                String prenom = utilisateurRech.getPrenom().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (user.contains(recherche)) {
+                if (nom.contains(recherche) || prenom.contains(recherche)) {
                     listRechercheUtilisateurs.add(utilisateurRech);
                     TableModelUtilisateur model;
                     model = new TableModelUtilisateur(listRechercheUtilisateurs);
@@ -404,13 +403,12 @@ public class PageUtilisateurs extends JFrame {
             TableModelUtilisateur model = new TableModelUtilisateur(utilisateurs);
             tableauUtilisateurs.setModel(model);
 
-            if (!verifSiAjoutLigne) {
+
                 /////Vérifie si il y a au moins une adresse pour un utilisateur
                 for (Utilisateur utilisateurrr : utilisateurs) {
                     if (utilisateurrr.getAdresses().isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateurrr.getIdUtilisateur());
                     }
-                }
             }
         } catch (BLLException ex) {
             ex.printStackTrace();

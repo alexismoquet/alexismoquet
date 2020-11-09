@@ -68,8 +68,8 @@ public class PageSports extends JFrame {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 100));
-        txtRechercher.setText(" Rechercher par nom ");
+        panHaut.setPreferredSize(new Dimension(900, 75));
+        txtRechercher.setText(" Rechercher par nom    ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
 

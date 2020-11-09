@@ -92,7 +92,7 @@ public class PageCommentaires extends JFrame implements Serializable {
         panPrincipal.add(panCentre, BorderLayout.CENTER);
         panPrincipal.add(panBas, BorderLayout.SOUTH);
 
-        panHaut.setPreferredSize(new Dimension(900, 100));
+        panHaut.setPreferredSize(new Dimension(900, 75));
         txtRechercher.setText(" Rechercher par mot(s) clé(s) ");
         panHaut.add(txtRechercher);
         panHaut.add(btnRechercher);
@@ -140,12 +140,12 @@ public class PageCommentaires extends JFrame implements Serializable {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Commentaire commentaireee : commentaires) {
-                String cm = commentaireee.getCommentaire_message().toLowerCase();
+            for (Commentaire commentaireRech : commentaires) {
+                String messComm = commentaireRech.getCommentaire_message().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
-                if (cm.contains(recherche)) {
-                    listRechercheCommentaires.add(commentaire);
+                if (messComm.contains(recherche)) {
+                    listRechercheCommentaires.add(commentaireRech);
                     TableModelCommentaire model = new TableModelCommentaire(listRechercheCommentaires);
                     tableauCommentaire.setModel(model);
                 }
