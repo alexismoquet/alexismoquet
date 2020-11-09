@@ -170,7 +170,6 @@ public class PageCategories extends JFrame implements Serializable {
 
             try {
                 CategorieManager.getInstance().insert(blankCategorie);
-                //      JOptionPane.showMessageDialog(btnAjouterCategorie, "Catégorie ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -199,7 +198,6 @@ public class PageCategories extends JFrame implements Serializable {
                 String libelleCategorieModifie = String.valueOf(tableauCategorie.getValueAt(i, 0));
 
                 tableauCategorie.setValueAt(libelleCategorieModifie, i, 0);
-//              tableauCategorie.setValueAt(idCategorieModifie, i, 1);
 
                 if (categorie == null) {
                     JOptionPane.showMessageDialog(null, "Veuillez sélectionner une categorie");

@@ -214,7 +214,6 @@ public class PageCommentaires extends JFrame implements Serializable {
                    allCommentaires = CommentaireManager.getInstance().SelectAll();
                } catch (BLLException bllException) {
                    bllException.printStackTrace();
-//                return;
                }
             assert allCommentaires != null;
             int idMax = allCommentaires.get(0).getCommentaire_id();
@@ -287,11 +286,6 @@ public class PageCommentaires extends JFrame implements Serializable {
                     JOptionPane.showMessageDialog(null, "Merci de corriger les champs IidUtilisateur et/ou IdAnnonce");
                     return;
                 }
-//                tableauCommentaire.setValueAt(commentaireMessageModifie, i,0);
-//                tableauCommentaire.setValueAt(commentaireNoteModifie, i,2);
-//                tableauCommentaire.setValueAt(idCommentaireModifie, i,3);
-//                tableauCommentaire.setValueAt(commentaireIdUtilisateurModifie, i,4);
-//                tableauCommentaire.setValueAt(commentaireIdAnnonceModifie, i,5);
 
                 if (commentaire == null) {
                     return;
@@ -341,7 +335,6 @@ public class PageCommentaires extends JFrame implements Serializable {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int id = (int) tableauCommentaire.getValueAt(tableauCommentaire.getSelectedRow(), 3);
-            //    JOptionPane.showMessageDialog(null, "Le commentaire " + id + " est sélectionné");
                 try {
                     commentaire = CommentaireManager.getInstance().SelectById(id);
                 } catch (BLLException ex) {

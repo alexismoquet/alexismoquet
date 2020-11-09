@@ -35,11 +35,12 @@ public class PageSports extends JFrame {
     private final JButton btnRechercher = new JButton("Rechercher");
 
     private final JTable tableauSport = new JTable();
-    List<Sport> sports = new ArrayList<>();
-    List<Sport> listRechercheSports = new ArrayList<>();
+    private List<Sport> sports = new ArrayList<>();
+    private List<Sport> listRechercheSports = new ArrayList<>();
 
-    Sport sport, blankSport;
-    ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
+    private Sport sport;
+    private Sport blankSport;
+    private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
     boolean verifSiAjout = false;
 
     /**
@@ -98,9 +99,7 @@ public class PageSports extends JFrame {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
-                //       txtRechercher.removeMouseListener(this);
             }
         });
 
@@ -116,17 +115,17 @@ public class PageSports extends JFrame {
                 ex.printStackTrace();
             }
             /*ON PARCOURS LA LISTE DES SPORTS **/
-            for (Sport sport : sports) {
-                String sp = sport.getSport_libelle().toLowerCase();
+            for (Sport sportRech : sports) {
+                String sp = sportRech.getSport_libelle().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (sp.startsWith(recherche)) {
-                    listRechercheSports.add(sport);
+                    listRechercheSports.add(sportRech);
                     TableModelSport model = new TableModelSport(listRechercheSports);
                     tableauSport.setModel(model);
                 }
             }
-            if (listRechercheSports.size() == 0) {
+            if (listRechercheSports.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucun sport trouvé", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -150,7 +149,7 @@ public class PageSports extends JFrame {
             blankSport = new Sport();
 
             //////  On récupére la plus haute id du tableu pour assigner blankSport à 1 au dessus ////////////////
-            if (sports.size() > 0) {
+            if (!(sports.isEmpty())) {
                 List<Sport> allSports = null;
                 try {
                     allSports = SportManager.getInstance().SelectAll();
@@ -174,7 +173,6 @@ public class PageSports extends JFrame {
 
             try {
                 SportManager.getInstance().insert(blankSport);
-            //    JOptionPane.showMessageDialog(btnAjouterSport, "Sport ajouté");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
             }
@@ -208,10 +206,9 @@ public class PageSports extends JFrame {
 
                 if (sport == null) {
                     return;
-                    //JOptionPane.showMessageDialog(btnEnrModifs, "Veuillez sélectionner un sport");
                 } else {
                     /* ENREGISTRER LES VALEURS DS LA BASE ***/
-                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) || !(sport.getSport_id() == idSportModifie)) {
+                    if (!sport.getSport_libelle().equalsIgnoreCase(libelleSportModifie) || (sport.getSport_id() != idSportModifie)) {
                         sport.setSport_libelle(libelleSportModifie);
                         sport.setSport_id(idSportModifie);
 
@@ -269,7 +266,6 @@ public class PageSports extends JFrame {
                             } catch (BLLException ex) {
                                 ex.printStackTrace();
                             }
-                        //    tableauSport.clearSelection();
                         }
                     }//fin for
             afficheJTableSports();

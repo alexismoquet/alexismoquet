@@ -46,7 +46,7 @@ public class PageAnnonces extends JFrame implements Serializable {
     private Annonce blankAnnonce;
     private Materiel materiel;
     private Commentaire commentaire;
-    private ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
+    private final ImageIcon icone = new ImageIcon ("LogoIconeDSI.png");
     private Utilisateur utilisateur;
     private boolean verifSiAJout = false;
 
@@ -120,10 +120,6 @@ public class PageAnnonces extends JFrame implements Serializable {
         panBas.add(btnAnnuler);
         panBas.add(btnCommentaires);
 
-//        if (materiel != null) {
-//            panBas.add(btnMateriels);
-//        }
-
         tableauAnnonce.setAutoCreateRowSorter(true);
 
         diplayRightTable();
@@ -136,7 +132,6 @@ public class PageAnnonces extends JFrame implements Serializable {
         txtRechercher.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTextField txtRechercher = ((JTextField) e.getSource());
                 txtRechercher.setText("");
             }
         });
@@ -151,18 +146,18 @@ public class PageAnnonces extends JFrame implements Serializable {
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
-            for (Annonce annonce : annonces) {
-                String titreAnnonce = annonce.getAnnonce_titre().toLowerCase();
-                String descriptionAnnonce = annonce.getAnnonce_description().toLowerCase();
+            for (Annonce annonceRech : annonces) {
+                String titreAnnonce = annonceRech.getAnnonce_titre().toLowerCase();
+                String descriptionAnnonce = annonceRech.getAnnonce_description().toLowerCase();
                 String recherche = txtRechercher.getText().toLowerCase();
 
                 if (titreAnnonce.contains(recherche) || descriptionAnnonce.contains(recherche)) {
-                    listRechercheAnnonces.add(annonce);
+                    listRechercheAnnonces.add(annonceRech);
                     TableModelAnnonce model = new TableModelAnnonce(listRechercheAnnonces);
                     tableauAnnonce.setModel(model);
                 }
             }
-            if (listRechercheAnnonces.size() == 0) {
+            if (listRechercheAnnonces.isEmpty()) {
                 JOptionPane.showMessageDialog(panPrincipal, "Aucune annonce trouvée", "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -174,13 +169,11 @@ public class PageAnnonces extends JFrame implements Serializable {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int idAnnonceSelected = (int) tableauAnnonce.getValueAt(tableauAnnonce.getSelectedRow(), 3);
-          //      JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
                 try {
                     annonce = AnnonceManager.getInstance().SelectById(idAnnonceSelected);
                 } catch (BLLException ex) {
                     ex.printStackTrace();
                 }
-                //Gêne pour modifier une ligne du tableauAnnonce//  JOptionPane.showMessageDialog(null, "L'annonce " + idAnnonceSelected + " est sélectionnée");
             }
         });
 
@@ -203,7 +196,7 @@ public class PageAnnonces extends JFrame implements Serializable {
             blankAnnonce = new Annonce();
 
             //////  On récupére la plus haute id du tableau pour assigner blankSport à 1 au dessus ////////////////
-            if (annonces.size() >= 1){
+            if (!(annonces.isEmpty())){
                 List<Annonce>allAnnonces = null;
                 try {
                     allAnnonces = AnnonceManager.getInstance().SelectAll();
@@ -247,7 +240,6 @@ public class PageAnnonces extends JFrame implements Serializable {
 
             try {
                 AnnonceManager.getInstance().insert(blankAnnonce);
-              //  JOptionPane.showMessageDialog(btnAjouterLigne, "Annonce ajoutée");
             } catch (BLLException bllException) {
                 bllException.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Merci de créer un nouveau matériel");
@@ -255,8 +247,6 @@ public class PageAnnonces extends JFrame implements Serializable {
             annonces.add(blankAnnonce);
 
             TableModelAnnonce model = new TableModelAnnonce(annonces);
-//            model.fireTableDataChanged();
-//            tableauAnnonce.revalidate();
             tableauAnnonce.setModel(model);
 
             blankAnnonce = null;
@@ -283,11 +273,6 @@ public class PageAnnonces extends JFrame implements Serializable {
                     int annonceIdMaterielModifie = (int) tableauAnnonce.getValueAt(i, 4);
                     Date annonceDateParutionModifie = (Date) tableauAnnonce.getValueAt(i, 5);
 
-//                tableauAnnonce.setValueAt(titreAnnonceModifie, i, 0);
-//                tableauAnnonce.setValueAt(descriptionAnnonceModifie, i, 1);
-//                tableauAnnonce.setValueAt(annonceIdUtilisateurModifie, i, 2);
-//                tableauAnnonce.setValueAt(annonceIdMaterielModifie, i, 4);
-//                tableauAnnonce.setValueAt(annonceDateParutionModifie, i, 5);
 
                     /* ENREGISTRER LES VALEURS DS LA BASE ***/
                     if (!annonce.getAnnonce_titre().equals(titreAnnonceModifie)
@@ -374,18 +359,6 @@ public class PageAnnonces extends JFrame implements Serializable {
                 new PageCommentaires(utilisateur, annonce, commentaire);
             }
         });
-
-//        /*
-//         * Action listenner sur le bouton materiel
-//         */
-//        btnMateriels.setSize(100, 50);
-//        btnMateriels.addActionListener(e -> {
-//            if (annonce == null) {
-//                JOptionPane.showMessageDialog(btnMateriels, "Veuillez sélectionner une annonce");
-//            } else {
-//                new PageMateriels(annonce.getAnnonce_materiel_id());
-//            }
-//        });
 
     }//fin initialiserComposants
 
