@@ -408,7 +408,7 @@ public class PageUtilisateurs extends JFrame {
                 /////Vérifie si il y a au moins une adresse pour un utilisateur
                 for (Utilisateur utilisateurrr : utilisateurs) {
                     if (utilisateurrr.getAdresses().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateur.getIdUtilisateur());
+                        JOptionPane.showMessageDialog(null, "Attention, aucune ADRESSE n'est renseignée pour l'utilisateur " + utilisateurrr.getIdUtilisateur());
                     }
                 }
             }
