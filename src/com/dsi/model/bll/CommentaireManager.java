@@ -4,8 +4,6 @@ import com.dsi.model.beans.Commentaire;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Commentaire;
 import com.dsi.model.dal.DAO_Factory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,15 +15,12 @@ import java.util.List;
 public class CommentaireManager implements Manager<Commentaire> {
 
     private static CommentaireManager instance = null;
-
     private DAO_Commentaire dao = null;
-    private Commentaire commentaire;
-    private List<Commentaire> commentaires;
 
     /**
      * Constructeur
      */
-    private CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
+    public CommentaireManager() { dao = DAO_Factory.getDAO_Commentaire(); }
 
     /**
      * Singleton
@@ -44,7 +39,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'utilisateur", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement du commentaire", e);
         }
     }
 
@@ -53,7 +48,7 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification du commentaire", e);
         }
     }
 
@@ -62,13 +57,13 @@ public class CommentaireManager implements Manager<Commentaire> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification du commentaire", e);
         }
     }
 
     @Override
     public List<Commentaire> SelectAll() throws BLLException {
-        commentaires = new ArrayList<>();
+        List <Commentaire> commentaires;
 
         try {
             commentaires = dao.selectAll();
@@ -81,15 +76,40 @@ public class CommentaireManager implements Manager<Commentaire> {
 
     @Override
     public Commentaire SelectById(int pId) throws BLLException {
-        commentaire = null;
+        Commentaire commentaire;
 
         try {
             commentaire = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'commentaire n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
         }
 
         return commentaire;
+    }
+
+
+    public List <Commentaire> SelectByIdAnnonce(int pId) throws BLLException {
+        List <Commentaire> commentaires;
+
+        try {
+            commentaires = dao.selectByIdAnnonce(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
+        }
+
+        return commentaires;
+    }
+
+    public List <Commentaire> SelectByIdUtilisateur(int pId) throws BLLException {
+        List <Commentaire> commentaires;
+
+        try {
+            commentaires = dao.selectByIdUtilisateur(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération du commentaire n° : "+pId, e);
+        }
+
+        return commentaires;
     }
 
 

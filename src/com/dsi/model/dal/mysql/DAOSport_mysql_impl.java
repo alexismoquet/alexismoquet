@@ -1,16 +1,8 @@
 package com.dsi.model.dal.mysql;
 
-import com.dsi.librairies.FonctionsDate;
-import com.dsi.librairies.Roles;
-import com.dsi.model.beans.Adresse;
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sport;
-import com.dsi.model.beans.Utilisateur;
 import com.dsi.model.dal.DALException;
-import com.dsi.model.dal.DAO_Adresse;
-import com.dsi.model.dal.DAO_Factory;
 import com.dsi.model.dal.DAO_Sport;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +16,8 @@ import java.util.List;
 public class DAOSport_mysql_impl implements DAO_Sport {
     private String SQL_SelectAll    = "SELECT * FROM sports;";
     private String SQL_SelectById   = "SELECT * FROM sports WHERE sport_id=?;";
-    private String SQL_Insert       = "INSERT INTO sports(sport_libelle) VALUES(?);";
-    private String SQL_Update       = "UPDATE sports SET sport_libelle=?,WHERE sport_id=?;";
+    private String SQL_Insert       = "INSERT INTO sports(sport_libelle, sport_id) VALUES(?, ?);";
+    private String SQL_Update       = "UPDATE sports SET sport_libelle=?  WHERE sport_id=?;";
     private String SQL_Delete       = "DELETE FROM sports WHERE sport_id=?;";
 
     private Sport sport;
@@ -37,12 +29,74 @@ public class DAOSport_mysql_impl implements DAO_Sport {
 
     @Override
     public void insert(Sport pObj) throws DALException {
+        pstmt = null;
+        rs = null;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Insert);
+            pstmt.setString(1, pObj.getSport_libelle());
+            pstmt.setInt(2, pObj.getSport_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        }finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override
     public void update(Sport pObj) throws DALException {
+        pstmt = null;
+        Connection cnx = null;
 
+        try {
+            //Obtention de la connexion
+            cnx = new MysqlConnecteur().getConnexion();
+
+            //Execution de la requête
+            pstmt = cnx.prepareStatement(SQL_Update);
+            pstmt.setString(1, pObj.getSport_libelle());
+            pstmt.setInt(2, pObj.getSport_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DALException("Problème lors de la connexion à la base de données !", e);
+        } finally {
+            //Fermeture du statement
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DALException("Problème lors de la fermeture du statement !", e);
+                }
+            }
+
+            //Fermeture de la connexion
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
+            }
+        }
     }
 
     @Override
@@ -160,9 +214,8 @@ public class DAOSport_mysql_impl implements DAO_Sport {
                         rs.getInt("sport_id"),
                         rs.getString("sport_libelle")
                 );
-
             } else {
-                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+                throw new DALException("Aucune sport trouvé avec l'identifiant : " + pId);
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);

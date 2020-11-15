@@ -10,6 +10,15 @@ import java.util.List;
  * @author Alexis Moquet
  * @since Créé le 25/02/2020
  */
-public interface DAO_Materiel extends DAO<Materiel>{
+public interface DAO_Materiel extends DAO<Materiel> {
+
     List<Materiel> selectByIdAdresse(int pIdAdresse) throws DALException;
+
+    Materiel selectById(int pId) throws DALException;
+
+    List<Materiel> selectByIdCategorie(int pIdCategorie) throws DALException;
+
+    List<Materiel> selectByIdSport (int pIdSport) throws DALException;
+
+
 }

@@ -24,7 +24,7 @@ public class UtilisateurManager implements Manager<Utilisateur> {
     /**
      * Constructeur
      */
-    private UtilisateurManager() {
+    public UtilisateurManager() {
         dao = DAO_Factory.getDAO_Utilisateur();
     }
 

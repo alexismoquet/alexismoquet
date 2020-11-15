@@ -16,15 +16,12 @@ import java.util.List;
 public class CategorieManager implements Manager<Categorie> {
 
     private static CategorieManager instance = null;
-
-    private DAO_Categorie dao = null;
-    private Categorie categorie;
-    private List<Categorie> categories;
+    private final DAO_Categorie dao;
 
     /**
      * Constructeur
      */
-    private CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
+    public CategorieManager() { dao = DAO_Factory.getDAO_Categorie(); }
 
     /**
      * Singleton
@@ -42,7 +39,7 @@ public class CategorieManager implements Manager<Categorie> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'utilisateur", e);
+            throw new BLLException("Un prblème est survenu lors de l'enregistrement de la catégorie", e);
         }
     }
 
@@ -51,7 +48,7 @@ public class CategorieManager implements Manager<Categorie> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification de la catégorie", e);
         }
     }
 
@@ -60,16 +57,18 @@ public class CategorieManager implements Manager<Categorie> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'utilisateur", e);
+            throw new BLLException("Un problème est survenu lors de la modification de la catégorie", e);
         }
     }
 
+
     @Override
     public List<Categorie> SelectAll() throws BLLException {
+        List<Categorie> categories;
         try {
             categories = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des utilisateurs", e);
+            throw new BLLException("Un problème est survenu lors de la récupération des catégories", e);
         }
 
         return categories;
@@ -77,12 +76,12 @@ public class CategorieManager implements Manager<Categorie> {
 
     @Override
     public Categorie SelectById(int pId) throws BLLException {
-        categorie = null;
+        Categorie categorie ;
 
         try {
             categorie = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException("Un problème est survenu lors de la récupération de la catégorie n° : "+pId, e);
         }
 
         return categorie;

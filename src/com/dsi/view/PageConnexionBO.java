@@ -11,21 +11,21 @@ import java.awt.event.KeyListener;
 
 
 public class PageConnexionBO extends JFrame {
-    private JPanel pan = new JPanel(new BorderLayout());
-    private JPanel panBas = new JPanel();
-    private JPanel panelBouton = new JPanel();
-    private JLabel login = new JLabel("Login :");
-    private JLabel motDePasse = new JLabel("Mot de passe :");
-    private JTextField texteLogin = new JTextField();
-    private JPasswordField texteMotDePasse = new JPasswordField();
-    private JButton bIdentification = new JButton("S'identifier");
-    private BOConnexion ac = new BOConnexion();
+    private final JPanel pan = new JPanel(new BorderLayout());
+    private final JPanel panBas = new JPanel();
+    private final JPanel panelBouton = new JPanel();
+    private final JLabel login = new JLabel("Login :");
+    private final JLabel motDePasse = new JLabel("Mot de passe :");
+    private final JTextField texteLogin = new JTextField();
+    private final JPasswordField texteMotDePasse = new JPasswordField();
+    private final JButton bIdentification = new JButton("S'identifier");
+    private final BOConnexion BOC = new BOConnexion();
 
     GridLayout position = new GridLayout(4, 3, 10, 10);
 
-    //************************************************************
-    // Methode qui va charger les composants de la fenetre
-    //************************************************************
+    /*
+    *Methode qui va charger les composants de la fenetre
+    */
     public void initialiserComposants() {
         setTitle("Identification");
         setIconImage(Toolkit.getDefaultToolkit().getImage("LogoIconeDSI.png"));
@@ -35,10 +35,11 @@ public class PageConnexionBO extends JFrame {
         setResizable(false);
 
         pan.setLayout(position);
-        pan.setBorder(new EmptyBorder(30, 40, 0, 40));
+        pan.setBorder(new EmptyBorder(30, 10, 0, 10));
         pan.add(login);
         login.setForeground(Color.white);
         pan.add(texteLogin);
+
         pan.add(motDePasse);
         motDePasse.setForeground(Color.white);
         pan.add(texteMotDePasse);
@@ -50,19 +51,21 @@ public class PageConnexionBO extends JFrame {
         panelBouton.setBackground(Color.decode("#11417d"));
         bIdentification.setPreferredSize(new Dimension(100, 25));
 
-
-      //  ######################################################
-       // #################### LISTENNERS ######################
-      //  ######################################################
-
+        /*
+         * listenner sur le bIdentification
+         */
         bIdentification.addActionListener(e -> {
             try {
                 actionConnexion();
             } catch (BLLException ex) {
                 ex.printStackTrace();
+                JOptionPane.showMessageDialog(bIdentification,"Login inconnu");
             }
         });
 
+        /*
+         * listenner sur le champ texteMotDePasse
+         */
         texteMotDePasse.addKeyListener(new KeyListener() {
 
             @Override
@@ -91,14 +94,17 @@ public class PageConnexionBO extends JFrame {
     }
 
         private void actionConnexion() throws BLLException {
-        boolean rep = ac.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
-        System.out.println(rep);
+        boolean rep = BOC.actionIdentification(texteLogin.getText(), String.valueOf(texteMotDePasse.getPassword()));
 
         if (rep){
             PageHubAdmin ha = new PageHubAdmin();
             ha.setVisible(true);
-        } else {
-            actionConnexion();
+        } else {JOptionPane.showMessageDialog(null, "Mot de passe incorrect");
+
+            setVisible(false);
+            PageConnexionBO pcbo = new PageConnexionBO();
+            pcbo.initialiserComposants();
+            pcbo.setVisible(true);
         }
     }
 

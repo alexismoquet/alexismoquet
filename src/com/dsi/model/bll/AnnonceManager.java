@@ -1,9 +1,7 @@
 package com.dsi.model.bll;
 
-import com.dsi.model.beans.Adresse;
 import com.dsi.model.beans.Annonce;
 import com.dsi.model.dal.DALException;
-import com.dsi.model.dal.DAO_Adresse;
 import com.dsi.model.dal.DAO_Annonce;
 import com.dsi.model.dal.DAO_Factory;
 
@@ -24,10 +22,13 @@ public class AnnonceManager implements Manager<Annonce> {
     private Annonce annonce;
     private List<Annonce> annonces;
 
+    private final String pbRecupAnnonce = "Un problème est survenu lors de la récupération de l'annonce n° : ";
+    private final String pbModifAnnonce = "Un problème est survenu lors de la modification de l'annonce";
+
     /**
      * Constructeur
      */
-    private AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
+    public AnnonceManager() { dao = DAO_Factory.getDAO_Annonce(); }
 
     /**
      * Singleton
@@ -45,7 +46,8 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.insert(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un prblème est survenu lors de l'enregistrement de l'annonce", e);
+            String pbEnrAnnonce = "Un problème est survenu lors de l'enregistrement de l'annonce";
+            throw new BLLException(pbEnrAnnonce, e);
         }
     }
 
@@ -54,7 +56,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.update(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+            throw new BLLException(pbModifAnnonce , e);
         }
     }
 
@@ -63,7 +65,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             dao.delete(pObj);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la modification de l'annonce", e);
+            throw new BLLException(pbModifAnnonce, e);
         }
     }
 
@@ -74,7 +76,8 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonces = dao.selectAll();
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération des annonces", e);
+            String pbRecupAnnonceAll = "Un problème est survenu lors de la récupération des annonces";
+            throw new BLLException(pbRecupAnnonceAll, e);
         }
 
         return annonces;
@@ -87,7 +90,7 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonce = dao.selectById(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException(pbRecupAnnonce + pId, e);
         }
 
         return annonce;
@@ -99,7 +102,19 @@ public class AnnonceManager implements Manager<Annonce> {
         try {
             annonces = dao.selectByIdUtilisateur(pId);
         } catch (DALException e) {
-            throw new BLLException("Un problème est survenu lors de la récupération de l'annonce n° : "+pId, e);
+            throw new BLLException(pbRecupAnnonce +pId, e);
+        }
+
+        return annonces;
+    }
+
+    public List<Annonce> SelectByIdMateriel(int pIdMateriel) throws BLLException {
+        annonces = null;
+
+        try {
+            annonces = dao.selectByIdMateriel(pIdMateriel);
+        } catch (DALException e) {
+            throw new BLLException(pbRecupAnnonce +pIdMateriel, e);
         }
 
         return annonces;

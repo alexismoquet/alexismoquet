@@ -1,6 +1,5 @@
 package com.dsi.model.dal;
 
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Sortie;
 
 import java.util.List;
@@ -12,4 +11,5 @@ import java.util.List;
  * @since Créé le 25/02/2020
  */
 public  interface DAO_Sortie extends DAO<Sortie> {
+    List<Sortie> selectByIdMateriel(int pIdMateriel) throws DALException;
 }

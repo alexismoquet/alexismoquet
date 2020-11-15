@@ -126,11 +126,12 @@ public class Annonce implements Serializable {
     /**
      * Défini le titre de l'annonce
      * @param annonce_titre - titre de l'annonce
+     * @return
      */
-    public void setAnnonce_titre(String annonce_titre) {
+    public String setAnnonce_titre(String annonce_titre) {
         this.annonce_titre = annonce_titre;
+        return annonce_titre;
     }
-
     /**
      * Retourne la description de l'annonce
      * @return String: annonce_description
@@ -141,9 +142,11 @@ public class Annonce implements Serializable {
     /**
      * Défini la description de l'annonce
      * @param annonce_description - description de l'annonce
+     * @return
      */
-    public void setAnnonce_description(String annonce_description) {
+    public String setAnnonce_description(String annonce_description) {
         this.annonce_description = annonce_description;
+        return annonce_description;
     }
 
     /**

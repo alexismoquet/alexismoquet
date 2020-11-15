@@ -24,7 +24,7 @@ public class AdresseManager implements Manager<Adresse> {
     /**
      * Constructeur
      */
-    private AdresseManager() { dao = DAO_Factory.getDAO_Adresse(); }
+    public AdresseManager() { dao = DAO_Factory.getDAO_Adresse(); }
 
     /**
      * Singleton
@@ -88,5 +88,17 @@ public class AdresseManager implements Manager<Adresse> {
         }
 
         return adresse;
+    }
+
+    public List<Adresse> SelectByIdUtilisateur(int pId) throws BLLException {
+        adresses = null;
+
+        try {
+            adresses = dao.selectByIdUtilisateur(pId);
+        } catch (DALException e) {
+            throw new BLLException("Un problème est survenu lors de la récupération de l'adresse n° : "+pId, e);
+        }
+
+        return adresses;
     }
 }

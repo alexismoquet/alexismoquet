@@ -18,7 +18,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
 
     private String SQL_SelectAll = "SELECT * FROM categories;";
     private String SQL_SelectById = "SELECT * FROM categories WHERE categorie_id = ?;";
-    private String SQL_Insert = "INSERT INTO categories(categorie_libelle) VALUES(?);";
+    private String SQL_Insert = "INSERT INTO categories(categorie_libelle, categorie_id) VALUES(?, ?);";
     private String SQL_Update = "UPDATE categories SET categorie_libelle=? WHERE categorie_id=?;";
     private String SQL_Delete = "DELETE FROM categories WHERE categorie_id=?;";
 
@@ -38,6 +38,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void insert(Categorie pObj) throws DALException {
         pstmt = null;
+        rs = null;
         Connection cnx = null;
 
         try {
@@ -47,13 +48,14 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             //Execution de la requête
             pstmt =cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getCategorie_libelle());
+            pstmt.setInt(2, pObj.getCategorie_id());
 
             pstmt.executeUpdate();
-            rs = pstmt.getGeneratedKeys();
-
-            if (rs.next()) {
-                pObj.setCategorie_id(rs.getInt(1));
-            }
+//            rs = pstmt.getGeneratedKeys();
+//
+//            if (rs.next()) {
+//                pObj.setCategorie_id(rs.getInt(1));
+//            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
@@ -89,6 +91,7 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             pstmt = cnx.prepareStatement(SQL_Update);
             pstmt.setString(1, pObj.getCategorie_libelle());
             pstmt.setInt(2, pObj.getCategorie_id());
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -224,9 +227,8 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                             rs.getString("categorie_libelle")
                     );
                     categories.add(categorie);
-
             }else {
-                throw new DALException("Aucune annonce trouvée avec l'identifiant : " + pId);
+                throw new DALException("Aucune catégorie trouvée avec l'identifiant : " + pId);
             }
         } catch(SQLException e){
             throw new DALException("Problème lors de la connexion à la base de données !", e);

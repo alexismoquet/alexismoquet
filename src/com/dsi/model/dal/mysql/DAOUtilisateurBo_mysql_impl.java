@@ -1,6 +1,7 @@
 package com.dsi.model.dal.mysql;
 
 import com.dsi.librairies.Roles;
+import com.dsi.librairies.UMdp;
 import com.dsi.model.beans.UtilisateurBo;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_UtilisateurBo;
@@ -44,15 +45,15 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
             //Execution de la requête
             pstmt = cnx.prepareStatement(SQL_Insert);
             pstmt.setString(1, pObj.getLogin());
-            pstmt.setString(2, pObj.getMdp());
+            pstmt.setString(2,  UMdp.mdpCrypte(pObj.getMdp()));
             pstmt.setString(3, pObj.getRole().getLibelle());
 
             pstmt.executeUpdate();
 
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                pObj.setIdUtilisateur(rs.getInt(1));
-            }
+//            rs = pstmt.getGeneratedKeys();
+//            if (rs.next()) {
+//                pObj.setIdUtilisateur(rs.getInt(1));
+//            }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
@@ -67,6 +68,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -105,6 +107,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -139,6 +142,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -186,6 +190,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -236,6 +241,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);
@@ -285,6 +291,7 @@ public class DAOUtilisateurBo_mysql_impl implements DAO_UtilisateurBo {
 
             //Fermeture de la connexion
             try {
+                assert cnx != null;
                 cnx.close();
             } catch (SQLException e) {
                 throw new DALException("Problème lors de la fermeture de la connexion à la base de données !", e);

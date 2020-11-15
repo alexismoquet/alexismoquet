@@ -1,11 +1,14 @@
 package com.dsi.model.beans;
+
+import java.io.Serializable;
+
 /**
  * Classe Annonce
  *
  * @author Alexis Moquet
  * @since Créé le 24/02/2020
  */
-public class Sport extends Utilisateur {
+public class Sport implements Serializable {
 
     //#################
     //### Attributs ###
