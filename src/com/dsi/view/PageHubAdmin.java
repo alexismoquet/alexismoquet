@@ -42,8 +42,6 @@ public class PageHubAdmin extends JFrame {
     private final JTable tableauAnomalies = new JTable();
     private final JLabel anomaliesASurveiller = new JLabel();
 
-    private List<Annonce> listAnomalies = new ArrayList<>();
-    private List<Annonce> annonces;
     private Annonce annonce;
     private final ImageIcon icone = new ImageIcon("LogoIconeDSI.png");
 
@@ -214,8 +212,9 @@ public class PageHubAdmin extends JFrame {
      * Méthode qui affiche des anomalies A DEFINIR : ci-dessous, pour le mot "sex" dans les annonces
      */
     public void remplirJTableWithAnomaliesAnnonces() throws BLLException {
-        listAnomalies = new ArrayList<>();
-        annonces = AnnonceManager.getInstance().SelectAll();
+
+        List<Annonce> listAnomalies = new ArrayList<>();
+        List<Annonce> annonces = AnnonceManager.getInstance().SelectAll();
 
         for (Annonce value : annonces) {
             String titreAnnonceSelect = value.getAnnonce_titre().toLowerCase();
