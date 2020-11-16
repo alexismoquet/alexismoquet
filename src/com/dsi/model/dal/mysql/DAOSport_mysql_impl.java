@@ -160,12 +160,11 @@ public class DAOSport_mysql_impl implements DAO_Sport {
                         rs.getInt("sport_id"),
                         rs.getString("sport_libelle")
                 );
-
                 sports.add(sport);
             }
 
-            if (sports.size() == 0) {
-                throw new DALException("Aucun utilisateur trouvé");
+            if (sports.isEmpty()) {
+                throw new DALException("Aucun sport(s) trouvé(s)");
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);

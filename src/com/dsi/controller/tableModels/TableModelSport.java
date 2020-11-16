@@ -37,7 +37,6 @@ public class TableModelSport extends AbstractTableModel implements Serializable 
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
             if (columnIndex == 0) {
                 return sports.get(rowIndex).getSport_libelle();
             } else if (columnIndex == 1) {
@@ -53,12 +52,6 @@ public class TableModelSport extends AbstractTableModel implements Serializable 
         if (column == 0) {
             sports.get(row).setSport_libelle((String) value);
         }
-    }
-
-    public void addSport (Sport sport) {
-        int index = sports.size();
-        sports.add(sport);
-        fireTableRowsInserted(index, index);
     }
 
 }//fin class

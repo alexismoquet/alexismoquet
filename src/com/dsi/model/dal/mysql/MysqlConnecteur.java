@@ -12,9 +12,9 @@ import java.sql.SQLException;
  * @since Créé 05/02/2020
  */
 public class MysqlConnecteur {
-    private String bddUrl;
-    private String bddUser;
-    private String bddPassword;
+    private final String bddUrl;
+    private final String bddUser;
+    private final String bddPassword;
 
     public MysqlConnecteur() throws SQLException {
         try {

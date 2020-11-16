@@ -89,6 +89,7 @@ public class PageCategories extends JFrame implements Serializable {
         panBas.add(btnMateriels);
         tableauCategorie.setAutoCreateRowSorter(true);
         setContentPane(panPrincipal);
+
         afficheJTableCategories();
 
         /*
