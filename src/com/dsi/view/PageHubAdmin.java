@@ -10,9 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import static java.awt.BorderLayout.SOUTH;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
 
 /**
  * Class HubAdmin

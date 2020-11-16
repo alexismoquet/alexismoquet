@@ -178,8 +178,10 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                         rs.getInt("categorie_id"),
                         rs.getString("categorie_libelle")
                 );
-
                 categories.add(categorie);
+            }
+            if (categories.isEmpty()) {
+                throw new DALException("Aucune catégorie(s) trouvée(s)");
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
@@ -226,7 +228,6 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
                             rs.getInt("categorie_id"),
                             rs.getString("categorie_libelle")
                     );
-                    categories.add(categorie);
             }else {
                 throw new DALException("Aucune catégorie trouvée avec l'identifiant : " + pId);
             }
