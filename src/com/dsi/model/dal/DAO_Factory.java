@@ -8,16 +8,17 @@ package com.dsi.model.dal;
  */
 public class DAO_Factory {
 
+    /**
+     * Constructeur par défaut
+     */
+    private DAO_Factory() {}
+
     public static DAO_UtilisateurBo getDAO_UtilisateurBo() {
         DAO_UtilisateurBo daoUtilisateurBo = null;
 
         try {
             daoUtilisateurBo = (DAO_UtilisateurBo) Class.forName("com.dsi.model.dal.mysql.DAOUtilisateurBo_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -29,11 +30,7 @@ public class DAO_Factory {
 
         try {
             daoUtilisateur = (DAO_Utilisateur) Class.forName("com.dsi.model.dal.mysql.DAOUtilisateur_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -45,11 +42,7 @@ public class DAO_Factory {
 
         try {
             daoAdresse = (DAO_Adresse) Class.forName("com.dsi.model.dal.mysql.DAOAdresse_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -61,11 +54,7 @@ public class DAO_Factory {
 
         try {
             daoAnnonce = (DAO_Annonce) Class.forName("com.dsi.model.dal.mysql.DAOAnnonce_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -77,11 +66,7 @@ public class DAO_Factory {
 
         try {
             daoCategorie = (DAO_Categorie) Class.forName("com.dsi.model.dal.mysql.DAOCategorie_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -93,11 +78,7 @@ public class DAO_Factory {
 
         try {
             daoMateriel = (DAO_Materiel) Class.forName("com.dsi.model.dal.mysql.DAOMateriel_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -109,11 +90,7 @@ public class DAO_Factory {
 
         try {
             daoSortie = (DAO_Sortie) Class.forName("com.dsi.model.dal.mysql.DAOSortie_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -125,11 +102,7 @@ public class DAO_Factory {
 
         try {
             daoSport = (DAO_Sport) Class.forName("com.dsi.model.dal.mysql.DAOSport_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -141,11 +114,7 @@ public class DAO_Factory {
 
         try {
             daoVisuel = (DAO_Visuel) Class.forName("com.dsi.model.dal.mysql.DAOVisuel_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -157,11 +126,7 @@ public class DAO_Factory {
 
         try {
             daoCommentaire = (DAO_Commentaire) Class.forName("com.dsi.model.dal.mysql.DAOCommentaire_mysql_impl").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 

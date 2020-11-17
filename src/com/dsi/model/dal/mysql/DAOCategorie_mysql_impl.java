@@ -119,7 +119,6 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
     @Override
     public void delete(Categorie pObj) throws DALException {
         pstmt = null;
-        boolean res = false;
         Connection cnx = null;
 
         try {
@@ -133,7 +132,6 @@ public class DAOCategorie_mysql_impl implements DAO_Categorie {
             //Suppression des annonces
             pstmt.executeUpdate();
 
-            res = true;
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
         } finally {
