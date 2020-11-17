@@ -22,8 +22,8 @@ public class AnnonceManager implements Manager<Annonce> {
     private Annonce annonce;
     private List<Annonce> annonces;
 
-    private final String pbRecupAnnonce = "Un problème est survenu lors de la récupération de l'annonce n° : ";
-    private final String pbModifAnnonce = "Un problème est survenu lors de la modification de l'annonce";
+    private static final String pbRecupAnnonce = "Un problème est survenu lors de la récupération de l'annonce n° : ";
+    private static final String pbModifAnnonce = "Un problème est survenu lors de la modification de l'annonce";
 
     /**
      * Constructeur

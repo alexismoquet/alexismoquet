@@ -8,6 +8,7 @@ import com.dsi.model.beans.Commentaire;
 import com.dsi.model.dal.DALException;
 import com.dsi.model.dal.DAO_Commentaire;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,8 +188,9 @@ public class DAOCommentaire_mysql_impl implements DAO_Commentaire {
                 commentaires.add(commentaire);
             }
 
-            if (commentaires.size() == 0) {
-                throw new DALException("Aucune adresse trouvée");
+            if (commentaires.isEmpty()) {
+                throw new DALException("Aucun commentaire trouvée");
+
             }
         } catch (SQLException e) {
             throw new DALException("Problème lors de la connexion à la base de données !", e);
