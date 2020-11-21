@@ -1,6 +1,5 @@
 package com.dsi.model.dal;
 
-import com.dsi.model.beans.Annonce;
 import com.dsi.model.beans.Commentaire;
 import java.util.List;
 

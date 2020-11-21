@@ -7,6 +7,7 @@ import com.dsi.model.bll.CommentaireManager;
 import java.util.List;
 
 public class Commentaires {
+
     private Commentaires() {
     }
 
@@ -21,4 +22,4 @@ public class Commentaires {
     public static List<Commentaire> remplirJTableWithCommentairesIdUtilisateur(int idUtilisateur) throws BLLException {
         return CommentaireManager.getInstance().SelectByIdUtilisateur(idUtilisateur);
     }
-}
+}//fin class

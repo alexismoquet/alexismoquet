@@ -5,6 +5,7 @@ package com.dsi.model.dal;
  *
  * @author Christophe Michard
  * @since Créé le 05/02/2020
+ * modifé le 15/11/2020 par Alexis Moquet
  */
 public class DAO_Factory {
 

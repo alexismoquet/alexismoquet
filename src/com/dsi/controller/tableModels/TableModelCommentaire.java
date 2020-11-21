@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class TableModelCommentaire extends AbstractTableModel {
 
-    private final String[] titres = {"Message","Date de parution", "Note", "IdCommentaire","IdUtilisateur", "IdAnnonce"};
+    private final String[] titres = {"Message","Date de parution", "Note (1 à 5)", "IdCommentaire","IdUtilisateur", "IdAnnonce"};
 
     private List<Commentaire> commentaires;
 
