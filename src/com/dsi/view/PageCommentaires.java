@@ -134,16 +134,16 @@ public class PageCommentaires extends JFrame implements Serializable {
          **/
         btnRechercher.addActionListener(e -> {
             listRechercheCommentaires = new ArrayList<>();
-            CommentaireManager um = CommentaireManager.getInstance();
+            String recherche = txtRechercher.getText().toLowerCase();
+
             try {
-                um.SelectAll();
+                CommentaireManager.getInstance().SelectAll();
             } catch (BLLException ex) {
                 ex.printStackTrace();
             }
+            //boucle pour affhicher les commentaires contenant les lettre de la recherche
             for (Commentaire commentaireRech : commentaires) {
                 String messComm = commentaireRech.getCommentaire_message().toLowerCase();
-                String recherche = txtRechercher.getText().toLowerCase();
-
                 if (messComm.contains(recherche)) {
                     listRechercheCommentaires.add(commentaireRech);
                     TableModelCommentaire model = new TableModelCommentaire(listRechercheCommentaires);
@@ -151,7 +151,7 @@ public class PageCommentaires extends JFrame implements Serializable {
                 }
             }
             if (listRechercheCommentaires.isEmpty()) {
-                JOptionPane.showMessageDialog(panPrincipal, "Aucun commentaire trouvé contenant ce(s) mot(s)", "warning", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panPrincipal, "Aucun commentaire trouvé contenant les lettres : "+ recherche, "warning", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
